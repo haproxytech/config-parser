@@ -81,6 +81,10 @@ func (p *Parser) LoadData(filename string) (map[string][]ParserType, error) {
 	parsersGlobal := []ParserType{
 		&parsers.Daemon{},
 		&parsers.MaxConn{},
+		&parsers.StatsSocket{},
+		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
+		&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
+		&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
 		&extra.SectionName{Name: "defaults"},
 		&extra.UnProcessed{}}
 	for _, parser := range parsersGlobal {

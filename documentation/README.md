@@ -12,6 +12,9 @@
 | [option dontlognull](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [option http-server-close](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [option http-keep-alive](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
+| [ssl-default-bind-options](#ssl) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
+| [ssl-default-bind-ciphers](#ssl) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
+| [stats socket](#stats) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
 | [timeout http-request](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
 | [timeout connect](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
 | [timeout client](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
@@ -19,7 +22,8 @@
 | [timeout server](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
 | [timeout tunnel](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
 | [timeout http-keep-alive](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
-| [timeout ](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
+| [tune.ssl.default-dh-param](#ssl) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
+
 
 ### Options
 
@@ -42,6 +46,14 @@
 - `option dontlognull`
 - `option http-server-close`
 - `option http-keep-alive`
+
+#### SSL
+- `tune.ssl.default-dh-param`
+- `ssl-default-bind-options`
+- `ssl-default-bind-ciphers`
+
+#### Stats
+- `stats socket` `address:port`|`<path>`  `[params]`
 
 #### Timeouts
 
