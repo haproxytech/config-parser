@@ -132,6 +132,7 @@ func (p *Parser) LoadData(filename string) error {
 	}
 	parsersGlobal := []ParserType{
 		&parsers.Daemon{},
+		&simple.SimpleNumber{Name: "nbproc"}
 		&parsers.MaxConn{},
 		&parsers.StatsSocket{},
 		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
