@@ -19,6 +19,10 @@ func (s *SimpleStringMultiple) Init() {
 	s.searchName = s.Name
 }
 
+func (s *SimpleStringMultiple) GetParserName() string {
+	return s.searchName
+}
+
 func (s *SimpleStringMultiple) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.searchName) {
 		elements := strings.SplitN(line, " ", 2)

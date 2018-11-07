@@ -8,6 +8,10 @@ func (u *UnProcessed) Init() {
 	u.unProcessed = []string{}
 }
 
+func (u *UnProcessed) GetParserName() string {
+	return ""
+}
+
 func (u *UnProcessed) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	u.unProcessed = append(u.unProcessed, "*"+wholeLine)
 	return "", nil

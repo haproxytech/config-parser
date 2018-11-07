@@ -13,6 +13,10 @@ func (c *Comments) Init() {
 	c.comments = []string{}
 }
 
+func (c *Comments) GetParserName() string {
+	return "#"
+}
+
 func (c *Comments) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(wholeLine, "#") {
 		c.comments = append(c.comments, line)

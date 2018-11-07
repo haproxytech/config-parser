@@ -20,6 +20,10 @@ func (s *SimpleNumber) Init() {
 	s.searchName = s.Name
 }
 
+func (s *SimpleNumber) GetParserName() string {
+	return s.searchName
+}
+
 func (s *SimpleNumber) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.searchName) {
 		elements := strings.SplitN(line, " ", 2)

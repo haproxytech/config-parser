@@ -35,6 +35,10 @@ func (l *LogLines) Init() {
 	helpers.AddToBoolMap(l.AllowedLevels, "emerg", "alert", "crit", "err", "warning", "notice", "info", "debug")
 }
 
+func (l *LogLines) GetParserName() string {
+	return "log"
+}
+
 func (l *LogLines) parseLogLine(line string) (Log, error) {
 	if strings.HasPrefix(line, "log global") {
 		return Log{Global: true}, nil

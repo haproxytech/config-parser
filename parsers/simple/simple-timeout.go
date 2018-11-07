@@ -19,6 +19,10 @@ func (t *SimpleTimeout) Init() {
 	t.searchName = fmt.Sprintf("timeout %s", t.Name)
 }
 
+func (t *SimpleTimeout) GetParserName() string {
+	return t.searchName
+}
+
 func (t *SimpleTimeout) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, t.searchName) {
 		parts := strings.Split(line, " ")

@@ -19,6 +19,10 @@ func (s *SectionName) Init() {
 	s.valid = false
 }
 
+func (s *SectionName) GetParserName() string {
+	return s.Name
+}
+
 func (s *SectionName) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.Name) {
 		s.valid = true

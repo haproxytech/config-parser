@@ -21,6 +21,10 @@ func (s *StatsSocket) Init() {
 	s.searchName = "stats socket"
 }
 
+func (s *StatsSocket) GetParserName() string {
+	return s.searchName
+}
+
 func (s *StatsSocket) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.searchName) {
 		elements := strings.Split(line, " ")

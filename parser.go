@@ -14,6 +14,7 @@ type ParserType interface {
 	Init()
 	Parse(line, wholeLine, previousLine string) (changeState string, err error)
 	Valid() bool
+	GetParserName() string
 	String() []string
 }
 
@@ -132,9 +133,10 @@ func (p *Parser) LoadData(filename string) error {
 	}
 	parsersGlobal := []ParserType{
 		&parsers.Daemon{},
-		&simple.SimpleNumber{Name: "nbproc"}
+		&simple.SimpleNumber{Name: "nbproc"},
 		&parsers.MaxConn{},
 		&parsers.StatsSocket{},
+		&parsers.StatsTimeout{},
 		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
 		&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
 		&simple.SimpleString{Name: "ssl-default-bind-ciphers"},

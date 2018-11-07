@@ -18,6 +18,10 @@ func (o *SimpleOption) Init() {
 	o.searchName = fmt.Sprintf("option %s", o.Name)
 }
 
+func (o *SimpleOption) GetParserName() string {
+	return o.searchName
+}
+
 func (o *SimpleOption) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, o.searchName) {
 		o.enabled = true

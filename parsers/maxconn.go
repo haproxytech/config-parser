@@ -17,6 +17,10 @@ func (m *MaxConn) Init() {
 	m.valid = false
 }
 
+func (m *MaxConn) GetParserName() string {
+	return "maxconn"
+}
+
 func (m *MaxConn) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, "maxconn") {
 		elements := strings.SplitN(line, " ", 2)
