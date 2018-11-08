@@ -5,9 +5,9 @@ import (
 	"log"
 	"strings"
 
-	"config-parser/parsers"
-	"config-parser/parsers/extra"
-	"config-parser/parsers/simple"
+	"github.com/haproxytech/config-parser/parsers"
+	"github.com/haproxytech/config-parser/parsers/extra"
+	"github.com/haproxytech/config-parser/parsers/simple"
 )
 
 type ParserType interface {

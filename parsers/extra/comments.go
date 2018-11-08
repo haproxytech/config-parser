@@ -1,8 +1,9 @@
 package extra
 
 import (
-	"config-parser/errors"
 	"strings"
+
+	"github.com/haproxytech/config-parser/errors"
 )
 
 type Comments struct {

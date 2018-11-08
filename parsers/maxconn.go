@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"config-parser/errors"
+	"github.com/haproxytech/config-parser/errors"
 )
 
 type MaxConn struct {

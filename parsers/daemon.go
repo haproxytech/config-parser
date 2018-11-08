@@ -3,7 +3,7 @@ package parsers
 import (
 	"strings"
 
-	"config-parser/errors"
+	"github.com/haproxytech/config-parser/errors"
 )
 
 type Daemon struct {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"config-parser/errors"
+	"github.com/haproxytech/config-parser/errors"
 )
 
 type StatsTimeout struct {

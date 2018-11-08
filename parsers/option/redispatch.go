@@ -3,7 +3,7 @@ package options
 import (
 	"strings"
 
-	"config-parser/errors"
+	"github.com/haproxytech/config-parser/errors"
 )
 
 type OptionRedispatch struct {

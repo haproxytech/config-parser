@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"config-parser/errors"
-	"config-parser/helpers"
+	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Log struct {

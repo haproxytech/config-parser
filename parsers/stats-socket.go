@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"config-parser/bind-options"
-	"config-parser/errors"
+	"github.com/haproxytech/config-parser/bind-options"
+	"github.com/haproxytech/config-parser/errors"
 )
 
 type StatsSocket struct {
