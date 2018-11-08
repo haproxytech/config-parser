@@ -13,7 +13,7 @@ func (u *UnProcessed) GetParserName() string {
 }
 
 func (u *UnProcessed) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	u.unProcessed = append(u.unProcessed, "*"+wholeLine)
+	u.unProcessed = append(u.unProcessed, wholeLine)
 	return "", nil
 }
 

@@ -44,7 +44,6 @@ func (l *LogLines) parseLogLine(line string) (Log, error) {
 		return Log{Global: true}, nil
 	}
 	parts := strings.Split(line, " ")
-	fmt.Println(parts)
 	log := Log{
 		Address: parts[1],
 	}

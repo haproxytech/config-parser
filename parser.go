@@ -3,8 +3,6 @@ package parser
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
-	"os"
 	"strings"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -132,15 +130,11 @@ func getBackendParser() ParserTypes {
 }
 
 func (p *Parser) Save(filename string) error {
-	f, err := os.Create("/tmp/dat2")
+	d1 := []byte(p.String())
+	err := ioutil.WriteFile(filename, d1, 0644)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
-
-	f.WriteString(p.String())
-	f.Sync()
-
 	return nil
 }
 
@@ -221,7 +215,7 @@ func (p *Parser) LoadData(filename string) error {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
-						log.Printf("change state from %s to %s\n", state, newState)
+						//log.Printf("change state from %s to %s\n", state, newState)
 						state = newState
 						if state == "frontend" {
 							sectionName := parser.(*extra.SectionName)
@@ -243,7 +237,7 @@ func (p *Parser) LoadData(filename string) error {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
-						log.Printf("change state from %s to %s\n", state, newState)
+						//log.Printf("change state from %s to %s\n", state, newState)
 						state = newState
 						if state == "frontend" {
 							sectionName := parser.(*extra.SectionName)
@@ -264,7 +258,7 @@ func (p *Parser) LoadData(filename string) error {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
-						log.Printf("change state from %s to %s\n", state, newState)
+						//log.Printf("change state from %s to %s\n", state, newState)
 						state = newState
 						if state == "frontend" {
 							sectionName := parser.(*extra.SectionName)
@@ -285,7 +279,7 @@ func (p *Parser) LoadData(filename string) error {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
-						log.Printf("change state from %s to %s\n", state, newState)
+						//log.Printf("change state from %s to %s\n", state, newState)
 						state = newState
 						if state == "frontend" {
 							sectionName := parser.(*extra.SectionName)
@@ -306,7 +300,7 @@ func (p *Parser) LoadData(filename string) error {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
-						log.Printf("change state from %s to %s\n", state, newState)
+						//log.Printf("change state from %s to %s\n", state, newState)
 						state = newState
 						if state == "frontend" {
 							sectionName := parser.(*extra.SectionName)
