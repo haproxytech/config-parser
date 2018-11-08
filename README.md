@@ -23,6 +23,13 @@ func main() {
 		nbproc := data.(*simple.SimpleNumber)
 		log.Println(nbproc.Value)
 	}	
+
+	data, err = p.GetAttr("global", "stats socket")
+	if err == nil {
+		//NOTE simple param may at some point get own structure
+		statsSocket := data.(*parsers.StatsSocket)
+		log.Println(statsSocket.Path)
+	}
 }
 
 ```
