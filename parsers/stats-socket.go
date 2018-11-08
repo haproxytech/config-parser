@@ -10,8 +10,8 @@ import (
 
 type StatsSocket struct {
 	enabled    bool
-	path       string //can be address:port
-	params     []bindoptions.BindOption
+	Path       string //can be address:port
+	Params     []bindoptions.BindOption
 	Name       string
 	searchName string
 }
@@ -32,8 +32,8 @@ func (s *StatsSocket) Parse(line, wholeLine, previousLine string) (changeState s
 			return "", &errors.ParseError{Parser: "StatsSocket", Line: line, Message: "Parse error"}
 		}
 		s.enabled = true
-		s.path = elements[2]
-		s.params = bindoptions.Parse(elements[3:])
+		s.Path = elements[2]
+		s.Params = bindoptions.Parse(elements[3:])
 		//s.value = elements[1:]
 		return "", nil
 	}
@@ -49,7 +49,7 @@ func (s *StatsSocket) Valid() bool {
 
 func (s *StatsSocket) String() []string {
 	if s.enabled {
-		return []string{fmt.Sprintf("  %s %s %s", s.searchName, s.path, bindoptions.String(s.params))}
+		return []string{fmt.Sprintf("  %s %s %s", s.searchName, s.Path, bindoptions.String(s.Params))}
 	}
 	return []string{}
 }

@@ -10,7 +10,7 @@ import (
 
 type SimpleNumber struct {
 	enabled    bool
-	value      int64
+	Value      int64
 	Name       string
 	searchName string
 }
@@ -35,7 +35,7 @@ func (s *SimpleNumber) Parse(line, wholeLine, previousLine string) (changeState 
 			return "", &errors.ParseError{Parser: "SimpleNumber", Line: line, Message: err.Error()}
 		} else {
 			s.enabled = true
-			s.value = num
+			s.Value = num
 		}
 		return "", nil
 	}
@@ -51,7 +51,7 @@ func (s *SimpleNumber) Valid() bool {
 
 func (s *SimpleNumber) String() []string {
 	if s.enabled {
-		return []string{fmt.Sprintf("  %s %d", s.searchName, s.value)}
+		return []string{fmt.Sprintf("  %s %d", s.searchName, s.Value)}
 	}
 	return []string{}
 }

@@ -9,7 +9,7 @@ import (
 
 type SimpleStringMultiple struct {
 	enabled    bool
-	value      []string
+	Value      []string
 	Name       string
 	searchName string
 }
@@ -30,7 +30,7 @@ func (s *SimpleStringMultiple) Parse(line, wholeLine, previousLine string) (chan
 			return "", &errors.ParseError{Parser: "SimpleStringMultiple", Line: line, Message: "Parse error"}
 		}
 		s.enabled = true
-		s.value = elements[1:]
+		s.Value = elements[1:]
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: s.searchName, Line: line}
@@ -45,7 +45,7 @@ func (s *SimpleStringMultiple) Valid() bool {
 
 func (s *SimpleStringMultiple) String() []string {
 	if s.enabled {
-		return []string{fmt.Sprintf("  %s %s", s.searchName, strings.Join(s.value, " "))}
+		return []string{fmt.Sprintf("  %s %s", s.searchName, strings.Join(s.Value, " "))}
 	}
 	return []string{}
 }

@@ -9,7 +9,7 @@ import (
 )
 
 type MaxConn struct {
-	value int64
+	Value int64
 	valid bool
 }
 
@@ -32,7 +32,7 @@ func (m *MaxConn) Parse(line, wholeLine, previousLine string) (changeState strin
 			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: err.Error()}
 		} else {
 			m.valid = true
-			m.value = num
+			m.Value = num
 		}
 		return "", nil
 	}
@@ -47,5 +47,5 @@ func (m *MaxConn) Valid() bool {
 }
 
 func (m *MaxConn) String() []string {
-	return []string{fmt.Sprintf("  maxconn %d", m.value)}
+	return []string{fmt.Sprintf("  maxconn %d", m.Value)}
 }

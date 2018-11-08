@@ -9,7 +9,7 @@ import (
 
 type StatsTimeout struct {
 	enabled    bool
-	value      []string
+	Value      []string
 	Name       string
 	searchName string
 }
@@ -31,7 +31,7 @@ func (s *StatsTimeout) Parse(line, wholeLine, previousLine string) (changeState 
 			return "", &errors.ParseError{Parser: "StatsTimeout", Line: line, Message: "Parse error"}
 		}
 		s.enabled = true
-		s.value = elements[2:]
+		s.Value = elements[2:]
 		//todo add validation with simple timeouts
 		return "", nil
 	}
@@ -47,7 +47,7 @@ func (s *StatsTimeout) Valid() bool {
 
 func (s *StatsTimeout) String() []string {
 	if s.enabled {
-		return []string{fmt.Sprintf("  %s %s", s.searchName, strings.Join(s.value, " "))}
+		return []string{fmt.Sprintf("  %s %s", s.searchName, strings.Join(s.Value, " "))}
 	}
 	return []string{}
 }

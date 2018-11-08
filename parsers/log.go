@@ -19,13 +19,13 @@ type Log struct {
 }
 
 type LogLines struct {
-	logLines          []Log
+	LogLines          []Log
 	AllowedLevels     map[string]bool
 	AllowedFacitlitys map[string]bool
 }
 
 func (l *LogLines) Init() {
-	l.logLines = []Log{}
+	l.LogLines = []Log{}
 	l.AllowedFacitlitys = map[string]bool{}
 	l.AllowedLevels = map[string]bool{}
 	helpers.AddToBoolMap(l.AllowedFacitlitys,
@@ -89,7 +89,7 @@ func (l *LogLines) parseLogLine(line string) (Log, error) {
 func (l *LogLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, "log ") {
 		if log, err := l.parseLogLine(line); err == nil {
-			l.logLines = append(l.logLines, log)
+			l.LogLines = append(l.LogLines, log)
 		}
 		return "", nil
 	}
@@ -97,15 +97,15 @@ func (l *LogLines) Parse(line, wholeLine, previousLine string) (changeState stri
 }
 
 func (l *LogLines) Valid() bool {
-	if len(l.logLines) > 0 {
+	if len(l.LogLines) > 0 {
 		return true
 	}
 	return false
 }
 
 func (l *LogLines) String() []string {
-	result := make([]string, len(l.logLines))
-	for index, log := range l.logLines {
+	result := make([]string, len(l.LogLines))
+	for index, log := range l.LogLines {
 		if log.Global {
 			result[index] = "  log global"
 		} else {

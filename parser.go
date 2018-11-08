@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"strings"
@@ -18,12 +19,49 @@ type ParserType interface {
 	String() []string
 }
 
-type Parser struct {
-	Data      map[string][]ParserType
-	Frontends map[string][]ParserType
-	Backends  map[string][]ParserType
+type ParserTypes []ParserType
+
+func (p *ParserTypes) Get(atrtibute string) (ParserType, error) {
+	for _, parser := range *p {
+		if parser.GetParserName() == atrtibute && parser.Valid() {
+			return parser, nil
+		}
+	}
+	return nil, fmt.Errorf("atrtibute not found")
 }
 
+//Parser reads and writes configuration on given file
+type Parser struct {
+	Data      map[string]ParserTypes
+	Frontends map[string]ParserTypes
+	Backends  map[string]ParserTypes
+}
+
+func (p *Parser) get(data map[string]ParserTypes, key string, atrtibute string) (ParserType, error) {
+	for _, parser := range data[key] {
+		if parser.GetParserName() == atrtibute && parser.Valid() {
+			return parser, nil
+		}
+	}
+	return nil, fmt.Errorf("atrtibute not found")
+}
+
+//GetAttr retrieves data from global and default part of configuration
+func (p *Parser) GetAttr(section string, atrtibute string) (ParserType, error) {
+	return p.get(p.Data, section, atrtibute)
+}
+
+//GetFrontendAttr ...
+func (p *Parser) GetFrontendAttr(section string, atrtibute string) (ParserType, error) {
+	return p.get(p.Frontends, section, atrtibute)
+}
+
+//GetBackendAttr ...
+func (p *Parser) GetBackendAttr(section string, atrtibute string) (ParserType, error) {
+	return p.get(p.Backends, section, atrtibute)
+}
+
+//String returns configuration in writable form
 func (p *Parser) String() string {
 	var result strings.Builder
 
@@ -74,8 +112,8 @@ func (p *Parser) String() string {
 	return result.String()
 }
 
-func getFrontendParser() []ParserType {
-	return []ParserType{
+func getFrontendParser() ParserTypes {
+	return ParserTypes{
 		&extra.SectionName{Name: "frontend"},
 		&extra.SectionName{Name: "backend"},
 		&extra.SectionName{Name: "global"},
@@ -83,8 +121,8 @@ func getFrontendParser() []ParserType {
 		&extra.UnProcessed{}}
 }
 
-func getBackendParser() []ParserType {
-	return []ParserType{
+func getBackendParser() ParserTypes {
+	return ParserTypes{
 		&extra.SectionName{Name: "frontend"},
 		&extra.SectionName{Name: "backend"},
 		&extra.SectionName{Name: "global"},
@@ -97,7 +135,7 @@ func (p *Parser) LoadData(filename string) error {
 	if err != nil {
 		return err
 	}
-	parsersNone := []ParserType{
+	parsersNone := ParserTypes{
 		&extra.Comments{},
 		&extra.SectionName{Name: "defaults"},
 		&extra.SectionName{Name: "global"},
@@ -107,7 +145,7 @@ func (p *Parser) LoadData(filename string) error {
 	for _, parser := range parsersNone {
 		parser.Init()
 	}
-	parsersDefaults := []ParserType{
+	parsersDefaults := ParserTypes{
 		&parsers.MaxConn{},
 		&parsers.LogLines{},
 
@@ -131,7 +169,7 @@ func (p *Parser) LoadData(filename string) error {
 	for _, parser := range parsersDefaults {
 		parser.Init()
 	}
-	parsersGlobal := []ParserType{
+	parsersGlobal := ParserTypes{
 		&parsers.Daemon{},
 		&simple.SimpleNumber{Name: "nbproc"},
 		&parsers.MaxConn{},
@@ -147,12 +185,12 @@ func (p *Parser) LoadData(filename string) error {
 	for _, parser := range parsersGlobal {
 		parser.Init()
 	}
-	frontends := map[string][]ParserType{}
-	backends := map[string][]ParserType{}
+	frontends := map[string]ParserTypes{}
+	backends := map[string]ParserTypes{}
 	//active_frontend := ""
 	//active_backend := ""
-	var parserFrontend []ParserType
-	var parserBackend []ParserType
+	var parserFrontend ParserTypes
+	var parserBackend ParserTypes
 
 	lines := strings.Split(string(dat), "\n")
 	state := ""
@@ -272,7 +310,7 @@ func (p *Parser) LoadData(filename string) error {
 			}
 		}
 	}
-	p.Data = map[string][]ParserType{
+	p.Data = map[string]ParserTypes{
 		"#":        parsersNone,
 		"global":   parsersGlobal,
 		"defaults": parsersDefaults,

@@ -7,11 +7,11 @@ import (
 )
 
 type Daemon struct {
-	enabled bool
+	Enabled bool
 }
 
 func (d *Daemon) Init() {
-	d.enabled = false
+	d.Enabled = false
 }
 
 func (d *Daemon) GetParserName() string {
@@ -20,21 +20,21 @@ func (d *Daemon) GetParserName() string {
 
 func (d *Daemon) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, "daemon") {
-		d.enabled = true
+		d.Enabled = true
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Daemon", Line: line}
 }
 
 func (d *Daemon) Valid() bool {
-	if d.enabled {
+	if d.Enabled {
 		return true
 	}
 	return false
 }
 
 func (d *Daemon) String() []string {
-	if d.enabled {
+	if d.Enabled {
 		return []string{"  daemon"}
 	}
 	return []string{}
