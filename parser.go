@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -128,6 +129,19 @@ func getBackendParser() ParserTypes {
 		&extra.SectionName{Name: "global"},
 		&extra.SectionName{Name: "defaults"},
 		&extra.UnProcessed{}}
+}
+
+func (p *Parser) Save(filename string) error {
+	f, err := os.Create("/tmp/dat2")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	f.WriteString(p.String())
+	f.Sync()
+
+	return nil
 }
 
 func (p *Parser) LoadData(filename string) error {
