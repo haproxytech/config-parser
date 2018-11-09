@@ -180,6 +180,7 @@ func (p *Parser) LoadData(filename string) error {
 	parsersGlobal := ParserTypes{
 		&parsers.Daemon{},
 		&simple.SimpleNumber{Name: "nbproc"},
+		&simple.SimpleString{Name: "pidfile"},
 		&parsers.MaxConn{},
 		&parsers.StatsSocket{},
 		&parsers.StatsTimeout{},
