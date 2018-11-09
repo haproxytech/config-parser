@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/helpers"
 )
 
 type SectionName struct {
@@ -28,7 +29,7 @@ func (s *SectionName) Parse(line, wholeLine, previousLine string) (changeState s
 	if strings.HasPrefix(line, s.Name) {
 		s.valid = true
 		s.Line = line
-		parts := strings.Split(line, " ")
+		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(parts) > 1 {
 			s.SectionName = parts[1]
 		}

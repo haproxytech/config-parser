@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/helpers"
+
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -25,7 +27,7 @@ func (t *SimpleTimeout) GetParserName() string {
 
 func (t *SimpleTimeout) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, t.searchName) {
-		parts := strings.Split(line, " ")
+		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: t.searchName, Line: line}
 		}

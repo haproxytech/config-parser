@@ -43,7 +43,7 @@ func (l *LogLines) parseLogLine(line string) (Log, error) {
 	if strings.HasPrefix(line, "log global") {
 		return Log{Global: true}, nil
 	}
-	parts := strings.Split(line, " ")
+	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 	log := Log{
 		Address: parts[1],
 	}

@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"strings"
 
+	"github.com/haproxytech/config-parser/helpers"
 	"github.com/haproxytech/config-parser/parsers"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/simple"
@@ -201,7 +202,7 @@ func (p *Parser) LoadData(filename string) error {
 	var parserFrontend ParserTypes
 	var parserBackend ParserTypes
 
-	lines := strings.Split(string(dat), "\n")
+	lines := helpers.StringSplitIgnoreEmpty(string(dat), '\n')
 	state := ""
 	previousLine := ""
 	for _, part := range lines {

@@ -6,6 +6,7 @@ import (
 
 	"github.com/haproxytech/config-parser/bind-options"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/helpers"
 )
 
 type StatsSocket struct {
@@ -27,7 +28,7 @@ func (s *StatsSocket) GetParserName() string {
 
 func (s *StatsSocket) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.searchName) {
-		elements := strings.Split(line, " ")
+		elements := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(elements) < 3 {
 			return "", &errors.ParseError{Parser: "StatsSocket", Line: line, Message: "Parse error"}
 		}
