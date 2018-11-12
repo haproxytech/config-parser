@@ -9,6 +9,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/simple"
+	"github.com/haproxytech/config-parser/parsers/stats"
 )
 
 type ParserType interface {
@@ -199,8 +200,8 @@ func (p *Parser) LoadData(filename string) error {
 			&simple.SimpleNumber{Name: "nbproc"},
 			&simple.SimpleString{Name: "pidfile"},
 			&parsers.MaxConn{},
-			&parsers.StatsSocket{},
-			&parsers.StatsTimeout{},
+			&stats.Socket{},
+			&stats.Timeout{},
 			&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
 			&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
 			&simple.SimpleString{Name: "ssl-default-bind-ciphers"},

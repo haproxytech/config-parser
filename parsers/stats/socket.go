@@ -1,4 +1,4 @@
-package parsers
+package stats
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/haproxytech/config-parser/helpers"
 )
 
-type StatsSocket struct {
+type Socket struct {
 	Enabled    bool
 	Path       string //can be address:port
 	Params     []bindoptions.BindOption
@@ -17,20 +17,20 @@ type StatsSocket struct {
 	SearchName string
 }
 
-func (s *StatsSocket) Init() {
+func (s *Socket) Init() {
 	s.Enabled = false
 	s.SearchName = "stats socket"
 }
 
-func (s *StatsSocket) GetParserName() string {
+func (s *Socket) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *StatsSocket) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
+func (s *Socket) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.SearchName) {
 		elements := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(elements) < 3 {
-			return "", &errors.ParseError{Parser: "StatsSocket", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "Socket", Line: line, Message: "Parse error"}
 		}
 		s.Enabled = true
 		s.Path = elements[2]
@@ -41,14 +41,14 @@ func (s *StatsSocket) Parse(line, wholeLine, previousLine string) (changeState s
 	return "", &errors.ParseError{Parser: s.SearchName, Line: line}
 }
 
-func (s *StatsSocket) Valid() bool {
+func (s *Socket) Valid() bool {
 	if s.Enabled {
 		return true
 	}
 	return false
 }
 
-func (s *StatsSocket) String() []string {
+func (s *Socket) String() []string {
 	if s.Enabled {
 		return []string{fmt.Sprintf("  %s %s %s", s.SearchName, s.Path, bindoptions.String(s.Params))}
 	}

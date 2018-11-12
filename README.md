@@ -7,9 +7,7 @@
 ```go
 package main
 
-import (
-	"log"
-)
+//...
 
 func main() {
 	p := Parser{}
@@ -26,8 +24,7 @@ func main() {
 
 	data, err = p.GetAttr("global", "stats socket")
 	if err == nil {
-		//NOTE simple param may at some point get own structure
-		statsSocket := data.(*parsers.StatsSocket)
+		statsSocket := data.(*stats.Socket)
 		log.Println(statsSocket.Path)
 	}
 }

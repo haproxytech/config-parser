@@ -1,4 +1,4 @@
-package parsers
+package stats
 
 import (
 	"fmt"
@@ -7,28 +7,28 @@ import (
 	"github.com/haproxytech/config-parser/errors"
 )
 
-type StatsTimeout struct {
+type Timeout struct {
 	Enabled    bool
 	Value      []string
 	Name       string
 	SearchName string
 }
 
-func (s *StatsTimeout) Init() {
+func (s *Timeout) Init() {
 	s.Enabled = false
 	s.Name = "stats timeout"
 	s.SearchName = s.Name
 }
 
-func (s *StatsTimeout) GetParserName() string {
+func (s *Timeout) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *StatsTimeout) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
+func (s *Timeout) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.SearchName) {
 		elements := strings.SplitN(line, " ", 3)
 		if len(elements) < 3 {
-			return "", &errors.ParseError{Parser: "StatsTimeout", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "Timeout", Line: line, Message: "Parse error"}
 		}
 		s.Enabled = true
 		s.Value = elements[2:]
@@ -38,14 +38,14 @@ func (s *StatsTimeout) Parse(line, wholeLine, previousLine string) (changeState 
 	return "", &errors.ParseError{Parser: s.SearchName, Line: line}
 }
 
-func (s *StatsTimeout) Valid() bool {
+func (s *Timeout) Valid() bool {
 	if s.Enabled {
 		return true
 	}
 	return false
 }
 
-func (s *StatsTimeout) String() []string {
+func (s *Timeout) String() []string {
 	if s.Enabled {
 		return []string{fmt.Sprintf("  %s %s", s.SearchName, strings.Join(s.Value, " "))}
 	}
