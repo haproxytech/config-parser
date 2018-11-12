@@ -10,44 +10,44 @@ import (
 )
 
 type SimpleTimeout struct {
-	enabled    bool
+	Enabled    bool
 	Name       string
 	Value      string
-	searchName string
+	SearchName string
 }
 
 func (t *SimpleTimeout) Init() {
-	t.enabled = false
-	t.searchName = fmt.Sprintf("timeout %s", t.Name)
+	t.Enabled = false
+	t.SearchName = fmt.Sprintf("timeout %s", t.Name)
 }
 
 func (t *SimpleTimeout) GetParserName() string {
-	return t.searchName
+	return t.SearchName
 }
 
 func (t *SimpleTimeout) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, t.searchName) {
+	if strings.HasPrefix(line, t.SearchName) {
 		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(parts) < 3 {
-			return "", &errors.ParseError{Parser: t.searchName, Line: line}
+			return "", &errors.ParseError{Parser: t.SearchName, Line: line}
 		}
 		t.Value = parts[2]
-		t.enabled = true
+		t.Enabled = true
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: t.searchName, Line: line}
+	return "", &errors.ParseError{Parser: t.SearchName, Line: line}
 }
 
 func (t *SimpleTimeout) Valid() bool {
-	if t.enabled {
+	if t.Enabled {
 		return true
 	}
 	return false
 }
 
 func (t *SimpleTimeout) String() []string {
-	if t.enabled {
-		return []string{fmt.Sprintf("  %s %s", t.searchName, t.Value)}
+	if t.Enabled {
+		return []string{fmt.Sprintf("  %s %s", t.SearchName, t.Value)}
 	}
 	return []string{}
 }

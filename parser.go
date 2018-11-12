@@ -19,10 +19,13 @@ type ParserType interface {
 	String() []string
 }
 
-type ParserTypes []ParserType
+type ParserTypes struct {
+	parsers []ParserType
+	maxSize int
+}
 
 func (p *ParserTypes) Get(atrtibute string) (ParserType, error) {
-	for _, parser := range *p {
+	for _, parser := range p.parsers {
 		if parser.GetParserName() == atrtibute && parser.Valid() {
 			return parser, nil
 		}
@@ -38,7 +41,7 @@ type Parser struct {
 }
 
 func (p *Parser) get(data map[string]ParserTypes, key string, atrtibute string) (ParserType, error) {
-	for _, parser := range data[key] {
+	for _, parser := range data[key].parsers {
 		if parser.GetParserName() == atrtibute && parser.Valid() {
 			return parser, nil
 		}
@@ -67,11 +70,11 @@ func (p *Parser) String() string {
 
 	parsersList := []string{"#", "global", "defaults"}
 	for _, parserName := range parsersList {
-		parsers := p.Data[parserName]
+		section := p.Data[parserName]
 		result.WriteString("\n")
 		result.WriteString(parserName)
 		result.WriteString("\n")
-		for _, parser := range parsers {
+		for _, parser := range section.parsers {
 			if !parser.Valid() {
 				continue
 			}
@@ -81,11 +84,11 @@ func (p *Parser) String() string {
 			}
 		}
 	}
-	for parserName, parsers := range p.Frontends {
+	for sectionName, section := range p.Frontends {
 		result.WriteString("\nfrontend ")
-		result.WriteString(parserName)
+		result.WriteString(sectionName)
 		result.WriteString("\n")
-		for _, parser := range parsers {
+		for _, parser := range section.parsers {
 			if !parser.Valid() {
 				continue
 			}
@@ -95,11 +98,11 @@ func (p *Parser) String() string {
 			}
 		}
 	}
-	for parserName, parsers := range p.Backends {
+	for sectionName, section := range p.Backends {
 		result.WriteString("\nbackend ")
-		result.WriteString(parserName)
+		result.WriteString(sectionName)
 		result.WriteString("\n")
-		for _, parser := range parsers {
+		for _, parser := range section.parsers {
 			if !parser.Valid() {
 				continue
 			}
@@ -114,20 +117,26 @@ func (p *Parser) String() string {
 
 func getFrontendParser() ParserTypes {
 	return ParserTypes{
-		&extra.SectionName{Name: "frontend"},
-		&extra.SectionName{Name: "backend"},
-		&extra.SectionName{Name: "global"},
-		&extra.SectionName{Name: "defaults"},
-		&extra.UnProcessed{}}
+		parsers: []ParserType{
+			&extra.SectionName{Name: "frontend"},
+			&extra.SectionName{Name: "backend"},
+			&extra.SectionName{Name: "global"},
+			&extra.SectionName{Name: "defaults"},
+			&extra.UnProcessed{},
+		},
+	}
 }
 
 func getBackendParser() ParserTypes {
 	return ParserTypes{
-		&extra.SectionName{Name: "frontend"},
-		&extra.SectionName{Name: "backend"},
-		&extra.SectionName{Name: "global"},
-		&extra.SectionName{Name: "defaults"},
-		&extra.UnProcessed{}}
+		parsers: []ParserType{
+			&extra.SectionName{Name: "frontend"},
+			&extra.SectionName{Name: "backend"},
+			&extra.SectionName{Name: "global"},
+			&extra.SectionName{Name: "defaults"},
+			&extra.UnProcessed{},
+		},
+	}
 }
 
 func (p *Parser) Save(filename string) error {
@@ -145,54 +154,63 @@ func (p *Parser) LoadData(filename string) error {
 		return err
 	}
 	parsersNone := ParserTypes{
-		&extra.Comments{},
-		&extra.SectionName{Name: "defaults"},
-		&extra.SectionName{Name: "global"},
-		&extra.SectionName{Name: "frontend"},
-		&extra.SectionName{Name: "backend"},
-		&extra.UnProcessed{}}
-	for _, parser := range parsersNone {
+		parsers: []ParserType{
+			&extra.Comments{},
+			&extra.SectionName{Name: "defaults"},
+			&extra.SectionName{Name: "global"},
+			&extra.SectionName{Name: "frontend"},
+			&extra.SectionName{Name: "backend"},
+			&extra.UnProcessed{},
+		},
+	}
+	for _, parser := range parsersNone.parsers {
 		parser.Init()
 	}
 	parsersDefaults := ParserTypes{
-		&parsers.MaxConn{},
-		&parsers.LogLines{},
+		parsers: []ParserType{
+			&parsers.MaxConn{},
+			&parsers.LogLines{},
 
-		&simple.SimpleOption{Name: "redispatch"},
-		&simple.SimpleOption{Name: "dontlognull"},
-		&simple.SimpleOption{Name: "http-server-close"},
-		&simple.SimpleOption{Name: "http-keep-alive"},
+			&simple.SimpleOption{Name: "redispatch"},
+			&simple.SimpleOption{Name: "dontlognull"},
+			&simple.SimpleOption{Name: "http-server-close"},
+			&simple.SimpleOption{Name: "http-keep-alive"},
 
-		&simple.SimpleTimeout{Name: "http-request"},
-		&simple.SimpleTimeout{Name: "connect"},
-		&simple.SimpleTimeout{Name: "client"},
-		&simple.SimpleTimeout{Name: "queue"},
-		&simple.SimpleTimeout{Name: "server"},
-		&simple.SimpleTimeout{Name: "tunnel"},
-		&simple.SimpleTimeout{Name: "http-keep-alive"},
+			&simple.SimpleTimeout{Name: "http-request"},
+			&simple.SimpleTimeout{Name: "connect"},
+			&simple.SimpleTimeout{Name: "client"},
+			&simple.SimpleTimeout{Name: "queue"},
+			&simple.SimpleTimeout{Name: "server"},
+			&simple.SimpleTimeout{Name: "tunnel"},
+			&simple.SimpleTimeout{Name: "http-keep-alive"},
 
-		&extra.SectionName{Name: "global"},
-		&extra.SectionName{Name: "frontend"},
-		&extra.SectionName{Name: "backend"},
-		&extra.UnProcessed{}}
-	for _, parser := range parsersDefaults {
+			&extra.SectionName{Name: "global"},
+			&extra.SectionName{Name: "frontend"},
+			&extra.SectionName{Name: "backend"},
+			&extra.UnProcessed{},
+		},
+	}
+	for _, parser := range parsersDefaults.parsers {
 		parser.Init()
 	}
 	parsersGlobal := ParserTypes{
-		&parsers.Daemon{},
-		&simple.SimpleNumber{Name: "nbproc"},
-		&simple.SimpleString{Name: "pidfile"},
-		&parsers.MaxConn{},
-		&parsers.StatsSocket{},
-		&parsers.StatsTimeout{},
-		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
-		&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
-		&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
-		&extra.SectionName{Name: "defaults"},
-		&extra.SectionName{Name: "frontend"},
-		&extra.SectionName{Name: "backend"},
-		&extra.UnProcessed{}}
-	for _, parser := range parsersGlobal {
+		parsers: []ParserType{
+			&parsers.Daemon{},
+			&simple.SimpleNumber{Name: "nbproc"},
+			&simple.SimpleString{Name: "pidfile"},
+			&parsers.MaxConn{},
+			&parsers.StatsSocket{},
+			&parsers.StatsTimeout{},
+			&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
+			&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
+			&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
+			&extra.SectionName{Name: "defaults"},
+			&extra.SectionName{Name: "frontend"},
+			&extra.SectionName{Name: "backend"},
+			&extra.UnProcessed{},
+		},
+	}
+	for _, parser := range parsersGlobal.parsers {
 		parser.Init()
 	}
 	frontends := map[string]ParserTypes{}
@@ -213,7 +231,7 @@ func (p *Parser) LoadData(filename string) error {
 		switch state {
 		case "":
 			//search for segments
-			for _, parser := range parsersNone {
+			for _, parser := range parsersNone.parsers {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
@@ -235,7 +253,7 @@ func (p *Parser) LoadData(filename string) error {
 			}
 			previousLine = ""
 		case "global":
-			for _, parser := range parsersGlobal {
+			for _, parser := range parsersGlobal.parsers {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
@@ -256,7 +274,7 @@ func (p *Parser) LoadData(filename string) error {
 				}
 			}
 		case "defaults":
-			for _, parser := range parsersDefaults {
+			for _, parser := range parsersDefaults.parsers {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
@@ -277,7 +295,7 @@ func (p *Parser) LoadData(filename string) error {
 				}
 			}
 		case "frontend":
-			for _, parser := range parserFrontend {
+			for _, parser := range parserFrontend.parsers {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {
@@ -298,7 +316,7 @@ func (p *Parser) LoadData(filename string) error {
 				}
 			}
 		case "backend":
-			for _, parser := range parserBackend {
+			for _, parser := range parserBackend.parsers {
 				if newState, err := parser.Parse(line, part, previousLine); err == nil {
 					//should we have an option to remove it when found?
 					if newState != "" {

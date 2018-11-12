@@ -8,46 +8,46 @@ import (
 )
 
 type StatsTimeout struct {
-	enabled    bool
+	Enabled    bool
 	Value      []string
 	Name       string
-	searchName string
+	SearchName string
 }
 
 func (s *StatsTimeout) Init() {
-	s.enabled = false
+	s.Enabled = false
 	s.Name = "stats timeout"
-	s.searchName = s.Name
+	s.SearchName = s.Name
 }
 
 func (s *StatsTimeout) GetParserName() string {
-	return s.searchName
+	return s.SearchName
 }
 
 func (s *StatsTimeout) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, s.searchName) {
+	if strings.HasPrefix(line, s.SearchName) {
 		elements := strings.SplitN(line, " ", 3)
 		if len(elements) < 3 {
 			return "", &errors.ParseError{Parser: "StatsTimeout", Line: line, Message: "Parse error"}
 		}
-		s.enabled = true
+		s.Enabled = true
 		s.Value = elements[2:]
 		//todo add validation with simple timeouts
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: s.searchName, Line: line}
+	return "", &errors.ParseError{Parser: s.SearchName, Line: line}
 }
 
 func (s *StatsTimeout) Valid() bool {
-	if s.enabled {
+	if s.Enabled {
 		return true
 	}
 	return false
 }
 
 func (s *StatsTimeout) String() []string {
-	if s.enabled {
-		return []string{fmt.Sprintf("  %s %s", s.searchName, strings.Join(s.Value, " "))}
+	if s.Enabled {
+		return []string{fmt.Sprintf("  %s %s", s.SearchName, strings.Join(s.Value, " "))}
 	}
 	return []string{}
 }

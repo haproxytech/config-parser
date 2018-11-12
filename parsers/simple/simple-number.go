@@ -9,23 +9,23 @@ import (
 )
 
 type SimpleNumber struct {
-	enabled    bool
+	Enabled    bool
 	Value      int64
 	Name       string
-	searchName string
+	SearchName string
 }
 
 func (s *SimpleNumber) Init() {
-	s.enabled = false
-	s.searchName = s.Name
+	s.Enabled = false
+	s.SearchName = s.Name
 }
 
 func (s *SimpleNumber) GetParserName() string {
-	return s.searchName
+	return s.SearchName
 }
 
 func (s *SimpleNumber) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, s.searchName) {
+	if strings.HasPrefix(line, s.SearchName) {
 		elements := strings.SplitN(line, " ", 2)
 		if len(elements) != 2 {
 			return "", &errors.ParseError{Parser: "SimpleNumber", Line: line, Message: "Parse error"}
@@ -34,24 +34,24 @@ func (s *SimpleNumber) Parse(line, wholeLine, previousLine string) (changeState 
 		if num, err = strconv.ParseInt(elements[1], 10, 64); err != nil {
 			return "", &errors.ParseError{Parser: "SimpleNumber", Line: line, Message: err.Error()}
 		} else {
-			s.enabled = true
+			s.Enabled = true
 			s.Value = num
 		}
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: s.searchName, Line: line}
+	return "", &errors.ParseError{Parser: s.SearchName, Line: line}
 }
 
 func (s *SimpleNumber) Valid() bool {
-	if s.enabled {
+	if s.Enabled {
 		return true
 	}
 	return false
 }
 
 func (s *SimpleNumber) String() []string {
-	if s.enabled {
-		return []string{fmt.Sprintf("  %s %d", s.searchName, s.Value)}
+	if s.Enabled {
+		return []string{fmt.Sprintf("  %s %d", s.SearchName, s.Value)}
 	}
 	return []string{}
 }
