@@ -15,6 +15,7 @@
 | [ssl-default-bind-options](#ssl) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
 | [ssl-default-bind-ciphers](#ssl) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
 | [stats socket](#stats) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
+| [stats timeout](#stats) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
 | [timeout http-request](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
 | [timeout connect](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
 | [timeout client](#timeouts) |:large_blue_circle:|:large_blue_circle:|:white_circle:|
@@ -54,6 +55,7 @@
 
 #### Stats
 - `stats socket` `address:port`|`<path>`  `[params]`
+- `stats timeout`: timeout to keep socket connection open
 
 #### Timeouts
 
