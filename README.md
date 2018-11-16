@@ -11,7 +11,7 @@ package main
 
 func main() {
     p := Parser{}
-    _, err := p.LoadData("/path/to/haproxy/file.cfg")
+    err := p.LoadData("/path/to/haproxy/file.cfg")
     log.Println(err)
     log.Println(p.String())
 
@@ -24,9 +24,9 @@ func main() {
 
     data, err = p.GetGlobalAttr("stats socket")
     if err == nil {
-        statsSocket := data.(*stats.Socket)
-        log.Println(statsSocket.Path)
-        statsSocket.Path = "/var/run/haproxy-runtime-api.0.sock"
+        statsSockets := data.(*stats.SocketLines)
+        log.Println(statsSockets.SocketLines[0].Path)
+        statsSockets.SocketLines[0].Path = "/var/run/haproxy-runtime-api.0.sock"
     }
 
     data, err = p.GetDefaultsAttr("timeout http-request")

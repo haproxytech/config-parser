@@ -66,7 +66,7 @@ func getGlobalParser() ParserTypes {
 			&simple.SimpleNumber{Name: "nbproc"},
 			&simple.SimpleString{Name: "pidfile"},
 			&parsers.MaxConn{},
-			&stats.Socket{},
+			&stats.SocketLines{},
 			&stats.Timeout{},
 			&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
 			&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
