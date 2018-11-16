@@ -6,39 +6,17 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/helpers"
-	"github.com/haproxytech/config-parser/parsers"
 	"github.com/haproxytech/config-parser/parsers/extra"
-	"github.com/haproxytech/config-parser/parsers/simple"
-	"github.com/haproxytech/config-parser/parsers/stats"
 )
-
-type ParserType interface {
-	Init()
-	Parse(line, wholeLine, previousLine string) (changeState string, err error)
-	Valid() bool
-	GetParserName() string
-	String() []string
-}
-
-type ParserTypes struct {
-	parsers []ParserType
-	maxSize int
-}
-
-func (p *ParserTypes) Get(atrtibute string) (ParserType, error) {
-	for _, parser := range p.parsers {
-		if parser.GetParserName() == atrtibute && parser.Valid() {
-			return parser, nil
-		}
-	}
-	return nil, fmt.Errorf("atrtibute not found")
-}
 
 //Parser reads and writes configuration on given file
 type Parser struct {
-	Data      map[string]ParserTypes
+	Comments  ParserTypes
+	Default   ParserTypes
+	Global    ParserTypes
 	Frontends map[string]ParserTypes
 	Backends  map[string]ParserTypes
+	Listen    map[string]ParserTypes
 }
 
 func (p *Parser) get(data map[string]ParserTypes, key string, atrtibute string) (ParserType, error) {
@@ -50,41 +28,68 @@ func (p *Parser) get(data map[string]ParserTypes, key string, atrtibute string) 
 	return nil, fmt.Errorf("atrtibute not found")
 }
 
-//GetAttr retrieves data from global and default part of configuration
-func (p *Parser) GetAttr(section string, atrtibute string) (ParserType, error) {
-	return p.get(p.Data, section, atrtibute)
+//GetDefaultsAttr get atribute from defaults section
+func (p *Parser) GetDefaultsAttr(atrtibute string) (ParserType, error) {
+	return p.Default.Get(atrtibute)
 }
 
-//GetFrontendAttr ...
-func (p *Parser) GetFrontendAttr(section string, atrtibute string) (ParserType, error) {
-	return p.get(p.Frontends, section, atrtibute)
+//GetGlobalAttr get atribute from global section
+func (p *Parser) GetGlobalAttr(atrtibute string) (ParserType, error) {
+	return p.Global.Get(atrtibute)
 }
 
-//GetBackendAttr ...
-func (p *Parser) GetBackendAttr(section string, atrtibute string) (ParserType, error) {
-	return p.get(p.Backends, section, atrtibute)
+//GetFrontendAttr get atribute from frontend sections
+func (p *Parser) GetFrontendAttr(frontendName string, atrtibute string) (ParserType, error) {
+	return p.get(p.Frontends, frontendName, atrtibute)
+}
+
+//GetBackendAttr get atribute from backend sections
+func (p *Parser) GetBackendAttr(backendName string, atrtibute string) (ParserType, error) {
+	return p.get(p.Backends, backendName, atrtibute)
+}
+
+//GetListenAttr get atribute from listen sections
+func (p *Parser) GetListenAttr(section string, atrtibute string) (ParserType, error) {
+	return p.get(p.Listen, section, atrtibute)
 }
 
 //String returns configuration in writable form
 func (p *Parser) String() string {
 	var result strings.Builder
 
-	parsersList := []string{"#", "global", "defaults"}
-	for _, parserName := range parsersList {
-		section := p.Data[parserName]
-		result.WriteString("\n")
-		result.WriteString(parserName)
-		result.WriteString("\n")
-		for _, parser := range section.parsers {
-			if !parser.Valid() {
-				continue
-			}
-			for _, line := range parser.String() {
-				result.WriteString(line)
-				result.WriteString("\n")
-			}
+	for _, parser := range p.Comments.parsers {
+		if !parser.Valid() {
+			continue
+		}
+		for _, line := range parser.String() {
+			result.WriteString(line)
+			result.WriteString("\n")
 		}
 	}
+
+	result.WriteString("\ndefaults ")
+	result.WriteString("\n")
+	for _, parser := range p.Default.parsers {
+		if !parser.Valid() {
+			continue
+		}
+		for _, line := range parser.String() {
+			result.WriteString(line)
+			result.WriteString("\n")
+		}
+	}
+	result.WriteString("\nglobal ")
+	result.WriteString("\n")
+	for _, parser := range p.Global.parsers {
+		if !parser.Valid() {
+			continue
+		}
+		for _, line := range parser.String() {
+			result.WriteString(line)
+			result.WriteString("\n")
+		}
+	}
+
 	for sectionName, section := range p.Frontends {
 		result.WriteString("\nfrontend ")
 		result.WriteString(sectionName)
@@ -99,8 +104,23 @@ func (p *Parser) String() string {
 			}
 		}
 	}
+
 	for sectionName, section := range p.Backends {
 		result.WriteString("\nbackend ")
+		result.WriteString(sectionName)
+		result.WriteString("\n")
+		for _, parser := range section.parsers {
+			if !parser.Valid() {
+				continue
+			}
+			for _, line := range parser.String() {
+				result.WriteString(line)
+				result.WriteString("\n")
+			}
+		}
+	}
+	for sectionName, section := range p.Listen {
+		result.WriteString("\nlisten ")
 		result.WriteString(sectionName)
 		result.WriteString("\n")
 		for _, parser := range section.parsers {
@@ -116,30 +136,6 @@ func (p *Parser) String() string {
 	return result.String()
 }
 
-func getFrontendParser() ParserTypes {
-	return ParserTypes{
-		parsers: []ParserType{
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.UnProcessed{},
-		},
-	}
-}
-
-func getBackendParser() ParserTypes {
-	return ParserTypes{
-		parsers: []ParserType{
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.UnProcessed{},
-		},
-	}
-}
-
 func (p *Parser) Save(filename string) error {
 	d1 := []byte(p.String())
 	err := ioutil.WriteFile(filename, d1, 0644)
@@ -149,77 +145,52 @@ func (p *Parser) Save(filename string) error {
 	return nil
 }
 
+//ProcessLine parses line plus determines if we need to change state
+func (p *Parser) ProcessLine(state string, activeParser ParserTypes, line, part, previousLine string, parserFrontend, parserBackend, parserListen ParserTypes) (newState string, newParserFrontend, newParserBackend, newParserListen ParserTypes) {
+	for _, parser := range activeParser.parsers {
+		if newState, err := parser.Parse(line, part, previousLine); err == nil {
+			//should we have an option to remove it when found?
+			if newState != "" {
+				//log.Printf("change state from %s to %s\n", state, newState)
+				state = newState
+				if state == "frontend" {
+					sectionName := parser.(*extra.SectionName)
+					parserFrontend = getFrontendParser()
+					p.Frontends[sectionName.SectionName] = parserFrontend
+				}
+				if state == "backend" {
+					sectionName := parser.(*extra.SectionName)
+					parserBackend = getBackendParser()
+					p.Backends[sectionName.SectionName] = parserBackend
+				}
+				if state == "listen" {
+					sectionName := parser.(*extra.SectionName)
+					parserListen = getListenParser()
+					p.Listen[sectionName.SectionName] = parserListen
+				}
+			}
+			break
+		}
+	}
+	return state, parserFrontend, parserBackend, parserListen
+}
+
 func (p *Parser) LoadData(filename string) error {
 	dat, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
 	}
-	parsersNone := ParserTypes{
-		parsers: []ParserType{
-			&extra.Comments{},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range parsersNone.parsers {
-		parser.Init()
-	}
-	parsersDefaults := ParserTypes{
-		parsers: []ParserType{
-			&parsers.MaxConn{},
-			&parsers.LogLines{},
+	p.Comments = getStartParser()
+	p.Default = getDefaultParser()
+	p.Global = getGlobalParser()
 
-			&simple.SimpleOption{Name: "redispatch"},
-			&simple.SimpleOption{Name: "dontlognull"},
-			&simple.SimpleOption{Name: "http-server-close"},
-			&simple.SimpleOption{Name: "http-keep-alive"},
+	p.Frontends = map[string]ParserTypes{}
+	p.Backends = map[string]ParserTypes{}
+	p.Listen = map[string]ParserTypes{}
 
-			&simple.SimpleTimeout{Name: "http-request"},
-			&simple.SimpleTimeout{Name: "connect"},
-			&simple.SimpleTimeout{Name: "client"},
-			&simple.SimpleTimeout{Name: "queue"},
-			&simple.SimpleTimeout{Name: "server"},
-			&simple.SimpleTimeout{Name: "tunnel"},
-			&simple.SimpleTimeout{Name: "http-keep-alive"},
-
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range parsersDefaults.parsers {
-		parser.Init()
-	}
-	parsersGlobal := ParserTypes{
-		parsers: []ParserType{
-			&parsers.Daemon{},
-			&simple.SimpleNumber{Name: "nbproc"},
-			&simple.SimpleString{Name: "pidfile"},
-			&parsers.MaxConn{},
-			&stats.Socket{},
-			&stats.Timeout{},
-			&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
-			&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
-			&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range parsersGlobal.parsers {
-		parser.Init()
-	}
-	frontends := map[string]ParserTypes{}
-	backends := map[string]ParserTypes{}
-	//active_frontend := ""
-	//active_backend := ""
 	var parserFrontend ParserTypes
 	var parserBackend ParserTypes
+	var parserListen ParserTypes
 
 	lines := helpers.StringSplitIgnoreEmpty(string(dat), '\n')
 	state := ""
@@ -231,120 +202,30 @@ func (p *Parser) LoadData(filename string) error {
 		line := strings.Trim(part, " ")
 		switch state {
 		case "":
-			//search for segments
-			for _, parser := range parsersNone.parsers {
-				if newState, err := parser.Parse(line, part, previousLine); err == nil {
-					//should we have an option to remove it when found?
-					if newState != "" {
-						//log.Printf("change state from %s to %s\n", state, newState)
-						state = newState
-						if state == "frontend" {
-							sectionName := parser.(*extra.SectionName)
-							parserFrontend = getFrontendParser()
-							frontends[sectionName.SectionName] = parserFrontend
-						}
-						if state == "backend" {
-							sectionName := parser.(*extra.SectionName)
-							parserBackend = getBackendParser()
-							frontends[sectionName.SectionName] = parserBackend
-						}
-					}
-					break
-				}
-			}
-			previousLine = ""
-		case "global":
-			for _, parser := range parsersGlobal.parsers {
-				if newState, err := parser.Parse(line, part, previousLine); err == nil {
-					//should we have an option to remove it when found?
-					if newState != "" {
-						//log.Printf("change state from %s to %s\n", state, newState)
-						state = newState
-						if state == "frontend" {
-							sectionName := parser.(*extra.SectionName)
-							parserFrontend = getFrontendParser()
-							frontends[sectionName.SectionName] = parserFrontend
-						}
-						if state == "backend" {
-							sectionName := parser.(*extra.SectionName)
-							parserBackend = getBackendParser()
-							frontends[sectionName.SectionName] = parserBackend
-						}
-					}
-					break
-				}
-			}
+			state, parserFrontend, parserBackend, parserListen =
+				p.ProcessLine(state, p.Comments, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			previousLine = line
 		case "defaults":
-			for _, parser := range parsersDefaults.parsers {
-				if newState, err := parser.Parse(line, part, previousLine); err == nil {
-					//should we have an option to remove it when found?
-					if newState != "" {
-						//log.Printf("change state from %s to %s\n", state, newState)
-						state = newState
-						if state == "frontend" {
-							sectionName := parser.(*extra.SectionName)
-							parserFrontend = getFrontendParser()
-							frontends[sectionName.SectionName] = parserFrontend
-						}
-						if state == "backend" {
-							sectionName := parser.(*extra.SectionName)
-							parserBackend = getBackendParser()
-							frontends[sectionName.SectionName] = parserBackend
-						}
-					}
-					break
-				}
-			}
+			state, parserFrontend, parserBackend, parserListen =
+				p.ProcessLine(state, p.Default, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			previousLine = line
+		case "global":
+			state, parserFrontend, parserBackend, parserListen =
+				p.ProcessLine(state, p.Global, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			previousLine = line
 		case "frontend":
-			for _, parser := range parserFrontend.parsers {
-				if newState, err := parser.Parse(line, part, previousLine); err == nil {
-					//should we have an option to remove it when found?
-					if newState != "" {
-						//log.Printf("change state from %s to %s\n", state, newState)
-						state = newState
-						if state == "frontend" {
-							sectionName := parser.(*extra.SectionName)
-							parserFrontend = getFrontendParser()
-							frontends[sectionName.SectionName] = parserFrontend
-						}
-						if state == "backend" {
-							sectionName := parser.(*extra.SectionName)
-							parserBackend = getBackendParser()
-							backends[sectionName.SectionName] = parserBackend
-						}
-					}
-					break
-				}
-			}
+			state, parserFrontend, parserBackend, parserListen =
+				p.ProcessLine(state, parserFrontend, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			previousLine = line
 		case "backend":
-			for _, parser := range parserBackend.parsers {
-				if newState, err := parser.Parse(line, part, previousLine); err == nil {
-					//should we have an option to remove it when found?
-					if newState != "" {
-						//log.Printf("change state from %s to %s\n", state, newState)
-						state = newState
-						if state == "frontend" {
-							sectionName := parser.(*extra.SectionName)
-							parserFrontend = getFrontendParser()
-							frontends[sectionName.SectionName] = parserFrontend
-						}
-						if state == "backend" {
-							sectionName := parser.(*extra.SectionName)
-							parserBackend = getBackendParser()
-							backends[sectionName.SectionName] = parserBackend
-						}
-					}
-					break
-				}
-			}
+			state, parserFrontend, parserBackend, parserListen =
+				p.ProcessLine(state, parserBackend, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			previousLine = line
+		case "listen":
+			state, parserFrontend, parserBackend, parserListen =
+				p.ProcessLine(state, parserListen, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			previousLine = line
 		}
 	}
-	p.Data = map[string]ParserTypes{
-		"#":        parsersNone,
-		"global":   parsersGlobal,
-		"defaults": parsersDefaults,
-	}
-	p.Frontends = frontends
-	p.Backends = backends
 	return nil
 }
