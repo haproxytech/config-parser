@@ -17,6 +17,7 @@ type Parser struct {
 	Frontends map[string]ParserTypes
 	Backends  map[string]ParserTypes
 	Listen    map[string]ParserTypes
+	Resolvers map[string]ParserTypes
 }
 
 func (p *Parser) get(data map[string]ParserTypes, key string, atrtibute string) (ParserType, error) {
@@ -90,6 +91,21 @@ func (p *Parser) String() string {
 		}
 	}
 
+	for sectionName, section := range p.Resolvers {
+		result.WriteString("\nresolvers ")
+		result.WriteString(sectionName)
+		result.WriteString("\n")
+		for _, parser := range section.parsers {
+			if !parser.Valid() {
+				continue
+			}
+			for _, line := range parser.String() {
+				result.WriteString(line)
+				result.WriteString("\n")
+			}
+		}
+	}
+
 	for sectionName, section := range p.Frontends {
 		result.WriteString("\nfrontend ")
 		result.WriteString(sectionName)
@@ -146,7 +162,7 @@ func (p *Parser) Save(filename string) error {
 }
 
 //ProcessLine parses line plus determines if we need to change state
-func (p *Parser) ProcessLine(state string, activeParser ParserTypes, line, part, previousLine string, parserFrontend, parserBackend, parserListen ParserTypes) (newState string, newParserFrontend, newParserBackend, newParserListen ParserTypes) {
+func (p *Parser) ProcessLine(state string, activeParser ParserTypes, line, part, previousLine string, parserFrontend, parserBackend, parserListen, parserResolver ParserTypes) (newState string, newParserFrontend, newParserBackend, newParserListen, newParserResolver ParserTypes) {
 	for _, parser := range activeParser.parsers {
 		if newState, err := parser.Parse(line, part, previousLine); err == nil {
 			//should we have an option to remove it when found?
@@ -168,11 +184,16 @@ func (p *Parser) ProcessLine(state string, activeParser ParserTypes, line, part,
 					parserListen = getListenParser()
 					p.Listen[sectionName.SectionName] = parserListen
 				}
+				if state == "resolvers" {
+					sectionName := parser.(*extra.SectionName)
+					parserResolver = getResolverParser()
+					p.Resolvers[sectionName.SectionName] = parserResolver
+				}
 			}
 			break
 		}
 	}
-	return state, parserFrontend, parserBackend, parserListen
+	return state, parserFrontend, parserBackend, parserListen, parserResolver
 }
 
 func (p *Parser) LoadData(filename string) error {
@@ -187,10 +208,12 @@ func (p *Parser) LoadData(filename string) error {
 	p.Frontends = map[string]ParserTypes{}
 	p.Backends = map[string]ParserTypes{}
 	p.Listen = map[string]ParserTypes{}
+	p.Resolvers = map[string]ParserTypes{}
 
 	var parserFrontend ParserTypes
 	var parserBackend ParserTypes
 	var parserListen ParserTypes
+	var parserResolver ParserTypes
 
 	lines := helpers.StringSplitIgnoreEmpty(string(dat), '\n')
 	state := ""
@@ -202,28 +225,32 @@ func (p *Parser) LoadData(filename string) error {
 		line := strings.Trim(part, " ")
 		switch state {
 		case "":
-			state, parserFrontend, parserBackend, parserListen =
-				p.ProcessLine(state, p.Comments, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			state, parserFrontend, parserBackend, parserListen, parserResolver =
+				p.ProcessLine(state, p.Comments, line, part, previousLine, parserFrontend, parserBackend, parserListen, parserListen)
 			previousLine = line
 		case "defaults":
-			state, parserFrontend, parserBackend, parserListen =
-				p.ProcessLine(state, p.Default, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			state, parserFrontend, parserBackend, parserListen, parserResolver =
+				p.ProcessLine(state, p.Default, line, part, previousLine, parserFrontend, parserBackend, parserListen, parserResolver)
 			previousLine = line
 		case "global":
-			state, parserFrontend, parserBackend, parserListen =
-				p.ProcessLine(state, p.Global, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			state, parserFrontend, parserBackend, parserListen, parserResolver =
+				p.ProcessLine(state, p.Global, line, part, previousLine, parserFrontend, parserBackend, parserListen, parserResolver)
 			previousLine = line
 		case "frontend":
-			state, parserFrontend, parserBackend, parserListen =
-				p.ProcessLine(state, parserFrontend, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			state, parserFrontend, parserBackend, parserListen, parserResolver =
+				p.ProcessLine(state, parserFrontend, line, part, previousLine, parserFrontend, parserBackend, parserListen, parserResolver)
 			previousLine = line
 		case "backend":
-			state, parserFrontend, parserBackend, parserListen =
-				p.ProcessLine(state, parserBackend, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			state, parserFrontend, parserBackend, parserListen, parserResolver =
+				p.ProcessLine(state, parserBackend, line, part, previousLine, parserFrontend, parserBackend, parserListen, parserResolver)
 			previousLine = line
 		case "listen":
-			state, parserFrontend, parserBackend, parserListen =
-				p.ProcessLine(state, parserListen, line, part, previousLine, parserFrontend, parserBackend, parserListen)
+			state, parserFrontend, parserBackend, parserListen, parserResolver =
+				p.ProcessLine(state, parserListen, line, part, previousLine, parserFrontend, parserBackend, parserListen, parserResolver)
+			previousLine = line
+		case "resolvers":
+			state, parserFrontend, parserBackend, parserListen, parserResolver =
+				p.ProcessLine(state, parserResolver, line, part, previousLine, parserFrontend, parserBackend, parserListen, parserResolver)
 			previousLine = line
 		}
 	}

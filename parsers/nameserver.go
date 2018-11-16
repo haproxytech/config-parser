@@ -1,0 +1,62 @@
+package parsers
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/helpers"
+)
+
+type Nameserver struct {
+	Name    string
+	Address string
+}
+
+type NameserverLines struct {
+	NameserverLines []Nameserver
+}
+
+func (l *NameserverLines) Init() {
+	l.NameserverLines = []Nameserver{}
+}
+
+func (l *NameserverLines) GetParserName() string {
+	return "nameserver"
+}
+
+func (l *NameserverLines) parseNameserverLine(line string) (Nameserver, error) {
+	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+	if len(parts) >= 3 {
+		return Nameserver{
+			Name:    parts[1],
+			Address: parts[2],
+		}, nil
+	}
+	return Nameserver{}, &errors.ParseError{Parser: "NameserverLines", Line: line}
+}
+
+func (l *NameserverLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
+	if strings.HasPrefix(line, "nameserver ") {
+		if nameserver, err := l.parseNameserverLine(line); err == nil {
+			l.NameserverLines = append(l.NameserverLines, nameserver)
+		}
+		return "", nil
+	}
+	return "", &errors.ParseError{Parser: "NameserverLines", Line: line}
+}
+
+func (l *NameserverLines) Valid() bool {
+	if len(l.NameserverLines) > 0 {
+		return true
+	}
+	return false
+}
+
+func (l *NameserverLines) String() []string {
+	result := make([]string, len(l.NameserverLines))
+	for index, nameserver := range l.NameserverLines {
+		result[index] = fmt.Sprintf("  nameserver %s %s", nameserver.Name, nameserver.Address)
+	}
+	return result
+}

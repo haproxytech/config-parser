@@ -15,6 +15,8 @@ func getStartParser() ParserTypes {
 			&extra.SectionName{Name: "global"},
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
+			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -47,6 +49,7 @@ func getDefaultParser() ParserTypes {
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -72,6 +75,7 @@ func getGlobalParser() ParserTypes {
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -82,40 +86,78 @@ func getGlobalParser() ParserTypes {
 }
 
 func getFrontendParser() ParserTypes {
-	return ParserTypes{
+	p := ParserTypes{
 		parsers: []ParserType{
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "global"},
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
 			&extra.UnProcessed{},
 		},
 	}
+	for _, parser := range p.parsers {
+		parser.Init()
+	}
+	return p
 }
 
 func getBackendParser() ParserTypes {
-	return ParserTypes{
+	p := ParserTypes{
 		parsers: []ParserType{
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "global"},
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
 			&extra.UnProcessed{},
 		},
 	}
+	for _, parser := range p.parsers {
+		parser.Init()
+	}
+	return p
 }
 
 func getListenParser() ParserTypes {
-	return ParserTypes{
+	p := ParserTypes{
 		parsers: []ParserType{
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "global"},
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
 			&extra.UnProcessed{},
 		},
 	}
+	for _, parser := range p.parsers {
+		parser.Init()
+	}
+	return p
+}
+
+func getResolverParser() ParserTypes {
+	p := ParserTypes{
+		parsers: []ParserType{
+			&parsers.NameserverLines{},
+			&simple.SimpleTimeTwoWords{Name: "hold obsolete"},
+			&simple.SimpleTimeTwoWords{Name: "hold valid"},
+			&simple.SimpleTimeout{Name: "retry"},
+			&simple.SimpleString{Name: "accepted_payload_size"},
+			&extra.SectionName{Name: "frontend"},
+			&extra.SectionName{Name: "backend"},
+			&extra.SectionName{Name: "global"},
+			&extra.SectionName{Name: "defaults"},
+			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
+			&extra.UnProcessed{},
+		},
+	}
+	for _, parser := range p.parsers {
+		parser.Init()
+	}
+	return p
 }
