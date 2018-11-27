@@ -15,24 +15,24 @@ type Socket struct {
 }
 
 type SocketLines struct {
-	SocketLines []Socket
+	SocketLines []*Socket
 }
 
 func (l *SocketLines) Init() {
-	l.SocketLines = []Socket{}
+	l.SocketLines = []*Socket{}
 }
 
 func (l *SocketLines) GetParserName() string {
 	return "stats socket"
 }
 
-func (l *SocketLines) parseSocketLine(line string) (Socket, error) {
+func (l *SocketLines) parseSocketLine(line string) (*Socket, error) {
 
 	elements := helpers.StringSplitIgnoreEmpty(line, ' ')
 	if len(elements) < 3 {
-		return Socket{}, &errors.ParseError{Parser: "SocketSingle", Line: line, Message: "Parse error"}
+		return nil, &errors.ParseError{Parser: "SocketSingle", Line: line, Message: "Parse error"}
 	}
-	socket := Socket{
+	socket := &Socket{
 		Path:   elements[2],
 		Params: bindoptions.Parse(elements[3:]),
 	}
