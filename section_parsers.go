@@ -63,7 +63,10 @@ func getGlobalParser() ParserTypes {
 	p := ParserTypes{
 		parsers: []ParserType{
 			&parsers.Daemon{},
+			//&simple.SimpleFlag{Name: "master-worker"},
+			&parsers.MasterWorker{},
 			&simple.SimpleNumber{Name: "nbproc"},
+			&parsers.CpuMapLines{},
 			&simple.SimpleString{Name: "pidfile"},
 			&parsers.MaxConn{},
 			&stats.SocketLines{},
@@ -106,6 +109,7 @@ func getFrontendParser() ParserTypes {
 func getBackendParser() ParserTypes {
 	p := ParserTypes{
 		parsers: []ParserType{
+			&simple.SimpleOption{Name: "tcp-smart-connect"},
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "global"},
