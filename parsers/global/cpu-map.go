@@ -1,4 +1,4 @@
-package parsers
+package global
 
 import (
 	"fmt"
@@ -58,7 +58,35 @@ func (c *CpuMapLines) Valid() bool {
 func (c *CpuMapLines) String() []string {
 	result := make([]string, len(c.CpuMapLines))
 	for index, cpuMap := range c.CpuMapLines {
-		result[index] = fmt.Sprintf(fmt.Sprintf("  cpu-map %s %s", cpuMap.Name, cpuMap.Value))
+		result[index] = fmt.Sprintf("  cpu-map %s %s", cpuMap.Name, cpuMap.Value)
 	}
 	return result
+}
+
+func (c *CpuMapLines) Equal(b *CpuMapLines) bool {
+	if b == nil {
+		return false
+	}
+	if b.CpuMapLines == nil {
+		return false
+	}
+	if len(c.CpuMapLines) != len(b.CpuMapLines) {
+		return false
+	}
+	for _, cCpuMap := range c.CpuMapLines {
+		found := false
+		for _, bCpuMap := range b.CpuMapLines {
+			if cCpuMap.Name == bCpuMap.Name {
+				if cCpuMap.Value != bCpuMap.Value {
+					return false
+				}
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
 }

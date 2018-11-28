@@ -3,6 +3,7 @@ package parser
 import (
 	"github.com/haproxytech/config-parser/parsers"
 	"github.com/haproxytech/config-parser/parsers/extra"
+	"github.com/haproxytech/config-parser/parsers/global"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/stats"
 )
@@ -65,8 +66,9 @@ func getGlobalParser() ParserTypes {
 			&parsers.Daemon{},
 			//&simple.SimpleFlag{Name: "master-worker"},
 			&parsers.MasterWorker{},
-			&simple.SimpleNumber{Name: "nbproc"},
-			&parsers.CpuMapLines{},
+			//&simple.SimpleNumber{Name: "nbproc"},
+			&global.NbProc{},
+			&global.CpuMapLines{},
 			&simple.SimpleString{Name: "pidfile"},
 			&parsers.MaxConn{},
 			&stats.SocketLines{},

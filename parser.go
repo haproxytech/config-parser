@@ -20,38 +20,43 @@ type Parser struct {
 	Resolvers map[string]ParserTypes
 }
 
-func (p *Parser) get(data map[string]ParserTypes, key string, atrtibute string) (ParserType, error) {
+func (p *Parser) get(data map[string]ParserTypes, key string, attribute string) (ParserType, error) {
 	for _, parser := range data[key].parsers {
-		if parser.GetParserName() == atrtibute && parser.Valid() {
+		if parser.GetParserName() == attribute && parser.Valid() {
 			return parser, nil
 		}
 	}
-	return nil, fmt.Errorf("atrtibute not found")
+	return nil, fmt.Errorf("attribute not found")
 }
 
-//GetDefaultsAttr get atribute from defaults section
-func (p *Parser) GetDefaultsAttr(atrtibute string) (ParserType, error) {
-	return p.Default.Get(atrtibute)
+//GetDefaultsAttr get attribute from defaults section
+func (p *Parser) GetDefaultsAttr(attribute string) (ParserType, error) {
+	return p.Default.Get(attribute)
 }
 
-//GetGlobalAttr get atribute from global section
-func (p *Parser) GetGlobalAttr(atrtibute string) (ParserType, error) {
-	return p.Global.Get(atrtibute)
+//GetGlobalAttr get attribute from global section
+func (p *Parser) GetGlobalAttr(attribute string) (ParserType, error) {
+	return p.Global.Get(attribute)
 }
 
-//GetFrontendAttr get atribute from frontend sections
-func (p *Parser) GetFrontendAttr(frontendName string, atrtibute string) (ParserType, error) {
-	return p.get(p.Frontends, frontendName, atrtibute)
+//NewGlobalAttr adds attribute to global section, if exists, replaces it
+func (p *Parser) NewGlobalAttr(parser ParserType) {
+	p.Global.Set(parser)
 }
 
-//GetBackendAttr get atribute from backend sections
-func (p *Parser) GetBackendAttr(backendName string, atrtibute string) (ParserType, error) {
-	return p.get(p.Backends, backendName, atrtibute)
+//GetFrontendAttr get attribute from frontend sections
+func (p *Parser) GetFrontendAttr(frontendName string, attribute string) (ParserType, error) {
+	return p.get(p.Frontends, frontendName, attribute)
 }
 
-//GetListenAttr get atribute from listen sections
-func (p *Parser) GetListenAttr(section string, atrtibute string) (ParserType, error) {
-	return p.get(p.Listen, section, atrtibute)
+//GetBackendAttr get attribute from backend sections
+func (p *Parser) GetBackendAttr(backendName string, attribute string) (ParserType, error) {
+	return p.get(p.Backends, backendName, attribute)
+}
+
+//GetListenAttr get attribute from listen sections
+func (p *Parser) GetListenAttr(section string, attribute string) (ParserType, error) {
+	return p.get(p.Listen, section, attribute)
 }
 
 //String returns configuration in writable form

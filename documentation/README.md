@@ -6,8 +6,12 @@
 
 | Name | 100% supported | Default | Global |
 | - |:-:|:-:|:-:|
-| [maxconn](#maxconn) |:large_blue_circle:|:large_blue_circle:|:large_blue_circle:|
+| [cpu-map](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
+| [daemon](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
 | [log](#log) |:white_circle:|:large_blue_circle:|:white_circle:|
+| [master-worker](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
+| [maxconn](#maxconn) |:large_blue_circle:|:large_blue_circle:|:large_blue_circle:|
+| [nbproc](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
 | [option redispatch](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [option dontlognull](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [option http-server-close](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
@@ -37,9 +41,16 @@
 				"local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"
   - `level` & `minlevel`: "emerg", "alert", "crit", "err", "warning", "notice", "info", "debug"
 
-#### Maxconn
+#### maxconn
 
 - `maxconn`: number
+
+#### nbproc
+
+- `nbproc`: number
+- `cpu-map`: number number
+- `master-worker`
+- `daemon`
 
 #### Options
 
