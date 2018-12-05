@@ -40,10 +40,10 @@ func (l *LogLines) GetParserName() string {
 }
 
 func (l *LogLines) parseLogLine(line string) (Log, error) {
-	if strings.HasPrefix(line, "log global") {
+	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+	if len(parts) > 1 && parts[1] == "global" {
 		return Log{Global: true}, nil
 	}
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 	log := Log{
 		Address: parts[1],
 	}
