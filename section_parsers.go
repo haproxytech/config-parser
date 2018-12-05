@@ -76,6 +76,7 @@ func getGlobalParser() ParserTypes {
 			&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
 			&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
 			&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
+			&parsers.LogLines{},
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},

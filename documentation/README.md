@@ -8,7 +8,7 @@
 | - |:-:|:-:|:-:|
 | [cpu-map](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
 | [daemon](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
-| [log](#log) |:white_circle:|:large_blue_circle:|:white_circle:|
+| [log](#log) |:white_circle:|:large_blue_circle:|:large_blue_circle:|
 | [master-worker](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
 | [maxconn](#maxconn) |:large_blue_circle:|:large_blue_circle:|:large_blue_circle:|
 | [nbproc](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
