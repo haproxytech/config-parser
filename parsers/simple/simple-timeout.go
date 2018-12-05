@@ -2,7 +2,6 @@ package simple
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/haproxytech/config-parser/helpers"
 
@@ -10,32 +9,27 @@ import (
 )
 
 type SimpleTimeout struct {
-	Enabled    bool
-	Name       string
-	Value      string
-	SearchName string
+	Enabled bool
+	Name    string
+	Value   string
 }
 
 func (t *SimpleTimeout) Init() {
 	t.Enabled = false
-	t.SearchName = fmt.Sprintf("timeout %s", t.Name)
 }
 
 func (t *SimpleTimeout) GetParserName() string {
-	return t.SearchName
+	return fmt.Sprintf("timeout %s", t.Name)
 }
 
 func (t *SimpleTimeout) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, t.SearchName) {
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
-		if len(parts) < 3 {
-			return "", &errors.ParseError{Parser: t.SearchName, Line: line}
-		}
+	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+	if len(parts) > 2 && parts[0] == "timeout" && parts[1] == t.Name {
 		t.Value = parts[2]
 		t.Enabled = true
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: t.SearchName, Line: line}
+	return "", &errors.ParseError{Parser: fmt.Sprintf("timeout %s", t.Name), Line: line}
 }
 
 func (t *SimpleTimeout) Valid() bool {
@@ -47,7 +41,7 @@ func (t *SimpleTimeout) Valid() bool {
 
 func (t *SimpleTimeout) String() []string {
 	if t.Enabled {
-		return []string{fmt.Sprintf("  %s %s", t.SearchName, t.Value)}
+		return []string{fmt.Sprintf("  timeout %s %s", t.Name, t.Value)}
 	}
 	return []string{}
 }
