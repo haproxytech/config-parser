@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/haproxytech/config-parser/parsers"
+	"github.com/haproxytech/config-parser/parsers/defaults"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/global"
 	"github.com/haproxytech/config-parser/parsers/simple"
@@ -30,6 +31,7 @@ func getStartParser() ParserTypes {
 func getDefaultParser() ParserTypes {
 	p := ParserTypes{
 		parsers: []ParserType{
+			&parsers.Mode{},
 			&parsers.MaxConn{},
 			&parsers.LogLines{},
 
@@ -37,6 +39,7 @@ func getDefaultParser() ParserTypes {
 			&simple.SimpleOption{Name: "dontlognull"},
 			&simple.SimpleOption{Name: "http-server-close"},
 			&simple.SimpleOption{Name: "http-keep-alive"},
+			&simple.SimpleOption{Name: "httplog"},
 
 			&simple.SimpleTimeout{Name: "http-request"},
 			&simple.SimpleTimeout{Name: "connect"},
@@ -45,6 +48,8 @@ func getDefaultParser() ParserTypes {
 			&simple.SimpleTimeout{Name: "server"},
 			&simple.SimpleTimeout{Name: "tunnel"},
 			&simple.SimpleTimeout{Name: "http-keep-alive"},
+
+			&defaults.ErrorFileLines{},
 
 			&extra.SectionName{Name: "global"},
 			&extra.SectionName{Name: "frontend"},
@@ -70,6 +75,7 @@ func getGlobalParser() ParserTypes {
 			&global.NbProc{},
 			&global.CpuMapLines{},
 			&simple.SimpleString{Name: "pidfile"},
+			&parsers.Mode{},
 			&parsers.MaxConn{},
 			&stats.SocketLines{},
 			&stats.Timeout{},
