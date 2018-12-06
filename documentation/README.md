@@ -8,14 +8,17 @@
 | - |:-:|:-:|:-:|
 | [cpu-map](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
 | [daemon](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
+| [errorfile](#errorfile) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [log](#log) |:white_circle:|:large_blue_circle:|:large_blue_circle:|
 | [master-worker](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
 | [maxconn](#maxconn) |:large_blue_circle:|:large_blue_circle:|:large_blue_circle:|
+| [mode](#mode) |:white_circle:|:large_blue_circle:|:large_blue_circle:|
 | [nbproc](#nbproc) |:white_circle:|:white_circle:|:large_blue_circle:|
 | [option redispatch](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [option dontlognull](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [option http-server-close](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [option http-keep-alive](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
+| [option httplog](#options) |:white_circle:|:large_blue_circle:|:white_circle:|
 | [ssl-default-bind-options](#ssl) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
 | [ssl-default-bind-ciphers](#ssl) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
 | [stats socket](#stats) |:large_blue_circle:|:white_circle:|:large_blue_circle:|
@@ -32,6 +35,11 @@
 
 ### Options
 
+#### errorfile
+
+- `errorfile`: \<code\> \<file\>
+  - code: 200, 400, 403, 405, 408, 425, 429, 500, 502, 503, 504
+
 #### Log
 
 - `global`
@@ -44,6 +52,10 @@
 #### maxconn
 
 - `maxconn`: number
+
+#### mode
+
+- `mode`: string, ["http","tcp","health"]
 
 #### nbproc
 
@@ -58,6 +70,7 @@
 - `option dontlognull`
 - `option http-server-close`
 - `option http-keep-alive`
+- `option httplog`
 
 #### SSL
 - `tune.ssl.default-dh-param`
