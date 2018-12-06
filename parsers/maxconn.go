@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/helpers"
 )
 
 type MaxConn struct {
@@ -23,12 +24,12 @@ func (m *MaxConn) GetParserName() string {
 
 func (m *MaxConn) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, "maxconn") {
-		elements := strings.SplitN(line, " ", 2)
-		if len(elements) != 2 {
+		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: "Parse error"}
 		}
 		var num int64
-		if num, err = strconv.ParseInt(elements[1], 10, 64); err != nil {
+		if num, err = strconv.ParseInt(parts[1], 10, 64); err != nil {
 			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: err.Error()}
 		} else {
 			m.valid = true

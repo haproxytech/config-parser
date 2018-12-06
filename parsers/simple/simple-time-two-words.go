@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/helpers"
 )
 
 type SimpleTimeTwoWords struct {
@@ -25,12 +26,12 @@ func (s *SimpleTimeTwoWords) GetParserName() string {
 
 func (s *SimpleTimeTwoWords) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.SearchName) {
-		elements := strings.SplitN(line, " ", 3)
-		if len(elements) < 3 {
+		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: "SimpleTimeTwoWords", Line: line, Message: "Parse error"}
 		}
 		s.Enabled = true
-		s.Value = elements[2]
+		s.Value = parts[2]
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: s.SearchName, Line: line}
