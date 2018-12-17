@@ -38,9 +38,11 @@ func (l *NameserverLines) parseNameserverLine(line string) (Nameserver, error) {
 
 func (l *NameserverLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, "nameserver ") {
-		if nameserver, err := l.parseNameserverLine(line); err == nil {
-			l.NameserverLines = append(l.NameserverLines, nameserver)
+		nameserver, err := l.parseNameserverLine(line)
+		if err != nil {
+			return "", &errors.ParseError{Parser: "NameserverLines", Line: line}
 		}
+		l.NameserverLines = append(l.NameserverLines, nameserver)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "NameserverLines", Line: line}
