@@ -227,7 +227,7 @@ func (p *Parser) LoadData(filename string) error {
 		if part == "" {
 			continue
 		}
-		line := strings.Trim(part, " ")
+		line := strings.TrimSpace(part)
 		switch state {
 		case "":
 			state, parserFrontend, parserBackend, parserListen, parserResolver =
