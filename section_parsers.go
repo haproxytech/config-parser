@@ -73,6 +73,7 @@ func getGlobalParser() ParserTypes {
 			&parsers.MasterWorker{},
 			//&simple.SimpleNumber{Name: "nbproc"},
 			&global.NbProc{},
+			&global.NbThread{},
 			&global.CpuMapLines{},
 			&simple.SimpleString{Name: "pidfile"},
 			&parsers.Mode{},
