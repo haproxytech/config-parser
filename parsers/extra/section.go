@@ -12,13 +12,11 @@ type SectionName struct {
 	Name        string
 	SectionName string
 	Line        string
-	valid       bool
 }
 
 func (s *SectionName) Init() {
 	s.comment = ""
 	s.SectionName = ""
-	s.valid = false
 }
 
 func (s *SectionName) GetParserName() string {
@@ -27,7 +25,6 @@ func (s *SectionName) GetParserName() string {
 
 func (s *SectionName) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
 	if strings.HasPrefix(line, s.Name) {
-		s.valid = true
 		s.Line = line
 		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(parts) > 1 {

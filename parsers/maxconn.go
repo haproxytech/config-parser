@@ -11,11 +11,10 @@ import (
 
 type MaxConn struct {
 	Value int64
-	valid bool
 }
 
 func (m *MaxConn) Init() {
-	m.valid = false
+	m.Value = 0
 }
 
 func (m *MaxConn) GetParserName() string {
@@ -30,9 +29,9 @@ func (m *MaxConn) Parse(line, wholeLine, previousLine string) (changeState strin
 		}
 		var num int64
 		if num, err = strconv.ParseInt(parts[1], 10, 64); err != nil {
+			m.Value = 0
 			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: err.Error()}
 		} else {
-			m.valid = true
 			m.Value = num
 		}
 		return "", nil
@@ -41,7 +40,7 @@ func (m *MaxConn) Parse(line, wholeLine, previousLine string) (changeState strin
 }
 
 func (m *MaxConn) Valid() bool {
-	if m.valid {
+	if m.Value > 0 {
 		return true
 	}
 	return false

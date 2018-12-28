@@ -14,15 +14,13 @@ type BindOption interface {
 
 //BindOptionWord ...
 type BindOptionWord struct {
-	Name  string
-	valid bool
+	Name string
 }
 
 //Parse ...
 func (b *BindOptionWord) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex < len(options) {
 		if options[currentIndex] == b.Name {
-			b.valid = true
 			return 1, nil
 		}
 		return 0, &ErrNotFound{Have: options[currentIndex], Want: b.Name}
@@ -32,29 +30,24 @@ func (b *BindOptionWord) Parse(options []string, currentIndex int) (int, error) 
 
 //Valid ...
 func (b *BindOptionWord) Valid() bool {
-	return b.valid
+	return b.Name != ""
 }
 
 //String ...
 func (b *BindOptionWord) String() string {
-	if b.valid {
-		return b.Name
-	}
-	return ""
+	return b.Name
 }
 
 //BindOptionDoubleWord ...
 type BindOptionDoubleWord struct {
 	Name  string
 	Value string
-	valid bool
 }
 
 //Parse ...
 func (b *BindOptionDoubleWord) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex+1 < len(options) {
 		if options[currentIndex] == b.Name && b.Value == options[currentIndex+1] {
-			b.valid = true
 			return 2, nil
 		}
 		return 0, &ErrNotFound{
@@ -67,22 +60,21 @@ func (b *BindOptionDoubleWord) Parse(options []string, currentIndex int) (int, e
 
 //Valid ...
 func (b *BindOptionDoubleWord) Valid() bool {
-	return b.valid
+	return b.Name != "" && b.Value != ""
 }
 
 //String ...
 func (b *BindOptionDoubleWord) String() string {
-	if b.valid {
-		return fmt.Sprintf("%s %s", b.Name, b.Value)
+	if b.Name == "" || b.Value == "" {
+		return ""
 	}
-	return ""
+	return fmt.Sprintf("%s %s", b.Name, b.Value)
 }
 
 //BindOptionValue ...
 type BindOptionValue struct {
 	Name  string
 	Value string
-	valid bool
 }
 
 //Parse ...
@@ -90,7 +82,6 @@ func (b *BindOptionValue) Parse(options []string, currentIndex int) (int, error)
 	if currentIndex+1 < len(options) {
 		if options[currentIndex] == b.Name {
 			b.Value = options[currentIndex+1]
-			b.valid = true
 			return 2, nil
 		}
 		return 0, &ErrNotFound{Have: options[currentIndex], Want: b.Name}
@@ -100,15 +91,15 @@ func (b *BindOptionValue) Parse(options []string, currentIndex int) (int, error)
 
 //Valid ...
 func (b *BindOptionValue) Valid() bool {
-	return b.valid
+	return b.Value != ""
 }
 
 //String ...
 func (b *BindOptionValue) String() string {
-	if b.valid {
-		return fmt.Sprintf("%s %s", b.Name, b.Value)
+	if b.Name == "" || b.Value == "" {
+		return ""
 	}
-	return ""
+	return fmt.Sprintf("%s %s", b.Name, b.Value)
 }
 
 func getOptions() []BindOption {
