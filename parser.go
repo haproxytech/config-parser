@@ -59,100 +59,57 @@ func (p *Parser) GetListenAttr(section string, attribute string) (ParserType, er
 	return p.get(p.Listen, section, attribute)
 }
 
+func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder) {
+	for _, parser := range parsers {
+		if !parser.Valid() {
+			continue
+		}
+		for _, line := range parser.String() {
+			result.WriteString(line)
+			result.WriteString("\n")
+		}
+	}
+}
+
 //String returns configuration in writable form
 func (p *Parser) String() string {
 	var result strings.Builder
 
-	for _, parser := range p.Comments.parsers {
-		if !parser.Valid() {
-			continue
-		}
-		for _, line := range parser.String() {
-			result.WriteString(line)
-			result.WriteString("\n")
-		}
-	}
+	p.writeParsers(p.Comments.parsers, &result)
 
 	result.WriteString("\ndefaults ")
 	result.WriteString("\n")
-	for _, parser := range p.Default.parsers {
-		if !parser.Valid() {
-			continue
-		}
-		for _, line := range parser.String() {
-			result.WriteString(line)
-			result.WriteString("\n")
-		}
-	}
+	p.writeParsers(p.Default.parsers, &result)
+
 	result.WriteString("\nglobal ")
 	result.WriteString("\n")
-	for _, parser := range p.Global.parsers {
-		if !parser.Valid() {
-			continue
-		}
-		for _, line := range parser.String() {
-			result.WriteString(line)
-			result.WriteString("\n")
-		}
-	}
+	p.writeParsers(p.Global.parsers, &result)
 
 	for sectionName, section := range p.Resolvers {
 		result.WriteString("\nresolvers ")
 		result.WriteString(sectionName)
 		result.WriteString("\n")
-		for _, parser := range section.parsers {
-			if !parser.Valid() {
-				continue
-			}
-			for _, line := range parser.String() {
-				result.WriteString(line)
-				result.WriteString("\n")
-			}
-		}
+		p.writeParsers(section.parsers, &result)
 	}
 
 	for sectionName, section := range p.Frontends {
 		result.WriteString("\nfrontend ")
 		result.WriteString(sectionName)
 		result.WriteString("\n")
-		for _, parser := range section.parsers {
-			if !parser.Valid() {
-				continue
-			}
-			for _, line := range parser.String() {
-				result.WriteString(line)
-				result.WriteString("\n")
-			}
-		}
+		p.writeParsers(section.parsers, &result)
 	}
 
 	for sectionName, section := range p.Backends {
 		result.WriteString("\nbackend ")
 		result.WriteString(sectionName)
 		result.WriteString("\n")
-		for _, parser := range section.parsers {
-			if !parser.Valid() {
-				continue
-			}
-			for _, line := range parser.String() {
-				result.WriteString(line)
-				result.WriteString("\n")
-			}
-		}
+		p.writeParsers(section.parsers, &result)
 	}
 	for sectionName, section := range p.Listen {
 		result.WriteString("\nlisten ")
 		result.WriteString(sectionName)
 		result.WriteString("\n")
-		for _, parser := range section.parsers {
-			if !parser.Valid() {
-				continue
-			}
-			for _, line := range parser.String() {
-				result.WriteString(line)
-				result.WriteString("\n")
-			}
-		}
+		p.writeParsers(section.parsers, &result)
 	}
 	return result.String()
 }
