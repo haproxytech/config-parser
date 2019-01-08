@@ -19,6 +19,7 @@ func getStartParser() ParserTypes {
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -56,6 +57,7 @@ func getDefaultParser() ParserTypes {
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -89,6 +91,7 @@ func getGlobalParser() ParserTypes {
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -107,6 +110,7 @@ func getFrontendParser() ParserTypes {
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -126,6 +130,7 @@ func getBackendParser() ParserTypes {
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -144,6 +149,7 @@ func getListenParser() ParserTypes {
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
 			&extra.UnProcessed{},
 		},
 	}
@@ -167,6 +173,26 @@ func getResolverParser() ParserTypes {
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
+			&extra.UnProcessed{},
+		},
+	}
+	for _, parser := range p.parsers {
+		parser.Init()
+	}
+	return p
+}
+
+func getUserlistParser() ParserTypes {
+	p := ParserTypes{
+		parsers: []ParserType{
+			&extra.SectionName{Name: "frontend"},
+			&extra.SectionName{Name: "backend"},
+			&extra.SectionName{Name: "global"},
+			&extra.SectionName{Name: "defaults"},
+			&extra.SectionName{Name: "listen"},
+			&extra.SectionName{Name: "resolvers"},
+			&extra.SectionName{Name: "userlist"},
 			&extra.UnProcessed{},
 		},
 	}
