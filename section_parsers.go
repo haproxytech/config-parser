@@ -7,6 +7,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/global"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/stats"
+	"github.com/haproxytech/config-parser/parsers/userlist"
 )
 
 func getStartParser() ParserTypes {
@@ -186,6 +187,8 @@ func getResolverParser() ParserTypes {
 func getUserlistParser() ParserTypes {
 	p := ParserTypes{
 		parsers: []ParserType{
+			&userlist.GroupLines{},
+			&userlist.UserLines{},
 			&extra.SectionName{Name: "frontend"},
 			&extra.SectionName{Name: "backend"},
 			&extra.SectionName{Name: "global"},
