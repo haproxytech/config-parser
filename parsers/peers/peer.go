@@ -1,0 +1,71 @@
+package peers
+
+import (
+	"fmt"
+	"strconv"
+
+	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/helpers"
+)
+
+type Peer struct {
+	Name string
+	IP   string
+	Port int64
+}
+
+type Peers struct {
+	Peers []Peer
+}
+
+func (l *Peers) Init() {
+	l.Peers = []Peer{}
+}
+
+func (l *Peers) GetParserName() string {
+	return "peer"
+}
+
+func (l *Peers) parsePeerLine(line string) (Peer, error) {
+	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+	if len(parts) >= 2 {
+		adr := helpers.StringSplitIgnoreEmpty(parts[1], ':')
+		if len(adr) >= 2 {
+			if port, err := strconv.ParseInt(parts[1], 10, 64); err == nil {
+				return Peer{
+					Name: parts[1],
+					IP:   adr[0],
+					Port: port,
+				}, nil
+			}
+		}
+	}
+	return Peer{}, &errors.ParseError{Parser: "PeerLines", Line: line}
+}
+
+func (l *Peers) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "nameserver" {
+		nameserver, err := l.parsePeerLine(line)
+		if err != nil {
+			return "", &errors.ParseError{Parser: "PeerLines", Line: line}
+		}
+		l.Peers = append(l.Peers, nameserver)
+		return "", nil
+	}
+	return "", &errors.ParseError{Parser: "PeerLines", Line: line}
+}
+
+func (l *Peers) Valid() bool {
+	if len(l.Peers) > 0 {
+		return true
+	}
+	return false
+}
+
+func (l *Peers) Result(AddComments bool) []string {
+	result := make([]string, len(l.Peers))
+	for index, peer := range l.Peers {
+		result[index] = fmt.Sprintf("  peer %s %s:%d", peer.Name, peer.IP, peer.Port)
+	}
+	return result
+}
