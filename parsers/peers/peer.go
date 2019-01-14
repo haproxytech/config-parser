@@ -26,12 +26,11 @@ func (l *Peers) GetParserName() string {
 	return "peer"
 }
 
-func (l *Peers) parsePeerLine(line string) (Peer, error) {
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (l *Peers) parsePeerLine(line string, parts []string) (Peer, error) {
 	if len(parts) >= 2 {
-		adr := helpers.StringSplitIgnoreEmpty(parts[1], ':')
+		adr := helpers.StringSplitIgnoreEmpty(parts[2], ':')
 		if len(adr) >= 2 {
-			if port, err := strconv.ParseInt(parts[1], 10, 64); err == nil {
+			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {
 				return Peer{
 					Name: parts[1],
 					IP:   adr[0],
@@ -44,8 +43,8 @@ func (l *Peers) parsePeerLine(line string) (Peer, error) {
 }
 
 func (l *Peers) Parse(line string, parts, previousParts []string) (changeState string, err error) {
-	if parts[0] == "nameserver" {
-		nameserver, err := l.parsePeerLine(line)
+	if parts[0] == "peer" {
+		nameserver, err := l.parsePeerLine(line, parts)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "PeerLines", Line: line}
 		}

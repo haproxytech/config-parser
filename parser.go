@@ -20,6 +20,7 @@ type Parser struct {
 	Resolvers map[string]*ParserTypes
 	UserLists map[string]*ParserTypes
 	Peers     map[string]*ParserTypes
+	Mailers   map[string]*ParserTypes
 }
 
 func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string) (ParserType, error) {
@@ -51,9 +52,14 @@ func (p *Parser) GetUserlistAttr(section string, attribute string) (ParserType, 
 	return p.get(p.UserLists, section, attribute)
 }
 
-//GetUserlistAttr get attribute from listen sections
+//GetUserlistAttr get attribute from peers sections
 func (p *Parser) GetPeersAttr(section string, attribute string) (ParserType, error) {
 	return p.get(p.Peers, section, attribute)
+}
+
+//GetMailersAttr get attribute from mailer sections
+func (p *Parser) GetMailersAttr(section string, attribute string) (ParserType, error) {
+	return p.get(p.Mailers, section, attribute)
 }
 
 //GetFrontendAttr get attribute from frontend sections
@@ -110,6 +116,13 @@ func (p *Parser) String() string {
 		p.writeParsers(section.parsers, &result)
 	}
 
+	for sectionName, section := range p.Mailers {
+		result.WriteString("\nmailers ")
+		result.WriteString(sectionName)
+		result.WriteString("\n")
+		p.writeParsers(section.parsers, &result)
+	}
+
 	for sectionName, section := range p.Resolvers {
 		result.WriteString("\nresolvers ")
 		result.WriteString(sectionName)
@@ -150,7 +163,6 @@ func (p *Parser) Save(filename string) error {
 
 //ProcessLine parses line plus determines if we need to change state
 func (p *Parser) ProcessLine(line string, parts, previousParts []string, config ConfiguredParsers) ConfiguredParsers {
-	//func (p *Parser) ProcessLine(state string, activeParser ParserTypes, line string, parts, previousParts []string, parserFrontend, parserBackend, parserListen, parserResolver, parserUserlist, parserPeers ParserTypes) (newState string, newParserFrontend, newParserBackend, newParserListen, newParserResolver, newParserUserlist, newPparserPeers ParserTypes) {
 	for _, parser := range config.Active.parsers {
 		if newState, err := parser.Parse(line, parts, previousParts); err == nil {
 			//should we have an option to remove it when found?
@@ -202,6 +214,12 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, config 
 					p.Peers[sectionName.SectionName] = config.Peers
 					config.Active = *config.Peers
 				}
+				if config.State == "mailers" {
+					sectionName := parser.(*extra.SectionName)
+					config.Mailers = getMailersParser()
+					p.Mailers[sectionName.SectionName] = config.Mailers
+					config.Active = *config.Mailers
+				}
 			}
 			break
 		}
@@ -224,6 +242,7 @@ func (p *Parser) LoadData(filename string) error {
 	p.Resolvers = map[string]*ParserTypes{}
 	p.UserLists = map[string]*ParserTypes{}
 	p.Peers = map[string]*ParserTypes{}
+	p.Mailers = map[string]*ParserTypes{}
 
 	parsers := ConfiguredParsers{
 		State:    "",

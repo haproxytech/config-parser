@@ -2,6 +2,7 @@ package simple
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
 )
@@ -9,13 +10,13 @@ import (
 type SimpleTimeTwoWords struct {
 	Enabled    bool
 	Value      string
-	Name       string
+	Keywords   []string
 	SearchName string
 }
 
 func (s *SimpleTimeTwoWords) Init() {
 	s.Enabled = false
-	s.SearchName = s.Name
+	s.SearchName = fmt.Sprintf(strings.Join(s.Keywords, " "))
 }
 
 func (s *SimpleTimeTwoWords) GetParserName() string {
@@ -23,7 +24,7 @@ func (s *SimpleTimeTwoWords) GetParserName() string {
 }
 
 func (s *SimpleTimeTwoWords) Parse(line string, parts, previousParts []string) (changeState string, err error) {
-	if parts[0] == s.SearchName {
+	if len(parts) >= 2 && parts[0] == s.Keywords[0] && parts[1] == s.Keywords[1] {
 		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: "SimpleTimeTwoWords", Line: line, Message: "Parse error"}
 		}

@@ -14,4 +14,5 @@ type ConfiguredParsers struct {
 	Resolver *ParserTypes
 	Userlist *ParserTypes
 	Peers    *ParserTypes
+	Mailers  *ParserTypes
 }

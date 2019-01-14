@@ -5,6 +5,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/defaults"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/global"
+	"github.com/haproxytech/config-parser/parsers/mailers"
 	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/stats"
@@ -22,6 +23,7 @@ func createParsers(parsers []ParserType) *ParserTypes {
 			&extra.SectionName{Name: "resolvers"},
 			&extra.SectionName{Name: "userlist"},
 			&extra.SectionName{Name: "peers"},
+			&extra.SectionName{Name: "mailers"},
 			&extra.UnProcessed{},
 		}...),
 	}
@@ -97,8 +99,8 @@ func getListenParser() *ParserTypes {
 func getResolverParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.NameserverLines{},
-		&simple.SimpleTimeTwoWords{Name: "hold obsolete"},
-		&simple.SimpleTimeTwoWords{Name: "hold valid"},
+		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "obsolete"}},
+		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "valid"}},
 		&simple.SimpleTimeout{Name: "retry"},
 		&simple.SimpleString{Name: "accepted_payload_size"},
 	})
@@ -114,5 +116,12 @@ func getUserlistParser() *ParserTypes {
 func getPeersParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&peers.Peers{},
+	})
+}
+
+func getMailersParser() *ParserTypes {
+	return createParsers([]ParserType{
+		&simple.SimpleTimeTwoWords{Keywords: []string{"timeout", "mail"}},
+		&mailers.Mailers{},
 	})
 }
