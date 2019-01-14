@@ -5,12 +5,13 @@ import (
 	"github.com/haproxytech/config-parser/parsers/defaults"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/global"
+	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/stats"
 	"github.com/haproxytech/config-parser/parsers/userlist"
 )
 
-func createParsers(parsers []ParserType) ParserTypes {
+func createParsers(parsers []ParserType) *ParserTypes {
 	p := ParserTypes{
 		parsers: append(parsers, []ParserType{
 			&extra.SectionName{Name: "defaults"},
@@ -27,16 +28,16 @@ func createParsers(parsers []ParserType) ParserTypes {
 	for _, parser := range p.parsers {
 		parser.Init()
 	}
-	return p
+	return &p
 }
 
-func getStartParser() ParserTypes {
+func getStartParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&extra.Comments{},
 	})
 }
 
-func getDefaultParser() ParserTypes {
+func getDefaultParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
 		&parsers.MaxConn{},
@@ -60,7 +61,7 @@ func getDefaultParser() ParserTypes {
 	})
 }
 
-func getGlobalParser() ParserTypes {
+func getGlobalParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Daemon{},
 		//&simple.SimpleFlag{Name: "master-worker"},
@@ -81,19 +82,19 @@ func getGlobalParser() ParserTypes {
 	})
 }
 
-func getFrontendParser() ParserTypes {
+func getFrontendParser() *ParserTypes {
 	return createParsers([]ParserType{})
 }
 
-func getBackendParser() ParserTypes {
+func getBackendParser() *ParserTypes {
 	return createParsers([]ParserType{})
 }
 
-func getListenParser() ParserTypes {
+func getListenParser() *ParserTypes {
 	return createParsers([]ParserType{})
 }
 
-func getResolverParser() ParserTypes {
+func getResolverParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.NameserverLines{},
 		&simple.SimpleTimeTwoWords{Name: "hold obsolete"},
@@ -103,13 +104,15 @@ func getResolverParser() ParserTypes {
 	})
 }
 
-func getUserlistParser() ParserTypes {
+func getUserlistParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&userlist.GroupLines{},
 		&userlist.UserLines{},
 	})
 }
 
-func getPeersParser() ParserTypes {
-	return createParsers([]ParserType{})
+func getPeersParser() *ParserTypes {
+	return createParsers([]ParserType{
+		&peers.Peers{},
+	})
 }
