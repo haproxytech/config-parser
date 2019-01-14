@@ -6,12 +6,6 @@ import (
 	"github.com/haproxytech/config-parser/parsers"
 )
 
-func TestModeEmpty(t *testing.T) {
-	err := ProcessLine("", &parsers.Mode{})
-	if err == nil {
-		t.Errorf("Does not throw error")
-	}
-}
 func TestModeNormal(t *testing.T) {
 	err := ProcessLine("mode http", &parsers.Mode{})
 	if err != nil {

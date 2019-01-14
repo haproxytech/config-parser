@@ -3,10 +3,8 @@ package simple
 import (
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type SimpleNumber struct {
@@ -25,9 +23,8 @@ func (s *SimpleNumber) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *SimpleNumber) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, s.SearchName) {
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (s *SimpleNumber) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == s.SearchName {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "SimpleNumber", Line: line, Message: "Parse error"}
 		}
@@ -50,7 +47,7 @@ func (s *SimpleNumber) Valid() bool {
 	return false
 }
 
-func (s *SimpleNumber) String() []string {
+func (s *SimpleNumber) Result(AddComments bool) []string {
 	if s.Enabled {
 		return []string{fmt.Sprintf("  %s %d", s.SearchName, s.Value)}
 	}

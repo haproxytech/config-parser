@@ -1,8 +1,6 @@
 package extra
 
 import (
-	"strings"
-
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -18,8 +16,8 @@ func (c *Comments) GetParserName() string {
 	return "#"
 }
 
-func (c *Comments) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(wholeLine, "#") {
+func (c *Comments) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if line[0] == '#' {
 		c.comments = append(c.comments, line)
 		return "", nil
 	}
@@ -33,6 +31,6 @@ func (c *Comments) Valid() bool {
 	return false
 }
 
-func (c *Comments) String() []string {
+func (c *Comments) Result(AddComments bool) []string {
 	return c.comments
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type SimpleOption struct {
@@ -20,8 +19,7 @@ func (o *SimpleOption) GetParserName() string {
 	return fmt.Sprintf("option %s", o.Name)
 }
 
-func (o *SimpleOption) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (o *SimpleOption) Parse(line string, parts, previousParts []string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == o.Name {
 		o.Enabled = true
 		return "", nil
@@ -36,7 +34,7 @@ func (o *SimpleOption) Valid() bool {
 	return false
 }
 
-func (o *SimpleOption) String() []string {
+func (o *SimpleOption) Result(AddComments bool) []string {
 	if o.Enabled {
 		return []string{fmt.Sprintf("  option %s", o.Name)}
 	}

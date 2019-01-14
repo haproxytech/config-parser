@@ -39,8 +39,8 @@ func (l *GroupLines) parseGroupLine(line string) (Group, error) {
 	return Group{}, &errors.ParseError{Parser: "GroupLines", Line: line}
 }
 
-func (l *GroupLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "group ") {
+func (l *GroupLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "group" {
 		group, err := l.parseGroupLine(line)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "GroupLines", Line: line}
@@ -58,7 +58,7 @@ func (l *GroupLines) Valid() bool {
 	return false
 }
 
-func (l *GroupLines) String() []string {
+func (l *GroupLines) Result(AddComments bool) []string {
 	result := make([]string, len(l.GroupLines))
 	for index, group := range l.GroupLines {
 		users := ""

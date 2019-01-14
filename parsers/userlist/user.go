@@ -54,8 +54,8 @@ func (l *UserLines) parseUserLine(line string) (User, error) {
 	return User{}, &errors.ParseError{Parser: "UserLines", Line: line}
 }
 
-func (l *UserLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "user ") {
+func (l *UserLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "user" {
 		user, err := l.parseUserLine(line)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "UserLines", Line: line}
@@ -73,7 +73,7 @@ func (l *UserLines) Valid() bool {
 	return false
 }
 
-func (l *UserLines) String() []string {
+func (l *UserLines) Result(AddComments bool) []string {
 	result := make([]string, len(l.UserLines))
 	for index, user := range l.UserLines {
 		pwd := ""

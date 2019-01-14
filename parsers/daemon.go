@@ -1,8 +1,6 @@
 package parsers
 
 import (
-	"strings"
-
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -18,8 +16,8 @@ func (d *Daemon) GetParserName() string {
 	return "daemon"
 }
 
-func (d *Daemon) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "daemon") {
+func (d *Daemon) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "daemon" {
 		d.Enabled = true
 		return "", nil
 	}
@@ -33,7 +31,7 @@ func (d *Daemon) Valid() bool {
 	return false
 }
 
-func (d *Daemon) String() []string {
+func (d *Daemon) Result(AddComments bool) []string {
 	if d.Enabled {
 		return []string{"  daemon"}
 	}

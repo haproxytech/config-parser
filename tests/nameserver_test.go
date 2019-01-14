@@ -6,12 +6,6 @@ import (
 	"github.com/haproxytech/config-parser/parsers"
 )
 
-func TestNameserverEmpty(t *testing.T) {
-	err := ProcessLine("", &parsers.NameserverLines{})
-	if err == nil {
-		t.Errorf("Does not throw error")
-	}
-}
 func TestNameserverNormal(t *testing.T) {
 	err := ProcessLine("nameserver ns1 127.0.0.1", &parsers.NameserverLines{})
 	if err != nil {

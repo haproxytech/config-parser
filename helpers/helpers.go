@@ -15,3 +15,12 @@ func StringSplitIgnoreEmpty(s string, sep rune) []string {
 	}
 	return strings.FieldsFunc(s, f)
 }
+
+//StringExtractComment checks if comment is added
+func StringExtractComment(s string) string {
+	p := StringSplitIgnoreEmpty(s, '#')
+	if len(p) > 1 {
+		return p[len(p)-1]
+	}
+	return ""
+}

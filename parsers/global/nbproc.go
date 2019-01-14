@@ -3,10 +3,8 @@ package global
 import (
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type NbProc struct {
@@ -22,9 +20,8 @@ func (n *NbProc) GetParserName() string {
 	return "nbproc"
 }
 
-func (n *NbProc) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "nbproc") {
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (n *NbProc) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "nbproc" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "NbProc", Line: line, Message: "Parse error"}
 		}
@@ -47,7 +44,7 @@ func (n *NbProc) Valid() bool {
 	return false
 }
 
-func (n *NbProc) String() []string {
+func (n *NbProc) Result(AddComments bool) []string {
 	if n.Enabled {
 		return []string{fmt.Sprintf("  nbproc %d", n.Value)}
 	}

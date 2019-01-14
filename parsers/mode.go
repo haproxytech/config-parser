@@ -2,10 +2,8 @@ package parsers
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Mode struct {
@@ -20,9 +18,8 @@ func (m *Mode) GetParserName() string {
 	return "mode"
 }
 
-func (m *Mode) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "mode ") {
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (m *Mode) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "mode" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Mode", Line: line, Message: "Parse error"}
 		}
@@ -39,6 +36,6 @@ func (m *Mode) Valid() bool {
 	return m.Value != ""
 }
 
-func (m *Mode) String() []string {
+func (m *Mode) Result(AddComments bool) []string {
 	return []string{fmt.Sprintf("  mode %s", m.Value)}
 }

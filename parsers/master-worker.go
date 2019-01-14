@@ -1,8 +1,6 @@
 package parsers
 
 import (
-	"strings"
-
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -18,8 +16,8 @@ func (m *MasterWorker) GetParserName() string {
 	return "master-worker"
 }
 
-func (m *MasterWorker) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "master-worker") {
+func (m *MasterWorker) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "master-worker" {
 		m.Enabled = true
 		return "", nil
 	}
@@ -33,7 +31,7 @@ func (m *MasterWorker) Valid() bool {
 	return false
 }
 
-func (m *MasterWorker) String() []string {
+func (m *MasterWorker) Result(AddComments bool) []string {
 	if m.Enabled {
 		return []string{"  master-worker"}
 	}

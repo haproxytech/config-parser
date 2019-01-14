@@ -2,7 +2,8 @@ package simple
 
 import (
 	"fmt"
-	"strings"
+
+	"github.com/haproxytech/config-parser/helpers"
 
 	"github.com/haproxytech/config-parser/errors"
 )
@@ -11,6 +12,7 @@ type SimpleFlag struct {
 	Enabled    bool
 	Name       string
 	SearchName string
+	Comment    string
 }
 
 func (s *SimpleFlag) Init() {
@@ -22,8 +24,9 @@ func (s *SimpleFlag) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *SimpleFlag) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, s.SearchName) {
+func (s *SimpleFlag) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == s.SearchName {
+		s.Comment = helpers.StringExtractComment(line)
 		s.Enabled = true
 		return "", nil
 	}
@@ -37,9 +40,16 @@ func (s *SimpleFlag) Valid() bool {
 	return false
 }
 
-func (s *SimpleFlag) String() []string {
+func (s *SimpleFlag) Result(AddComments bool) []string {
 	if s.Enabled {
+		if s.Comment != "" {
+			return []string{fmt.Sprintf("  %s # %s", s.SearchName, s.Comment)}
+		}
 		return []string{fmt.Sprintf("  %s", s.SearchName)}
 	}
 	return []string{}
+}
+
+func (s *SimpleFlag) Annotation() string {
+	return s.Comment
 }

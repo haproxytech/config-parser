@@ -3,10 +3,8 @@ package global
 import (
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type NbThread struct {
@@ -22,9 +20,8 @@ func (n *NbThread) GetParserName() string {
 	return "nbthread"
 }
 
-func (n *NbThread) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "nbthread") {
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (n *NbThread) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "nbthread" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "NbThread", Line: line, Message: "Parse error"}
 		}
@@ -47,7 +44,7 @@ func (n *NbThread) Valid() bool {
 	return false
 }
 
-func (n *NbThread) String() []string {
+func (n *NbThread) Result(AddComments bool) []string {
 	if n.Enabled {
 		return []string{fmt.Sprintf("  nbthread %d", n.Value)}
 	}

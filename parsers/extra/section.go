@@ -1,21 +1,17 @@
 package extra
 
 import (
-	"strings"
-
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type SectionName struct {
-	comment     string
+	Comment     string
 	Name        string
 	SectionName string
-	Line        string
 }
 
 func (s *SectionName) Init() {
-	s.comment = ""
+	s.Comment = ""
 	s.SectionName = ""
 }
 
@@ -23,15 +19,14 @@ func (s *SectionName) GetParserName() string {
 	return s.Name
 }
 
-func (s *SectionName) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, s.Name) {
-		s.Line = line
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+//Parse see if we have section name
+func (s *SectionName) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == s.Name {
 		if len(parts) > 1 {
 			s.SectionName = parts[1]
 		}
-		if len(previousLine) > 0 && previousLine[0] == '#' {
-			s.comment = previousLine
+		if len(previousParts) > 1 && previousParts[0] == "#" {
+			s.Comment = previousParts[1]
 		}
 		return s.Name, nil
 	}
@@ -42,6 +37,6 @@ func (s *SectionName) Valid() bool {
 	return false
 }
 
-func (s *SectionName) String() []string {
-	return []string{s.comment, s.Line}
+func (s *SectionName) Result(AddComments bool) []string {
+	return []string{s.Comment, s.SectionName}
 }

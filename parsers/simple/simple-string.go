@@ -2,10 +2,8 @@ package simple
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type SimpleString struct {
@@ -24,9 +22,8 @@ func (s *SimpleString) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *SimpleString) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, s.SearchName) {
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (s *SimpleString) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == s.SearchName {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "SimpleString", Line: line, Message: "Parse error"}
 		}
@@ -44,7 +41,7 @@ func (s *SimpleString) Valid() bool {
 	return false
 }
 
-func (s *SimpleString) String() []string {
+func (s *SimpleString) Result(AddComments bool) []string {
 	if s.Enabled {
 		return []string{fmt.Sprintf("  %s %s", s.SearchName, s.Value)}
 	}

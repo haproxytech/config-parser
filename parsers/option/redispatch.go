@@ -1,8 +1,6 @@
 package options
 
 import (
-	"strings"
-
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -14,8 +12,8 @@ func (o *OptionRedispatch) Init() {
 	o.Enabled = false
 }
 
-func (o *OptionRedispatch) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "option redispatch") {
+func (o *OptionRedispatch) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if len(parts) > 1 && parts[0] == "option" && parts[1] == "redispatch" {
 		o.Enabled = true
 		return "", nil
 	}
@@ -29,7 +27,7 @@ func (o *OptionRedispatch) Valid() bool {
 	return false
 }
 
-func (o *OptionRedispatch) String() []string {
+func (o *OptionRedispatch) Result(AddComments bool) []string {
 	if o.Enabled {
 		return []string{"  option redispatch"}
 	}

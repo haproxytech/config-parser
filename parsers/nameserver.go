@@ -2,7 +2,6 @@ package parsers
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/helpers"
@@ -36,8 +35,8 @@ func (l *NameserverLines) parseNameserverLine(line string) (Nameserver, error) {
 	return Nameserver{}, &errors.ParseError{Parser: "NameserverLines", Line: line}
 }
 
-func (l *NameserverLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "nameserver ") {
+func (l *NameserverLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "nameserver" {
 		nameserver, err := l.parseNameserverLine(line)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "NameserverLines", Line: line}
@@ -55,7 +54,7 @@ func (l *NameserverLines) Valid() bool {
 	return false
 }
 
-func (l *NameserverLines) String() []string {
+func (l *NameserverLines) Result(AddComments bool) []string {
 	result := make([]string, len(l.NameserverLines))
 	for index, nameserver := range l.NameserverLines {
 		result[index] = fmt.Sprintf("  nameserver %s %s", nameserver.Name, nameserver.Address)

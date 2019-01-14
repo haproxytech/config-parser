@@ -2,7 +2,6 @@ package defaults
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/helpers"
@@ -46,8 +45,8 @@ func (l *ErrorFileLines) parseErrorFileLine(line string) (ErrorFile, error) {
 	return errorfile, nil
 }
 
-func (l *ErrorFileLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "errorfile ") {
+func (l *ErrorFileLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "errorfile" {
 		if data, err := l.parseErrorFileLine(line); err == nil {
 			l.ErrorFileLines = append(l.ErrorFileLines, data)
 		}
@@ -63,7 +62,7 @@ func (l *ErrorFileLines) Valid() bool {
 	return false
 }
 
-func (l *ErrorFileLines) String() []string {
+func (l *ErrorFileLines) Result(AddComments bool) []string {
 	result := make([]string, len(l.ErrorFileLines))
 	for index, data := range l.ErrorFileLines {
 		result[index] = fmt.Sprintf("  errorfile %s %s", data.Code, data.File)

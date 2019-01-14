@@ -3,7 +3,6 @@ package parsers
 import (
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/helpers"
@@ -85,8 +84,8 @@ func (l *LogLines) parseLogLine(line string) (Log, error) {
 	return log, nil
 }
 
-func (l *LogLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "log ") {
+func (l *LogLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "log" {
 		if log, err := l.parseLogLine(line); err == nil {
 			l.LogLines = append(l.LogLines, log)
 		}
@@ -102,7 +101,7 @@ func (l *LogLines) Valid() bool {
 	return false
 }
 
-func (l *LogLines) String() []string {
+func (l *LogLines) Result(AddComments bool) []string {
 	result := make([]string, len(l.LogLines))
 	for index, log := range l.LogLines {
 		if log.Global {

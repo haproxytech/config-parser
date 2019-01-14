@@ -2,7 +2,6 @@ package global
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/helpers"
@@ -38,8 +37,8 @@ func (c *CpuMapLines) parseCpuMapLine(line string) (*CpuMap, error) {
 	return cpuMap, nil
 }
 
-func (c *CpuMapLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "cpu-map") {
+func (c *CpuMapLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == "cpu-map" {
 		if nameserver, err := c.parseCpuMapLine(line); err == nil {
 			c.CpuMapLines = append(c.CpuMapLines, nameserver)
 		}
@@ -55,7 +54,7 @@ func (c *CpuMapLines) Valid() bool {
 	return false
 }
 
-func (c *CpuMapLines) String() []string {
+func (c *CpuMapLines) Result(AddComments bool) []string {
 	result := make([]string, len(c.CpuMapLines))
 	for index, cpuMap := range c.CpuMapLines {
 		result[index] = fmt.Sprintf("  cpu-map %s %s", cpuMap.Name, cpuMap.Value)

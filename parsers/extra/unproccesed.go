@@ -12,8 +12,8 @@ func (u *UnProcessed) GetParserName() string {
 	return ""
 }
 
-func (u *UnProcessed) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	u.unProcessed = append(u.unProcessed, wholeLine)
+func (u *UnProcessed) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	u.unProcessed = append(u.unProcessed, line)
 	return "", nil
 }
 
@@ -24,6 +24,6 @@ func (u *UnProcessed) Valid() bool {
 	return false
 }
 
-func (u *UnProcessed) String() []string {
+func (u *UnProcessed) Result(AddComments bool) []string {
 	return u.unProcessed
 }

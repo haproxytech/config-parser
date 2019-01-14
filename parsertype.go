@@ -4,10 +4,10 @@ import "fmt"
 
 type ParserType interface {
 	Init()
-	Parse(line, wholeLine, previousLine string) (changeState string, err error)
+	Parse(line string, parts, previousParts []string) (changeState string, err error)
 	Valid() bool
 	GetParserName() string
-	String() []string
+	Result(AddComments bool) []string
 }
 
 type ParserTypes struct {

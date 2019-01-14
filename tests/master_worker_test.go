@@ -6,12 +6,6 @@ import (
 	"github.com/haproxytech/config-parser/parsers"
 )
 
-func TestMasterWorkerEmpty(t *testing.T) {
-	err := ProcessLine("", &parsers.MasterWorker{})
-	if err == nil {
-		t.Errorf("Does not thow error")
-	}
-}
 func TestMasterWorkerNormal(t *testing.T) {
 	err := ProcessLine("master-worker", &parsers.MasterWorker{})
 	if err != nil {

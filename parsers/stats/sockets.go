@@ -2,7 +2,6 @@ package stats
 
 import (
 	"fmt"
-	"strings"
 
 	bindoptions "github.com/haproxytech/config-parser/bind-options"
 	"github.com/haproxytech/config-parser/errors"
@@ -40,8 +39,8 @@ func (l *SocketLines) parseSocketLine(line string) (*Socket, error) {
 	return socket, nil
 }
 
-func (l *SocketLines) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, "stats socket") {
+func (l *SocketLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "socket" {
 		if nameserver, err := l.parseSocketLine(line); err == nil {
 			l.SocketLines = append(l.SocketLines, nameserver)
 		}
@@ -57,7 +56,7 @@ func (l *SocketLines) Valid() bool {
 	return false
 }
 
-func (l *SocketLines) String() []string {
+func (l *SocketLines) Result(AddComments bool) []string {
 	result := make([]string, len(l.SocketLines))
 	for index, socket := range l.SocketLines {
 		result[index] = fmt.Sprintf(fmt.Sprintf("  stats socket %s %s", socket.Path, bindoptions.String(socket.Params)))

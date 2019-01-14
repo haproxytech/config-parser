@@ -24,8 +24,8 @@ func (s *SimpleStringMultiple) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *SimpleStringMultiple) Parse(line, wholeLine, previousLine string) (changeState string, err error) {
-	if strings.HasPrefix(line, s.SearchName) {
+func (s *SimpleStringMultiple) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+	if parts[0] == s.SearchName {
 		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "SimpleStringMultiple", Line: line, Message: "Parse error"}
@@ -44,7 +44,7 @@ func (s *SimpleStringMultiple) Valid() bool {
 	return false
 }
 
-func (s *SimpleStringMultiple) String() []string {
+func (s *SimpleStringMultiple) Result(AddComments bool) []string {
 	if s.Enabled {
 		return []string{fmt.Sprintf("  %s %s", s.SearchName, strings.Join(s.Value, " "))}
 	}

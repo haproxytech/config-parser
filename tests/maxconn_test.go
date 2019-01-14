@@ -6,12 +6,6 @@ import (
 	"github.com/haproxytech/config-parser/parsers"
 )
 
-func TestMaxconnEmpty(t *testing.T) {
-	err := ProcessLine("", &parsers.MaxConn{})
-	if err == nil {
-		t.Errorf("Does not throw error")
-	}
-}
 func TestMaxconnNormal(t *testing.T) {
 	err := ProcessLine("maxconn 3000", &parsers.MaxConn{})
 	if err != nil {
