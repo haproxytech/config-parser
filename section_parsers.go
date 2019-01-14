@@ -10,10 +10,9 @@ import (
 	"github.com/haproxytech/config-parser/parsers/userlist"
 )
 
-func getStartParser() ParserTypes {
+func createParsers(parsers []ParserType) ParserTypes {
 	p := ParserTypes{
-		parsers: []ParserType{
-			&extra.Comments{},
+		parsers: append(parsers, []ParserType{
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "global"},
 			&extra.SectionName{Name: "frontend"},
@@ -21,186 +20,96 @@ func getStartParser() ParserTypes {
 			&extra.SectionName{Name: "listen"},
 			&extra.SectionName{Name: "resolvers"},
 			&extra.SectionName{Name: "userlist"},
+			&extra.SectionName{Name: "peers"},
 			&extra.UnProcessed{},
-		},
+		}...),
 	}
 	for _, parser := range p.parsers {
 		parser.Init()
 	}
 	return p
+}
+
+func getStartParser() ParserTypes {
+	return createParsers([]ParserType{
+		&extra.Comments{},
+	})
 }
 
 func getDefaultParser() ParserTypes {
-	p := ParserTypes{
-		parsers: []ParserType{
-			&parsers.Mode{},
-			&parsers.MaxConn{},
-			&parsers.LogLines{},
+	return createParsers([]ParserType{
+		&parsers.Mode{},
+		&parsers.MaxConn{},
+		&parsers.LogLines{},
 
-			&simple.SimpleOption{Name: "redispatch"},
-			&simple.SimpleOption{Name: "dontlognull"},
-			&simple.SimpleOption{Name: "http-server-close"},
-			&simple.SimpleOption{Name: "http-keep-alive"},
-			&simple.SimpleOption{Name: "httplog"},
+		&simple.SimpleOption{Name: "redispatch"},
+		&simple.SimpleOption{Name: "dontlognull"},
+		&simple.SimpleOption{Name: "http-server-close"},
+		&simple.SimpleOption{Name: "http-keep-alive"},
+		&simple.SimpleOption{Name: "httplog"},
 
-			&simple.SimpleTimeout{Name: "http-request"},
-			&simple.SimpleTimeout{Name: "connect"},
-			&simple.SimpleTimeout{Name: "client"},
-			&simple.SimpleTimeout{Name: "queue"},
-			&simple.SimpleTimeout{Name: "server"},
-			&simple.SimpleTimeout{Name: "tunnel"},
-			&simple.SimpleTimeout{Name: "http-keep-alive"},
+		&simple.SimpleTimeout{Name: "http-request"},
+		&simple.SimpleTimeout{Name: "connect"},
+		&simple.SimpleTimeout{Name: "client"},
+		&simple.SimpleTimeout{Name: "queue"},
+		&simple.SimpleTimeout{Name: "server"},
+		&simple.SimpleTimeout{Name: "tunnel"},
+		&simple.SimpleTimeout{Name: "http-keep-alive"},
 
-			&defaults.ErrorFileLines{},
-
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range p.parsers {
-		parser.Init()
-	}
-	return p
+		&defaults.ErrorFileLines{},
+	})
 }
 
 func getGlobalParser() ParserTypes {
-	p := ParserTypes{
-		parsers: []ParserType{
-			&parsers.Daemon{},
-			//&simple.SimpleFlag{Name: "master-worker"},
-			&parsers.MasterWorker{},
-			//&simple.SimpleNumber{Name: "nbproc"},
-			&global.NbProc{},
-			&global.NbThread{},
-			&global.CpuMapLines{},
-			&simple.SimpleString{Name: "pidfile"},
-			&parsers.Mode{},
-			&parsers.MaxConn{},
-			&stats.SocketLines{},
-			&stats.Timeout{},
-			&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
-			&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
-			&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
-			&parsers.LogLines{},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range p.parsers {
-		parser.Init()
-	}
-	return p
+	return createParsers([]ParserType{
+		&parsers.Daemon{},
+		//&simple.SimpleFlag{Name: "master-worker"},
+		&parsers.MasterWorker{},
+		//&simple.SimpleNumber{Name: "nbproc"},
+		&global.NbProc{},
+		&global.NbThread{},
+		&global.CpuMapLines{},
+		&simple.SimpleString{Name: "pidfile"},
+		&parsers.Mode{},
+		&parsers.MaxConn{},
+		&stats.SocketLines{},
+		&stats.Timeout{},
+		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
+		&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
+		&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
+		&parsers.LogLines{},
+	})
 }
 
 func getFrontendParser() ParserTypes {
-	p := ParserTypes{
-		parsers: []ParserType{
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range p.parsers {
-		parser.Init()
-	}
-	return p
+	return createParsers([]ParserType{})
 }
 
 func getBackendParser() ParserTypes {
-	p := ParserTypes{
-		parsers: []ParserType{
-			&simple.SimpleOption{Name: "tcp-smart-connect"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range p.parsers {
-		parser.Init()
-	}
-	return p
+	return createParsers([]ParserType{})
 }
 
 func getListenParser() ParserTypes {
-	p := ParserTypes{
-		parsers: []ParserType{
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range p.parsers {
-		parser.Init()
-	}
-	return p
+	return createParsers([]ParserType{})
 }
 
 func getResolverParser() ParserTypes {
-	p := ParserTypes{
-		parsers: []ParserType{
-			&parsers.NameserverLines{},
-			&simple.SimpleTimeTwoWords{Name: "hold obsolete"},
-			&simple.SimpleTimeTwoWords{Name: "hold valid"},
-			&simple.SimpleTimeout{Name: "retry"},
-			&simple.SimpleString{Name: "accepted_payload_size"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range p.parsers {
-		parser.Init()
-	}
-	return p
+	return createParsers([]ParserType{
+		&parsers.NameserverLines{},
+		&simple.SimpleTimeTwoWords{Name: "hold obsolete"},
+		&simple.SimpleTimeTwoWords{Name: "hold valid"},
+		&simple.SimpleTimeout{Name: "retry"},
+		&simple.SimpleString{Name: "accepted_payload_size"},
+	})
 }
 
 func getUserlistParser() ParserTypes {
-	p := ParserTypes{
-		parsers: []ParserType{
-			&userlist.GroupLines{},
-			&userlist.UserLines{},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.UnProcessed{},
-		},
-	}
-	for _, parser := range p.parsers {
-		parser.Init()
-	}
-	return p
+	return createParsers([]ParserType{
+		&userlist.GroupLines{},
+		&userlist.UserLines{},
+	})
+}
+
+func getPeersParser() ParserTypes {
+	return createParsers([]ParserType{})
 }
