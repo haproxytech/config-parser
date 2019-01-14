@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type SimpleStringMultiple struct {
@@ -26,7 +25,6 @@ func (s *SimpleStringMultiple) GetParserName() string {
 
 func (s *SimpleStringMultiple) Parse(line string, parts, previousParts []string) (changeState string, err error) {
 	if parts[0] == s.SearchName {
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "SimpleStringMultiple", Line: line, Message: "Parse error"}
 		}

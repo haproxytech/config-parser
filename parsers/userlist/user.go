@@ -27,8 +27,7 @@ func (l *UserLines) GetParserName() string {
 	return "user"
 }
 
-func (l *UserLines) parseUserLine(line string) (User, error) {
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (l *UserLines) parseUserLine(line string, parts []string) (User, error) {
 	if len(parts) >= 2 {
 		user := User{
 			Name: parts[1],
@@ -56,7 +55,7 @@ func (l *UserLines) parseUserLine(line string) (User, error) {
 
 func (l *UserLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
 	if parts[0] == "user" {
-		user, err := l.parseUserLine(line)
+		user, err := l.parseUserLine(line, parts)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "UserLines", Line: line}
 		}

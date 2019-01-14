@@ -38,8 +38,7 @@ func (l *LogLines) GetParserName() string {
 	return "log"
 }
 
-func (l *LogLines) parseLogLine(line string) (Log, error) {
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (l *LogLines) parseLogLine(line string, parts []string) (Log, error) {
 	if len(parts) > 1 && parts[1] == "global" {
 		return Log{Global: true}, nil
 	}
@@ -86,7 +85,7 @@ func (l *LogLines) parseLogLine(line string) (Log, error) {
 
 func (l *LogLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
 	if parts[0] == "log" {
-		if log, err := l.parseLogLine(line); err == nil {
+		if log, err := l.parseLogLine(line, parts); err == nil {
 			l.LogLines = append(l.LogLines, log)
 		}
 		return "", nil

@@ -25,8 +25,7 @@ func (l *GroupLines) GetParserName() string {
 	return "group"
 }
 
-func (l *GroupLines) parseGroupLine(line string) (Group, error) {
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (l *GroupLines) parseGroupLine(line string, parts []string) (Group, error) {
 	if len(parts) >= 2 {
 		group := Group{
 			Name: parts[1],
@@ -41,7 +40,7 @@ func (l *GroupLines) parseGroupLine(line string) (Group, error) {
 
 func (l *GroupLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
 	if parts[0] == "group" {
-		group, err := l.parseGroupLine(line)
+		group, err := l.parseGroupLine(line, parts)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "GroupLines", Line: line}
 		}

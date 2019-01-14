@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Nameserver struct {
@@ -24,8 +23,7 @@ func (l *NameserverLines) GetParserName() string {
 	return "nameserver"
 }
 
-func (l *NameserverLines) parseNameserverLine(line string) (Nameserver, error) {
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+func (l *NameserverLines) parseNameserverLine(line string, parts []string) (Nameserver, error) {
 	if len(parts) >= 3 {
 		return Nameserver{
 			Name:    parts[1],
@@ -37,7 +35,7 @@ func (l *NameserverLines) parseNameserverLine(line string) (Nameserver, error) {
 
 func (l *NameserverLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
 	if parts[0] == "nameserver" {
-		nameserver, err := l.parseNameserverLine(line)
+		nameserver, err := l.parseNameserverLine(line, parts)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "NameserverLines", Line: line}
 		}
