@@ -42,6 +42,7 @@ func getStartParser() *ParserTypes {
 func getDefaultParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
+		&parsers.Balance{},
 		&parsers.MaxConn{},
 		&parsers.LogLines{},
 
@@ -85,11 +86,18 @@ func getGlobalParser() *ParserTypes {
 }
 
 func getFrontendParser() *ParserTypes {
-	return createParsers([]ParserType{})
+	return createParsers([]ParserType{
+		&parsers.Mode{},
+		&parsers.MaxConn{},
+		&parsers.LogLines{},
+	})
 }
 
 func getBackendParser() *ParserTypes {
-	return createParsers([]ParserType{})
+	return createParsers([]ParserType{
+		&parsers.Mode{},
+		&parsers.Balance{},
+	})
 }
 
 func getListenParser() *ParserTypes {
