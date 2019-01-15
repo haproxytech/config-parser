@@ -76,6 +76,7 @@ func (p *Parser) GetBackendAttr(backendName string, attribute string) (ParserTyp
 func (p *Parser) GetListenAttr(section string, attribute string) (ParserType, error) {
 	return p.get(p.Listen, section, attribute)
 }
+
 func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder) {
 	for _, parser := range parsers {
 		if !parser.Valid() {

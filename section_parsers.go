@@ -5,6 +5,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/defaults"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/global"
+	"github.com/haproxytech/config-parser/parsers/httprequest"
 	"github.com/haproxytech/config-parser/parsers/mailers"
 	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
@@ -61,6 +62,7 @@ func getDefaultParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
 
 		&defaults.ErrorFileLines{},
+		&parsers.DefaultBackend{},
 	})
 }
 
@@ -90,6 +92,13 @@ func getFrontendParser() *ParserTypes {
 		&parsers.Mode{},
 		&parsers.MaxConn{},
 		&parsers.LogLines{},
+		&httprequest.HTTPRequestAddAcls{},
+		&httprequest.HTTPRequestDelAcls{},
+		&httprequest.HTTPRequestAddHeaders{},
+		&httprequest.HTTPRequestAllows{},
+		&httprequest.HTTPRequests{},
+
+		&parsers.DefaultBackend{},
 	})
 }
 
@@ -97,6 +106,12 @@ func getBackendParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
 		&parsers.Balance{},
+
+		&httprequest.HTTPRequestAddAcls{},
+		&httprequest.HTTPRequestDelAcls{},
+		&httprequest.HTTPRequestAddHeaders{},
+		&httprequest.HTTPRequestAllows{},
+		&httprequest.HTTPRequests{},
 	})
 }
 
