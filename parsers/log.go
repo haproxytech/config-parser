@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Log struct {
@@ -27,11 +27,11 @@ func (l *LogLines) Init() {
 	l.LogLines = []Log{}
 	l.AllowedFacitlitys = map[string]bool{}
 	l.AllowedLevels = map[string]bool{}
-	helpers.AddToBoolMap(l.AllowedFacitlitys,
+	common.AddToBoolMap(l.AllowedFacitlitys,
 		"kern", "user", "mail", "daemon", "auth", "syslog", "lpr", "news",
 		"uucp", "cron", "auth2", "ftp", "ntp", "audit", "alert", "cron2",
 		"local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7")
-	helpers.AddToBoolMap(l.AllowedLevels, "emerg", "alert", "crit", "err", "warning", "notice", "info", "debug")
+	common.AddToBoolMap(l.AllowedLevels, "emerg", "alert", "crit", "err", "warning", "notice", "info", "debug")
 }
 
 func (l *LogLines) GetParserName() string {

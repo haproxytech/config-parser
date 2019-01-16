@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -29,7 +30,7 @@ func (h *HTTPRequestAddHeaders) GetParserName() string {
 
 func (h *HTTPRequestAddHeaders) parseHTTPRequestAddHeaderLine(line string, parts []string) (HTTPRequestAddHeader, error) {
 	if len(parts) >= 4 {
-		command, condition := splitRequest(parts[3:])
+		command, condition := common.SplitRequest(parts[3:])
 		data := HTTPRequestAddHeader{
 			Action: parts[1],
 			Header: parts[2],

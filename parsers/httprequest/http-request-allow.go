@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -29,7 +30,7 @@ func (h *HTTPRequestAllows) GetParserName() string {
 
 func (h *HTTPRequestAllows) parseHTTPRequestAllowLine(line string, parts []string) (HTTPRequestAllow, error) {
 	if len(parts) >= 4 {
-		_, condition := splitRequest(parts[2:]) // 2 not 3 !
+		_, condition := common.SplitRequest(parts[2:]) // 2 not 3 !
 		data := HTTPRequestAllow{
 			Action: parts[1],
 			//Header: parts[2], allow does not have this

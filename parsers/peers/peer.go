@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Peer struct {
@@ -28,7 +28,7 @@ func (l *Peers) GetParserName() string {
 
 func (l *Peers) parsePeerLine(line string, parts []string) (Peer, error) {
 	if len(parts) >= 2 {
-		adr := helpers.StringSplitIgnoreEmpty(parts[2], ':')
+		adr := common.StringSplitIgnoreEmpty(parts[2], ':')
 		if len(adr) >= 2 {
 			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {
 				return Peer{

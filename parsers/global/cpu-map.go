@@ -3,8 +3,8 @@ package global
 import (
 	"fmt"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type CpuMap struct {
@@ -26,7 +26,7 @@ func (c *CpuMapLines) GetParserName() string {
 
 func (c *CpuMapLines) parseCpuMapLine(line string) (*CpuMap, error) {
 
-	elements := helpers.StringSplitIgnoreEmpty(line, ' ')
+	elements := common.StringSplitIgnoreEmpty(line, ' ')
 	if len(elements) < 3 {
 		return nil, &errors.ParseError{Parser: "CpuMapSingle", Line: line, Message: "Parse error"}
 	}

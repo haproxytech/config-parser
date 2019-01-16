@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Group struct {
@@ -31,7 +31,7 @@ func (l *GroupLines) parseGroupLine(line string, parts []string) (Group, error) 
 			Name: parts[1],
 		}
 		if len(parts) > 3 && parts[2] == "users" {
-			group.Users = helpers.StringSplitIgnoreEmpty(parts[3], ',')
+			group.Users = common.StringSplitIgnoreEmpty(parts[3], ',')
 		}
 		return group, nil
 	}

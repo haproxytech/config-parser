@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type User struct {
@@ -46,7 +46,7 @@ func (l *UserLines) parseUserLine(line string, parts []string) (User, error) {
 			}
 		}
 		if len(parts) > index {
-			user.Groups = helpers.StringSplitIgnoreEmpty(parts[index], ',')
+			user.Groups = common.StringSplitIgnoreEmpty(parts[index], ',')
 		}
 		return user, nil
 	}

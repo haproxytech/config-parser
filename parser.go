@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/haproxytech/config-parser/helpers"
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/parsers/extra"
 )
 
@@ -253,13 +253,13 @@ func (p *Parser) LoadData(filename string) error {
 		Global:   p.Global,
 	}
 
-	lines := helpers.StringSplitIgnoreEmpty(string(dat), '\n')
+	lines := common.StringSplitIgnoreEmpty(string(dat), '\n')
 	previousLine := []string{}
 	for _, line := range lines {
 		if line == "" {
 			continue
 		}
-		parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+		parts := common.StringSplitIgnoreEmpty(line, ' ')
 		if len(parts) == 0 {
 			continue
 		}

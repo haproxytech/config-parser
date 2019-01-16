@@ -3,8 +3,8 @@ package defaults
 import (
 	"fmt"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type ErrorFile struct {
@@ -20,7 +20,7 @@ type ErrorFileLines struct {
 func (l *ErrorFileLines) Init() {
 	l.ErrorFileLines = []ErrorFile{}
 	l.AllowedCode = map[string]bool{}
-	helpers.AddToBoolMap(l.AllowedCode,
+	common.AddToBoolMap(l.AllowedCode,
 		"200", "400", "403", "405", "408", "425", "429",
 		"500", "502", "503", "504")
 }
@@ -30,7 +30,7 @@ func (l *ErrorFileLines) GetParserName() string {
 }
 
 func (l *ErrorFileLines) parseErrorFileLine(line string) (ErrorFile, error) {
-	parts := helpers.StringSplitIgnoreEmpty(line, ' ')
+	parts := common.StringSplitIgnoreEmpty(line, ' ')
 	if len(parts) < 3 {
 		return ErrorFile{}, &errors.ParseError{Parser: "ErrorFileLines", Line: line}
 	}

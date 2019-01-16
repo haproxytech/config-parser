@@ -4,6 +4,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers"
 	"github.com/haproxytech/config-parser/parsers/defaults"
 	"github.com/haproxytech/config-parser/parsers/extra"
+	"github.com/haproxytech/config-parser/parsers/frontend"
 	"github.com/haproxytech/config-parser/parsers/global"
 	"github.com/haproxytech/config-parser/parsers/httprequest"
 	"github.com/haproxytech/config-parser/parsers/mailers"
@@ -96,8 +97,11 @@ func getFrontendParser() *ParserTypes {
 		&httprequest.HTTPRequestDelAcls{},
 		&httprequest.HTTPRequestAddHeaders{},
 		&httprequest.HTTPRequestAllows{},
+		&httprequest.HTTPRequestRedirects{},
+		&httprequest.HTTPRequestDenials{},
 		&httprequest.HTTPRequests{},
 
+		&frontend.UseBackends{},
 		&parsers.DefaultBackend{},
 	})
 }
@@ -111,6 +115,8 @@ func getBackendParser() *ParserTypes {
 		&httprequest.HTTPRequestDelAcls{},
 		&httprequest.HTTPRequestAddHeaders{},
 		&httprequest.HTTPRequestAllows{},
+		&httprequest.HTTPRequestRedirects{},
+		&httprequest.HTTPRequestDenials{},
 		&httprequest.HTTPRequests{},
 	})
 }

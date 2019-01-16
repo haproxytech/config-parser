@@ -3,7 +3,7 @@ package simple
 import (
 	"fmt"
 
-	"github.com/haproxytech/config-parser/helpers"
+	"github.com/haproxytech/config-parser/common"
 
 	"github.com/haproxytech/config-parser/errors"
 )
@@ -26,7 +26,7 @@ func (s *SimpleFlag) GetParserName() string {
 
 func (s *SimpleFlag) Parse(line string, parts, previousParts []string) (changeState string, err error) {
 	if parts[0] == s.SearchName {
-		s.Comment = helpers.StringExtractComment(line)
+		s.Comment = common.StringExtractComment(line)
 		s.Enabled = true
 		return "", nil
 	}

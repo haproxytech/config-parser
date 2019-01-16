@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Mailer struct {
@@ -28,7 +28,7 @@ func (l *Mailers) GetParserName() string {
 
 func (l *Mailers) parseMailerLine(line string, parts []string) (Mailer, error) {
 	if len(parts) >= 2 {
-		adr := helpers.StringSplitIgnoreEmpty(parts[2], ':')
+		adr := common.StringSplitIgnoreEmpty(parts[2], ':')
 		if len(adr) >= 2 {
 			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {
 				return Mailer{

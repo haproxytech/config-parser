@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	bindoptions "github.com/haproxytech/config-parser/bind-options"
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/helpers"
 )
 
 type Socket struct {
@@ -27,7 +27,7 @@ func (l *SocketLines) GetParserName() string {
 
 func (l *SocketLines) parseSocketLine(line string) (*Socket, error) {
 
-	elements := helpers.StringSplitIgnoreEmpty(line, ' ')
+	elements := common.StringSplitIgnoreEmpty(line, ' ')
 	if len(elements) < 3 {
 		return nil, &errors.ParseError{Parser: "SocketSingle", Line: line, Message: "Parse error"}
 	}
