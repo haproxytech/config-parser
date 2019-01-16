@@ -92,6 +92,7 @@ func getFrontendParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
 		&parsers.MaxConn{},
+		&frontend.Binds{},
 		&parsers.LogLines{},
 		&httprequest.HTTPRequestAddAcls{},
 		&httprequest.HTTPRequestDelAcls{},
