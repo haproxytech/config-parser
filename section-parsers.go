@@ -4,6 +4,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers"
 	"github.com/haproxytech/config-parser/parsers/defaults"
 	"github.com/haproxytech/config-parser/parsers/extra"
+	"github.com/haproxytech/config-parser/parsers/filters"
 	"github.com/haproxytech/config-parser/parsers/frontend"
 	"github.com/haproxytech/config-parser/parsers/global"
 	"github.com/haproxytech/config-parser/parsers/httprequest"
@@ -101,6 +102,7 @@ func getFrontendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "contstats"},
 		&simple.SimpleOption{Name: "log-separate-errors"},
+		&filters.Filters{},
 		&httprequest.HTTPRequestAddAcls{},
 		&httprequest.HTTPRequestDelAcls{},
 		&httprequest.HTTPRequestAddHeaders{},
@@ -121,6 +123,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&simple.SimpleOption{Name: "forwardfor"},
 
+		&filters.Filters{},
 		&httprequest.HTTPRequestAddAcls{},
 		&httprequest.HTTPRequestDelAcls{},
 		&httprequest.HTTPRequestAddHeaders{},
