@@ -48,6 +48,7 @@ func getDefaultParser() *ParserTypes {
 		&parsers.MaxConn{},
 		&parsers.LogLines{},
 
+		&simple.SimpleOption{Name: "http-use-htx"},
 		&simple.SimpleOption{Name: "redispatch"},
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "http-server-close"},
@@ -93,7 +94,13 @@ func getFrontendParser() *ParserTypes {
 		&parsers.Mode{},
 		&parsers.MaxConn{},
 		&frontend.Binds{},
+		&simple.SimpleString{Name: "log-tag"},
 		&parsers.LogLines{},
+		&simple.SimpleOption{Name: "http-use-htx"},
+		&simple.SimpleOption{Name: "httplog"},
+		&simple.SimpleOption{Name: "dontlognull"},
+		&simple.SimpleOption{Name: "contstats"},
+		&simple.SimpleOption{Name: "log-separate-errors"},
 		&httprequest.HTTPRequestAddAcls{},
 		&httprequest.HTTPRequestDelAcls{},
 		&httprequest.HTTPRequestAddHeaders{},
@@ -111,6 +118,8 @@ func getBackendParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
 		&parsers.Balance{},
+		&simple.SimpleOption{Name: "http-use-htx"},
+		&simple.SimpleOption{Name: "forwardfor"},
 
 		&httprequest.HTTPRequestAddAcls{},
 		&httprequest.HTTPRequestDelAcls{},
