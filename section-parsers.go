@@ -7,7 +7,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/filters"
 	"github.com/haproxytech/config-parser/parsers/frontend"
 	"github.com/haproxytech/config-parser/parsers/global"
-	"github.com/haproxytech/config-parser/parsers/httprequest"
+	"github.com/haproxytech/config-parser/parsers/http"
 	"github.com/haproxytech/config-parser/parsers/mailers"
 	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
@@ -49,12 +49,14 @@ func getDefaultParser() *ParserTypes {
 		&parsers.MaxConn{},
 		&parsers.LogLines{},
 
+		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&simple.SimpleOption{Name: "redispatch"},
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "http-server-close"},
 		&simple.SimpleOption{Name: "http-keep-alive"},
 		&simple.SimpleOption{Name: "httplog"},
+		&simple.SimpleOption{Name: "clitcpka"},
 
 		&simple.SimpleTimeout{Name: "http-request"},
 		&simple.SimpleTimeout{Name: "connect"},
@@ -97,19 +99,22 @@ func getFrontendParser() *ParserTypes {
 		&frontend.Binds{},
 		&simple.SimpleString{Name: "log-tag"},
 		&parsers.LogLines{},
+
+		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&simple.SimpleOption{Name: "httplog"},
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "contstats"},
 		&simple.SimpleOption{Name: "log-separate-errors"},
+		&simple.SimpleOption{Name: "clitcpka"},
+
+		&simple.SimpleTimeout{Name: "http-request"},
+		&simple.SimpleTimeout{Name: "client"},
+		&simple.SimpleTimeout{Name: "http-keep-alive"},
+
 		&filters.Filters{},
-		&httprequest.HTTPRequestAddAcls{},
-		&httprequest.HTTPRequestDelAcls{},
-		&httprequest.HTTPRequestAddHeaders{},
-		&httprequest.HTTPRequestAllows{},
-		&httprequest.HTTPRequestRedirects{},
-		&httprequest.HTTPRequestDenials{},
-		&httprequest.HTTPRequests{},
+		&http.HTTPRequests{},
+		&http.HTTPResponses{},
 
 		&frontend.UseBackends{},
 		&parsers.DefaultBackend{},
@@ -120,17 +125,18 @@ func getBackendParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
 		&parsers.Balance{},
+
+		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&simple.SimpleOption{Name: "forwardfor"},
 
+		&simple.SimpleTimeout{Name: "http-request"},
+		&simple.SimpleTimeout{Name: "client"},
+		&simple.SimpleTimeout{Name: "http-keep-alive"},
+
 		&filters.Filters{},
-		&httprequest.HTTPRequestAddAcls{},
-		&httprequest.HTTPRequestDelAcls{},
-		&httprequest.HTTPRequestAddHeaders{},
-		&httprequest.HTTPRequestAllows{},
-		&httprequest.HTTPRequestRedirects{},
-		&httprequest.HTTPRequestDenials{},
-		&httprequest.HTTPRequests{},
+		&http.HTTPRequests{},
+		&http.HTTPResponses{},
 	})
 }
 
