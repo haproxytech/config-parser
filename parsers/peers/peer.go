@@ -9,9 +9,10 @@ import (
 )
 
 type Peer struct {
-	Name string
-	IP   string
-	Port int64
+	Name    string
+	IP      string
+	Port    int64
+	Comment string
 }
 
 type Peers struct {
@@ -26,15 +27,16 @@ func (l *Peers) GetParserName() string {
 	return "peer"
 }
 
-func (l *Peers) parsePeerLine(line string, parts []string) (Peer, error) {
+func (l *Peers) parsePeerLine(line string, parts []string, comment string) (Peer, error) {
 	if len(parts) >= 2 {
 		adr := common.StringSplitIgnoreEmpty(parts[2], ':')
 		if len(adr) >= 2 {
 			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {
 				return Peer{
-					Name: parts[1],
-					IP:   adr[0],
-					Port: port,
+					Name:    parts[1],
+					IP:      adr[0],
+					Port:    port,
+					Comment: comment,
 				}, nil
 			}
 		}
@@ -42,9 +44,9 @@ func (l *Peers) parsePeerLine(line string, parts []string) (Peer, error) {
 	return Peer{}, &errors.ParseError{Parser: "PeerLines", Line: line}
 }
 
-func (l *Peers) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (l *Peers) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "peer" {
-		nameserver, err := l.parsePeerLine(line, parts)
+		nameserver, err := l.parsePeerLine(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "PeerLines", Line: line}
 		}
@@ -61,10 +63,13 @@ func (l *Peers) Valid() bool {
 	return false
 }
 
-func (l *Peers) Result(AddComments bool) []string {
-	result := make([]string, len(l.Peers))
+func (l *Peers) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(l.Peers))
 	for index, peer := range l.Peers {
-		result[index] = fmt.Sprintf("  peer %s %s:%d", peer.Name, peer.IP, peer.Port)
+		result[index] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("peer %s %s:%d", peer.Name, peer.IP, peer.Port),
+			Comment: peer.Comment,
+		}
 	}
 	return result
 }

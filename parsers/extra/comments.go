@@ -1,6 +1,7 @@
 package extra
 
 import (
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -16,7 +17,7 @@ func (c *Comments) GetParserName() string {
 	return "#"
 }
 
-func (c *Comments) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (c *Comments) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if line[0] == '#' {
 		c.comments = append(c.comments, line)
 		return "", nil
@@ -31,6 +32,13 @@ func (c *Comments) Valid() bool {
 	return false
 }
 
-func (c *Comments) Result(AddComments bool) []string {
-	return c.comments
+func (c *Comments) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(c.comments))
+	for index, comment := range c.comments {
+		result[index] = common.ReturnResultLine{
+			Data:    comment,
+			Comment: "",
+		}
+	}
+	return result
 }

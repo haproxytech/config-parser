@@ -44,9 +44,9 @@ func (f *Redirect) String() string {
 		result.WriteString(" ")
 		result.WriteString(f.Condition)
 	}
-	if f.Comment != "" {
-		result.WriteString(" # ")
-		result.WriteString(f.Comment)
-	}
 	return result.String()
+}
+
+func (f *Redirect) GetComment() string {
+	return f.Comment
 }

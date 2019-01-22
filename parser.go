@@ -83,7 +83,12 @@ func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder) {
 			continue
 		}
 		for _, line := range parser.Result(true) {
-			result.WriteString(line)
+			result.WriteString("  ")
+			result.WriteString(line.Data)
+			if line.Comment != "" {
+				result.WriteString(" # ")
+				result.WriteString(line.Comment)
+			}
 			result.WriteString("\n")
 		}
 	}
@@ -163,9 +168,9 @@ func (p *Parser) Save(filename string) error {
 }
 
 //ProcessLine parses line plus determines if we need to change state
-func (p *Parser) ProcessLine(line string, parts, previousParts []string, config ConfiguredParsers) ConfiguredParsers {
+func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers {
 	for _, parser := range config.Active.parsers {
-		if newState, err := parser.Parse(line, parts, previousParts); err == nil {
+		if newState, err := parser.Parse(line, parts, previousParts, comment); err == nil {
 			//should we have an option to remove it when found?
 			if newState != "" {
 				//log.Printf("change state from %s to %s\n", state, newState)
@@ -259,11 +264,11 @@ func (p *Parser) LoadData(filename string) error {
 		if line == "" {
 			continue
 		}
-		parts := common.StringSplitIgnoreEmpty(line, ' ')
+		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ')
 		if len(parts) == 0 {
 			continue
 		}
-		parsers = p.ProcessLine(line, parts, previousLine, parsers)
+		parsers = p.ProcessLine(line, parts, previousLine, comment, parsers)
 		previousLine = parts
 	}
 	return nil

@@ -9,8 +9,9 @@ import (
 )
 
 type Socket struct {
-	Path   string //can be address:port
-	Params []bindoptions.BindOption
+	Path    string //can be address:port
+	Params  []bindoptions.BindOption
+	Comment string
 }
 
 type SocketLines struct {
@@ -25,23 +26,23 @@ func (l *SocketLines) GetParserName() string {
 	return "stats socket"
 }
 
-func (l *SocketLines) parseSocketLine(line string) (*Socket, error) {
+func (l *SocketLines) parseSocketLine(line string, parts []string, comment string) (*Socket, error) {
 
-	elements := common.StringSplitIgnoreEmpty(line, ' ')
-	if len(elements) < 3 {
+	if len(parts) < 3 {
 		return nil, &errors.ParseError{Parser: "SocketSingle", Line: line, Message: "Parse error"}
 	}
 	socket := &Socket{
-		Path:   elements[2],
-		Params: bindoptions.Parse(elements[3:]),
+		Path:    parts[2],
+		Params:  bindoptions.Parse(parts[3:]),
+		Comment: comment,
 	}
 	//s.value = elements[1:]
 	return socket, nil
 }
 
-func (l *SocketLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (l *SocketLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "socket" {
-		if nameserver, err := l.parseSocketLine(line); err == nil {
+		if nameserver, err := l.parseSocketLine(line, parts, comment); err == nil {
 			l.SocketLines = append(l.SocketLines, nameserver)
 		}
 		return "", nil
@@ -56,10 +57,13 @@ func (l *SocketLines) Valid() bool {
 	return false
 }
 
-func (l *SocketLines) Result(AddComments bool) []string {
-	result := make([]string, len(l.SocketLines))
+func (l *SocketLines) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(l.SocketLines))
 	for index, socket := range l.SocketLines {
-		result[index] = fmt.Sprintf(fmt.Sprintf("  stats socket %s %s", socket.Path, bindoptions.String(socket.Params)))
+		result[index] = common.ReturnResultLine{
+			Data:    fmt.Sprintf(fmt.Sprintf("stats socket %s %s", socket.Path, bindoptions.String(socket.Params))),
+			Comment: socket.Comment,
+		}
 	}
 	return result
 }

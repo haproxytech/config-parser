@@ -1,11 +1,13 @@
 package parsers
 
 import (
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
 type Daemon struct {
 	Enabled bool
+	Comment string
 }
 
 func (d *Daemon) Init() {
@@ -16,8 +18,9 @@ func (d *Daemon) GetParserName() string {
 	return "daemon"
 }
 
-func (d *Daemon) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (d *Daemon) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "daemon" {
+		d.Comment = comment
 		d.Enabled = true
 		return "", nil
 	}
@@ -31,9 +34,13 @@ func (d *Daemon) Valid() bool {
 	return false
 }
 
-func (d *Daemon) Result(AddComments bool) []string {
+func (d *Daemon) Result(AddComments bool) []common.ReturnResultLine {
 	if d.Enabled {
-		return []string{"  daemon"}
+		return []common.ReturnResultLine{
+			common.ReturnResultLine{
+				Data: "daemon",
+			},
+		}
 	}
-	return []string{}
+	return []common.ReturnResultLine{}
 }

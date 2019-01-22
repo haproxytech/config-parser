@@ -1,6 +1,7 @@
 package extra
 
 import (
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -20,7 +21,7 @@ func (s *SectionName) GetParserName() string {
 }
 
 //Parse see if we have section name
-func (s *SectionName) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (s *SectionName) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) > 1 {
 			s.SectionName = parts[1]
@@ -37,6 +38,13 @@ func (s *SectionName) Valid() bool {
 	return false
 }
 
-func (s *SectionName) Result(AddComments bool) []string {
-	return []string{s.Comment, s.SectionName}
+func (s *SectionName) Result(AddComments bool) []common.ReturnResultLine {
+	return []common.ReturnResultLine{
+		common.ReturnResultLine{
+			Data: s.Comment, // in this case comment is data
+		},
+		common.ReturnResultLine{
+			Data: s.SectionName,
+		},
+	}
 }

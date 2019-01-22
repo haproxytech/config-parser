@@ -2,14 +2,16 @@ package global
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
 type CpuMap struct {
-	Name  string
-	Value string
+	Name    string
+	Value   string
+	Comment string
 }
 
 type CpuMapLines struct {
@@ -24,22 +26,22 @@ func (c *CpuMapLines) GetParserName() string {
 	return "cpu-map"
 }
 
-func (c *CpuMapLines) parseCpuMapLine(line string) (*CpuMap, error) {
+func (c *CpuMapLines) parseCpuMapLine(parts []string, comment string) (*CpuMap, error) {
 
-	elements := common.StringSplitIgnoreEmpty(line, ' ')
-	if len(elements) < 3 {
-		return nil, &errors.ParseError{Parser: "CpuMapSingle", Line: line, Message: "Parse error"}
+	if len(parts) < 3 {
+		return nil, &errors.ParseError{Parser: "CpuMapSingle", Line: strings.Join(parts, " "), Message: "Parse error"}
 	}
 	cpuMap := &CpuMap{
-		Name:  elements[1],
-		Value: elements[2],
+		Name:    parts[1],
+		Value:   parts[2],
+		Comment: comment,
 	}
 	return cpuMap, nil
 }
 
-func (c *CpuMapLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (c *CpuMapLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "cpu-map" {
-		if nameserver, err := c.parseCpuMapLine(line); err == nil {
+		if nameserver, err := c.parseCpuMapLine(parts, comment); err == nil {
 			c.CpuMapLines = append(c.CpuMapLines, nameserver)
 		}
 		return "", nil
@@ -54,10 +56,13 @@ func (c *CpuMapLines) Valid() bool {
 	return false
 }
 
-func (c *CpuMapLines) Result(AddComments bool) []string {
-	result := make([]string, len(c.CpuMapLines))
+func (c *CpuMapLines) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(c.CpuMapLines))
 	for index, cpuMap := range c.CpuMapLines {
-		result[index] = fmt.Sprintf("  cpu-map %s %s", cpuMap.Name, cpuMap.Value)
+		result[index] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("cpu-map %s %s", cpuMap.Name, cpuMap.Value),
+			Comment: cpuMap.Comment,
+		}
 	}
 	return result
 }

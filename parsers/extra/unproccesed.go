@@ -1,19 +1,23 @@
 package extra
 
+import "github.com/haproxytech/config-parser/common"
+
 type UnProcessed struct {
-	unProcessed []string
+	unProcessed []common.ReturnResultLine
 }
 
 func (u *UnProcessed) Init() {
-	u.unProcessed = []string{}
+	u.unProcessed = []common.ReturnResultLine{}
 }
 
 func (u *UnProcessed) GetParserName() string {
 	return ""
 }
 
-func (u *UnProcessed) Parse(line string, parts, previousParts []string) (changeState string, err error) {
-	u.unProcessed = append(u.unProcessed, line)
+func (u *UnProcessed) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+	u.unProcessed = append(u.unProcessed, common.ReturnResultLine{
+		Data: line, //do not save comments separatelly
+	})
 	return "", nil
 }
 
@@ -24,6 +28,6 @@ func (u *UnProcessed) Valid() bool {
 	return false
 }
 
-func (u *UnProcessed) Result(AddComments bool) []string {
+func (u *UnProcessed) Result(AddComments bool) []common.ReturnResultLine {
 	return u.unProcessed
 }

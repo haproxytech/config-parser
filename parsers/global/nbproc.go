@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
 type NbProc struct {
 	Enabled bool
 	Value   int64
+	Comment string
 }
 
 func (n *NbProc) Init() {
@@ -20,7 +22,7 @@ func (n *NbProc) GetParserName() string {
 	return "nbproc"
 }
 
-func (n *NbProc) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (n *NbProc) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "nbproc" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "NbProc", Line: line, Message: "Parse error"}
@@ -31,6 +33,7 @@ func (n *NbProc) Parse(line string, parts, previousParts []string) (changeState 
 		} else {
 			n.Enabled = true
 			n.Value = num
+			n.Comment = comment
 		}
 		return "", nil
 	}
@@ -44,9 +47,14 @@ func (n *NbProc) Valid() bool {
 	return false
 }
 
-func (n *NbProc) Result(AddComments bool) []string {
+func (n *NbProc) Result(AddComments bool) []common.ReturnResultLine {
 	if n.Enabled {
-		return []string{fmt.Sprintf("  nbproc %d", n.Value)}
+		return []common.ReturnResultLine{
+			common.ReturnResultLine{
+				Data:    fmt.Sprintf("nbproc %d", n.Value),
+				Comment: n.Comment,
+			},
+		}
 	}
-	return []string{}
+	return []common.ReturnResultLine{}
 }

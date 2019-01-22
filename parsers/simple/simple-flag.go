@@ -24,9 +24,9 @@ func (s *SimpleFlag) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *SimpleFlag) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (s *SimpleFlag) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.SearchName {
-		s.Comment = common.StringExtractComment(line)
+		s.Comment = comment
 		s.Enabled = true
 		return "", nil
 	}
@@ -40,14 +40,16 @@ func (s *SimpleFlag) Valid() bool {
 	return false
 }
 
-func (s *SimpleFlag) Result(AddComments bool) []string {
+func (s *SimpleFlag) Result(AddComments bool) []common.ReturnResultLine {
 	if s.Enabled {
-		if s.Comment != "" {
-			return []string{fmt.Sprintf("  %s # %s", s.SearchName, s.Comment)}
+		return []common.ReturnResultLine{
+			common.ReturnResultLine{
+				Data:    fmt.Sprintf("%s", s.SearchName),
+				Comment: s.Comment,
+			},
 		}
-		return []string{fmt.Sprintf("  %s", s.SearchName)}
 	}
-	return []string{}
+	return []common.ReturnResultLine{}
 }
 
 func (s *SimpleFlag) Annotation() string {

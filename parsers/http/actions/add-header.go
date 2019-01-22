@@ -39,3 +39,7 @@ func (f *AddHeader) String() string {
 	}
 	return fmt.Sprintf("add-header %s %s%s", f.Name, f.Fmt, condition)
 }
+
+func (f *AddHeader) GetComment() string {
+	return f.Comment
+}

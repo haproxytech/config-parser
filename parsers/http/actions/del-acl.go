@@ -39,15 +39,15 @@ func (f *DelAcl) Parse(parts []string, comment string) error {
 func (f *DelAcl) String() string {
 	keyfmt := ""
 	condition := ""
-	comment := ""
 	if f.KeyFmt != "" {
 		keyfmt = " " + f.KeyFmt
 	}
 	if f.Condition != "" {
 		condition = fmt.Sprintf(" %s %s", f.ConditionKind, f.Condition)
 	}
-	if f.Comment != "" {
-		comment = " # " + f.Comment
-	}
-	return fmt.Sprintf("del-acl(%s)%s%s%s", f.FileName, keyfmt, condition, comment)
+	return fmt.Sprintf("del-acl(%s)%s%s", f.FileName, keyfmt, condition)
+}
+
+func (f *DelAcl) GetComment() string {
+	return f.Comment
 }

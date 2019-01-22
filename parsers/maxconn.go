@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
 type MaxConn struct {
-	Value int64
+	Value   int64
+	Comment string
 }
 
 func (m *MaxConn) Init() {
@@ -19,7 +21,7 @@ func (m *MaxConn) GetParserName() string {
 	return "maxconn"
 }
 
-func (m *MaxConn) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (m *MaxConn) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "maxconn" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: "Parse error"}
@@ -30,6 +32,7 @@ func (m *MaxConn) Parse(line string, parts, previousParts []string) (changeState
 			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: err.Error()}
 		} else {
 			m.Value = num
+			m.Comment = comment
 		}
 		return "", nil
 	}
@@ -43,6 +46,11 @@ func (m *MaxConn) Valid() bool {
 	return false
 }
 
-func (m *MaxConn) Result(AddComments bool) []string {
-	return []string{fmt.Sprintf("  maxconn %d", m.Value)}
+func (m *MaxConn) Result(AddComments bool) []common.ReturnResultLine {
+	return []common.ReturnResultLine{
+		common.ReturnResultLine{
+			Data:    fmt.Sprintf("maxconn %d", m.Value),
+			Comment: m.Comment,
+		},
+	}
 }

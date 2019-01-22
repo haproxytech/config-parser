@@ -8,8 +8,9 @@ import (
 )
 
 type ErrorFile struct {
-	Code string
-	File string
+	Code    string
+	File    string
+	Comment string
 }
 
 type ErrorFileLines struct {
@@ -29,13 +30,14 @@ func (l *ErrorFileLines) GetParserName() string {
 	return "errorfile"
 }
 
-func (l *ErrorFileLines) parseErrorFileLine(line string) (ErrorFile, error) {
+func (l *ErrorFileLines) parseErrorFileLine(line string, comment string) (ErrorFile, error) {
 	parts := common.StringSplitIgnoreEmpty(line, ' ')
 	if len(parts) < 3 {
 		return ErrorFile{}, &errors.ParseError{Parser: "ErrorFileLines", Line: line}
 	}
 	errorfile := ErrorFile{
-		File: parts[2],
+		File:    parts[2],
+		Comment: comment,
 	}
 	code := parts[1]
 	if _, ok := l.AllowedCode[code]; !ok {
@@ -45,9 +47,9 @@ func (l *ErrorFileLines) parseErrorFileLine(line string) (ErrorFile, error) {
 	return errorfile, nil
 }
 
-func (l *ErrorFileLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (l *ErrorFileLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "errorfile" {
-		if data, err := l.parseErrorFileLine(line); err == nil {
+		if data, err := l.parseErrorFileLine(line, comment); err == nil {
 			l.ErrorFileLines = append(l.ErrorFileLines, data)
 		}
 		return "", nil
@@ -62,10 +64,13 @@ func (l *ErrorFileLines) Valid() bool {
 	return false
 }
 
-func (l *ErrorFileLines) Result(AddComments bool) []string {
-	result := make([]string, len(l.ErrorFileLines))
+func (l *ErrorFileLines) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(l.ErrorFileLines))
 	for index, data := range l.ErrorFileLines {
-		result[index] = fmt.Sprintf("  errorfile %s %s", data.Code, data.File)
+		result[index] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("errorfile %s %s", data.Code, data.File),
+			Comment: data.Comment,
+		}
 	}
 	return result
 }

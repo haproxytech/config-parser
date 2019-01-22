@@ -1,8 +1,9 @@
 package filters
 
 import (
-	"fmt"
 	"strings"
+
+	"github.com/haproxytech/config-parser/common"
 )
 
 type Trace struct { //filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
@@ -36,9 +37,9 @@ func (f *Trace) Parse(parts []string, comment string) error {
 	return nil
 }
 
-func (f *Trace) String() string {
+func (f *Trace) Result() common.ReturnResultLine {
 	var result strings.Builder
-	result.WriteString("  filter trace")
+	result.WriteString("filter trace")
 	if f.Name != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Name)
@@ -52,8 +53,8 @@ func (f *Trace) String() string {
 	if f.Hexdump {
 		result.WriteString(" hexdump")
 	}
-	if f.Comment != "" {
-		result.WriteString(fmt.Sprintf(" # %s", f.Comment))
+	return common.ReturnResultLine{
+		Data:    result.String(),
+		Comment: f.Comment,
 	}
-	return result.String()
 }

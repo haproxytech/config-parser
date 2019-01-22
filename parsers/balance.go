@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
 type Balance struct {
 	Algorithm string
 	Arguments []string
+	Comment   string
 }
 
 func (b *Balance) Init() {
@@ -20,8 +22,9 @@ func (b *Balance) GetParserName() string {
 	return "balance"
 }
 
-func (b *Balance) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (b *Balance) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "balance" {
+		b.Comment = comment
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Balance", Line: line, Message: "Parse error"}
 		}
@@ -54,10 +57,14 @@ func (b *Balance) Valid() bool {
 	return b.Algorithm != ""
 }
 
-func (b *Balance) Result(AddComments bool) []string {
+func (b *Balance) Result(AddComments bool) []common.ReturnResultLine {
 	params := ""
 	if len(b.Arguments) > 0 {
 		params = fmt.Sprintf(" %s", strings.Join(b.Arguments, " "))
 	}
-	return []string{fmt.Sprintf("  balance %s%s", b.Algorithm, params)}
+	return []common.ReturnResultLine{
+		common.ReturnResultLine{
+			Data: fmt.Sprintf("balance %s%s", b.Algorithm, params),
+		},
+	}
 }

@@ -13,6 +13,7 @@ type User struct {
 	Password   string
 	IsInsecure bool
 	Groups     []string
+	Comment    string
 }
 
 type UserLines struct {
@@ -27,10 +28,11 @@ func (l *UserLines) GetParserName() string {
 	return "user"
 }
 
-func (l *UserLines) parseUserLine(line string, parts []string) (User, error) {
+func (l *UserLines) parseUserLine(line string, parts []string, comment string) (User, error) {
 	if len(parts) >= 2 {
 		user := User{
-			Name: parts[1],
+			Name:    parts[1],
+			Comment: comment,
 		}
 		//see if we have password
 		index := 3
@@ -53,9 +55,9 @@ func (l *UserLines) parseUserLine(line string, parts []string) (User, error) {
 	return User{}, &errors.ParseError{Parser: "UserLines", Line: line}
 }
 
-func (l *UserLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (l *UserLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "user" {
-		user, err := l.parseUserLine(line, parts)
+		user, err := l.parseUserLine(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "UserLines", Line: line}
 		}
@@ -72,8 +74,8 @@ func (l *UserLines) Valid() bool {
 	return false
 }
 
-func (l *UserLines) Result(AddComments bool) []string {
-	result := make([]string, len(l.UserLines))
+func (l *UserLines) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(l.UserLines))
 	for index, user := range l.UserLines {
 		pwd := ""
 		if user.Password != "" {
@@ -98,7 +100,10 @@ func (l *UserLines) Result(AddComments bool) []string {
 			}
 			groups = s.String()
 		}
-		result[index] = fmt.Sprintf("  user %s%s%s", user.Name, pwd, groups)
+		result[index] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("user %s%s%s", user.Name, pwd, groups),
+			Comment: user.Comment,
+		}
 	}
 	return result
 }

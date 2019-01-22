@@ -9,9 +9,10 @@ import (
 )
 
 type Mailer struct {
-	Name string
-	IP   string
-	Port int64
+	Name    string
+	IP      string
+	Port    int64
+	Comment string
 }
 
 type Mailers struct {
@@ -26,15 +27,16 @@ func (l *Mailers) GetParserName() string {
 	return "peer"
 }
 
-func (l *Mailers) parseMailerLine(line string, parts []string) (Mailer, error) {
+func (l *Mailers) parseMailerLine(line string, parts []string, comment string) (Mailer, error) {
 	if len(parts) >= 2 {
 		adr := common.StringSplitIgnoreEmpty(parts[2], ':')
 		if len(adr) >= 2 {
 			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {
 				return Mailer{
-					Name: parts[1],
-					IP:   adr[0],
-					Port: port,
+					Name:    parts[1],
+					IP:      adr[0],
+					Port:    port,
+					Comment: comment,
 				}, nil
 			}
 		}
@@ -42,9 +44,9 @@ func (l *Mailers) parseMailerLine(line string, parts []string) (Mailer, error) {
 	return Mailer{}, &errors.ParseError{Parser: "MailerLines", Line: line}
 }
 
-func (l *Mailers) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (l *Mailers) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "mailer" {
-		nameserver, err := l.parseMailerLine(line, parts)
+		nameserver, err := l.parseMailerLine(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "MailerLines", Line: line}
 		}
@@ -61,10 +63,13 @@ func (l *Mailers) Valid() bool {
 	return false
 }
 
-func (l *Mailers) Result(AddComments bool) []string {
-	result := make([]string, len(l.Mailers))
+func (l *Mailers) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(l.Mailers))
 	for index, peer := range l.Mailers {
-		result[index] = fmt.Sprintf("  mailer %s %s:%d", peer.Name, peer.IP, peer.Port)
+		result[index] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("mailer %s %s:%d", peer.Name, peer.IP, peer.Port),
+			Comment: peer.Comment,
+		}
 	}
 	return result
 }

@@ -47,12 +47,12 @@ func (f *SetVar) Parse(parts []string, comment string) error {
 
 func (f *SetVar) String() string {
 	condition := ""
-	comment := ""
 	if f.Condition != "" {
 		condition = fmt.Sprintf(" %s %s", f.ConditionKind, f.Condition)
 	}
-	if f.Comment != "" {
-		comment = " # " + f.Comment
-	}
-	return fmt.Sprintf("set-var(%s.%s) %s%s%s", f.VarScope, f.VarName, f.Expr.String(), condition, comment)
+	return fmt.Sprintf("set-var(%s.%s) %s%s", f.VarScope, f.VarName, f.Expr.String(), condition)
+}
+
+func (f *SetVar) GetComment() string {
+	return f.Comment
 }

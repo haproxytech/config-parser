@@ -39,15 +39,15 @@ func (f *AddAcl) Parse(parts []string, comment string) error {
 func (f *AddAcl) String() string {
 	keyfmt := ""
 	condition := ""
-	comment := ""
 	if f.KeyFmt != "" {
 		keyfmt = " " + f.KeyFmt
 	}
 	if f.Condition != "" {
 		condition = fmt.Sprintf(" %s %s", f.ConditionKind, f.Condition)
 	}
-	if f.Comment != "" {
-		comment = " # " + f.Comment
-	}
-	return fmt.Sprintf("add-acl(%s)%s%s%s", f.FileName, keyfmt, condition, comment)
+	return fmt.Sprintf("add-acl(%s)%s%s", f.FileName, keyfmt, condition)
+}
+
+func (f *AddAcl) GetComment() string {
+	return f.Comment
 }

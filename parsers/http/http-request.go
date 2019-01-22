@@ -3,6 +3,7 @@ package http
 import (
 	"strings"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/parsers/http/actions"
 )
@@ -20,7 +21,7 @@ func (h *HTTPRequests) GetParserName() string {
 }
 
 func (f *HTTPRequests) ParseHTTPRequest(request HTTPAction, parts []string, comment string) error {
-	err := request.Parse(parts, "")
+	err := request.Parse(parts, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPRequestLines", Line: ""}
 	}
@@ -28,8 +29,7 @@ func (f *HTTPRequests) ParseHTTPRequest(request HTTPAction, parts []string, comm
 	return nil
 }
 
-func (h *HTTPRequests) Parse(line string, parts, previousParts []string) (changeState string, err error) {
-	comment := ""
+func (h *HTTPRequests) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) >= 2 && parts[0] == "http-request" {
 		var err error
 		switch parts[1] {
@@ -75,10 +75,13 @@ func (h *HTTPRequests) Valid() bool {
 	return false
 }
 
-func (h *HTTPRequests) Result(AddComments bool) []string {
-	result := make([]string, len(h.HTTPRequests))
+func (h *HTTPRequests) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(h.HTTPRequests))
 	for index, req := range h.HTTPRequests {
-		result[index] = "  http-request " + req.String()
+		result[index] = common.ReturnResultLine{
+			Data:    "http-request " + req.String(),
+			Comment: req.GetComment(),
+		}
 	}
 	return result
 }

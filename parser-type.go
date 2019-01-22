@@ -1,13 +1,17 @@
 package parser
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/haproxytech/config-parser/common"
+)
 
 type ParserType interface {
 	Init()
-	Parse(line string, parts, previousParts []string) (changeState string, err error)
+	Parse(line string, parts, previousParts []string, comment string) (changeState string, err error)
 	Valid() bool
 	GetParserName() string
-	Result(AddComments bool) []string
+	Result(AddComments bool) []common.ReturnResultLine
 }
 
 type ParserTypes struct {

@@ -45,9 +45,9 @@ func (f *Auth) String() string {
 		result.WriteString(" ")
 		result.WriteString(f.Condition)
 	}
-	if f.Comment != "" {
-		result.WriteString(" # ")
-		result.WriteString(f.Comment)
-	}
 	return result.String()
+}
+
+func (f *Auth) GetComment() string {
+	return f.Comment
 }

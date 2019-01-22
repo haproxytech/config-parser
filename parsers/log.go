@@ -15,6 +15,7 @@ type Log struct {
 	Facility string
 	Level    string
 	MinLevel string
+	Comment  string
 }
 
 type LogLines struct {
@@ -38,12 +39,13 @@ func (l *LogLines) GetParserName() string {
 	return "log"
 }
 
-func (l *LogLines) parseLogLine(line string, parts []string) (Log, error) {
+func (l *LogLines) parseLogLine(line string, parts []string, comment string) (Log, error) {
 	if len(parts) > 1 && parts[1] == "global" {
 		return Log{Global: true}, nil
 	}
 	log := Log{
 		Address: parts[1],
+		Comment: comment,
 	}
 	//see if we have length
 	currIndex := 2
@@ -83,9 +85,9 @@ func (l *LogLines) parseLogLine(line string, parts []string) (Log, error) {
 	return log, nil
 }
 
-func (l *LogLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (l *LogLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "log" {
-		if log, err := l.parseLogLine(line, parts); err == nil {
+		if log, err := l.parseLogLine(line, parts, comment); err == nil {
 			l.LogLines = append(l.LogLines, log)
 		}
 		return "", nil
@@ -100,13 +102,16 @@ func (l *LogLines) Valid() bool {
 	return false
 }
 
-func (l *LogLines) Result(AddComments bool) []string {
-	result := make([]string, len(l.LogLines))
+func (l *LogLines) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(l.LogLines))
 	for index, log := range l.LogLines {
 		if log.Global {
-			result[index] = "  log global"
+			result[index] = common.ReturnResultLine{
+				Data:    "log global",
+				Comment: log.Comment,
+			}
 		} else {
-			line := fmt.Sprintf("  log %s", log.Address)
+			line := fmt.Sprintf("log %s", log.Address)
 			if log.Length > 0 {
 				line = fmt.Sprintf("%s %d", line, log.Length)
 			}
@@ -117,7 +122,10 @@ func (l *LogLines) Result(AddComments bool) []string {
 					line = fmt.Sprintf("%s %s", line, log.MinLevel)
 				}
 			}
-			result[index] = line
+			result[index] = common.ReturnResultLine{
+				Data:    line,
+				Comment: log.Comment,
+			}
 		}
 	}
 	return result

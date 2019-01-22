@@ -35,5 +35,9 @@ func (f *DelHeader) String() string {
 	if f.Condition != "" {
 		condition = fmt.Sprintf(" %s %s", f.ConditionKind, f.Condition)
 	}
-	return fmt.Sprintf("del-header %s %s", f.Name, condition)
+	return fmt.Sprintf("del-header %s%s", f.Name, condition)
+}
+
+func (f *DelHeader) GetComment() string {
+	return f.Comment
 }

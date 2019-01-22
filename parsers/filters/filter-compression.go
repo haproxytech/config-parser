@@ -1,8 +1,9 @@
 package filters
 
 import (
-	"fmt"
 	"strings"
+
+	"github.com/haproxytech/config-parser/common"
 )
 
 type Compression struct {
@@ -18,11 +19,11 @@ func (f *Compression) Parse(parts []string, comment string) error {
 	return nil
 }
 
-func (f *Compression) String() string {
+func (f *Compression) Result() common.ReturnResultLine {
 	var result strings.Builder
-	result.WriteString("  filter compression")
-	if f.Comment != "" {
-		result.WriteString(fmt.Sprintf(" # %s", f.Comment))
+	result.WriteString("filter compression")
+	return common.ReturnResultLine{
+		Data:    result.String(),
+		Comment: f.Comment,
 	}
-	return result.String()
 }

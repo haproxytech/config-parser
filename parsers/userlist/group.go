@@ -9,8 +9,9 @@ import (
 )
 
 type Group struct {
-	Name  string
-	Users []string
+	Name    string
+	Users   []string
+	Comment string
 }
 
 type GroupLines struct {
@@ -25,10 +26,11 @@ func (l *GroupLines) GetParserName() string {
 	return "group"
 }
 
-func (l *GroupLines) parseGroupLine(line string, parts []string) (Group, error) {
+func (l *GroupLines) parseGroupLine(line string, parts []string, comment string) (Group, error) {
 	if len(parts) >= 2 {
 		group := Group{
-			Name: parts[1],
+			Name:    parts[1],
+			Comment: comment,
 		}
 		if len(parts) > 3 && parts[2] == "users" {
 			group.Users = common.StringSplitIgnoreEmpty(parts[3], ',')
@@ -38,9 +40,9 @@ func (l *GroupLines) parseGroupLine(line string, parts []string) (Group, error) 
 	return Group{}, &errors.ParseError{Parser: "GroupLines", Line: line}
 }
 
-func (l *GroupLines) Parse(line string, parts, previousParts []string) (changeState string, err error) {
+func (l *GroupLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "group" {
-		group, err := l.parseGroupLine(line, parts)
+		group, err := l.parseGroupLine(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "GroupLines", Line: line}
 		}
@@ -57,8 +59,8 @@ func (l *GroupLines) Valid() bool {
 	return false
 }
 
-func (l *GroupLines) Result(AddComments bool) []string {
-	result := make([]string, len(l.GroupLines))
+func (l *GroupLines) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(l.GroupLines))
 	for index, group := range l.GroupLines {
 		users := ""
 		if len(group.Users) > 0 {
@@ -75,7 +77,10 @@ func (l *GroupLines) Result(AddComments bool) []string {
 			}
 			users = s.String()
 		}
-		result[index] = fmt.Sprintf("  group %s%s", group.Name, users)
+		result[index] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("group %s%s", group.Name, users),
+			Comment: group.Comment,
+		}
 	}
 	return result
 }

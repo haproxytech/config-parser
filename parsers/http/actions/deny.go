@@ -45,9 +45,9 @@ func (f *Deny) String() string {
 		result.WriteString(" ")
 		result.WriteString(f.Condition)
 	}
-	if f.Comment != "" {
-		result.WriteString(" # ")
-		result.WriteString(f.Comment)
-	}
 	return result.String()
+}
+
+func (f *Deny) GetComment() string {
+	return f.Comment
 }

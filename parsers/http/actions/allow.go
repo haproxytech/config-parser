@@ -36,3 +36,7 @@ func (f *Allow) String() string {
 	}
 	return fmt.Sprintf("allow%s", condition)
 }
+
+func (f *Allow) GetComment() string {
+	return f.Comment
+}

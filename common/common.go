@@ -16,6 +16,19 @@ func StringSplitIgnoreEmpty(s string, sep rune) []string {
 	return strings.FieldsFunc(s, f)
 }
 
+//StringSplitWithCommentIgnoreEmpty while spliting, removes empty items, if we have comment, separate it
+func StringSplitWithCommentIgnoreEmpty(s string, sep rune) (data []string, comment string) {
+	tmp := strings.SplitN(s, "#", 2)
+	comment = ""
+	if len(tmp) > 1 {
+		comment = strings.TrimSpace(tmp[1])
+	}
+	f := func(c rune) bool {
+		return c == sep
+	}
+	return strings.FieldsFunc(tmp[0], f), comment
+}
+
 //StringExtractComment checks if comment is added
 func StringExtractComment(s string) string {
 	p := StringSplitIgnoreEmpty(s, '#')

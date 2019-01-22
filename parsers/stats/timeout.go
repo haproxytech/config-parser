@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
@@ -12,6 +13,7 @@ type Timeout struct {
 	Value      []string
 	Name       string
 	SearchName string
+	Comment    string
 }
 
 func (s *Timeout) Init() {
@@ -24,13 +26,14 @@ func (s *Timeout) GetParserName() string {
 	return s.SearchName
 }
 
-func (s *Timeout) Parse(line string, parts, previousParts []string) (changeState string, err error) {
-	if parts[0] == s.SearchName {
+func (s *Timeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "timeout" {
 		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: "Timeout", Line: line, Message: "Parse error"}
 		}
 		s.Enabled = true
 		s.Value = parts[2:]
+		s.Comment = comment
 		//todo add validation with simple timeouts
 		return "", nil
 	}
@@ -44,9 +47,14 @@ func (s *Timeout) Valid() bool {
 	return false
 }
 
-func (s *Timeout) Result(AddComments bool) []string {
+func (s *Timeout) Result(AddComments bool) []common.ReturnResultLine {
 	if s.Enabled {
-		return []string{fmt.Sprintf("  %s %s", s.SearchName, strings.Join(s.Value, " "))}
+		return []common.ReturnResultLine{
+			common.ReturnResultLine{
+				Data:    fmt.Sprintf("%s %s", s.SearchName, strings.Join(s.Value, " ")),
+				Comment: s.Comment,
+			},
+		}
 	}
-	return []string{}
+	return []common.ReturnResultLine{}
 }

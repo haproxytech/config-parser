@@ -1,12 +1,13 @@
 package filters
 
 import (
+	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
 
 type Filter interface {
 	Parse(parts []string, comment string) error
-	String() string
+	Result() common.ReturnResultLine
 }
 
 type Filters struct {
@@ -30,9 +31,8 @@ func (f *Filters) ParseFilter(filter Filter, parts []string, comment string) err
 	return nil
 }
 
-func (h *Filters) Parse(line string, parts, previousParts []string) (changeState string, err error) {
-	comment := ""
-	if len(parts) >= 1 && parts[0] == "filter" {
+func (h *Filters) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+	if len(parts) >= 2 && parts[0] == "filter" {
 		var err error
 		switch parts[1] {
 		case "trace":
@@ -59,10 +59,10 @@ func (h *Filters) Valid() bool {
 	return false
 }
 
-func (h *Filters) Result(AddComments bool) []string {
-	result := make([]string, len(h.Filters))
+func (h *Filters) Result(AddComments bool) []common.ReturnResultLine {
+	result := make([]common.ReturnResultLine, len(h.Filters))
 	for index, req := range h.Filters {
-		result[index] = req.String()
+		result[index] = req.Result()
 	}
 	return result
 }
