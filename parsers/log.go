@@ -6,44 +6,67 @@ import (
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
-type Log struct {
-	Global   bool
-	Address  string
-	Length   int64
-	Facility string
-	Level    string
-	MinLevel string
-	Comment  string
-}
-
 type LogLines struct {
-	LogLines          []Log
-	AllowedLevels     map[string]bool
-	AllowedFacitlitys map[string]bool
+	data              []types.Log
+	allowedLevels     map[string]bool
+	allowedFacitlites map[string]bool
 }
 
 func (l *LogLines) Init() {
-	l.LogLines = []Log{}
-	l.AllowedFacitlitys = map[string]bool{}
-	l.AllowedLevels = map[string]bool{}
-	common.AddToBoolMap(l.AllowedFacitlitys,
+	l.data = []types.Log{}
+	l.allowedFacitlites = map[string]bool{}
+	l.allowedLevels = map[string]bool{}
+	common.AddToBoolMap(l.allowedFacitlites,
 		"kern", "user", "mail", "daemon", "auth", "syslog", "lpr", "news",
 		"uucp", "cron", "auth2", "ftp", "ntp", "audit", "alert", "cron2",
 		"local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7")
-	common.AddToBoolMap(l.AllowedLevels, "emerg", "alert", "crit", "err", "warning", "notice", "info", "debug")
+	common.AddToBoolMap(l.allowedLevels, "emerg", "alert", "crit", "err", "warning", "notice", "info", "debug")
 }
 
 func (l *LogLines) GetParserName() string {
 	return "log"
 }
 
-func (l *LogLines) parseLogLine(line string, parts []string, comment string) (Log, error) {
-	if len(parts) > 1 && parts[1] == "global" {
-		return Log{Global: true}, nil
+func (l *LogLines) Clear() {
+	l.Init()
+}
+
+func (l *LogLines) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(l.data) == 0 && !createIfNotExist {
+		return nil, &errors.FetchError{}
 	}
-	log := Log{
+	return l.data, nil
+}
+
+func (l *LogLines) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []types.Log:
+		l.data = newValue
+	case types.Log:
+		l.data = append(l.data, newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (l *LogLines) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := l.Get(false)
+	l.Clear()
+	_, err := l.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		l.Set(oldData)
+	}
+	return err
+}
+
+func (l *LogLines) parseLogLine(line string, parts []string, comment string) (*types.Log, error) {
+	if len(parts) > 1 && parts[1] == "global" {
+		return &types.Log{Global: true}, nil
+	}
+	log := &types.Log{
 		Address: parts[1],
 		Comment: comment,
 	}
@@ -58,7 +81,7 @@ func (l *LogLines) parseLogLine(line string, parts []string, comment string) (Lo
 		return log, &errors.ParseError{Parser: "Log", Line: line}
 	}
 	facility := parts[currIndex]
-	if _, ok := l.AllowedFacitlitys[facility]; !ok {
+	if _, ok := l.allowedFacitlites[facility]; !ok {
 		return log, &errors.ParseError{Parser: "Log", Line: line}
 	}
 	log.Facility = facility
@@ -68,7 +91,7 @@ func (l *LogLines) parseLogLine(line string, parts []string, comment string) (Lo
 		return log, nil
 	}
 	level := parts[currIndex]
-	if _, ok := l.AllowedLevels[level]; !ok {
+	if _, ok := l.allowedLevels[level]; !ok {
 		return log, nil
 	}
 	log.Level = level
@@ -78,7 +101,7 @@ func (l *LogLines) parseLogLine(line string, parts []string, comment string) (Lo
 		return log, nil
 	}
 	level = parts[currIndex]
-	if _, ok := l.AllowedLevels[level]; !ok {
+	if _, ok := l.allowedLevels[level]; !ok {
 		return log, nil
 	}
 	log.MinLevel = level
@@ -88,23 +111,19 @@ func (l *LogLines) parseLogLine(line string, parts []string, comment string) (Lo
 func (l *LogLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "log" {
 		if log, err := l.parseLogLine(line, parts, comment); err == nil {
-			l.LogLines = append(l.LogLines, log)
+			l.data = append(l.data, *log)
 		}
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "LogLines", Line: line}
 }
 
-func (l *LogLines) Valid() bool {
-	if len(l.LogLines) > 0 {
-		return true
+func (l *LogLines) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(l.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (l *LogLines) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(l.LogLines))
-	for index, log := range l.LogLines {
+	result := make([]common.ReturnResultLine, len(l.data))
+	for index, log := range l.data {
 		if log.Global {
 			result[index] = common.ReturnResultLine{
 				Data:    "log global",
@@ -128,5 +147,5 @@ func (l *LogLines) Result(AddComments bool) []common.ReturnResultLine {
 			}
 		}
 	}
-	return result
+	return result, nil
 }

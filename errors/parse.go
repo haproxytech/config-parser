@@ -12,3 +12,9 @@ type ParseError struct {
 func (e *ParseError) Error() string {
 	return fmt.Sprintf("%s:%s: Parse error on %s", e.Parser, e.Message, e.Line)
 }
+
+type FetchError struct{}
+
+func (e *FetchError) Error() string {
+	return fmt.Sprintf("no data")
+}

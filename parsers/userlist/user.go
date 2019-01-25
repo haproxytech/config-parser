@@ -6,31 +6,58 @@ import (
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
-type User struct {
-	Name       string
-	Password   string
-	IsInsecure bool
-	Groups     []string
-	Comment    string
-}
-
 type UserLines struct {
-	UserLines []User
+	data []types.User
 }
 
 func (l *UserLines) Init() {
-	l.UserLines = []User{}
+	l.data = []types.User{}
 }
 
 func (l *UserLines) GetParserName() string {
 	return "user"
 }
 
-func (l *UserLines) parseUserLine(line string, parts []string, comment string) (User, error) {
+func (l *UserLines) Clear() {
+	l.Init()
+}
+
+func (l *UserLines) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(l.data) == 0 && createIfNotExist {
+		return nil, &errors.FetchError{}
+	}
+	return l.data, nil
+}
+
+func (l *UserLines) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []types.User:
+		l.data = newValue
+	case *types.User:
+		l.data = append(l.data, *newValue)
+	case types.User:
+		l.data = append(l.data, newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (l *UserLines) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := l.Get(false)
+	l.Clear()
+	_, err := l.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		l.Set(oldData)
+	}
+	return err
+}
+
+func (l *UserLines) parseUserLine(line string, parts []string, comment string) (*types.User, error) {
 	if len(parts) >= 2 {
-		user := User{
+		user := types.User{
 			Name:    parts[1],
 			Comment: comment,
 		}
@@ -50,9 +77,9 @@ func (l *UserLines) parseUserLine(line string, parts []string, comment string) (
 		if len(parts) > index {
 			user.Groups = common.StringSplitIgnoreEmpty(parts[index], ',')
 		}
-		return user, nil
+		return &user, nil
 	}
-	return User{}, &errors.ParseError{Parser: "UserLines", Line: line}
+	return nil, &errors.ParseError{Parser: "UserLines", Line: line}
 }
 
 func (l *UserLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
@@ -61,22 +88,18 @@ func (l *UserLines) Parse(line string, parts, previousParts []string, comment st
 		if err != nil {
 			return "", &errors.ParseError{Parser: "UserLines", Line: line}
 		}
-		l.UserLines = append(l.UserLines, user)
+		l.data = append(l.data, *user)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "UserLines", Line: line}
 }
 
-func (l *UserLines) Valid() bool {
-	if len(l.UserLines) > 0 {
-		return true
+func (l *UserLines) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(l.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (l *UserLines) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(l.UserLines))
-	for index, user := range l.UserLines {
+	result := make([]common.ReturnResultLine, len(l.data))
+	for index, user := range l.data {
 		pwd := ""
 		if user.Password != "" {
 			if user.IsInsecure {
@@ -105,5 +128,5 @@ func (l *UserLines) Result(AddComments bool) []common.ReturnResultLine {
 			Comment: user.Comment,
 		}
 	}
-	return result
+	return result, nil
 }

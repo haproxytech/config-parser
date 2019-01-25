@@ -6,33 +6,61 @@ import (
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
-type Peer struct {
-	Name    string
-	IP      string
-	Port    int64
-	Comment string
-}
-
 type Peers struct {
-	Peers []Peer
+	data []types.Peer
 }
 
 func (l *Peers) Init() {
-	l.Peers = []Peer{}
+	l.data = []types.Peer{}
 }
 
 func (l *Peers) GetParserName() string {
 	return "peer"
 }
 
-func (l *Peers) parsePeerLine(line string, parts []string, comment string) (Peer, error) {
+func (l *Peers) Clear() {
+	l.Init()
+}
+
+func (l *Peers) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(l.data) == 0 && !createIfNotExist {
+		return nil, &errors.FetchError{}
+	}
+	return l.data, nil
+}
+
+func (l *Peers) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []types.Peer:
+		l.data = newValue
+	case types.Peer:
+		l.data = append(l.data, newValue)
+	case *types.Peer:
+		l.data = append(l.data, *newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (l *Peers) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := l.Get(false)
+	l.Clear()
+	_, err := l.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		l.Set(oldData)
+	}
+	return err
+}
+
+func (l *Peers) parsePeerLine(line string, parts []string, comment string) (*types.Peer, error) {
 	if len(parts) >= 2 {
 		adr := common.StringSplitIgnoreEmpty(parts[2], ':')
 		if len(adr) >= 2 {
 			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {
-				return Peer{
+				return &types.Peer{
 					Name:    parts[1],
 					IP:      adr[0],
 					Port:    port,
@@ -41,35 +69,31 @@ func (l *Peers) parsePeerLine(line string, parts []string, comment string) (Peer
 			}
 		}
 	}
-	return Peer{}, &errors.ParseError{Parser: "PeerLines", Line: line}
+	return nil, &errors.ParseError{Parser: "PeerLines", Line: line}
 }
 
 func (l *Peers) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "peer" {
-		nameserver, err := l.parsePeerLine(line, parts, comment)
+		peer, err := l.parsePeerLine(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "PeerLines", Line: line}
 		}
-		l.Peers = append(l.Peers, nameserver)
+		l.data = append(l.data, *peer)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "PeerLines", Line: line}
 }
 
-func (l *Peers) Valid() bool {
-	if len(l.Peers) > 0 {
-		return true
+func (l *Peers) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(l.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (l *Peers) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(l.Peers))
-	for index, peer := range l.Peers {
+	result := make([]common.ReturnResultLine, len(l.data))
+	for index, peer := range l.data {
 		result[index] = common.ReturnResultLine{
 			Data:    fmt.Sprintf("peer %s %s:%d", peer.Name, peer.IP, peer.Port),
 			Comment: peer.Comment,
 		}
 	}
-	return result
+	return result, nil
 }

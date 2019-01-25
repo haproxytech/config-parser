@@ -1,46 +1,78 @@
 package parsers
 
 import (
+	"fmt"
+
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
 type Daemon struct {
-	Enabled bool
-	Comment string
+	data *types.Enabled
 }
 
 func (d *Daemon) Init() {
-	d.Enabled = false
+	d.data = nil
 }
 
 func (d *Daemon) GetParserName() string {
 	return "daemon"
 }
 
+func (d *Daemon) Clear() {
+	d.Init()
+}
+
+func (d *Daemon) Get(createIfNotExist bool) (common.ParserData, error) {
+	if d.data == nil {
+		if createIfNotExist {
+			d.data = &types.Enabled{}
+			return d.data, nil
+		}
+		return nil, &errors.FetchError{}
+	}
+	return d.data, nil
+}
+
+func (d *Daemon) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case *types.Enabled:
+		d.data = newValue
+	case types.Enabled:
+		d.data = &newValue
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (d *Daemon) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := d.Get(false)
+	d.Clear()
+	_, err := d.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		d.Set(oldData)
+	}
+	return err
+}
+
 func (d *Daemon) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "daemon" {
-		d.Comment = comment
-		d.Enabled = true
+		d.data = &types.Enabled{
+			Comment: comment,
+		}
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Daemon", Line: line}
 }
 
-func (d *Daemon) Valid() bool {
-	if d.Enabled {
-		return true
+func (d *Daemon) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if d.data == nil {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (d *Daemon) Result(AddComments bool) []common.ReturnResultLine {
-	if d.Enabled {
-		return []common.ReturnResultLine{
-			common.ReturnResultLine{
-				Data: "daemon",
-			},
-		}
-	}
-	return []common.ReturnResultLine{}
+	return []common.ReturnResultLine{
+		common.ReturnResultLine{
+			Data: "daemon",
+		},
+	}, nil
 }

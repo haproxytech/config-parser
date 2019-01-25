@@ -6,29 +6,56 @@ import (
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
-type Group struct {
-	Name    string
-	Users   []string
-	Comment string
-}
-
 type GroupLines struct {
-	GroupLines []Group
+	data []types.Group
 }
 
 func (l *GroupLines) Init() {
-	l.GroupLines = []Group{}
+	l.data = []types.Group{}
 }
 
 func (l *GroupLines) GetParserName() string {
 	return "group"
 }
 
-func (l *GroupLines) parseGroupLine(line string, parts []string, comment string) (Group, error) {
+func (l *GroupLines) Clear() {
+	l.Init()
+}
+
+func (l *GroupLines) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(l.data) == 0 && !createIfNotExist {
+		return nil, &errors.FetchError{}
+	}
+	return l.data, nil
+}
+
+func (l *GroupLines) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []types.Group:
+		l.data = newValue
+	case types.Group:
+		l.data = append(l.data, newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (l *GroupLines) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := l.Get(false)
+	l.Clear()
+	_, err := l.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		l.Set(oldData)
+	}
+	return err
+}
+
+func (l *GroupLines) parseGroupLine(line string, parts []string, comment string) (*types.Group, error) {
 	if len(parts) >= 2 {
-		group := Group{
+		group := &types.Group{
 			Name:    parts[1],
 			Comment: comment,
 		}
@@ -37,7 +64,7 @@ func (l *GroupLines) parseGroupLine(line string, parts []string, comment string)
 		}
 		return group, nil
 	}
-	return Group{}, &errors.ParseError{Parser: "GroupLines", Line: line}
+	return nil, &errors.ParseError{Parser: "GroupLines", Line: line}
 }
 
 func (l *GroupLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
@@ -46,22 +73,18 @@ func (l *GroupLines) Parse(line string, parts, previousParts []string, comment s
 		if err != nil {
 			return "", &errors.ParseError{Parser: "GroupLines", Line: line}
 		}
-		l.GroupLines = append(l.GroupLines, group)
+		l.data = append(l.data, *group)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "GroupLines", Line: line}
 }
 
-func (l *GroupLines) Valid() bool {
-	if len(l.GroupLines) > 0 {
-		return true
+func (l *GroupLines) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(l.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (l *GroupLines) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(l.GroupLines))
-	for index, group := range l.GroupLines {
+	result := make([]common.ReturnResultLine, len(l.data))
+	for index, group := range l.data {
 		users := ""
 		if len(group.Users) > 0 {
 			var s strings.Builder
@@ -82,5 +105,5 @@ func (l *GroupLines) Result(AddComments bool) []common.ReturnResultLine {
 			Comment: group.Comment,
 		}
 	}
-	return result
+	return result, nil
 }

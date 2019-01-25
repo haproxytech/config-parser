@@ -1,6 +1,8 @@
 package filters
 
 import (
+	"fmt"
+
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
@@ -11,15 +13,49 @@ type Filter interface {
 }
 
 type Filters struct {
-	Filters []Filter
+	data []Filter
 }
 
 func (h *Filters) Init() {
-	h.Filters = []Filter{}
+	h.data = []Filter{}
 }
 
 func (h *Filters) GetParserName() string {
 	return "filter"
+}
+
+func (h *Filters) Clear() {
+	h.Init()
+}
+
+func (h *Filters) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(h.data) == 0 && !createIfNotExist {
+		return nil, &errors.FetchError{}
+	}
+	return h.data, nil
+}
+
+func (h *Filters) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []Filter:
+		h.data = newValue
+	case Filter:
+		h.data = append(h.data, newValue)
+	case *Filter:
+		h.data = append(h.data, *newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (h *Filters) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := h.Get(false)
+	h.Clear()
+	_, err := h.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		h.Set(oldData)
+	}
+	return err
 }
 
 func (f *Filters) ParseFilter(filter Filter, parts []string, comment string) error {
@@ -27,7 +63,7 @@ func (f *Filters) ParseFilter(filter Filter, parts []string, comment string) err
 	if err != nil {
 		return &errors.ParseError{Parser: "FilterLines", Line: ""}
 	}
-	f.Filters = append(f.Filters, filter)
+	f.data = append(f.data, filter)
 	return nil
 }
 
@@ -52,17 +88,13 @@ func (h *Filters) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: "FilterLines", Line: line}
 }
 
-func (h *Filters) Valid() bool {
-	if len(h.Filters) > 0 {
-		return true
+func (h *Filters) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(h.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (h *Filters) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(h.Filters))
-	for index, req := range h.Filters {
+	result := make([]common.ReturnResultLine, len(h.data))
+	for index, req := range h.data {
 		result[index] = req.Result()
 	}
-	return result
+	return result, nil
 }

@@ -6,32 +6,59 @@ import (
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
-type CpuMap struct {
-	Name    string
-	Value   string
-	Comment string
-}
-
 type CpuMapLines struct {
-	CpuMapLines []*CpuMap
+	data []types.CpuMap
 }
 
 func (c *CpuMapLines) Init() {
-	c.CpuMapLines = []*CpuMap{}
+	c.data = []types.CpuMap{}
 }
 
 func (c *CpuMapLines) GetParserName() string {
 	return "cpu-map"
 }
 
-func (c *CpuMapLines) parseCpuMapLine(parts []string, comment string) (*CpuMap, error) {
+func (c *CpuMapLines) Clear() {
+	c.Init()
+}
+
+func (c *CpuMapLines) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(c.data) == 0 {
+		return nil, &errors.FetchError{}
+	}
+	return c.data, nil
+}
+
+func (c *CpuMapLines) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []types.CpuMap:
+		c.data = newValue
+	case types.CpuMap:
+		c.data = append(c.data, newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (c *CpuMapLines) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := c.Get(false)
+	c.Clear()
+	_, err := c.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		c.Set(oldData)
+	}
+	return err
+}
+
+func (c *CpuMapLines) parseCpuMapLine(parts []string, comment string) (*types.CpuMap, error) {
 
 	if len(parts) < 3 {
 		return nil, &errors.ParseError{Parser: "CpuMapSingle", Line: strings.Join(parts, " "), Message: "Parse error"}
 	}
-	cpuMap := &CpuMap{
+	cpuMap := &types.CpuMap{
 		Name:    parts[1],
 		Value:   parts[2],
 		Comment: comment,
@@ -41,45 +68,41 @@ func (c *CpuMapLines) parseCpuMapLine(parts []string, comment string) (*CpuMap, 
 
 func (c *CpuMapLines) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "cpu-map" {
-		if nameserver, err := c.parseCpuMapLine(parts, comment); err == nil {
-			c.CpuMapLines = append(c.CpuMapLines, nameserver)
+		if item, err := c.parseCpuMapLine(parts, comment); err == nil {
+			c.data = append(c.data, *item)
 		}
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "CpuMapLines", Line: line}
 }
 
-func (c *CpuMapLines) Valid() bool {
-	if len(c.CpuMapLines) > 0 {
-		return true
+func (c *CpuMapLines) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(c.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (c *CpuMapLines) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(c.CpuMapLines))
-	for index, cpuMap := range c.CpuMapLines {
+	result := make([]common.ReturnResultLine, len(c.data))
+	for index, cpuMap := range c.data {
 		result[index] = common.ReturnResultLine{
 			Data:    fmt.Sprintf("cpu-map %s %s", cpuMap.Name, cpuMap.Value),
 			Comment: cpuMap.Comment,
 		}
 	}
-	return result
+	return result, nil
 }
 
 func (c *CpuMapLines) Equal(b *CpuMapLines) bool {
 	if b == nil {
 		return false
 	}
-	if b.CpuMapLines == nil {
+	if b.data == nil {
 		return false
 	}
-	if len(c.CpuMapLines) != len(b.CpuMapLines) {
+	if len(c.data) != len(b.data) {
 		return false
 	}
-	for _, cCpuMap := range c.CpuMapLines {
+	for _, cCpuMap := range c.data {
 		found := false
-		for _, bCpuMap := range b.CpuMapLines {
+		for _, bCpuMap := range b.data {
 			if cCpuMap.Name == bCpuMap.Name {
 				if cCpuMap.Value != bCpuMap.Value {
 					return false

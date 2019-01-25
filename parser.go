@@ -7,6 +7,7 @@ import (
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/parsers/extra"
+	"github.com/haproxytech/config-parser/types"
 )
 
 //Parser reads and writes configuration on given file
@@ -23,66 +24,75 @@ type Parser struct {
 	Mailers   map[string]*ParserTypes
 }
 
-func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string) (ParserType, error) {
+func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string) (common.ParserData, error) {
 	for _, parser := range data[key].parsers {
-		if parser.GetParserName() == attribute && parser.Valid() {
-			return parser, nil
+		if parser.GetParserName() == attribute {
+			return parser.Get(false)
+		}
+	}
+	return nil, fmt.Errorf("attribute not found")
+}
+func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute string, createIfNotExist bool) (common.ParserData, error) {
+	for _, parser := range data[key].parsers {
+		if parser.GetParserName() == attribute {
+			return parser.Get(createIfNotExist)
 		}
 	}
 	return nil, fmt.Errorf("attribute not found")
 }
 
 //GetDefaultsAttr get attribute from defaults section
-func (p *Parser) GetDefaultsAttr(attribute string) (ParserType, error) {
+func (p *Parser) GetDefaultsAttr(attribute string) (common.ParserData, error) {
 	return p.Default.Get(attribute)
 }
 
 //GetGlobalAttr get attribute from global section
-func (p *Parser) GetGlobalAttr(attribute string) (ParserType, error) {
+func (p *Parser) GetGlobalAttr(attribute string) (common.ParserData, error) {
 	return p.Global.Get(attribute)
 }
 
-//NewGlobalAttr adds attribute to global section, if exists, replaces it
-func (p *Parser) NewGlobalAttr(parser ParserType) {
-	p.Global.Set(parser)
-}
-
 //GetUserlistAttr get attribute from listen sections
-func (p *Parser) GetUserlistAttr(section string, attribute string) (ParserType, error) {
+func (p *Parser) GetUserlistAttr(section string, attribute string) (common.ParserData, error) {
 	return p.get(p.UserLists, section, attribute)
 }
 
 //GetUserlistAttr get attribute from peers sections
-func (p *Parser) GetPeersAttr(section string, attribute string) (ParserType, error) {
+func (p *Parser) GetPeersAttr(section string, attribute string) (common.ParserData, error) {
 	return p.get(p.Peers, section, attribute)
 }
 
 //GetMailersAttr get attribute from mailer sections
-func (p *Parser) GetMailersAttr(section string, attribute string) (ParserType, error) {
+func (p *Parser) GetMailersAttr(section string, attribute string) (common.ParserData, error) {
 	return p.get(p.Mailers, section, attribute)
 }
 
+//GetMailersAttr get attribute from mailer sections
+func (p *Parser) GetResolversAttr(section string, attribute string) (common.ParserData, error) {
+	return p.get(p.Resolvers, section, attribute)
+}
+
 //GetFrontendAttr get attribute from frontend sections
-func (p *Parser) GetFrontendAttr(frontendName string, attribute string) (ParserType, error) {
+func (p *Parser) GetFrontendAttr(frontendName string, attribute string) (common.ParserData, error) {
 	return p.get(p.Frontends, frontendName, attribute)
 }
 
 //GetBackendAttr get attribute from backend sections
-func (p *Parser) GetBackendAttr(backendName string, attribute string) (ParserType, error) {
+func (p *Parser) GetBackendAttr(backendName string, attribute string) (common.ParserData, error) {
 	return p.get(p.Backends, backendName, attribute)
 }
 
 //GetListenAttr get attribute from listen sections
-func (p *Parser) GetListenAttr(section string, attribute string) (ParserType, error) {
+func (p *Parser) GetListenAttr(section string, attribute string) (common.ParserData, error) {
 	return p.get(p.Listen, section, attribute)
 }
 
 func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder) {
 	for _, parser := range parsers {
-		if !parser.Valid() {
+		lines, err := parser.Result(true)
+		if err != nil {
 			continue
 		}
-		for _, line := range parser.Result(true) {
+		for _, line := range lines {
 			result.WriteString("  ")
 			result.WriteString(line.Data)
 			if line.Comment != "" {
@@ -108,50 +118,50 @@ func (p *Parser) String() string {
 	result.WriteString("\n")
 	p.writeParsers(p.Global.parsers, &result)
 
-	for sectionName, section := range p.UserLists {
+	for parserSectionName, section := range p.UserLists {
 		result.WriteString("\nuserlist ")
-		result.WriteString(sectionName)
+		result.WriteString(parserSectionName)
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
 
-	for sectionName, section := range p.Peers {
+	for parserSectionName, section := range p.Peers {
 		result.WriteString("\npeers ")
-		result.WriteString(sectionName)
+		result.WriteString(parserSectionName)
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
 
-	for sectionName, section := range p.Mailers {
+	for parserSectionName, section := range p.Mailers {
 		result.WriteString("\nmailers ")
-		result.WriteString(sectionName)
+		result.WriteString(parserSectionName)
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
 
-	for sectionName, section := range p.Resolvers {
+	for parserSectionName, section := range p.Resolvers {
 		result.WriteString("\nresolvers ")
-		result.WriteString(sectionName)
+		result.WriteString(parserSectionName)
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
 
-	for sectionName, section := range p.Frontends {
+	for parserSectionName, section := range p.Frontends {
 		result.WriteString("\nfrontend ")
-		result.WriteString(sectionName)
+		result.WriteString(parserSectionName)
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
 
-	for sectionName, section := range p.Backends {
+	for parserSectionName, section := range p.Backends {
 		result.WriteString("\nbackend ")
-		result.WriteString(sectionName)
+		result.WriteString(parserSectionName)
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
-	for sectionName, section := range p.Listen {
+	for parserSectionName, section := range p.Listen {
 		result.WriteString("\nlisten ")
-		result.WriteString(sectionName)
+		result.WriteString(parserSectionName)
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
@@ -185,45 +195,59 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Global
 				}
 				if config.State == "frontend" {
-					sectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
 					config.Frontend = getFrontendParser()
-					p.Frontends[sectionName.SectionName] = config.Frontend
+					p.Frontends[data.Name] = config.Frontend
 					config.Active = *config.Frontend
 				}
 				if config.State == "backend" {
-					sectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
 					config.Backend = getBackendParser()
-					p.Backends[sectionName.SectionName] = config.Backend
+					p.Backends[data.Name] = config.Backend
 					config.Active = *config.Backend
 				}
 				if config.State == "listen" {
-					sectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
 					config.Listen = getListenParser()
-					p.Listen[sectionName.SectionName] = config.Listen
+					p.Listen[data.Name] = config.Listen
 					config.Active = *config.Listen
 				}
 				if config.State == "resolvers" {
-					sectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
 					config.Resolver = getResolverParser()
-					p.Resolvers[sectionName.SectionName] = config.Resolver
+					p.Resolvers[data.Name] = config.Resolver
 					config.Active = *config.Resolver
 				}
 				if config.State == "userlist" {
-					sectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
 					config.Userlist = getUserlistParser()
-					p.UserLists[sectionName.SectionName] = config.Userlist
+					p.UserLists[data.Name] = config.Userlist
 					config.Active = *config.Userlist
 				}
 				if config.State == "peers" {
-					sectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
 					config.Peers = getPeersParser()
-					p.Peers[sectionName.SectionName] = config.Peers
+					p.Peers[data.Name] = config.Peers
 					config.Active = *config.Peers
 				}
 				if config.State == "mailers" {
-					sectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
 					config.Mailers = getMailersParser()
-					p.Mailers[sectionName.SectionName] = config.Mailers
+					p.Mailers[data.Name] = config.Mailers
 					config.Active = *config.Mailers
 				}
 			}
@@ -265,6 +289,9 @@ func (p *Parser) LoadData(filename string) error {
 			continue
 		}
 		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ')
+		if len(parts) == 0 && comment != "" {
+			parts = []string{""}
+		}
 		if len(parts) == 0 {
 			continue
 		}

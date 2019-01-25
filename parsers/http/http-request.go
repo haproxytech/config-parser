@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/haproxytech/config-parser/common"
@@ -9,15 +10,49 @@ import (
 )
 
 type HTTPRequests struct {
-	HTTPRequests []HTTPAction
+	data []HTTPAction
 }
 
 func (h *HTTPRequests) Init() {
-	h.HTTPRequests = []HTTPAction{}
+	h.data = []HTTPAction{}
 }
 
 func (h *HTTPRequests) GetParserName() string {
 	return "http-request"
+}
+
+func (h *HTTPRequests) Clear() {
+	h.Init()
+}
+
+func (h *HTTPRequests) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(h.data) == 0 && !createIfNotExist {
+		return nil, &errors.FetchError{}
+	}
+	return h.data, nil
+}
+
+func (h *HTTPRequests) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []HTTPAction:
+		h.data = newValue
+	case HTTPAction:
+		h.data = append(h.data, newValue)
+	case *HTTPAction:
+		h.data = append(h.data, *newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (h *HTTPRequests) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := h.Get(false)
+	h.Clear()
+	_, err := h.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		h.Set(oldData)
+	}
+	return err
 }
 
 func (f *HTTPRequests) ParseHTTPRequest(request HTTPAction, parts []string, comment string) error {
@@ -25,7 +60,7 @@ func (f *HTTPRequests) ParseHTTPRequest(request HTTPAction, parts []string, comm
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPRequestLines", Line: ""}
 	}
-	f.HTTPRequests = append(f.HTTPRequests, request)
+	f.data = append(f.data, request)
 	return nil
 }
 
@@ -68,20 +103,16 @@ func (h *HTTPRequests) Parse(line string, parts, previousParts []string, comment
 	return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
 }
 
-func (h *HTTPRequests) Valid() bool {
-	if len(h.HTTPRequests) > 0 {
-		return true
+func (h *HTTPRequests) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(h.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (h *HTTPRequests) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(h.HTTPRequests))
-	for index, req := range h.HTTPRequests {
+	result := make([]common.ReturnResultLine, len(h.data))
+	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{
 			Data:    "http-request " + req.String(),
 			Comment: req.GetComment(),
 		}
 	}
-	return result
+	return result, nil
 }

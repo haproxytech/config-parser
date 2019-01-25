@@ -1,6 +1,8 @@
 package extra
 
 import (
+	"fmt"
+
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
@@ -9,36 +11,61 @@ type Comments struct {
 	comments []string
 }
 
-func (c *Comments) Init() {
-	c.comments = []string{}
+func (p *Comments) Init() {
+	p.comments = []string{}
 }
 
-func (c *Comments) GetParserName() string {
+func (p *Comments) Clear() {
+	p.Init()
+}
+
+func (p *Comments) GetParserName() string {
 	return "#"
 }
 
-func (c *Comments) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *Comments) Get(createIfNotExist bool) (common.ParserData, error) {
+	return p.comments, nil
+}
+
+func (p *Comments) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []string:
+		p.comments = newValue
+	case string:
+		p.comments = append(p.comments, newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (p *Comments) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := p.Get(false)
+	p.Clear()
+	_, err := p.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		p.Set(oldData)
+	}
+	return err
+}
+
+func (p *Comments) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if line[0] == '#' {
-		c.comments = append(c.comments, line)
+		p.comments = append(p.comments, line)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Comments", Line: line}
 }
 
-func (c *Comments) Valid() bool {
-	if len(c.comments) > 0 {
-		return true
+func (p *Comments) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(p.comments) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (c *Comments) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(c.comments))
-	for index, comment := range c.comments {
+	result := make([]common.ReturnResultLine, len(p.comments))
+	for index, comment := range p.comments {
 		result[index] = common.ReturnResultLine{
 			Data:    comment,
 			Comment: "",
 		}
 	}
-	return result
+	return result, nil
 }

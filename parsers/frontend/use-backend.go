@@ -6,31 +6,59 @@ import (
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
-type UseBackend struct {
-	Name          string
-	Condition     string
-	ConditionKind string
-	Comment       string
-}
-
 type UseBackends struct {
-	UseBackends []UseBackend
+	data []types.UseBackend
 }
 
 func (h *UseBackends) Init() {
-	h.UseBackends = []UseBackend{}
+	h.data = []types.UseBackend{}
 }
 
 func (h *UseBackends) GetParserName() string {
 	return "use_backend"
 }
 
-func (h *UseBackends) parseUseBackendLine(line string, parts []string, comment string) (UseBackend, error) {
+func (h *UseBackends) Clear() {
+	h.Init()
+}
+
+func (h *UseBackends) Get(createIfNotExist bool) (common.ParserData, error) {
+	if len(h.data) == 0 && !createIfNotExist {
+		return nil, &errors.FetchError{}
+	}
+	return h.data, nil
+}
+
+func (h *UseBackends) Set(data common.ParserData) error {
+	switch newValue := data.(type) {
+	case []types.UseBackend:
+		h.data = newValue
+	case types.UseBackend:
+		h.data = append(h.data, newValue)
+	case *types.UseBackend:
+		h.data = append(h.data, *newValue)
+	}
+	return fmt.Errorf("casting error")
+}
+
+func (h *UseBackends) SetStr(data string) error {
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
+	oldData, _ := h.Get(false)
+	h.Clear()
+	_, err := h.Parse(data, parts, []string{}, comment)
+	if err != nil {
+		h.Set(oldData)
+	}
+	return err
+}
+
+func (h *UseBackends) parseUseBackendLine(line string, parts []string, comment string) (*types.UseBackend, error) {
 	if len(parts) >= 4 {
 		_, condition := common.SplitRequest(parts[2:])
-		data := UseBackend{
+		data := &types.UseBackend{
 			Name:    parts[1],
 			Comment: comment,
 		}
@@ -40,31 +68,27 @@ func (h *UseBackends) parseUseBackendLine(line string, parts []string, comment s
 		}
 		return data, nil
 	}
-	return UseBackend{}, &errors.ParseError{Parser: "UseBackendLines", Line: line}
+	return nil, &errors.ParseError{Parser: "UseBackendLines", Line: line}
 }
 
 func (h *UseBackends) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "use_backend" {
-		request, err := h.parseUseBackendLine(line, parts, comment)
+		item, err := h.parseUseBackendLine(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "UseBackendLines", Line: line}
 		}
-		h.UseBackends = append(h.UseBackends, request)
+		h.data = append(h.data, *item)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "UseBackendLines", Line: line}
 }
 
-func (h *UseBackends) Valid() bool {
-	if len(h.UseBackends) > 0 {
-		return true
+func (h *UseBackends) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+	if len(h.data) == 0 {
+		return nil, &errors.FetchError{}
 	}
-	return false
-}
-
-func (h *UseBackends) Result(AddComments bool) []common.ReturnResultLine {
-	result := make([]common.ReturnResultLine, len(h.UseBackends))
-	for index, req := range h.UseBackends {
+	result := make([]common.ReturnResultLine, len(h.data))
+	for index, req := range h.data {
 		condition := ""
 		if req.Condition != "" {
 			condition = fmt.Sprintf(" %s %s", req.ConditionKind, req.Condition)
@@ -74,5 +98,5 @@ func (h *UseBackends) Result(AddComments bool) []common.ReturnResultLine {
 			Comment: req.Comment,
 		}
 	}
-	return result
+	return result, nil
 }
