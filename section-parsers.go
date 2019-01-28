@@ -12,6 +12,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/stats"
+	"github.com/haproxytech/config-parser/parsers/tcp"
 	"github.com/haproxytech/config-parser/parsers/userlist"
 )
 
@@ -116,6 +117,7 @@ func getFrontendParser() *ParserTypes {
 		&filters.Filters{},
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},
+		&tcp.TCPRequests{},
 
 		&simple.SimpleString{Name: "monitor-uri"},
 
@@ -145,6 +147,8 @@ func getBackendParser() *ParserTypes {
 		&filters.Filters{},
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},
+		&tcp.TCPRequests{},
+		&tcp.TCPResponses{},
 	})
 }
 
