@@ -117,6 +117,8 @@ func getFrontendParser() *ParserTypes {
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},
 
+		&simple.SimpleString{Name: "monitor-uri"},
+
 		&frontend.UseBackends{},
 		&parsers.DefaultBackend{},
 	})
