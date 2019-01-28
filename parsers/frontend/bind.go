@@ -3,7 +3,8 @@ package frontend
 import (
 	"fmt"
 
-	bindoptions "github.com/haproxytech/config-parser/bind-options"
+	"github.com/haproxytech/config-parser/params"
+
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/types"
@@ -59,7 +60,7 @@ func (h *Binds) parseBindLine(line string, parts []string, comment string) (*typ
 	if len(parts) >= 1 {
 		data := &types.Bind{
 			Path:    parts[1],
-			Params:  bindoptions.Parse(parts[2:]),
+			Params:  params.ParseBindOptions(parts[2:]),
 			Comment: comment,
 		}
 		return data, nil
@@ -86,7 +87,7 @@ func (h *Binds) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("bind %s %s", req.Path, bindoptions.String(req.Params)),
+			Data:    fmt.Sprintf("bind %s %s", req.Path, params.BindOptionsString(req.Params)),
 			Comment: req.Comment,
 		}
 	}

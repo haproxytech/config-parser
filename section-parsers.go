@@ -69,6 +69,7 @@ func getDefaultParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "tunnel"},
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
 
+		&parsers.DefaultServers{},
 		&defaults.ErrorFileLines{},
 		&parsers.DefaultBackend{},
 	})
@@ -140,17 +141,24 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "httplog"},
 		&simple.SimpleString{Name: "log-tag"},
 		&option.OptionHttpchk{},
+
 		&parsers.LogLines{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
 		&simple.SimpleTimeout{Name: "client"},
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
+		&simple.SimpleTimeout{Name: "check"},
+		&simple.SimpleTimeout{Name: "tunnel"},
+		&simple.SimpleTimeout{Name: "server"},
 
+		&parsers.DefaultServers{},
 		&filters.Filters{},
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},
 		&tcp.TCPRequests{},
 		&tcp.TCPResponses{},
+		&simple.SimpleString{Name: "cookie"},
+		&parsers.UseServers{},
 	})
 }
 

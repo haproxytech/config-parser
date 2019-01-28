@@ -1,8 +1,12 @@
-package bindoptions
+package params
 
 import "fmt"
 
 type ErrParseBindOption interface {
+	Error() string
+}
+
+type ErrParseServerOption interface {
 	Error() string
 }
 

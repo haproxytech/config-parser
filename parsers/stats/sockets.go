@@ -3,7 +3,8 @@ package stats
 import (
 	"fmt"
 
-	bindoptions "github.com/haproxytech/config-parser/bind-options"
+	"github.com/haproxytech/config-parser/params"
+
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/types"
@@ -61,7 +62,7 @@ func (l *SocketLines) parseSocketLine(line string, parts []string, comment strin
 	}
 	socket := &types.Socket{
 		Path:    parts[2],
-		Params:  bindoptions.Parse(parts[3:]),
+		Params:  params.ParseBindOptions(parts[3:]),
 		Comment: comment,
 	}
 	//s.value = elements[1:]
@@ -85,7 +86,7 @@ func (l *SocketLines) Result(AddComments bool) ([]common.ReturnResultLine, error
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, socket := range l.data {
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf(fmt.Sprintf("stats socket %s %s", socket.Path, bindoptions.String(socket.Params))),
+			Data:    fmt.Sprintf(fmt.Sprintf("stats socket %s %s", socket.Path, params.BindOptionsString(socket.Params))),
 			Comment: socket.Comment,
 		}
 	}

@@ -18,7 +18,7 @@ func (h *TCPResponses) Init() {
 }
 
 func (h *TCPResponses) GetParserName() string {
-	return "tpc-response"
+	return "tcp-response"
 }
 
 func (h *TCPResponses) Clear() {
@@ -65,7 +65,7 @@ func (f *TCPResponses) ParseTCPRequest(request TCPAction, parts []string, commen
 }
 
 func (h *TCPResponses) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) >= 2 && parts[0] == "tcp-request" {
+	if len(parts) >= 2 && parts[0] == "tcp-response" {
 		var err error
 		switch parts[1] {
 		case "content":

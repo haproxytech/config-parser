@@ -1,6 +1,6 @@
 package types
 
-import bindoptions "github.com/haproxytech/config-parser/bind-options"
+import "github.com/haproxytech/config-parser/params"
 
 //Enabled is used by parsers Daemon, MasterWorker
 type Enabled struct {
@@ -31,8 +31,14 @@ type StringSliceC struct {
 
 type Bind struct {
 	Path    string //can be address:port or socket path
-	Params  []bindoptions.BindOption
+	Params  []params.BindOption
 	Comment string
+}
+
+type Balance struct {
+	Algorithm string
+	Arguments []string
+	Comment   string
 }
 
 type CpuMap struct {
@@ -41,10 +47,9 @@ type CpuMap struct {
 	Comment string
 }
 
-type Balance struct {
-	Algorithm string
-	Arguments []string
-	Comment   string
+type DefaultServer struct {
+	Params  []params.ServerOption
+	Comment string
 }
 
 type ErrorFile struct {
@@ -108,7 +113,7 @@ type SimpleTimeout struct {
 
 type Socket struct {
 	Path    string //can be address:port
-	Params  []bindoptions.BindOption
+	Params  []params.BindOption
 	Comment string
 }
 
@@ -131,4 +136,10 @@ type User struct {
 	IsInsecure bool
 	Groups     []string
 	Comment    string
+}
+type UseServer struct {
+	Name          string
+	Condition     string
+	ConditionType string
+	Comment       string
 }

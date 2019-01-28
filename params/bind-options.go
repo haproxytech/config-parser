@@ -1,4 +1,4 @@
-package bindoptions
+package params
 
 import (
 	"fmt"
@@ -102,7 +102,7 @@ func (b *BindOptionValue) String() string {
 	return fmt.Sprintf("%s %s", b.Name, b.Value)
 }
 
-func getOptions() []BindOption {
+func getBindOptions() []BindOption {
 	return []BindOption{
 		&BindOptionWord{Name: "accept-proxy"},
 		&BindOptionWord{Name: "allow-0rtt"},
@@ -168,13 +168,13 @@ func getOptions() []BindOption {
 }
 
 //Parse ...
-func Parse(options []string) []BindOption {
+func ParseBindOptions(options []string) []BindOption {
 
 	result := []BindOption{}
 	currentIndex := 0
 	for currentIndex < len(options) {
 		found := false
-		for _, parser := range getOptions() {
+		for _, parser := range getBindOptions() {
 			if size, err := parser.Parse(options, currentIndex); err == nil {
 				result = append(result, parser)
 				found = true
@@ -188,7 +188,7 @@ func Parse(options []string) []BindOption {
 	return result
 }
 
-func String(options []BindOption) string {
+func BindOptionsString(options []BindOption) string {
 	var sb strings.Builder
 	first := true
 	for _, parser := range options {
