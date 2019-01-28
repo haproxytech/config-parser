@@ -100,6 +100,12 @@ type Section struct {
 	Name    string
 	Comment string
 }
+type Server struct {
+	Name    string
+	Address string
+	Params  []params.ServerOption
+	Comment string
+}
 
 type SimpleOption struct {
 	NoOption bool

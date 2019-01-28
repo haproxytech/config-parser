@@ -159,6 +159,7 @@ func getBackendParser() *ParserTypes {
 		&tcp.TCPResponses{},
 		&simple.SimpleString{Name: "cookie"},
 		&parsers.UseServers{},
+		&parsers.Servers{},
 	})
 }
 
