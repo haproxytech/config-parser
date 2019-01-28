@@ -13,6 +13,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/stats"
+	"github.com/haproxytech/config-parser/parsers/stick"
 	"github.com/haproxytech/config-parser/parsers/tcp"
 	"github.com/haproxytech/config-parser/parsers/userlist"
 )
@@ -152,6 +153,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "server"},
 
 		&parsers.DefaultServers{},
+		&stick.Sticks{},
 		&filters.Filters{},
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},

@@ -123,6 +123,15 @@ type Socket struct {
 	Comment string
 }
 
+type Stick struct {
+	Name          string
+	Pattern       string
+	Table         string
+	Condition     string
+	ConditionType string
+	Comment       string
+}
+
 type Nameserver struct {
 	Name    string
 	Address string
