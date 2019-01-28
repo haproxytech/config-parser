@@ -23,22 +23,11 @@ const (
 	Frontends Section = "frontend"
 	Backends  Section = "backend"
 	Listen    Section = "listen"
+	Cache     Section = "cache"
 )
 
 //Parser reads and writes configuration on given file
 type Parser struct {
-	/*
-		Comments  *ParserTypes
-		Default   *ParserTypes
-		Global    *ParserTypes
-		Frontends map[string]*ParserTypes
-		Backends  map[string]*ParserTypes
-		Listen    map[string]*ParserTypes
-		Resolvers map[string]*ParserTypes
-		UserLists map[string]*ParserTypes
-		Peers     map[string]*ParserTypes
-		Mailers   map[string]*ParserTypes
-	*/
 	Parsers map[Section]map[string]*ParserTypes
 }
 
@@ -142,6 +131,13 @@ func (p *Parser) String() string {
 		p.writeParsers(section.parsers, &result)
 	}
 
+	for parserSectionName, section := range p.Parsers[Cache] {
+		result.WriteString("\ncache ")
+		result.WriteString(parserSectionName)
+		result.WriteString("\n")
+		p.writeParsers(section.parsers, &result)
+	}
+
 	for parserSectionName, section := range p.Parsers[Frontends] {
 		result.WriteString("\nfrontend ")
 		result.WriteString(parserSectionName)
@@ -155,6 +151,7 @@ func (p *Parser) String() string {
 		result.WriteString("\n")
 		p.writeParsers(section.parsers, &result)
 	}
+
 	for parserSectionName, section := range p.Parsers[Listen] {
 		result.WriteString("\nlisten ")
 		result.WriteString(parserSectionName)
@@ -246,6 +243,14 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					p.Parsers[Mailers][data.Name] = config.Mailers
 					config.Active = *config.Mailers
 				}
+				if config.State == "cache" {
+					parserSectionName := parser.(*extra.SectionName)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
+					config.Cache = getCacheParser()
+					p.Parsers[Cache][data.Name] = config.Cache
+					config.Active = *config.Cache
+				}
 			}
 			break
 		}
@@ -280,6 +285,7 @@ func (p *Parser) ParseData(dat string) error {
 	p.Parsers[UserList] = map[string]*ParserTypes{}
 	p.Parsers[Peers] = map[string]*ParserTypes{}
 	p.Parsers[Mailers] = map[string]*ParserTypes{}
+	p.Parsers[Cache] = map[string]*ParserTypes{}
 
 	parsers := ConfiguredParsers{
 		State:    "",

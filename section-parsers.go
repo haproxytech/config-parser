@@ -27,6 +27,7 @@ func createParsers(parsers []ParserType) *ParserTypes {
 			&extra.SectionName{Name: "userlist"},
 			&extra.SectionName{Name: "peers"},
 			&extra.SectionName{Name: "mailers"},
+			&extra.SectionName{Name: "cache"},
 			&extra.UnProcessed{},
 		}...),
 	}
@@ -176,5 +177,12 @@ func getMailersParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&simple.SimpleTimeTwoWords{Keywords: []string{"timeout", "mail"}},
 		&mailers.Mailers{},
+	})
+}
+func getCacheParser() *ParserTypes {
+	return createParsers([]ParserType{
+		&simple.SimpleNumber{Name: "total-max-size"},
+		&simple.SimpleNumber{Name: "max-object-size"},
+		&simple.SimpleNumber{Name: "max-age"},
 	})
 }
