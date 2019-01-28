@@ -9,6 +9,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/global"
 	"github.com/haproxytech/config-parser/parsers/http"
 	"github.com/haproxytech/config-parser/parsers/mailers"
+	"github.com/haproxytech/config-parser/parsers/option"
 	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/stats"
@@ -138,6 +139,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "contstats"},
 		&simple.SimpleOption{Name: "httplog"},
 		&simple.SimpleString{Name: "log-tag"},
+		&option.OptionHttpchk{},
 		&parsers.LogLines{},
 
 		&simple.SimpleTimeout{Name: "http-request"},

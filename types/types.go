@@ -77,6 +77,13 @@ type Mailer struct {
 	Comment string
 }
 
+type OptionHttpchk struct {
+	Method  string
+	Uri     string
+	Version string
+	Comment string
+}
+
 type Peer struct {
 	Name    string
 	IP      string
