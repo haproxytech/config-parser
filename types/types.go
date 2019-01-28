@@ -61,6 +61,7 @@ type Group struct {
 
 type Log struct {
 	Global   bool
+	NoLog    bool
 	Address  string
 	Length   int64
 	Facility string

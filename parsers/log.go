@@ -115,6 +115,13 @@ func (l *LogLines) Parse(line string, parts, previousParts []string, comment str
 		}
 		return "", nil
 	}
+	if parts[0] == "no" && parts[1] == "log" {
+		l.data = append(l.data, types.Log{
+			NoLog:   true,
+			Comment: comment,
+		})
+		return "", nil
+	}
 	return "", &errors.ParseError{Parser: "LogLines", Line: line}
 }
 
@@ -127,6 +134,11 @@ func (l *LogLines) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 		if log.Global {
 			result[index] = common.ReturnResultLine{
 				Data:    "log global",
+				Comment: log.Comment,
+			}
+		} else if log.NoLog {
+			result[index] = common.ReturnResultLine{
+				Data:    "no log",
 				Comment: log.Comment,
 			}
 		} else {
