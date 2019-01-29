@@ -9,12 +9,12 @@ import (
 )
 
 type SectionName struct {
-	Name    string
-	section *types.Section
+	Name string
+	data *types.Section
 }
 
 func (s *SectionName) Init() {
-	s.section = &types.Section{}
+	s.data = &types.Section{}
 }
 
 func (s *SectionName) GetParserName() string {
@@ -22,11 +22,11 @@ func (s *SectionName) GetParserName() string {
 }
 
 func (s *SectionName) Get(createIfNotExist bool) (common.ParserData, error) {
-	if s.section.Name != "" {
-		return s.section, nil
+	if s.data != nil {
+		return s.data, nil
 	} else if createIfNotExist {
 		s.Init()
-		return s.section, nil
+		return s.data, nil
 	}
 	return nil, fmt.Errorf("No data")
 }
@@ -34,7 +34,7 @@ func (s *SectionName) Get(createIfNotExist bool) (common.ParserData, error) {
 func (s *SectionName) Set(data common.ParserData) error {
 	newData, ok := data.(types.Section)
 	if ok {
-		s.section = &newData
+		s.data = &newData
 		return nil
 	}
 	return fmt.Errorf("casting error")
@@ -51,10 +51,10 @@ func (s *SectionName) SetStr(data string) error {
 func (s *SectionName) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) > 1 {
-			s.section.Name = parts[1]
+			s.data.Name = parts[1]
 		}
 		if len(previousParts) > 1 && previousParts[0] == "#" {
-			s.section.Comment = previousParts[1]
+			s.data.Comment = previousParts[1]
 		}
 		return s.Name, nil
 	}
