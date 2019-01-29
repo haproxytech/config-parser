@@ -9,22 +9,36 @@ func AddToBoolMap(data map[string]bool, items ...string) {
 }
 
 //StringSplitIgnoreEmpty while spliting, removes empty items
-func StringSplitIgnoreEmpty(s string, sep rune) []string {
+func StringSplitIgnoreEmpty(s string, separators ...rune) []string {
 	f := func(c rune) bool {
-		return c == sep
+		willSplit := false
+		for _, sep := range separators {
+			if c == sep {
+				willSplit = true
+				break
+			}
+		}
+		return willSplit
 	}
 	return strings.FieldsFunc(s, f)
 }
 
 //StringSplitWithCommentIgnoreEmpty while spliting, removes empty items, if we have comment, separate it
-func StringSplitWithCommentIgnoreEmpty(s string, sep rune) (data []string, comment string) {
+func StringSplitWithCommentIgnoreEmpty(s string, separators ...rune) (data []string, comment string) {
 	tmp := strings.SplitN(s, "#", 2)
 	comment = ""
 	if len(tmp) > 1 {
 		comment = strings.TrimSpace(tmp[1])
 	}
 	f := func(c rune) bool {
-		return c == sep
+		willSplit := false
+		for _, sep := range separators {
+			if c == sep {
+				willSplit = true
+				break
+			}
+		}
+		return willSplit
 	}
 	return strings.FieldsFunc(tmp[0], f), comment
 }

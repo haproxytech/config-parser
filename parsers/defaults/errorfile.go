@@ -62,7 +62,7 @@ func (p *ErrorFileLines) SetStr(data string) error {
 }
 
 func (l *ErrorFileLines) parseErrorFileLine(line string, comment string) (*types.ErrorFile, error) {
-	parts := common.StringSplitIgnoreEmpty(line, ' ')
+	parts := common.StringSplitIgnoreEmpty(line, ' ', '\t')
 	if len(parts) < 3 {
 		return nil, &errors.ParseError{Parser: "ErrorFileLines", Line: line}
 	}
