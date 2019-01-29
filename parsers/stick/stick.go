@@ -29,7 +29,7 @@ func (h *Sticks) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (h *Sticks) Set(data common.ParserData) error {
-	if data == nil {
+	if h.data == nil {
 		h.Init()
 		return nil
 	}
