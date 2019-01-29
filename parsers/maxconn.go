@@ -22,7 +22,7 @@ func (p *MaxConn) GetParserName() string {
 }
 
 func (p *MaxConn) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data.Value < 1 {
+	if p.data == nil {
 		if createIfNotExist {
 			p.data = &types.Int64C{}
 			return p.data, nil
