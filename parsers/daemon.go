@@ -74,7 +74,8 @@ func (d *Daemon) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data: "daemon",
+			Data:    "daemon",
+			Comment: d.data.Comment,
 		},
 	}, nil
 }
