@@ -26,6 +26,11 @@ const (
 	Cache     Section = "cache"
 )
 
+const (
+	GlobalSectionName  = "data"
+	DefaultSectionName = "data"
+)
+
 //Parser reads and writes configuration on given file
 type Parser struct {
 	Parsers map[Section]map[string]*ParserTypes
@@ -39,6 +44,7 @@ func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string)
 	}
 	return nil, fmt.Errorf("attribute not found")
 }
+
 func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute string, createIfNotExist bool) (common.ParserData, error) {
 	for _, parser := range data[key].parsers {
 		if parser.GetParserName() == attribute {
@@ -49,7 +55,7 @@ func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute
 }
 
 //GetDefaultsAttr get attribute from defaults section
-func (p *Parser) GetAttr(sectionType Section, sectionName string, attribute string) (common.ParserData, error) {
+func (p *Parser) Get(sectionType Section, sectionName string, attribute string) (common.ParserData, error) {
 	st, ok := p.Parsers[sectionType]
 	if !ok {
 		return nil, fmt.Errorf("Section Type [%s] not found", sectionType)
@@ -61,14 +67,30 @@ func (p *Parser) GetAttr(sectionType Section, sectionName string, attribute stri
 	return section.Get(attribute)
 }
 
-//GetDefaultsAttr get attribute from defaults section
-func (p *Parser) GetDefaultsAttr(attribute string) (common.ParserData, error) {
-	return p.GetAttr(Defaults, "data", attribute)
+//Clear get attribute from defaults section
+func (p *Parser) Clear(sectionType Section, sectionName string, attribute string) error {
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return fmt.Errorf("Section Type [%s] not found", sectionType)
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return fmt.Errorf("Section [%s] not found", sectionName)
+	}
+	return section.Clear(attribute)
 }
 
-//GetGlobalAttr get attribute from global section
-func (p *Parser) GetGlobalAttr(attribute string) (common.ParserData, error) {
-	return p.GetAttr(Global, "data", attribute)
+//GetDefaultsAttr get attribute from defaults section
+func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData) error {
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return fmt.Errorf("Section Type [%s] not found", sectionType)
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return fmt.Errorf("Section [%s] not found", sectionName)
+	}
+	return section.Set(attribute, data)
 }
 
 func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder) {
@@ -97,11 +119,11 @@ func (p *Parser) String() string {
 
 	result.WriteString("\ndefaults ")
 	result.WriteString("\n")
-	p.writeParsers(p.Parsers[Defaults]["data"].parsers, &result)
+	p.writeParsers(p.Parsers[Defaults][DefaultSectionName].parsers, &result)
 
 	result.WriteString("\nglobal ")
 	result.WriteString("\n")
-	p.writeParsers(p.Parsers[Global]["data"].parsers, &result)
+	p.writeParsers(p.Parsers[Global][GlobalSectionName].parsers, &result)
 
 	for parserSectionName, section := range p.Parsers[UserList] {
 		result.WriteString("\nuserlist ")
@@ -273,10 +295,10 @@ func (p *Parser) ParseData(dat string) error {
 		"data": getStartParser(),
 	}
 	p.Parsers[Defaults] = map[string]*ParserTypes{
-		"data": getDefaultParser(),
+		DefaultSectionName: getDefaultParser(),
 	}
 	p.Parsers[Global] = map[string]*ParserTypes{
-		"data": getGlobalParser(),
+		GlobalSectionName: getGlobalParser(),
 	}
 	p.Parsers[Frontends] = map[string]*ParserTypes{}
 	p.Parsers[Backends] = map[string]*ParserTypes{}
@@ -291,8 +313,8 @@ func (p *Parser) ParseData(dat string) error {
 		State:    "",
 		Active:   *p.Parsers[Comments]["data"],
 		Comments: p.Parsers[Comments]["data"],
-		Defaults: p.Parsers[Defaults]["data"],
-		Global:   p.Parsers[Global]["data"],
+		Defaults: p.Parsers[Defaults][DefaultSectionName],
+		Global:   p.Parsers[Global][GlobalSectionName],
 	}
 
 	lines := common.StringSplitIgnoreEmpty(string(dat), '\n')
