@@ -21,10 +21,6 @@ func (c *CpuMapLines) GetParserName() string {
 	return "cpu-map"
 }
 
-func (c *CpuMapLines) Clear() {
-	c.Init()
-}
-
 func (c *CpuMapLines) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(c.data) == 0 {
 		return nil, errors.FetchError
@@ -33,19 +29,27 @@ func (c *CpuMapLines) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (c *CpuMapLines) Set(data common.ParserData) error {
+	if data == nil {
+		c.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case []types.CpuMap:
 		c.data = newValue
+	case *types.CpuMap:
+		c.data = append(c.data, *newValue)
 	case types.CpuMap:
 		c.data = append(c.data, newValue)
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (c *CpuMapLines) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := c.Get(false)
-	c.Clear()
+	c.Init()
 	_, err := c.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		c.Set(oldData)

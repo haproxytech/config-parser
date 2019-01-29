@@ -21,10 +21,6 @@ func (t *SimpleTimeout) GetParserName() string {
 	return fmt.Sprintf("timeout %s", t.Name)
 }
 
-func (p *SimpleTimeout) Clear() {
-	p.Init()
-}
-
 func (p *SimpleTimeout) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
@@ -37,19 +33,25 @@ func (p *SimpleTimeout) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *SimpleTimeout) Set(data common.ParserData) error {
+	if data == nil {
+		p.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.SimpleTimeout:
 		p.data = newValue
 	case types.SimpleTimeout:
 		p.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (p *SimpleTimeout) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := p.Get(false)
-	p.Clear()
+	p.Init()
 	_, err := p.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		p.Set(oldData)

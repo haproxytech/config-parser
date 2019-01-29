@@ -21,10 +21,6 @@ func (p *Balance) GetParserName() string {
 	return "balance"
 }
 
-func (p *Balance) Clear() {
-	p.Init()
-}
-
 func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
@@ -39,19 +35,25 @@ func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *Balance) Set(data common.ParserData) error {
+	if data == nil {
+		p.data = nil
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.Balance:
 		p.data = newValue
 	case types.Balance:
 		p.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (p *Balance) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := p.Get(false)
-	p.Clear()
+	p.data = nil
 	_, err := p.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		p.Set(oldData)

@@ -20,10 +20,6 @@ func (d *Daemon) GetParserName() string {
 	return "daemon"
 }
 
-func (d *Daemon) Clear() {
-	d.Init()
-}
-
 func (d *Daemon) Get(createIfNotExist bool) (common.ParserData, error) {
 	if d.data == nil {
 		if createIfNotExist {
@@ -36,19 +32,25 @@ func (d *Daemon) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (d *Daemon) Set(data common.ParserData) error {
+	if data == nil {
+		d.data = nil
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.Enabled:
 		d.data = newValue
 	case types.Enabled:
 		d.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (d *Daemon) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := d.Get(false)
-	d.Clear()
+	d.data = nil
 	_, err := d.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		d.Set(oldData)

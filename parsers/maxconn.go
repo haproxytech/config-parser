@@ -21,10 +21,6 @@ func (p *MaxConn) GetParserName() string {
 	return "maxconn"
 }
 
-func (p *MaxConn) Clear() {
-	p.Init()
-}
-
 func (p *MaxConn) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data.Value < 1 {
 		if createIfNotExist {
@@ -37,19 +33,25 @@ func (p *MaxConn) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *MaxConn) Set(data common.ParserData) error {
+	if data == nil {
+		p.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.Int64C:
 		p.data = newValue
 	case types.Int64C:
 		p.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (p *MaxConn) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := p.Get(false)
-	p.Clear()
+	p.Init()
 	_, err := p.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		p.Set(oldData)

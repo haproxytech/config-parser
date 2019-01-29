@@ -21,10 +21,6 @@ func (h *TCPRequests) GetParserName() string {
 	return "tpc-request"
 }
 
-func (h *TCPRequests) Clear() {
-	h.Init()
-}
-
 func (h *TCPRequests) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
 		return nil, errors.FetchError
@@ -33,21 +29,27 @@ func (h *TCPRequests) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (h *TCPRequests) Set(data common.ParserData) error {
+	if data == nil {
+		h.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case []TCPAction:
 		h.data = newValue
-	case TCPAction:
-		h.data = append(h.data, newValue)
 	case *TCPAction:
 		h.data = append(h.data, *newValue)
+	case TCPAction:
+		h.data = append(h.data, newValue)
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (h *TCPRequests) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := h.Get(false)
-	h.Clear()
+	h.Init()
 	_, err := h.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		h.Set(oldData)

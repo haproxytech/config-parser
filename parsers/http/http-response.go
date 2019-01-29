@@ -17,10 +17,6 @@ func (h *HTTPResponses) Init() {
 	h.data = []HTTPAction{}
 }
 
-func (h *HTTPResponses) Clear() {
-	h.Init()
-}
-
 func (h *HTTPResponses) GetParserName() string {
 	return "http-response"
 }
@@ -33,21 +29,27 @@ func (h *HTTPResponses) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (h *HTTPResponses) Set(data common.ParserData) error {
+	if data == nil {
+		h.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case []HTTPAction:
 		h.data = newValue
-	case HTTPAction:
-		h.data = append(h.data, newValue)
 	case *HTTPAction:
 		h.data = append(h.data, *newValue)
+	case HTTPAction:
+		h.data = append(h.data, newValue)
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (h *HTTPResponses) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := h.Get(false)
-	h.Clear()
+	h.Init()
 	_, err := h.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		h.Set(oldData)

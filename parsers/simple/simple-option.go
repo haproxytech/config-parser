@@ -21,10 +21,6 @@ func (o *SimpleOption) GetParserName() string {
 	return fmt.Sprintf("option %s", o.Name)
 }
 
-func (p *SimpleOption) Clear() {
-	p.Init()
-}
-
 func (p *SimpleOption) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
@@ -37,19 +33,25 @@ func (p *SimpleOption) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *SimpleOption) Set(data common.ParserData) error {
+	if data == nil {
+		p.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.SimpleOption:
 		p.data = newValue
 	case types.SimpleOption:
 		p.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (p *SimpleOption) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := p.Get(false)
-	p.Clear()
+	p.Init()
 	_, err := p.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		p.Set(oldData)

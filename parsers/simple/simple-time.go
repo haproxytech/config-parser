@@ -21,10 +21,6 @@ func (s *SimpleTime) GetParserName() string {
 	return s.Name
 }
 
-func (s *SimpleTime) Clear() {
-	s.Init()
-}
-
 func (s *SimpleTime) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.data == nil {
 		if createIfNotExist {
@@ -37,19 +33,25 @@ func (s *SimpleTime) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (s *SimpleTime) Set(data common.ParserData) error {
+	if data == nil {
+		s.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.StringC:
 		s.data = newValue
 	case types.StringC:
 		s.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (s *SimpleTime) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := s.Get(false)
-	s.Clear()
+	s.Init()
 	_, err := s.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		s.Set(oldData)

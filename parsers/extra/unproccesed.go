@@ -15,10 +15,6 @@ func (u *UnProcessed) Init() {
 	u.unProcessed = []common.ReturnResultLine{}
 }
 
-func (u *UnProcessed) Clear() {
-	u.Init()
-}
-
 func (u *UnProcessed) GetParserName() string {
 	return ""
 }
@@ -38,7 +34,7 @@ func (u *UnProcessed) Set(data common.ParserData) error {
 
 func (u *UnProcessed) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	u.Clear()
+	u.Init()
 	_, err := u.Parse(data, parts, []string{}, comment)
 	return err
 }

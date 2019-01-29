@@ -20,10 +20,6 @@ func (m *MasterWorker) GetParserName() string {
 	return "master-worker"
 }
 
-func (m *MasterWorker) Clear() {
-	m.Init()
-}
-
 func (m *MasterWorker) Get(createIfNotExist bool) (common.ParserData, error) {
 	if m.data == nil {
 		if createIfNotExist {
@@ -36,19 +32,25 @@ func (m *MasterWorker) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (m *MasterWorker) Set(data common.ParserData) error {
+	if data == nil {
+		m.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.Enabled:
 		m.data = newValue
 	case types.Enabled:
 		m.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (m *MasterWorker) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := m.Get(false)
-	m.Clear()
+	m.Init()
 	_, err := m.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		m.Set(oldData)

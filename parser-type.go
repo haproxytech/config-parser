@@ -8,7 +8,6 @@ import (
 
 type ParserType interface {
 	Init()
-	Clear()
 	Parse(line string, parts, previousParts []string, comment string) (changeState string, err error)
 	GetParserName() string
 	Get(createIfNotExist bool) (common.ParserData, error)
@@ -32,16 +31,6 @@ func (p *ParserTypes) Get(attribute string, createIfNotExist ...bool) (common.Pa
 		}
 	}
 	return nil, fmt.Errorf("attribute not found, no available parser for it")
-}
-
-func (p *ParserTypes) Clear(attribute string) error {
-	for _, parser := range p.parsers {
-		if parser.GetParserName() == attribute {
-			parser.Clear()
-			return nil
-		}
-	}
-	return fmt.Errorf("attribute not available")
 }
 
 func (p *ParserTypes) Set(attribute string, data common.ParserData) error {

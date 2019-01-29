@@ -22,10 +22,6 @@ func (h *Servers) GetParserName() string {
 	return "server"
 }
 
-func (h *Servers) Clear() {
-	h.Init()
-}
-
 func (h *Servers) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
 		return nil, errors.FetchError
@@ -34,21 +30,27 @@ func (h *Servers) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (h *Servers) Set(data common.ParserData) error {
+	if data == nil {
+		h.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case []types.Server:
 		h.data = newValue
-	case types.Server:
-		h.data = append(h.data, newValue)
 	case *types.Server:
 		h.data = append(h.data, *newValue)
+	case types.Server:
+		h.data = append(h.data, newValue)
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (h *Servers) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := h.Get(false)
-	h.Clear()
+	h.Init()
 	_, err := h.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		h.Set(oldData)

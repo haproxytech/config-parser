@@ -67,20 +67,7 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string) 
 	return section.Get(attribute)
 }
 
-//Clear get attribute from defaults section
-func (p *Parser) Clear(sectionType Section, sectionName string, attribute string) error {
-	st, ok := p.Parsers[sectionType]
-	if !ok {
-		return fmt.Errorf("Section Type [%s] not found", sectionType)
-	}
-	section, ok := st[sectionName]
-	if !ok {
-		return fmt.Errorf("Section [%s] not found", sectionName)
-	}
-	return section.Clear(attribute)
-}
-
-//GetDefaultsAttr get attribute from defaults section
+//Set sets attribute from defaults section, can be nil to disable/remove
 func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData) error {
 	st, ok := p.Parsers[sectionType]
 	if !ok {

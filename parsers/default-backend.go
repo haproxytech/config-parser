@@ -20,10 +20,6 @@ func (s *DefaultBackend) GetParserName() string {
 	return "default_backend"
 }
 
-func (s *DefaultBackend) Clear() {
-	s.Init()
-}
-
 func (s *DefaultBackend) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.data == nil {
 		if createIfNotExist {
@@ -36,19 +32,25 @@ func (s *DefaultBackend) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (s *DefaultBackend) Set(data common.ParserData) error {
+	if data == nil {
+		s.data = nil
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.StringC:
 		s.data = newValue
 	case types.StringC:
 		s.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (s *DefaultBackend) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := s.Get(false)
-	s.Clear()
+	s.data = nil
 	_, err := s.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		s.Set(oldData)

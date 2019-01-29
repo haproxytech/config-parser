@@ -25,10 +25,6 @@ func (l *ErrorFileLines) GetParserName() string {
 	return "errorfile"
 }
 
-func (p *ErrorFileLines) Clear() {
-	p.Init()
-}
-
 func (p *ErrorFileLines) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(p.data) == 0 && !createIfNotExist {
 		return nil, errors.FetchError
@@ -37,19 +33,27 @@ func (p *ErrorFileLines) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *ErrorFileLines) Set(data common.ParserData) error {
+	if data == nil {
+		p.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case []types.ErrorFile:
 		p.data = newValue
+	case *types.ErrorFile:
+		p.data = append(p.data, *newValue)
 	case types.ErrorFile:
 		p.data = append(p.data, newValue)
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (p *ErrorFileLines) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := p.Get(false)
-	p.Clear()
+	p.Init()
 	_, err := p.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		p.Set(oldData)

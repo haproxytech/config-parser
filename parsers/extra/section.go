@@ -17,10 +17,6 @@ func (s *SectionName) Init() {
 	s.section = &types.Section{}
 }
 
-func (s *SectionName) Clear() {
-	s.Init()
-}
-
 func (s *SectionName) GetParserName() string {
 	return s.Name
 }
@@ -29,7 +25,7 @@ func (s *SectionName) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.section.Name != "" {
 		return s.section, nil
 	} else if createIfNotExist {
-		s.Clear()
+		s.Init()
 		return s.section, nil
 	}
 	return nil, fmt.Errorf("No data")
@@ -46,7 +42,7 @@ func (s *SectionName) Set(data common.ParserData) error {
 
 func (s *SectionName) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	s.Clear()
+	s.Init()
 	_, err := s.Parse(data, parts, []string{}, comment)
 	return err
 }

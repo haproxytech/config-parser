@@ -21,10 +21,6 @@ func (n *NbProc) GetParserName() string {
 	return "nbproc"
 }
 
-func (n *NbProc) Clear() {
-	n.Init()
-}
-
 func (n *NbProc) Get(createIfNotExist bool) (common.ParserData, error) {
 	if n.data == nil {
 		if createIfNotExist {
@@ -37,19 +33,25 @@ func (n *NbProc) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (n *NbProc) Set(data common.ParserData) error {
+	if data == nil {
+		n.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.Int64C:
 		n.data = newValue
 	case types.Int64C:
 		n.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (n *NbProc) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := n.Get(false)
-	n.Clear()
+	n.Init()
 	_, err := n.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		n.Set(oldData)

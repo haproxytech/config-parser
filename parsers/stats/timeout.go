@@ -23,10 +23,6 @@ func (s *Timeout) GetParserName() string {
 	return s.name
 }
 
-func (s *Timeout) Clear() {
-	s.Init()
-}
-
 func (s *Timeout) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.data == nil {
 		if createIfNotExist {
@@ -39,19 +35,25 @@ func (s *Timeout) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (s *Timeout) Set(data common.ParserData) error {
+	if data == nil {
+		s.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.StringSliceC:
 		s.data = newValue
 	case types.StringSliceC:
 		s.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (s *Timeout) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := s.Get(false)
-	s.Clear()
+	s.Init()
 	_, err := s.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		s.Set(oldData)

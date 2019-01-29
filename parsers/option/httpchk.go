@@ -21,10 +21,6 @@ func (s *OptionHttpchk) GetParserName() string {
 	return "option httpchk"
 }
 
-func (s *OptionHttpchk) Clear() {
-	s.Init()
-}
-
 func (s *OptionHttpchk) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.data == nil {
 		if createIfNotExist {
@@ -37,17 +33,25 @@ func (s *OptionHttpchk) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (s *OptionHttpchk) Set(data common.ParserData) error {
+	if data == nil {
+		s.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
+	case *types.OptionHttpchk:
+		s.data = newValue
 	case types.OptionHttpchk:
 		s.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (s *OptionHttpchk) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := s.Get(false)
-	s.Clear()
+	s.Init()
 	_, err := s.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		s.Set(oldData)

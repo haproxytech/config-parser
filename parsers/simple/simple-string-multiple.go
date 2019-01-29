@@ -22,10 +22,6 @@ func (s *SimpleStringMultiple) GetParserName() string {
 	return s.Name
 }
 
-func (s *SimpleStringMultiple) Clear() {
-	s.Init()
-}
-
 func (s *SimpleStringMultiple) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.data == nil {
 		if createIfNotExist {
@@ -38,19 +34,25 @@ func (s *SimpleStringMultiple) Get(createIfNotExist bool) (common.ParserData, er
 }
 
 func (s *SimpleStringMultiple) Set(data common.ParserData) error {
+	if data == nil {
+		s.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.StringSliceC:
 		s.data = newValue
 	case types.StringSliceC:
 		s.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (s *SimpleStringMultiple) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := s.Get(false)
-	s.Clear()
+	s.Init()
 	_, err := s.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		s.Set(oldData)

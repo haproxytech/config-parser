@@ -22,10 +22,6 @@ func (s *SimpleNumber) GetParserName() string {
 	return s.Name
 }
 
-func (s *SimpleNumber) Clear() {
-	s.Init()
-}
-
 func (s *SimpleNumber) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.data == nil {
 		if createIfNotExist {
@@ -38,19 +34,25 @@ func (s *SimpleNumber) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (s *SimpleNumber) Set(data common.ParserData) error {
+	if data == nil {
+		s.Init()
+		return nil
+	}
 	switch newValue := data.(type) {
 	case *types.Int64C:
 		s.data = newValue
 	case types.Int64C:
 		s.data = &newValue
+	default:
+		return fmt.Errorf("casting error")
 	}
-	return fmt.Errorf("casting error")
+	return nil
 }
 
 func (s *SimpleNumber) SetStr(data string) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
 	oldData, _ := s.Get(false)
-	s.Clear()
+	s.Init()
 	_, err := s.Parse(data, parts, []string{}, comment)
 	if err != nil {
 		s.Set(oldData)
