@@ -34,7 +34,7 @@ func (s *SimpleTimeTwoWords) Get(createIfNotExist bool) (common.ParserData, erro
 			s.data = &types.StringC{}
 			return s.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return s.data, nil
 }
@@ -76,7 +76,7 @@ func (s *SimpleTimeTwoWords) Parse(line string, parts, previousParts []string, c
 
 func (s *SimpleTimeTwoWords) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

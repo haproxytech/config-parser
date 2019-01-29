@@ -27,7 +27,7 @@ func (l *Mailers) Clear() {
 
 func (l *Mailers) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(l.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return l.data, nil
 }
@@ -86,7 +86,7 @@ func (l *Mailers) Parse(line string, parts, previousParts []string, comment stri
 
 func (l *Mailers) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, peer := range l.data {

@@ -32,7 +32,7 @@ func (p *Mode) Get(createIfNotExist bool) (common.ParserData, error) {
 		}
 		return p.data, nil
 	}
-	return nil, &errors.FetchError{}
+	return nil, errors.FetchError
 }
 
 func (p *Mode) Set(data common.ParserData) error {
@@ -75,7 +75,7 @@ func (p *Mode) Parse(line string, parts, previousParts []string, comment string)
 
 func (p *Mode) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if p.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

@@ -31,7 +31,7 @@ func (p *SimpleOption) Get(createIfNotExist bool) (common.ParserData, error) {
 			p.data = &types.SimpleOption{}
 			return p.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return p.data, nil
 }
@@ -76,7 +76,7 @@ func (o *SimpleOption) Parse(line string, parts, previousParts []string, comment
 
 func (o *SimpleOption) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if o.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	noOption := ""
 	if o.data.NoOption {

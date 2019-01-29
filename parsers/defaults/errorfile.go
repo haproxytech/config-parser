@@ -31,7 +31,7 @@ func (p *ErrorFileLines) Clear() {
 
 func (p *ErrorFileLines) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(p.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return p.data, nil
 }
@@ -86,7 +86,7 @@ func (l *ErrorFileLines) Parse(line string, parts, previousParts []string, comme
 
 func (l *ErrorFileLines) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, data := range l.data {

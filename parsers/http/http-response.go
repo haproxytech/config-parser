@@ -27,7 +27,7 @@ func (h *HTTPResponses) GetParserName() string {
 
 func (h *HTTPResponses) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return h.data, nil
 }
@@ -105,7 +105,7 @@ func (h *HTTPResponses) Parse(line string, parts, previousParts []string, commen
 
 func (h *HTTPResponses) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

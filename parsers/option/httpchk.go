@@ -31,7 +31,7 @@ func (s *OptionHttpchk) Get(createIfNotExist bool) (common.ParserData, error) {
 			s.data = &types.OptionHttpchk{}
 			return s.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return s.data, nil
 }
@@ -95,7 +95,7 @@ func (s *OptionHttpchk) Parse(line string, parts, previousParts []string, commen
 
 func (s *OptionHttpchk) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	var data string
 	if s.data.Version != "" {

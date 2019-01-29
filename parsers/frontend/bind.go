@@ -28,7 +28,7 @@ func (h *Binds) Clear() {
 
 func (h *Binds) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return h.data, nil
 }
@@ -82,7 +82,7 @@ func (h *Binds) Parse(line string, parts, previousParts []string, comment string
 
 func (h *Binds) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

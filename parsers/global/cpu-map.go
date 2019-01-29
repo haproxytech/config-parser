@@ -27,7 +27,7 @@ func (c *CpuMapLines) Clear() {
 
 func (c *CpuMapLines) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(c.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return c.data, nil
 }
@@ -78,7 +78,7 @@ func (c *CpuMapLines) Parse(line string, parts, previousParts []string, comment 
 
 func (c *CpuMapLines) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(c.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(c.data))
 	for index, cpuMap := range c.data {

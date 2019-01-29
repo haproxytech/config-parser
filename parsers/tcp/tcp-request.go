@@ -27,7 +27,7 @@ func (h *TCPRequests) Clear() {
 
 func (h *TCPRequests) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return h.data, nil
 }

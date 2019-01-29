@@ -33,7 +33,7 @@ func (s *Timeout) Get(createIfNotExist bool) (common.ParserData, error) {
 			s.data = &types.StringSliceC{}
 			return s.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return s.data, nil
 }
@@ -76,7 +76,7 @@ func (s *Timeout) Parse(line string, parts, previousParts []string, comment stri
 
 func (s *Timeout) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

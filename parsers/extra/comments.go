@@ -58,7 +58,7 @@ func (p *Comments) Parse(line string, parts, previousParts []string, comment str
 
 func (p *Comments) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(p.comments) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(p.comments))
 	for index, comment := range p.comments {

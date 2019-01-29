@@ -31,7 +31,7 @@ func (s *SimpleTime) Get(createIfNotExist bool) (common.ParserData, error) {
 			s.data = &types.StringC{}
 			return s.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return s.data, nil
 }
@@ -73,7 +73,7 @@ func (s *SimpleTime) Parse(line string, parts, previousParts []string, comment s
 
 func (s *SimpleTime) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

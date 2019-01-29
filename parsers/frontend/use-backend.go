@@ -27,7 +27,7 @@ func (h *UseBackends) Clear() {
 
 func (h *UseBackends) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return h.data, nil
 }
@@ -85,7 +85,7 @@ func (h *UseBackends) Parse(line string, parts, previousParts []string, comment 
 
 func (h *UseBackends) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

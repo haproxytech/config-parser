@@ -30,7 +30,7 @@ func (m *MasterWorker) Get(createIfNotExist bool) (common.ParserData, error) {
 			m.data = &types.Enabled{}
 			return m.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return m.data, nil
 }
@@ -68,7 +68,7 @@ func (m *MasterWorker) Parse(line string, parts, previousParts []string, comment
 
 func (m *MasterWorker) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if m.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

@@ -27,7 +27,7 @@ func (h *Sticks) Clear() {
 
 func (h *Sticks) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return h.data, nil
 }
@@ -96,7 +96,7 @@ func (h *Sticks) Parse(line string, parts, previousParts []string, comment strin
 
 func (h *Sticks) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

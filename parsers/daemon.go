@@ -30,7 +30,7 @@ func (d *Daemon) Get(createIfNotExist bool) (common.ParserData, error) {
 			d.data = &types.Enabled{}
 			return d.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return d.data, nil
 }
@@ -68,7 +68,7 @@ func (d *Daemon) Parse(line string, parts, previousParts []string, comment strin
 
 func (d *Daemon) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if d.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

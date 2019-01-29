@@ -31,7 +31,7 @@ func (p *MaxConn) Get(createIfNotExist bool) (common.ParserData, error) {
 			p.data = &types.Int64C{}
 			return p.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return p.data, nil
 }
@@ -78,7 +78,7 @@ func (p *MaxConn) Parse(line string, parts, previousParts []string, comment stri
 
 func (p *MaxConn) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if p.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

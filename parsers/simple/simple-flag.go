@@ -32,7 +32,7 @@ func (s *SimpleFlag) Get(createIfNotExist bool) (common.ParserData, error) {
 			s.data = &types.Enabled{}
 			return s.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return s.data, nil
 }
@@ -70,7 +70,7 @@ func (s *SimpleFlag) Parse(line string, parts, previousParts []string, comment s
 
 func (s *SimpleFlag) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

@@ -31,7 +31,7 @@ func (n *NbThread) Get(createIfNotExist bool) (common.ParserData, error) {
 			n.data = &types.Int64C{}
 			return n.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return n.data, nil
 }
@@ -78,7 +78,7 @@ func (n *NbThread) Parse(line string, parts, previousParts []string, comment str
 
 func (n *NbThread) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if n.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

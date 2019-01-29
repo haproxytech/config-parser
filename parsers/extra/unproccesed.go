@@ -52,7 +52,7 @@ func (u *UnProcessed) Parse(line string, parts, previousParts []string, comment 
 
 func (u *UnProcessed) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(u.unProcessed) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return u.unProcessed, nil
 }

@@ -32,7 +32,7 @@ func (s *SimpleNumber) Get(createIfNotExist bool) (common.ParserData, error) {
 			s.data = &types.Int64C{}
 			return s.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return s.data, nil
 }
@@ -79,7 +79,7 @@ func (s *SimpleNumber) Parse(line string, parts, previousParts []string, comment
 
 func (s *SimpleNumber) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 
 	return []common.ReturnResultLine{

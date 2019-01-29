@@ -27,7 +27,7 @@ func (l *UseServers) Clear() {
 
 func (l *UseServers) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(l.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return l.data, nil
 }
@@ -74,7 +74,7 @@ func (l *UseServers) Parse(line string, parts, previousParts []string, comment s
 
 func (l *UseServers) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	//use-server
 	result := make([]common.ReturnResultLine, len(l.data))

@@ -30,7 +30,7 @@ func (s *DefaultBackend) Get(createIfNotExist bool) (common.ParserData, error) {
 			s.data = &types.StringC{}
 			return s.data, nil
 		}
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return s.data, nil
 }
@@ -72,7 +72,7 @@ func (s *DefaultBackend) Parse(line string, parts, previousParts []string, comme
 
 func (s *DefaultBackend) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

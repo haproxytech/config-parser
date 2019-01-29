@@ -30,7 +30,7 @@ func (h *Filters) Clear() {
 
 func (h *Filters) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(h.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return h.data, nil
 }
@@ -90,7 +90,7 @@ func (h *Filters) Parse(line string, parts, previousParts []string, comment stri
 
 func (h *Filters) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

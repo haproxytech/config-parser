@@ -35,7 +35,7 @@ func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
 		}
 		return p.data, nil
 	}
-	return nil, &errors.FetchError{}
+	return nil, errors.FetchError
 }
 
 func (p *Balance) Set(data common.ParserData) error {
@@ -96,7 +96,7 @@ func (p *Balance) Parse(line string, parts, previousParts []string, comment stri
 
 func (p *Balance) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if p.data == nil {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	params := ""
 	if len(p.data.Arguments) > 0 {

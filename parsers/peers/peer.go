@@ -27,7 +27,7 @@ func (l *Peers) Clear() {
 
 func (l *Peers) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(l.data) == 0 && !createIfNotExist {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	return l.data, nil
 }
@@ -86,7 +86,7 @@ func (l *Peers) Parse(line string, parts, previousParts []string, comment string
 
 func (l *Peers) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, &errors.FetchError{}
+		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, peer := range l.data {
