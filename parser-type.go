@@ -30,7 +30,7 @@ func (p *ParserTypes) Get(attribute string, createIfNotExist ...bool) (common.Pa
 			return parser.Get(createNew)
 		}
 	}
-	return nil, fmt.Errorf("attribute not found, no available parser for it")
+	return nil, fmt.Errorf("attribute not found, no available parser for [%s]", attribute)
 }
 
 func (p *ParserTypes) Set(attribute string, data common.ParserData) error {
