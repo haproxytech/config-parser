@@ -310,7 +310,7 @@ func (p *Parser) ParseData(dat string) error {
 		if line == "" {
 			continue
 		}
-		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ')
+		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
 		if len(parts) == 0 && comment != "" {
 			parts = []string{""}
 		}
