@@ -42,6 +42,7 @@ func createParsers(parsers []ParserType) *ParserTypes {
 
 func getStartParser() *ParserTypes {
 	return createParsers([]ParserType{
+		&extra.ConfigVersion{},
 		&extra.Comments{},
 	})
 }

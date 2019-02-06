@@ -27,8 +27,9 @@ const (
 )
 
 const (
-	GlobalSectionName  = "data"
-	DefaultSectionName = "data"
+	CommentsSectionName = "data"
+	GlobalSectionName   = "data"
+	DefaultSectionName  = "data"
 )
 
 //Parser reads and writes configuration on given file
@@ -55,7 +56,7 @@ func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute
 }
 
 //GetDefaultsAttr get attribute from defaults section
-func (p *Parser) Get(sectionType Section, sectionName string, attribute string) (common.ParserData, error) {
+func (p *Parser) Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
 	st, ok := p.Parsers[sectionType]
 	if !ok {
 		return nil, fmt.Errorf("Section Type [%s] not found", sectionType)
@@ -64,7 +65,11 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string) 
 	if !ok {
 		return nil, fmt.Errorf("Section [%s] not found", sectionName)
 	}
-	return section.Get(attribute)
+	createNew := false
+	if len(createIfNotExist) > 0 && createIfNotExist[0] {
+		createNew = true
+	}
+	return section.Get(attribute, createNew)
 }
 
 //Set sets attribute from defaults section, can be nil to disable/remove
@@ -80,14 +85,16 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 	return section.Set(attribute, data)
 }
 
-func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder) {
+func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder, useIndentation bool) {
 	for _, parser := range parsers {
 		lines, err := parser.Result(true)
 		if err != nil {
 			continue
 		}
 		for _, line := range lines {
-			result.WriteString("  ")
+			if useIndentation {
+				result.WriteString("  ")
+			}
 			result.WriteString(line.Data)
 			if line.Comment != "" {
 				result.WriteString(" # ")
@@ -102,70 +109,70 @@ func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder) {
 func (p *Parser) String() string {
 	var result strings.Builder
 
-	p.writeParsers(p.Parsers[Comments]["data"].parsers, &result)
+	p.writeParsers(p.Parsers[Comments][CommentsSectionName].parsers, &result, false)
 
 	result.WriteString("\ndefaults ")
 	result.WriteString("\n")
-	p.writeParsers(p.Parsers[Defaults][DefaultSectionName].parsers, &result)
+	p.writeParsers(p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
 
 	result.WriteString("\nglobal ")
 	result.WriteString("\n")
-	p.writeParsers(p.Parsers[Global][GlobalSectionName].parsers, &result)
+	p.writeParsers(p.Parsers[Global][GlobalSectionName].parsers, &result, true)
 
 	for parserSectionName, section := range p.Parsers[UserList] {
 		result.WriteString("\nuserlist ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 
 	for parserSectionName, section := range p.Parsers[Peers] {
 		result.WriteString("\npeers ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 
 	for parserSectionName, section := range p.Parsers[Mailers] {
 		result.WriteString("\nmailers ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 
 	for parserSectionName, section := range p.Parsers[Resolvers] {
 		result.WriteString("\nresolvers ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 
 	for parserSectionName, section := range p.Parsers[Cache] {
 		result.WriteString("\ncache ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 
 	for parserSectionName, section := range p.Parsers[Frontends] {
 		result.WriteString("\nfrontend ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 
 	for parserSectionName, section := range p.Parsers[Backends] {
 		result.WriteString("\nbackend ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 
 	for parserSectionName, section := range p.Parsers[Listen] {
 		result.WriteString("\nlisten ")
 		result.WriteString(parserSectionName)
 		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result)
+		p.writeParsers(section.parsers, &result, true)
 	}
 	return result.String()
 }
@@ -279,7 +286,7 @@ func (p *Parser) ParseData(dat string) error {
 
 	p.Parsers = map[Section]map[string]*ParserTypes{}
 	p.Parsers[Comments] = map[string]*ParserTypes{
-		"data": getStartParser(),
+		CommentsSectionName: getStartParser(),
 	}
 	p.Parsers[Defaults] = map[string]*ParserTypes{
 		DefaultSectionName: getDefaultParser(),
@@ -298,8 +305,8 @@ func (p *Parser) ParseData(dat string) error {
 
 	parsers := ConfiguredParsers{
 		State:    "",
-		Active:   *p.Parsers[Comments]["data"],
-		Comments: p.Parsers[Comments]["data"],
+		Active:   *p.Parsers[Comments][CommentsSectionName],
+		Comments: p.Parsers[Comments][CommentsSectionName],
 		Defaults: p.Parsers[Defaults][DefaultSectionName],
 		Global:   p.Parsers[Global][GlobalSectionName],
 	}
