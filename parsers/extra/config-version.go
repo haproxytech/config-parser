@@ -28,7 +28,7 @@ func (s *ConfigVersion) Get(createIfNotExist bool) (common.ParserData, error) {
 		return s.data, nil
 	} else if createIfNotExist {
 		s.data = &types.Int64C{
-			Value: 0,
+			Value: 1,
 		}
 		return s.data, nil
 	}
