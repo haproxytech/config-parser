@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/common"
+	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/types"
 )
@@ -55,11 +56,11 @@ func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute
 	return nil, fmt.Errorf("attribute not found")
 }
 
-//GetDefaultsAttr get attribute from defaults section
+//Get get attribute from defaults section
 func (p *Parser) Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return nil, fmt.Errorf("Section Type [%s] not found", sectionType)
+		return nil, errors.SectionMissingErr
 	}
 	section, ok := st[sectionName]
 	if !ok {
@@ -76,13 +77,31 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string, 
 func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData) error {
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return fmt.Errorf("Section Type [%s] not found", sectionType)
+		return errors.SectionMissingErr
 	}
 	section, ok := st[sectionName]
 	if !ok {
 		return fmt.Errorf("Section [%s] not found", sectionName)
 	}
 	return section.Set(attribute, data)
+}
+
+//HasParser checks if we have a parser for attribute
+func (p *Parser) HasParser(sectionType Section, attribute string) bool {
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return false
+	}
+	sectionName := ""
+	for name, _ := range st {
+		sectionName = name
+		break
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return false
+	}
+	return section.HasParser(attribute)
 }
 
 func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder, useIndentation bool) {
