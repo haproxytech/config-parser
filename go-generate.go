@@ -1,8 +1,8 @@
 // +build ignore
 
-// This program generates contributors.go. It can be invoked by running
-// go generate
 package main
+
+//run this as go run go-generate.go $(pwd)
 
 import (
 	"fmt"
@@ -164,7 +164,7 @@ func (p *{{ .StructName }}) GetParserName() string {
 	return "{{ .ParserName }}"
 {{- else }}
 	return "{{ .ParserName }} {{ .ParserSecondName }}"
-{{- end }}	
+{{- end }}
 }
 
 func (p *{{ .StructName }}) Get(createIfNotExist bool) (common.ParserData, error) {

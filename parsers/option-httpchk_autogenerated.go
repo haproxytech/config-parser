@@ -14,7 +14,7 @@ func (p *OptionHttpchk) Init() {
 }
 
 func (p *OptionHttpchk) GetParserName() string {
-	return "option"
+	return "option httpchk"
 }
 
 func (p *OptionHttpchk) Get(createIfNotExist bool) (common.ParserData, error) {
