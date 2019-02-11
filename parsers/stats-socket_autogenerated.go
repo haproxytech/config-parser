@@ -14,7 +14,7 @@ func (p *Socket) Init() {
 }
 
 func (p *Socket) GetParserName() string {
-	return "stats"
+	return "stats socket"	
 }
 
 func (p *Socket) Get(createIfNotExist bool) (common.ParserData, error) {

@@ -160,7 +160,11 @@ func (p *{{ .StructName }}) Init() {
 {{- end }}
 
 func (p *{{ .StructName }}) GetParserName() string {
+{{- if eq .ParserSecondName "" }}
 	return "{{ .ParserName }}"
+{{- else }}
+	return "{{ .ParserName }} {{ .ParserSecondName }}"
+{{- end }}	
 }
 
 func (p *{{ .StructName }}) Get(createIfNotExist bool) (common.ParserData, error) {
