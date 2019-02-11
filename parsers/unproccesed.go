@@ -1,4 +1,4 @@
-package extra
+package parsers
 
 import (
 	"fmt"
@@ -8,11 +8,11 @@ import (
 )
 
 type UnProcessed struct {
-	unProcessed []common.ReturnResultLine
+	data []common.ReturnResultLine
 }
 
 func (u *UnProcessed) Init() {
-	u.unProcessed = []common.ReturnResultLine{}
+	u.data = []common.ReturnResultLine{}
 }
 
 func (u *UnProcessed) GetParserName() string {
@@ -20,13 +20,23 @@ func (u *UnProcessed) GetParserName() string {
 }
 
 func (u *UnProcessed) Get(createIfNotExist bool) (common.ParserData, error) {
-	return u.unProcessed, nil
+	return u.data, nil
 }
 
-func (u *UnProcessed) Set(data common.ParserData) error {
+func (p *UnProcessed) GetOne(index int) (common.ParserData, error) {
+	if len(p.data) == 0 {
+		return nil, errors.FetchError
+	}
+	if index < 0 || index >= len(p.data) {
+		return nil, errors.FetchError
+	}
+	return p.data[index], nil
+}
+
+func (u *UnProcessed) Set(data common.ParserData, index int) error {
 	newData, ok := data.(common.ReturnResultLine)
 	if ok {
-		u.unProcessed = append(u.unProcessed, newData)
+		u.data = append(u.data, newData)
 		return nil
 	}
 	return fmt.Errorf("casting error")
@@ -40,15 +50,15 @@ func (u *UnProcessed) SetStr(data string) error {
 }
 
 func (u *UnProcessed) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	u.unProcessed = append(u.unProcessed, common.ReturnResultLine{
+	u.data = append(u.data, common.ReturnResultLine{
 		Data: line, //do not save comments separatelly
 	})
 	return "", nil
 }
 
 func (u *UnProcessed) Result(AddComments bool) ([]common.ReturnResultLine, error) {
-	if len(u.unProcessed) == 0 {
+	if len(u.data) == 0 {
 		return nil, errors.FetchError
 	}
-	return u.unProcessed, nil
+	return u.data, nil
 }

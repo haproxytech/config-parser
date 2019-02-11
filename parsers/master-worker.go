@@ -31,7 +31,17 @@ func (m *MasterWorker) Get(createIfNotExist bool) (common.ParserData, error) {
 	return m.data, nil
 }
 
-func (m *MasterWorker) Set(data common.ParserData) error {
+func (p *MasterWorker) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (m *MasterWorker) Set(data common.ParserData, index int) error {
 	if data == nil {
 		m.Init()
 		return nil
@@ -45,17 +55,6 @@ func (m *MasterWorker) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (m *MasterWorker) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := m.Get(false)
-	m.Init()
-	_, err := m.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		m.Set(oldData)
-	}
-	return err
 }
 
 func (m *MasterWorker) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

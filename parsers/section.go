@@ -1,4 +1,4 @@
-package extra
+package parsers
 
 import (
 	"fmt"
@@ -31,17 +31,7 @@ func (s *SectionName) Get(createIfNotExist bool) (common.ParserData, error) {
 	return nil, fmt.Errorf("No data")
 }
 
-func (p *SectionName) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (s *SectionName) Set(data common.ParserData, index int) error {
+func (s *SectionName) Set(data common.ParserData) error {
 	newData, ok := data.(types.Section)
 	if ok {
 		s.data = &newData

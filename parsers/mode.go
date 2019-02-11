@@ -31,7 +31,17 @@ func (p *Mode) Get(createIfNotExist bool) (common.ParserData, error) {
 	return nil, errors.FetchError
 }
 
-func (p *Mode) Set(data common.ParserData) error {
+func (p *Mode) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (p *Mode) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -45,17 +55,6 @@ func (p *Mode) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (p *Mode) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := p.Get(false)
-	p.Init()
-	_, err := p.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		p.Set(oldData)
-	}
-	return err
 }
 
 func (p *Mode) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

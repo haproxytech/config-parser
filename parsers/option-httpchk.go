@@ -1,4 +1,4 @@
-package option
+package parsers
 
 import (
 	"fmt"
@@ -13,52 +13,6 @@ type OptionHttpchk struct {
 	data *types.OptionHttpchk
 }
 
-func (s *OptionHttpchk) Init() {
-	s.data = nil
-}
-
-func (s *OptionHttpchk) GetParserName() string {
-	return "option httpchk"
-}
-
-func (s *OptionHttpchk) Get(createIfNotExist bool) (common.ParserData, error) {
-	if s.data == nil {
-		if createIfNotExist {
-			s.data = &types.OptionHttpchk{}
-			return s.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return s.data, nil
-}
-
-func (s *OptionHttpchk) Set(data common.ParserData) error {
-	if data == nil {
-		s.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.OptionHttpchk:
-		s.data = newValue
-	case types.OptionHttpchk:
-		s.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
-func (s *OptionHttpchk) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := s.Get(false)
-	s.Init()
-	_, err := s.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		s.Set(oldData)
-	}
-	return err
-}
-
 /*
 option httpchk <uri>
 option httpchk <method> <uri>
@@ -66,6 +20,11 @@ option httpchk <method> <uri> <version>
 */
 func (s *OptionHttpchk) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == "httpchk" {
+		if len(parts) == 2 {
+			s.data = &types.OptionHttpchk{
+				Comment: comment,
+			}
+		}
 		if len(parts) == 3 {
 			s.data = &types.OptionHttpchk{
 				Uri:     parts[2],
@@ -106,8 +65,10 @@ func (s *OptionHttpchk) Result(AddComments bool) ([]common.ReturnResultLine, err
 		data = fmt.Sprintf("option httpchk %s %s %s", s.data.Method, s.data.Uri, s.data.Version)
 	} else if s.data.Method != "" {
 		data = fmt.Sprintf("option httpchk %s %s", s.data.Method, s.data.Uri)
-	} else {
+	} else if s.data.Uri != "" {
 		data = fmt.Sprintf("option httpchk %s", s.data.Uri)
+	} else {
+		data = fmt.Sprintf("option httpchk")
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

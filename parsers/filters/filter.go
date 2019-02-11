@@ -31,7 +31,17 @@ func (h *Filters) Get(createIfNotExist bool) (common.ParserData, error) {
 	return h.data, nil
 }
 
-func (h *Filters) Set(data common.ParserData) error {
+func (p *Filters) GetOne(index int) (common.ParserData, error) {
+	if len(p.data) == 0 {
+		return nil, errors.FetchError
+	}
+	if index < 0 || index >= len(p.data) {
+		return nil, errors.FetchError
+	}
+	return p.data[index], nil
+}
+
+func (h *Filters) Set(data common.ParserData, index int) error {
 	if data == nil {
 		h.Init()
 		return nil
@@ -47,17 +57,6 @@ func (h *Filters) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (h *Filters) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := h.Get(false)
-	h.Init()
-	_, err := h.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		h.Set(oldData)
-	}
-	return err
 }
 
 func (f *Filters) ParseFilter(filter Filter, parts []string, comment string) error {

@@ -2,25 +2,16 @@ package parser
 
 import (
 	"github.com/haproxytech/config-parser/parsers"
-	"github.com/haproxytech/config-parser/parsers/defaults"
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/filters"
-	"github.com/haproxytech/config-parser/parsers/frontend"
-	"github.com/haproxytech/config-parser/parsers/global"
 	"github.com/haproxytech/config-parser/parsers/http"
-	"github.com/haproxytech/config-parser/parsers/mailers"
-	"github.com/haproxytech/config-parser/parsers/option"
-	"github.com/haproxytech/config-parser/parsers/peers"
 	"github.com/haproxytech/config-parser/parsers/simple"
-	"github.com/haproxytech/config-parser/parsers/stats"
-	"github.com/haproxytech/config-parser/parsers/stick"
 	"github.com/haproxytech/config-parser/parsers/tcp"
-	"github.com/haproxytech/config-parser/parsers/userlist"
 )
 
-func createParsers(parsers []ParserType) *ParserTypes {
+func createParsers(parser []ParserType) *ParserTypes {
 	p := ParserTypes{
-		parsers: append(parsers, []ParserType{
+		parsers: append(parser, []ParserType{
 			&extra.SectionName{Name: "defaults"},
 			&extra.SectionName{Name: "global"},
 			&extra.SectionName{Name: "frontend"},
@@ -31,7 +22,7 @@ func createParsers(parsers []ParserType) *ParserTypes {
 			&extra.SectionName{Name: "peers"},
 			&extra.SectionName{Name: "mailers"},
 			&extra.SectionName{Name: "cache"},
-			&extra.UnProcessed{},
+			&parsers.UnProcessed{},
 		}...),
 	}
 	for _, parser := range p.parsers {
@@ -52,7 +43,7 @@ func getDefaultParser() *ParserTypes {
 		&parsers.Mode{},
 		&parsers.Balance{},
 		&parsers.MaxConn{},
-		&parsers.LogLines{},
+		&parsers.Log{},
 
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
@@ -71,8 +62,8 @@ func getDefaultParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "tunnel"},
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
 
-		&parsers.DefaultServers{},
-		&defaults.ErrorFileLines{},
+		&parsers.DefaultServer{},
+		&parsers.ErrorFile{},
 		&parsers.DefaultBackend{},
 	})
 }
@@ -82,19 +73,18 @@ func getGlobalParser() *ParserTypes {
 		&parsers.Daemon{},
 		//&simple.SimpleFlag{Name: "master-worker"},
 		&parsers.MasterWorker{},
-		//&simple.SimpleNumber{Name: "nbproc"},
-		&global.NbProc{},
-		&global.NbThread{},
-		&global.CpuMapLines{},
+		&parsers.NbProc{},
+		&parsers.NbThread{},
+		&parsers.CpuMap{},
 		&parsers.Mode{},
 		&parsers.MaxConn{},
 		&simple.SimpleString{Name: "pidfile"},
-		&stats.SocketLines{},
-		&stats.Timeout{},
+		&parsers.Socket{},
+		&parsers.StatsTimeout{},
 		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
 		&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
 		&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
-		&parsers.LogLines{},
+		&parsers.Log{},
 	})
 }
 
@@ -102,9 +92,9 @@ func getFrontendParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
 		&parsers.MaxConn{},
-		&frontend.Binds{},
+		&parsers.Bind{},
 		&simple.SimpleString{Name: "log-tag"},
-		&parsers.LogLines{},
+		&parsers.Log{},
 
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
@@ -125,7 +115,7 @@ func getFrontendParser() *ParserTypes {
 
 		&simple.SimpleString{Name: "monitor-uri"},
 
-		&frontend.UseBackends{},
+		&parsers.UseBackend{},
 		&parsers.DefaultBackend{},
 	})
 }
@@ -142,9 +132,9 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "contstats"},
 		&simple.SimpleOption{Name: "httplog"},
 		&simple.SimpleString{Name: "log-tag"},
-		&option.OptionHttpchk{},
+		&parsers.OptionHttpchk{},
 
-		&parsers.LogLines{},
+		&parsers.Log{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
 		&simple.SimpleTimeout{Name: "client"},
@@ -153,16 +143,16 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "tunnel"},
 		&simple.SimpleTimeout{Name: "server"},
 
-		&parsers.DefaultServers{},
-		&stick.Sticks{},
+		&parsers.DefaultServer{},
+		&parsers.Stick{},
 		&filters.Filters{},
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},
 		&tcp.TCPRequests{},
 		&tcp.TCPResponses{},
 		&simple.SimpleString{Name: "cookie"},
-		&parsers.UseServers{},
-		&parsers.Servers{},
+		&parsers.UseServer{},
+		&parsers.Server{},
 	})
 }
 
@@ -172,7 +162,7 @@ func getListenParser() *ParserTypes {
 
 func getResolverParser() *ParserTypes {
 	return createParsers([]ParserType{
-		&parsers.NameserverLines{},
+		&parsers.Nameserver{},
 		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "obsolete"}},
 		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "valid"}},
 		&simple.SimpleTimeout{Name: "retry"},
@@ -182,21 +172,21 @@ func getResolverParser() *ParserTypes {
 
 func getUserlistParser() *ParserTypes {
 	return createParsers([]ParserType{
-		&userlist.GroupLines{},
-		&userlist.UserLines{},
+		&parsers.Group{},
+		&parsers.User{},
 	})
 }
 
 func getPeersParser() *ParserTypes {
 	return createParsers([]ParserType{
-		&peers.Peers{},
+		&parsers.Peer{},
 	})
 }
 
 func getMailersParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&simple.SimpleTimeTwoWords{Keywords: []string{"timeout", "mail"}},
-		&mailers.Mailers{},
+		&parsers.Mailer{},
 	})
 }
 func getCacheParser() *ParserTypes {

@@ -31,7 +31,17 @@ func (s *DefaultBackend) Get(createIfNotExist bool) (common.ParserData, error) {
 	return s.data, nil
 }
 
-func (s *DefaultBackend) Set(data common.ParserData) error {
+func (p *DefaultBackend) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (s *DefaultBackend) Set(data common.ParserData, index int) error {
 	if data == nil {
 		s.data = nil
 		return nil
@@ -45,17 +55,6 @@ func (s *DefaultBackend) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (s *DefaultBackend) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := s.Get(false)
-	s.data = nil
-	_, err := s.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		s.Set(oldData)
-	}
-	return err
 }
 
 func (s *DefaultBackend) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

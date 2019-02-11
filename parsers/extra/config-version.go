@@ -35,7 +35,17 @@ func (s *ConfigVersion) Get(createIfNotExist bool) (common.ParserData, error) {
 	return nil, fmt.Errorf("No data")
 }
 
-func (s *ConfigVersion) Set(data common.ParserData) error {
+func (p *ConfigVersion) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (s *ConfigVersion) Set(data common.ParserData, index int) error {
 	if data == nil {
 		s.Init()
 		return nil

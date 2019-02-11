@@ -10,29 +10,32 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type DefaultServer struct {
-	data []types.DefaultServer
+type Bind struct {
+	data []types.Bind
 }
 
-func (h *DefaultServer) parse(line string, parts []string, comment string) (*types.DefaultServer, error) {
+func (h *Bind) parse(line string, parts []string, comment string) (*types.Bind, error) {
 	if len(parts) >= 2 {
-		data := &types.DefaultServer{
-			Params:  params.ParseServerOptions(parts[2:]),
+		data := &types.Bind{
+			Path:    parts[1],
 			Comment: comment,
+		}
+		if len(parts) > 2 {
+			data.Params = params.ParseBindOptions(parts[2:])
 		}
 		return data, nil
 	}
-	return nil, &errors.ParseError{Parser: "DefaultServer", Line: line}
+	return nil, &errors.ParseError{Parser: "BindLines", Line: line}
 }
 
-func (h *DefaultServer) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Bind) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
 		return nil, errors.FetchError
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("default-server %s", params.ServerOptionsString(req.Params)),
+			Data:    fmt.Sprintf("bind %s %s", req.Path, params.BindOptionsString(req.Params)),
 			Comment: req.Comment,
 		}
 	}

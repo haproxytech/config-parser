@@ -1,4 +1,4 @@
-package global
+package parsers
 
 import (
 	"fmt"
@@ -32,7 +32,17 @@ func (n *NbThread) Get(createIfNotExist bool) (common.ParserData, error) {
 	return n.data, nil
 }
 
-func (n *NbThread) Set(data common.ParserData) error {
+func (p *NbThread) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (n *NbThread) Set(data common.ParserData, index int) error {
 	if data == nil {
 		n.Init()
 		return nil
@@ -46,17 +56,6 @@ func (n *NbThread) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (n *NbThread) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := n.Get(false)
-	n.Init()
-	_, err := n.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		n.Set(oldData)
-	}
-	return err
 }
 
 func (n *NbThread) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

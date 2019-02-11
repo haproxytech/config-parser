@@ -13,15 +13,7 @@ type Balance struct {
 	data *types.Balance
 }
 
-func (p *Balance) Init() {
-	p.data = nil
-}
-
-func (p *Balance) GetParserName() string {
-	return "balance"
-}
-
-func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
+/*func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
 			p.data = &types.Balance{
@@ -32,34 +24,7 @@ func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
 		return p.data, nil
 	}
 	return nil, errors.FetchError
-}
-
-func (p *Balance) Set(data common.ParserData) error {
-	if data == nil {
-		p.data = nil
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.Balance:
-		p.data = newValue
-	case types.Balance:
-		p.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
-func (p *Balance) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := p.Get(false)
-	p.data = nil
-	_, err := p.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		p.Set(oldData)
-	}
-	return err
-}
+}*/
 
 func (p *Balance) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "balance" {

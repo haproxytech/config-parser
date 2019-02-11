@@ -1,4 +1,4 @@
-package stats
+package parsers
 
 import (
 	"fmt"
@@ -9,21 +9,21 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type Timeout struct {
+type StatsTimeout struct {
 	name string
 	data *types.StringSliceC
 }
 
-func (s *Timeout) Init() {
+func (s *StatsTimeout) Init() {
 	s.name = "stats timeout"
 	s.data = nil
 }
 
-func (s *Timeout) GetParserName() string {
+func (s *StatsTimeout) GetParserName() string {
 	return s.name
 }
 
-func (s *Timeout) Get(createIfNotExist bool) (common.ParserData, error) {
+func (s *StatsTimeout) Get(createIfNotExist bool) (common.ParserData, error) {
 	if s.data == nil {
 		if createIfNotExist {
 			s.data = &types.StringSliceC{}
@@ -34,7 +34,17 @@ func (s *Timeout) Get(createIfNotExist bool) (common.ParserData, error) {
 	return s.data, nil
 }
 
-func (s *Timeout) Set(data common.ParserData) error {
+func (p *StatsTimeout) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (s *StatsTimeout) Set(data common.ParserData, index int) error {
 	if data == nil {
 		s.Init()
 		return nil
@@ -50,21 +60,10 @@ func (s *Timeout) Set(data common.ParserData) error {
 	return nil
 }
 
-func (s *Timeout) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := s.Get(false)
-	s.Init()
-	_, err := s.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		s.Set(oldData)
-	}
-	return err
-}
-
-func (s *Timeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *StatsTimeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "timeout" {
 		if len(parts) < 3 {
-			return "", &errors.ParseError{Parser: "StatsTimeout", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "StatsStatsTimeout", Line: line, Message: "Parse error"}
 		}
 		s.data = &types.StringSliceC{
 			Value:   parts[2:],
@@ -76,7 +75,7 @@ func (s *Timeout) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: s.name, Line: line}
 }
 
-func (s *Timeout) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *StatsTimeout) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.FetchError
 	}

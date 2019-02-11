@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/haproxytech/config-parser/common"
+	"github.com/haproxytech/config-parser/errors"
 )
 
 type ParserType interface {
@@ -11,8 +12,8 @@ type ParserType interface {
 	Parse(line string, parts, previousParts []string, comment string) (changeState string, err error)
 	GetParserName() string
 	Get(createIfNotExist bool) (common.ParserData, error)
-	Set(data common.ParserData) error
-	SetStr(data string) error
+	GetOne(index int) (common.ParserData, error)
+	Set(data common.ParserData, index int) error
 	Result(AddComments bool) ([]common.ReturnResultLine, error)
 }
 
@@ -30,13 +31,28 @@ func (p *ParserTypes) Get(attribute string, createIfNotExist ...bool) (common.Pa
 			return parser.Get(createNew)
 		}
 	}
-	return nil, fmt.Errorf("attribute not found, no available parser for [%s]", attribute)
+	return nil, errors.ParserMissingErr
 }
 
-func (p *ParserTypes) Set(attribute string, data common.ParserData) error {
-	for index, parser := range p.parsers {
+//HasParser checks if we have a parser for attribute
+func (p *ParserTypes) HasParser(attribute string) bool {
+	for _, parser := range p.parsers {
 		if parser.GetParserName() == attribute {
-			return p.parsers[index].Set(data)
+			return true
+		}
+	}
+	return false
+}
+
+//Set sets data in parser, if you can have multiple items, index is a must
+func (p *ParserTypes) Set(attribute string, data common.ParserData, index ...int) error {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
+	for i, parser := range p.parsers {
+		if parser.GetParserName() == attribute {
+			return p.parsers[i].Set(data, setIndex)
 		}
 	}
 	return fmt.Errorf("attribute not available")

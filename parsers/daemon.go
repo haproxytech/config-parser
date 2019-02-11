@@ -31,7 +31,17 @@ func (d *Daemon) Get(createIfNotExist bool) (common.ParserData, error) {
 	return d.data, nil
 }
 
-func (d *Daemon) Set(data common.ParserData) error {
+func (p *Daemon) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (d *Daemon) Set(data common.ParserData, index int) error {
 	if data == nil {
 		d.data = nil
 		return nil
@@ -45,17 +55,6 @@ func (d *Daemon) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (d *Daemon) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := d.Get(false)
-	d.data = nil
-	_, err := d.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		d.Set(oldData)
-	}
-	return err
 }
 
 func (d *Daemon) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

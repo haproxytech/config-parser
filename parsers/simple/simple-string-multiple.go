@@ -33,7 +33,17 @@ func (s *SimpleStringMultiple) Get(createIfNotExist bool) (common.ParserData, er
 	return s.data, nil
 }
 
-func (s *SimpleStringMultiple) Set(data common.ParserData) error {
+func (p *SimpleStringMultiple) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (s *SimpleStringMultiple) Set(data common.ParserData, index int) error {
 	if data == nil {
 		s.Init()
 		return nil
@@ -47,17 +57,6 @@ func (s *SimpleStringMultiple) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (s *SimpleStringMultiple) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := s.Get(false)
-	s.Init()
-	_, err := s.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		s.Set(oldData)
-	}
-	return err
 }
 
 func (s *SimpleStringMultiple) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

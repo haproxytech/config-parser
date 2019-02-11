@@ -23,7 +23,17 @@ func (p *Comments) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
-func (p *Comments) Set(data common.ParserData) error {
+func (p *Comments) GetOne(index int) (common.ParserData, error) {
+	if len(p.data) == 0 {
+		return nil, errors.FetchError
+	}
+	if index < 0 || index >= len(p.data) {
+		return nil, errors.FetchError
+	}
+	return p.data[index], nil
+}
+
+func (p *Comments) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -39,17 +49,6 @@ func (p *Comments) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (p *Comments) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := p.Get(false)
-	p.Init()
-	_, err := p.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		p.Set(oldData)
-	}
-	return err
 }
 
 func (p *Comments) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

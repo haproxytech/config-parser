@@ -32,7 +32,17 @@ func (p *SimpleTimeout) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
-func (p *SimpleTimeout) Set(data common.ParserData) error {
+func (p *SimpleTimeout) GetOne(index int) (common.ParserData, error) {
+	if index != 0 {
+		return nil, errors.FetchError
+	}
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
+}
+
+func (p *SimpleTimeout) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -46,17 +56,6 @@ func (p *SimpleTimeout) Set(data common.ParserData) error {
 		return fmt.Errorf("casting error")
 	}
 	return nil
-}
-
-func (p *SimpleTimeout) SetStr(data string) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(data, ' ')
-	oldData, _ := p.Get(false)
-	p.Init()
-	_, err := p.Parse(data, parts, []string{}, comment)
-	if err != nil {
-		p.Set(oldData)
-	}
-	return err
 }
 
 func (t *SimpleTimeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
