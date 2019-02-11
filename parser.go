@@ -73,6 +73,21 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string, 
 	return section.Get(attribute, createNew)
 }
 
+//SectionsGet lists all sections of certain type
+func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return nil, errors.SectionMissingErr
+	}
+	result := make([]string, len(st))
+	index := 0
+	for sectionName, _ := range st {
+		result[index] = sectionName
+		index++
+	}
+	return result, nil
+}
+
 //Set sets attribute from defaults section, can be nil to disable/remove
 func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData) error {
 	st, ok := p.Parsers[sectionType]
