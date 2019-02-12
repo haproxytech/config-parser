@@ -1,4 +1,4 @@
-package option
+package parsers
 
 import (
 	"fmt"
@@ -12,53 +12,8 @@ type OptionHTTPLog struct {
 	data *types.OptionHTTPLog
 }
 
-func (o *OptionHTTPLog) Init() {
-	o.data = nil
-}
-
-func (o *OptionHTTPLog) GetParserName() string {
-	return "option httplog"
-}
-
-func (p *OptionHTTPLog) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data == nil {
-		if createIfNotExist {
-			p.data = &types.OptionHTTPLog{}
-			return p.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (p *OptionHTTPLog) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (p *OptionHTTPLog) Set(data common.ParserData, index int) error {
-	if data == nil {
-		p.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.OptionHTTPLog:
-		p.data = newValue
-	case types.OptionHTTPLog:
-		p.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
 func (o *OptionHTTPLog) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) > 2 && parts[0] == "option" && parts[1] == "httplog" && parts[3] == "clf" {
+	if len(parts) > 2 && parts[0] == "option" && parts[1] == "httplog" && parts[2] == "clf" {
 		o.data = &types.OptionHTTPLog{
 			Comment: comment,
 			Clf:     true,

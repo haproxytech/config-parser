@@ -133,6 +133,20 @@ type OptionHttpchk struct {
 	Comment string
 }
 
+//sections:frontend
+//name:option httplog
+//no-parse:true
+//test:ok:option httplog
+//test:ok:no option httplog
+//test:ok:option httplog clf
+//test:ok:option httplog # comment
+//test:ok:option httplog clf # comment
+type OptionHTTPLog struct {
+	NoOption bool
+	Clf      bool
+	Comment  string
+}
+
 //sections:peers
 //name:peer
 //is-multiple:true
@@ -168,12 +182,6 @@ type Server struct {
 
 type SimpleOption struct {
 	NoOption bool
-	Comment  string
-}
-
-type OptionHTTPLog struct {
-	NoOption bool
-	Clf      bool
 	Comment  string
 }
 

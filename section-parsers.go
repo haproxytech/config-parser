@@ -5,7 +5,6 @@ import (
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/filters"
 	"github.com/haproxytech/config-parser/parsers/http"
-	"github.com/haproxytech/config-parser/parsers/option"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/tcp"
 )
@@ -105,7 +104,7 @@ func getFrontendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "log-separate-errors"},
 		&simple.SimpleOption{Name: "clitcpka"},
 
-		&option.OptionHTTPLog{},
+		&parsers.OptionHTTPLog{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
 		&simple.SimpleTimeout{Name: "client"},
