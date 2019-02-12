@@ -18,7 +18,7 @@ func (h *TCPRequests) Init() {
 }
 
 func (h *TCPRequests) GetParserName() string {
-	return "tpc-request"
+	return "tcp-request"
 }
 
 func (h *TCPRequests) Get(createIfNotExist bool) (common.ParserData, error) {
@@ -98,7 +98,7 @@ func (h *TCPRequests) Result(AddComments bool) ([]common.ReturnResultLine, error
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{
-			Data:    "tpc-request " + req.String(),
+			Data:    "tcp-request " + req.String(),
 			Comment: req.GetComment(),
 		}
 	}

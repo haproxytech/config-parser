@@ -88,7 +88,7 @@ func (h *TCPResponses) Result(AddComments bool) ([]common.ReturnResultLine, erro
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{
-			Data:    "tpc-response " + req.String(),
+			Data:    "tcp-response " + req.String(),
 			Comment: req.GetComment(),
 		}
 	}
