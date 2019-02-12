@@ -5,6 +5,7 @@ import (
 	"github.com/haproxytech/config-parser/parsers/extra"
 	"github.com/haproxytech/config-parser/parsers/filters"
 	"github.com/haproxytech/config-parser/parsers/http"
+	"github.com/haproxytech/config-parser/parsers/option"
 	"github.com/haproxytech/config-parser/parsers/simple"
 	"github.com/haproxytech/config-parser/parsers/tcp"
 )
@@ -98,11 +99,13 @@ func getFrontendParser() *ParserTypes {
 
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
-		&simple.SimpleOption{Name: "httplog"},
+		&simple.SimpleOption{Name: "tcplog"},
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "contstats"},
 		&simple.SimpleOption{Name: "log-separate-errors"},
 		&simple.SimpleOption{Name: "clitcpka"},
+
+		&option.OptionHTTPLog{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
 		&simple.SimpleTimeout{Name: "client"},

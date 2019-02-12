@@ -171,6 +171,12 @@ type SimpleOption struct {
 	Comment  string
 }
 
+type OptionHTTPLog struct {
+	NoOption bool
+	Clf      bool
+	Comment  string
+}
+
 type SimpleTimeout struct {
 	Value   string
 	Comment string
