@@ -88,6 +88,42 @@ func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
 	return result, nil
 }
 
+//SectionsDelete deletes one section of sectionType
+func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
+	_, ok := p.Parsers[sectionType]
+	if !ok {
+		return errors.SectionMissingErr
+	}
+	delete(p.Parsers[sectionType], sectionName)
+	return nil
+}
+
+//SectionsCreate creates one section of sectionType
+func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return errors.SectionMissingErr
+	}
+	_, ok = st[sectionName]
+	if ok {
+		return errors.SectionAlreadyExistsErr
+	}
+
+	parsers := ConfiguredParsers{
+		State:    "",
+		Active:   *p.Parsers[Comments][CommentsSectionName],
+		Comments: p.Parsers[Comments][CommentsSectionName],
+		Defaults: p.Parsers[Defaults][DefaultSectionName],
+		Global:   p.Parsers[Global][GlobalSectionName],
+	}
+
+	previousLine := []string{}
+	parts := []string{string(sectionType), sectionName}
+	comment := ""
+	parsers = p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, previousLine, comment, parsers)
+	return nil
+}
+
 //Set sets attribute from defaults section, can be nil to disable/remove
 func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData) error {
 	st, ok := p.Parsers[sectionType]
