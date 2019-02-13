@@ -13,51 +13,6 @@ type MaxConn struct {
 	data *types.Int64C
 }
 
-func (p *MaxConn) Init() {
-	p.data = nil
-}
-
-func (p *MaxConn) GetParserName() string {
-	return "maxconn"
-}
-
-func (p *MaxConn) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data == nil {
-		if createIfNotExist {
-			p.data = &types.Int64C{}
-			return p.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (p *MaxConn) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (p *MaxConn) Set(data common.ParserData, index int) error {
-	if data == nil {
-		p.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.Int64C:
-		p.data = newValue
-	case types.Int64C:
-		p.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
 func (p *MaxConn) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "maxconn" {
 		if len(parts) < 2 {

@@ -2,8 +2,6 @@ package types
 
 import "github.com/haproxytech/config-parser/params"
 
-//go:generate go run ../go-generate.go
-
 //sections:frontend
 //name:bind
 //is-multiple:true

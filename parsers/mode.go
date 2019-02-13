@@ -12,51 +12,6 @@ type Mode struct {
 	data *types.StringC
 }
 
-func (p *Mode) Init() {
-	p.data = nil
-}
-
-func (p *Mode) GetParserName() string {
-	return "mode"
-}
-
-func (p *Mode) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data == nil {
-		if createIfNotExist {
-			p.data = &types.StringC{}
-			return p.data, nil
-		}
-		return p.data, nil
-	}
-	return nil, errors.FetchError
-}
-
-func (p *Mode) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (p *Mode) Set(data common.ParserData, index int) error {
-	if data == nil {
-		p.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.StringC:
-		p.data = newValue
-	case types.StringC:
-		p.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
 func (p *Mode) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "mode" {
 		if len(parts) < 2 {
