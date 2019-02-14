@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
@@ -19,7 +20,7 @@ func (c *CpuMap) parse(line string, parts []string, comment string) (*types.CpuM
 	}
 	cpuMap := &types.CpuMap{
 		Name:    parts[1],
-		Value:   parts[2],
+		Value:   strings.Join(parts[2:], " "),
 		Comment: comment,
 	}
 	return cpuMap, nil
