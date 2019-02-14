@@ -1,7 +1,7 @@
 package parsers
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/params"
 
@@ -34,8 +34,16 @@ func (h *Bind) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
+		var sb strings.Builder
+		sb.WriteString("bind ")
+		sb.WriteString(req.Path)
+		options := params.BindOptionsString(req.Params)
+		if options != "" {
+			sb.WriteString(" ")
+			sb.WriteString(options)
+		}
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("bind %s %s", req.Path, params.BindOptionsString(req.Params)),
+			Data:    sb.String(),
 			Comment: req.Comment,
 		}
 	}
