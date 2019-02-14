@@ -2,6 +2,8 @@
 package tests
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -9,38 +11,101 @@ import (
 
 
 func TestUserNormal0(t *testing.T) {
-	err := ProcessLine("user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1", &parsers.User{})
+	parser := &parsers.User{}
+	line := strings.TrimSpace("user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestUserNormal1(t *testing.T) {
-	err := ProcessLine("user panda insecure-password elgato groups G1,G2", &parsers.User{})
+	parser := &parsers.User{}
+	line := strings.TrimSpace("user panda insecure-password elgato groups G1,G2")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestUserNormal2(t *testing.T) {
-	err := ProcessLine("user bear insecure-password hello groups G2", &parsers.User{})
+	parser := &parsers.User{}
+	line := strings.TrimSpace("user bear insecure-password hello groups G2")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
 }
 func TestUserFail0(t *testing.T) {
-	err := ProcessLine("user", &parsers.User{})
+	parser := &parsers.User{}
+	line := strings.TrimSpace("user")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestUserFail1(t *testing.T) {
-	err := ProcessLine("---", &parsers.User{})
+	parser := &parsers.User{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestUserFail2(t *testing.T) {
-	err := ProcessLine("--- ---", &parsers.User{})
+	parser := &parsers.User{}
+	line := strings.TrimSpace("--- ---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }

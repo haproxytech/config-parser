@@ -2,6 +2,8 @@
 package tests
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -9,32 +11,80 @@ import (
 
 
 func TestMaxConnNormal0(t *testing.T) {
-	err := ProcessLine("maxconn 10000", &parsers.MaxConn{})
+	parser := &parsers.MaxConn{}
+	line := strings.TrimSpace("maxconn 10000")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestMaxConnNormal1(t *testing.T) {
-	err := ProcessLine("maxconn 10000 # comment", &parsers.MaxConn{})
+	parser := &parsers.MaxConn{}
+	line := strings.TrimSpace("maxconn 10000 # comment")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
 }
 func TestMaxConnFail0(t *testing.T) {
-	err := ProcessLine("maxconn", &parsers.MaxConn{})
+	parser := &parsers.MaxConn{}
+	line := strings.TrimSpace("maxconn")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestMaxConnFail1(t *testing.T) {
-	err := ProcessLine("---", &parsers.MaxConn{})
+	parser := &parsers.MaxConn{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestMaxConnFail2(t *testing.T) {
-	err := ProcessLine("--- ---", &parsers.MaxConn{})
+	parser := &parsers.MaxConn{}
+	line := strings.TrimSpace("--- ---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }

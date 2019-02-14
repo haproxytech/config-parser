@@ -50,6 +50,7 @@ type CpuMap struct {
 //name:default-server
 //is-multiple:true
 //test:ok:default-server inter 1000 weight 13
+//test:ok:default-server fall 1 rise 2 inter 3s port 4444
 //test:fail:default-server
 type DefaultServer struct {
 	Params  []params.ServerOption
@@ -61,7 +62,7 @@ type DefaultServer struct {
 //no-init:true
 //is-multiple:true
 //test:ok:errorfile 400 /etc/haproxy/errorfiles/400badreq.http
-//test:ok:errorfile 408 /dev/null  # work around Chrome pre-connect bug
+//test:ok:errorfile 408 /dev/null # work around Chrome pre-connect bug
 //test:ok:errorfile 403 /etc/haproxy/errorfiles/403forbid.http
 //test:ok:errorfile 503 /etc/haproxy/errorfiles/503sorry.http
 //test:fail:errorfile
@@ -89,11 +90,11 @@ type Group struct {
 //no-init:true
 //no-parse:true
 //test:ok:log global
-//test:ok:log stdout format short daemon          # send log to systemd
-//test:ok:log stdout format raw daemon            # send everything to stdout
-//test:ok:log stderr format raw daemon notice     # send important events to stderr
-//test:ok:log 127.0.0.1:514 local0 notice         # only send important events
-//test:ok:log 127.0.0.1:514 local0 notice notice  # same but limit output level
+//test:ok:log stdout format short daemon # send log to systemd
+//test:ok:log stdout format raw daemon # send everything to stdout
+//test:ok:log stderr format raw daemon notice # send important events to stderr
+//test:ok:log 127.0.0.1:514 local0 notice # only send important events
+//test:ok:log 127.0.0.1:514 local0 notice notice # same but limit output level
 //test:fail:log
 type Log struct {
 	Global   bool
@@ -182,7 +183,7 @@ type Server struct {
 //name:stick-table
 //is-multiple:true
 //test:ok:stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
-//test:ok:stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) #comment
+//test:ok:stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment
 //test:ok:stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)
 //test:ok:stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)
 //test:fail:stick-table type string len 1000 size 1m expire 5m something peers aaaaa store gpc0,conn_rate(30s)
@@ -217,7 +218,6 @@ type SimpleTimeout struct {
 //test:ok:stats socket 127.0.0.1:8080 mode admin
 //test:ok:stats socket /some/path/to/socket
 //test:ok:stats socket /some/path/to/socket mode admin
-//test:ok:stats socket 127.0.0.1 backup
 //atest:fail:stats socket /some/path/to/socket mode
 //test:fail:stats socket
 type Socket struct {
@@ -259,7 +259,7 @@ type Nameserver struct {
 //name:use_backend
 //is-multiple:true
 //test:ok:use_backend test if TRUE
-//test:ok:use_backend test if TRUE #deny
+//test:ok:use_backend test if TRUE # deny
 //test:fail:use_backend
 type UseBackend struct {
 	Name          string

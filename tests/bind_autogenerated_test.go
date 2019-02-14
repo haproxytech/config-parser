@@ -2,6 +2,8 @@
 package tests
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -9,68 +11,206 @@ import (
 
 
 func TestBindNormal0(t *testing.T) {
-	err := ProcessLine("bind :80,:443", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind :80,:443")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestBindNormal1(t *testing.T) {
-	err := ProcessLine("bind 10.0.0.1:10080,10.0.0.1:10443", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind 10.0.0.1:10080,10.0.0.1:10443")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestBindNormal2(t *testing.T) {
-	err := ProcessLine("bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestBindNormal3(t *testing.T) {
-	err := ProcessLine("bind :80", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind :80")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestBindNormal4(t *testing.T) {
-	err := ProcessLine("bind :443 ssl crt /etc/haproxy/site.pem", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind :443 ssl crt /etc/haproxy/site.pem")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestBindNormal5(t *testing.T) {
-	err := ProcessLine("bind ipv6@:80", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind ipv6@:80")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestBindNormal6(t *testing.T) {
-	err := ProcessLine("bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestBindNormal7(t *testing.T) {
-	err := ProcessLine("bind unix@ssl-frontend.sock user root mode 600 accept-proxy", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind unix@ssl-frontend.sock user root mode 600 accept-proxy")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
 }
 func TestBindFail0(t *testing.T) {
-	err := ProcessLine("bind", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("bind")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestBindFail1(t *testing.T) {
-	err := ProcessLine("---", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestBindFail2(t *testing.T) {
-	err := ProcessLine("--- ---", &parsers.Bind{})
+	parser := &parsers.Bind{}
+	line := strings.TrimSpace("--- ---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }

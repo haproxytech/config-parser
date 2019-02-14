@@ -2,6 +2,8 @@
 package tests
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -9,44 +11,122 @@ import (
 
 
 func TestCpuMapNormal0(t *testing.T) {
-	err := ProcessLine("cpu-map 1-4 0-3", &parsers.CpuMap{})
+	parser := &parsers.CpuMap{}
+	line := strings.TrimSpace("cpu-map 1-4 0-3")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestCpuMapNormal1(t *testing.T) {
-	err := ProcessLine("cpu-map 1/all 0-3", &parsers.CpuMap{})
+	parser := &parsers.CpuMap{}
+	line := strings.TrimSpace("cpu-map 1/all 0-3")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestCpuMapNormal2(t *testing.T) {
-	err := ProcessLine("cpu-map auto:1-4 0-3", &parsers.CpuMap{})
+	parser := &parsers.CpuMap{}
+	line := strings.TrimSpace("cpu-map auto:1-4 0-3")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestCpuMapNormal3(t *testing.T) {
-	err := ProcessLine("cpu-map auto:1-4 0-1 2-3", &parsers.CpuMap{})
+	parser := &parsers.CpuMap{}
+	line := strings.TrimSpace("cpu-map auto:1-4 0-1 2-3")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
 }
 func TestCpuMapFail0(t *testing.T) {
-	err := ProcessLine("cpu-map", &parsers.CpuMap{})
+	parser := &parsers.CpuMap{}
+	line := strings.TrimSpace("cpu-map")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestCpuMapFail1(t *testing.T) {
-	err := ProcessLine("---", &parsers.CpuMap{})
+	parser := &parsers.CpuMap{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestCpuMapFail2(t *testing.T) {
-	err := ProcessLine("--- ---", &parsers.CpuMap{})
+	parser := &parsers.CpuMap{}
+	line := strings.TrimSpace("--- ---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }

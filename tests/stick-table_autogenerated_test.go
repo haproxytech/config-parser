@@ -2,6 +2,8 @@
 package tests
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -9,56 +11,146 @@ import (
 
 
 func TestStickTableNormal0(t *testing.T) {
-	err := ProcessLine("stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestStickTableNormal1(t *testing.T) {
-	err := ProcessLine("stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) #comment", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestStickTableNormal2(t *testing.T) {
-	err := ProcessLine("stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestStickTableNormal3(t *testing.T) {
-	err := ProcessLine("stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
 }
 func TestStickTableFail0(t *testing.T) {
-	err := ProcessLine("stick-table type string len 1000 size 1m expire 5m something peers aaaaa store gpc0,conn_rate(30s)", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("stick-table type string len 1000 size 1m expire 5m something peers aaaaa store gpc0,conn_rate(30s)")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStickTableFail1(t *testing.T) {
-	err := ProcessLine("stick-table type", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("stick-table type")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStickTableFail2(t *testing.T) {
-	err := ProcessLine("stick-table", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("stick-table")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStickTableFail3(t *testing.T) {
-	err := ProcessLine("---", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStickTableFail4(t *testing.T) {
-	err := ProcessLine("--- ---", &parsers.StickTable{})
+	parser := &parsers.StickTable{}
+	line := strings.TrimSpace("--- ---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }

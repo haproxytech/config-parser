@@ -2,6 +2,8 @@
 package tests
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -9,20 +11,47 @@ import (
 
 
 func TestOptionHttpchkNormal0(t *testing.T) {
-	err := ProcessLine("option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www", &parsers.OptionHttpchk{})
+	parser := &parsers.OptionHttpchk{}
+	line := strings.TrimSpace("option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
 }
 func TestOptionHttpchkFail0(t *testing.T) {
-	err := ProcessLine("---", &parsers.OptionHttpchk{})
+	parser := &parsers.OptionHttpchk{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestOptionHttpchkFail1(t *testing.T) {
-	err := ProcessLine("--- ---", &parsers.OptionHttpchk{})
+	parser := &parsers.OptionHttpchk{}
+	line := strings.TrimSpace("--- ---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }

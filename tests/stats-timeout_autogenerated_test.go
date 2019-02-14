@@ -2,6 +2,8 @@
 package tests
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/haproxytech/config-parser/parsers"
@@ -9,44 +11,104 @@ import (
 
 
 func TestStatsTimeoutNormal0(t *testing.T) {
-	err := ProcessLine("stats timeout 4", &parsers.StatsTimeout{})
+	parser := &parsers.StatsTimeout{}
+	line := strings.TrimSpace("stats timeout 4")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
 func TestStatsTimeoutNormal1(t *testing.T) {
-	err := ProcessLine("stats timeout 4 # comment", &parsers.StatsTimeout{})
+	parser := &parsers.StatsTimeout{}
+	line := strings.TrimSpace("stats timeout 4 # comment")
+	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
+	result, err := parser.Result(true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
 }
 func TestStatsTimeoutFail0(t *testing.T) {
-	err := ProcessLine("stats timeout", &parsers.StatsTimeout{})
+	parser := &parsers.StatsTimeout{}
+	line := strings.TrimSpace("stats timeout")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStatsTimeoutFail1(t *testing.T) {
-	err := ProcessLine("stats", &parsers.StatsTimeout{})
+	parser := &parsers.StatsTimeout{}
+	line := strings.TrimSpace("stats")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStatsTimeoutFail2(t *testing.T) {
-	err := ProcessLine("timeout", &parsers.StatsTimeout{})
+	parser := &parsers.StatsTimeout{}
+	line := strings.TrimSpace("timeout")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStatsTimeoutFail3(t *testing.T) {
-	err := ProcessLine("---", &parsers.StatsTimeout{})
+	parser := &parsers.StatsTimeout{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
 func TestStatsTimeoutFail4(t *testing.T) {
-	err := ProcessLine("--- ---", &parsers.StatsTimeout{})
+	parser := &parsers.StatsTimeout{}
+	line := strings.TrimSpace("--- ---")
+	err := ProcessLine(line, parser)
 	if err == nil {
-		t.Errorf("no data")
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result(true)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
