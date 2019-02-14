@@ -114,6 +114,7 @@ func getFrontendParser() *ParserTypes {
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},
 		&tcp.TCPRequests{},
+		&parsers.StickTable{},
 
 		&simple.SimpleString{Name: "monitor-uri"},
 
@@ -152,6 +153,7 @@ func getBackendParser() *ParserTypes {
 		&http.HTTPResponses{},
 		&tcp.TCPRequests{},
 		&tcp.TCPResponses{},
+		&parsers.StickTable{},
 		&simple.SimpleString{Name: "cookie"},
 		&parsers.UseServer{},
 		&parsers.Server{},
