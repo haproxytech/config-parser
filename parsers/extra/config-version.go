@@ -2,7 +2,6 @@ package extra
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 
@@ -72,7 +71,6 @@ func (s *ConfigVersion) SetStr(data string) error {
 func (s *ConfigVersion) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if strings.HasPrefix(comment, "_version") {
 		data := common.StringSplitIgnoreEmpty(comment, '=')
-		log.Println(data)
 		if len(data) < 2 {
 			return "", &errors.ParseError{Parser: "ConfigVersion", Line: line}
 		}
