@@ -40,7 +40,7 @@ func (h *UseBackend) Result(AddComments bool) ([]common.ReturnResultLine, error)
 			condition = fmt.Sprintf(" %s %s", req.ConditionKind, req.Condition)
 		}
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("use_backend %s%s #deny", req.Name, condition),
+			Data:    fmt.Sprintf("use_backend %s%s", req.Name, condition),
 			Comment: req.Comment,
 		}
 	}
