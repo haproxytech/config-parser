@@ -31,17 +31,19 @@ func (p *Balance) Parse(line string, parts, previousParts []string, comment stri
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Balance", Line: line, Message: "Parse error"}
 		}
-		p.data = &types.Balance{
+		data := &types.Balance{
 			Arguments: []string{},
 			Comment:   comment,
 		}
 
 		switch parts[1] {
 		case "roundrobin", "static-rr", "leastconn", "first", "source", "random":
-			p.data.Algorithm = parts[1]
+			data.Algorithm = parts[1]
+			p.data = data
 			return "", nil
 		case "uri", "url_param":
-			p.data.Algorithm = parts[1]
+			p.data = data
+			data.Algorithm = parts[1]
 			if len(parts) > 2 {
 				p.data.Arguments = parts[2:]
 				return "", nil
@@ -49,11 +51,13 @@ func (p *Balance) Parse(line string, parts, previousParts []string, comment stri
 			return "", &errors.ParseError{Parser: "Balance", Line: line}
 		}
 		if strings.HasPrefix(parts[1], "hdr(") && strings.HasSuffix(parts[1], ")") {
-			p.data.Algorithm = parts[1]
+			p.data = data
+			data.Algorithm = parts[1]
 			return "", nil
 		}
 		if strings.HasPrefix(parts[1], "rdp-cookie(") && strings.HasSuffix(parts[1], ")") {
-			p.data.Algorithm = parts[1]
+			p.data = data
+			data.Algorithm = parts[1]
 			return "", nil
 		}
 		return "", &errors.ParseError{Parser: "Balance", Line: line}
