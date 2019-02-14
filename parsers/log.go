@@ -3,6 +3,7 @@ package parsers
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
@@ -131,19 +132,29 @@ func (l *Log) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 				Comment: log.Comment,
 			}
 		} else {
-			line := fmt.Sprintf("log %s", log.Address)
+			var sb strings.Builder
+			sb.WriteString("log ")
+			sb.WriteString(log.Address)
 			if log.Length > 0 {
-				line = fmt.Sprintf("%s %d", line, log.Length)
+				sb.WriteString("len ")
+				sb.WriteString(fmt.Sprintf("%d", log.Length))
 			}
-			line = fmt.Sprintf("%s %s", line, log.Facility)
+			if log.Format != "" {
+				sb.WriteString(" format ")
+				sb.WriteString(log.Format)
+			}
+			sb.WriteString(" ")
+			sb.WriteString(log.Facility)
 			if log.Level != "" {
-				line = fmt.Sprintf("%s %s", line, log.Level)
+				sb.WriteString(" ")
+				sb.WriteString(log.Level)
 				if log.MinLevel != "" {
-					line = fmt.Sprintf("%s %s", line, log.MinLevel)
+					sb.WriteString(" ")
+					sb.WriteString(log.MinLevel)
 				}
 			}
 			result[index] = common.ReturnResultLine{
-				Data:    line,
+				Data:    sb.String(),
 				Comment: log.Comment,
 			}
 		}
