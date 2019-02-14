@@ -1,7 +1,7 @@
 package parsers
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/params"
 
@@ -33,8 +33,19 @@ func (h *Server) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
+		var sb strings.Builder
+		sb.WriteString("server ")
+		sb.WriteString(req.Name)
+		sb.WriteString(" ")
+		sb.WriteString(req.Address)
+		params := params.ServerOptionsString(req.Params)
+		if params != "" {
+			sb.WriteString(" ")
+			sb.WriteString(params)
+		}
+
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("server %s %s %s", req.Name, req.Address, params.ServerOptionsString(req.Params)),
+			Data:    sb.String(),
 			Comment: req.Comment,
 		}
 	}
