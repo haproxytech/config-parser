@@ -1,7 +1,7 @@
 package parsers
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/params"
 
@@ -33,8 +33,16 @@ func (l *Socket) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, socket := range l.data {
+		var sb strings.Builder
+		sb.WriteString("stats socket ")
+		sb.WriteString(socket.Path)
+		params := params.BindOptionsString(socket.Params)
+		if params != "" {
+			sb.WriteString(" ")
+			sb.WriteString(params)
+		}
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf(fmt.Sprintf("stats socket %s %s", socket.Path, params.BindOptionsString(socket.Params))),
+			Data:    sb.String(),
 			Comment: socket.Comment,
 		}
 	}
