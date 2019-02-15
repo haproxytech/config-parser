@@ -13,6 +13,8 @@ type ParserType interface {
 	GetParserName() string
 	Get(createIfNotExist bool) (common.ParserData, error)
 	GetOne(index int) (common.ParserData, error)
+	Delete(index int) error
+	Insert(data common.ParserData, index int) error
 	Set(data common.ParserData, index int) error
 	Result(AddComments bool) ([]common.ReturnResultLine, error)
 }
@@ -53,6 +55,32 @@ func (p *ParserTypes) Set(attribute string, data common.ParserData, index ...int
 	for i, parser := range p.parsers {
 		if parser.GetParserName() == attribute {
 			return p.parsers[i].Set(data, setIndex)
+		}
+	}
+	return fmt.Errorf("attribute not available")
+}
+
+func (p *ParserTypes) Insert(attribute string, data common.ParserData, index ...int) error {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
+	for i, parser := range p.parsers {
+		if parser.GetParserName() == attribute {
+			return p.parsers[i].Insert(data, setIndex)
+		}
+	}
+	return fmt.Errorf("attribute not available")
+}
+
+func (p *ParserTypes) Delete(attribute string, index ...int) error {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
+	for i, parser := range p.parsers {
+		if parser.GetParserName() == attribute {
+			return p.parsers[i].Delete(setIndex)
 		}
 	}
 	return fmt.Errorf("attribute not available")

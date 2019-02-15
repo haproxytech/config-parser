@@ -141,6 +141,40 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 	return section.Set(attribute, data, setIndex)
 }
 
+//Delete remove attribute on defined index, in case of single attributes, index is ignored
+func (p *Parser) Delete(sectionType Section, sectionName string, attribute string, index ...int) error {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return errors.SectionMissingErr
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return fmt.Errorf("Section [%s] not found", sectionName)
+	}
+	return section.Delete(attribute, setIndex)
+}
+
+//Insert put attribute on defined index, in case of single attributes, index is ignored
+func (p *Parser) Insert(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return errors.SectionMissingErr
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return fmt.Errorf("Section [%s] not found", sectionName)
+	}
+	return section.Insert(attribute, data, setIndex)
+}
+
 //HasParser checks if we have a parser for attribute
 func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	st, ok := p.Parsers[sectionType]
