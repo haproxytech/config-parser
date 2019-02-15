@@ -125,7 +125,11 @@ func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 }
 
 //Set sets attribute from defaults section, can be nil to disable/remove
-func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData) error {
+func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
 	st, ok := p.Parsers[sectionType]
 	if !ok {
 		return errors.SectionMissingErr
@@ -134,7 +138,7 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 	if !ok {
 		return fmt.Errorf("Section [%s] not found", sectionName)
 	}
-	return section.Set(attribute, data)
+	return section.Set(attribute, data, setIndex)
 }
 
 //HasParser checks if we have a parser for attribute
@@ -274,7 +278,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Global
 				}
 				if config.State == "frontend" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Frontend = getFrontendParser()
@@ -282,7 +286,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Frontend
 				}
 				if config.State == "backend" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Backend = getBackendParser()
@@ -290,7 +294,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Backend
 				}
 				if config.State == "listen" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Listen = getListenParser()
@@ -298,7 +302,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Listen
 				}
 				if config.State == "resolvers" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Resolver = getResolverParser()
@@ -306,7 +310,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Resolver
 				}
 				if config.State == "userlist" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Userlist = getUserlistParser()
@@ -314,7 +318,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Userlist
 				}
 				if config.State == "peers" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Peers = getPeersParser()
@@ -322,7 +326,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Peers
 				}
 				if config.State == "mailers" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Mailers = getMailersParser()
@@ -330,7 +334,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = *config.Mailers
 				}
 				if config.State == "cache" {
-					parserSectionName := parser.(*extra.SectionName)
+					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Cache = getCacheParser()

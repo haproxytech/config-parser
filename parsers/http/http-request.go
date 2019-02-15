@@ -1,62 +1,25 @@
 package http
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/parsers/http/actions"
+	"github.com/haproxytech/config-parser/types"
 )
 
 type HTTPRequests struct {
-	data []HTTPAction
+	Name string
+	data []types.HTTPAction
 }
 
 func (h *HTTPRequests) Init() {
-	h.data = []HTTPAction{}
+	h.Name = "http-request"
+	h.data = []types.HTTPAction{}
 }
 
-func (h *HTTPRequests) GetParserName() string {
-	return "http-request"
-}
-
-func (h *HTTPRequests) Get(createIfNotExist bool) (common.ParserData, error) {
-	if len(h.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
-	}
-	return h.data, nil
-}
-
-func (p *HTTPRequests) GetOne(index int) (common.ParserData, error) {
-	if len(p.data) == 0 {
-		return nil, errors.FetchError
-	}
-	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
-	}
-	return p.data[index], nil
-}
-
-func (h *HTTPRequests) Set(data common.ParserData, index int) error {
-	if data == nil {
-		h.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case []HTTPAction:
-		h.data = newValue
-	case *HTTPAction:
-		h.data = append(h.data, *newValue)
-	case HTTPAction:
-		h.data = append(h.data, newValue)
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
-func (f *HTTPRequests) ParseHTTPRequest(request HTTPAction, parts []string, comment string) error {
+func (f *HTTPRequests) ParseHTTPRequest(request types.HTTPAction, parts []string, comment string) error {
 	err := request.Parse(parts, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPRequestLines", Line: ""}

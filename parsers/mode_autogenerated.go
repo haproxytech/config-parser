@@ -2,8 +2,6 @@
 package parsers
 
 import (
-	"fmt"
-
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/types"
@@ -29,13 +27,22 @@ func (p *Mode) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *Mode) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
+	if index > 0 {
 		return nil, errors.FetchError
 	}
 	if p.data == nil {
 		return nil, errors.FetchError
 	}
 	return p.data, nil
+}
+
+func (p *Mode) Delete(index int) error {
+	p.Init()
+	return nil
+}
+
+func (p *Mode) Insert(data common.ParserData, index int) error {
+	return p.Set(data, index)
 }
 
 func (p *Mode) Set(data common.ParserData, index int) error {
@@ -49,7 +56,7 @@ func (p *Mode) Set(data common.ParserData, index int) error {
 	case types.StringC:
 		p.data = &newValue
 	default:
-		return fmt.Errorf("casting error")
+		return errors.InvalidData
 	}
 	return nil
 }

@@ -13,51 +13,6 @@ type SimpleTime struct {
 	data *types.StringC
 }
 
-func (s *SimpleTime) Init() {
-	s.data = nil
-}
-
-func (s *SimpleTime) GetParserName() string {
-	return s.Name
-}
-
-func (s *SimpleTime) Get(createIfNotExist bool) (common.ParserData, error) {
-	if s.data == nil {
-		if createIfNotExist {
-			s.data = &types.StringC{}
-			return s.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return s.data, nil
-}
-
-func (p *SimpleTime) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (s *SimpleTime) Set(data common.ParserData, index int) error {
-	if data == nil {
-		s.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.StringC:
-		s.data = newValue
-	case types.StringC:
-		s.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
 func (s *SimpleTime) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) < 2 {

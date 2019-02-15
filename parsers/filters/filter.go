@@ -1,65 +1,22 @@
 package filters
 
 import (
-	"fmt"
-
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/types"
 )
 
-type Filter interface {
-	Parse(parts []string, comment string) error
-	Result() common.ReturnResultLine
-}
-
 type Filters struct {
-	data []Filter
+	Name string
+	data []types.Filter
 }
 
 func (h *Filters) Init() {
-	h.data = []Filter{}
+	h.data = []types.Filter{}
+	h.Name = "filter"
 }
 
-func (h *Filters) GetParserName() string {
-	return "filter"
-}
-
-func (h *Filters) Get(createIfNotExist bool) (common.ParserData, error) {
-	if len(h.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
-	}
-	return h.data, nil
-}
-
-func (p *Filters) GetOne(index int) (common.ParserData, error) {
-	if len(p.data) == 0 {
-		return nil, errors.FetchError
-	}
-	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
-	}
-	return p.data[index], nil
-}
-
-func (h *Filters) Set(data common.ParserData, index int) error {
-	if data == nil {
-		h.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case []Filter:
-		h.data = newValue
-	case *Filter:
-		h.data = append(h.data, *newValue)
-	case Filter:
-		h.data = append(h.data, newValue)
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
-func (f *Filters) ParseFilter(filter Filter, parts []string, comment string) error {
+func (f *Filters) ParseFilter(filter types.Filter, parts []string, comment string) error {
 	err := filter.Parse(parts, "")
 	if err != nil {
 		return &errors.ParseError{Parser: "FilterLines", Line: ""}

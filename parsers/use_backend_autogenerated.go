@@ -2,8 +2,6 @@
 package parsers
 
 import (
-	"fmt"
-
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/types"
@@ -25,19 +23,25 @@ func (p *UseBackend) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *UseBackend) GetOne(index int) (common.ParserData, error) {
-	if len(p.data) == 0 {
-		return nil, errors.FetchError
-	}
 	if index < 0 || index >= len(p.data) {
 		return nil, errors.FetchError
 	}
 	return p.data[index], nil
 }
 
-func (p *UseBackend) Set(data common.ParserData, index int) error {
+func (p *UseBackend) Delete(index int) error {
+	if index < 0 || index >= len(p.data) {
+		return errors.FetchError
+	}
+	copy(p.data[index:], p.data[index+1:])
+	p.data[len(p.data)-1] = types.UseBackend{}
+	p.data = p.data[:len(p.data)-1]
+	return nil
+}
+
+func (p *UseBackend) Insert(data common.ParserData, index int) error {
 	if data == nil {
-		p.Init()
-		return nil
+		return errors.InvalidData
 	}
 	switch newValue := data.(type) {
 	case []types.UseBackend:
@@ -59,7 +63,33 @@ func (p *UseBackend) Set(data common.ParserData, index int) error {
 			p.data = append(p.data, newValue)
 		}
 	default:
-		return fmt.Errorf("casting error")
+		return errors.InvalidData
+	}
+	return nil
+}
+
+func (p *UseBackend) Set(data common.ParserData, index int) error {
+	if data == nil {
+		p.Init()
+		return nil
+	}
+	switch newValue := data.(type) {
+	case []types.UseBackend:
+		p.data = newValue
+	case *types.UseBackend:
+		if index > -1 && index < len(p.data) {
+			p.data[index] = *newValue
+		} else {
+			return errors.IndexOutOfRange
+		}
+	case types.UseBackend:
+		if index > -1 && index < len(p.data) {
+			p.data[index] = newValue
+		} else {
+			return errors.IndexOutOfRange
+		}
+	default:
+		return errors.InvalidData
 	}
 	return nil
 }

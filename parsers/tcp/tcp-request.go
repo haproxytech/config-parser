@@ -1,62 +1,24 @@
 package tcp
 
 import (
-	"fmt"
-
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/parsers/tcp/actions"
+	"github.com/haproxytech/config-parser/types"
 )
 
 type TCPRequests struct {
+	Name string
 	Mode string //frontent, backend
-	data []TCPAction
+	data []types.TCPAction
 }
 
 func (h *TCPRequests) Init() {
-	h.data = []TCPAction{}
+	h.Name = "tcp-request"
+	h.data = []types.TCPAction{}
 }
 
-func (h *TCPRequests) GetParserName() string {
-	return "tcp-request"
-}
-
-func (h *TCPRequests) Get(createIfNotExist bool) (common.ParserData, error) {
-	if len(h.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
-	}
-	return h.data, nil
-}
-
-func (p *TCPRequests) GetOne(index int) (common.ParserData, error) {
-	if len(p.data) == 0 {
-		return nil, errors.FetchError
-	}
-	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
-	}
-	return p.data[index], nil
-}
-
-func (h *TCPRequests) Set(data common.ParserData, index int) error {
-	if data == nil {
-		h.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case []TCPAction:
-		h.data = newValue
-	case *TCPAction:
-		h.data = append(h.data, *newValue)
-	case TCPAction:
-		h.data = append(h.data, newValue)
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
-func (f *TCPRequests) ParseTCPRequest(request TCPAction, parts []string, comment string) error {
+func (f *TCPRequests) ParseTCPRequest(request types.TCPAction, parts []string, comment string) error {
 	err := request.Parse(parts, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPRequestLines", Line: ""}

@@ -18,7 +18,12 @@ func (e *ParseError) Error() string {
 
 var FetchError error = errors.New("no data")
 
+var IndexOutOfRange error = errors.New("index out of range")
+
+var InvalidData error = errors.New("invalid data")
+
 var ParserMissingErr error = errors.New("parser missing")
 
-var SectionMissingErr error = errors.New("section missing")
 var SectionAlreadyExistsErr error = errors.New("section already exists")
+
+var SectionMissingErr error = errors.New("section missing")

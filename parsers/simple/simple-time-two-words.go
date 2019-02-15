@@ -11,54 +11,13 @@ import (
 
 type SimpleTimeTwoWords struct {
 	Keywords []string
-	name     string
+	Name     string
 	data     *types.StringC
 }
 
 func (s *SimpleTimeTwoWords) Init() {
 	s.data = nil
-	s.name = fmt.Sprintf(strings.Join(s.Keywords, " "))
-}
-
-func (s *SimpleTimeTwoWords) GetParserName() string {
-	return s.name
-}
-
-func (s *SimpleTimeTwoWords) Get(createIfNotExist bool) (common.ParserData, error) {
-	if s.data == nil {
-		if createIfNotExist {
-			s.data = &types.StringC{}
-			return s.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return s.data, nil
-}
-
-func (p *SimpleTimeTwoWords) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (s *SimpleTimeTwoWords) Set(data common.ParserData, index int) error {
-	if data == nil {
-		s.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.StringC:
-		s.data = newValue
-	case types.StringC:
-		s.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
+	s.Name = fmt.Sprintf(strings.Join(s.Keywords, " "))
 }
 
 func (s *SimpleTimeTwoWords) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
@@ -72,7 +31,7 @@ func (s *SimpleTimeTwoWords) Parse(line string, parts, previousParts []string, c
 		}
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: s.name, Line: line}
+	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
 func (s *SimpleTimeTwoWords) Result(AddComments bool) ([]common.ReturnResultLine, error) {
@@ -81,7 +40,7 @@ func (s *SimpleTimeTwoWords) Result(AddComments bool) ([]common.ReturnResultLine
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data:    fmt.Sprintf("%s %s", s.name, s.data.Value),
+			Data:    fmt.Sprintf("%s %s", s.Name, s.data.Value),
 			Comment: s.data.Comment,
 		},
 	}, nil

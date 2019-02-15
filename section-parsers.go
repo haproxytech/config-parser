@@ -12,17 +12,17 @@ import (
 func createParsers(parser []ParserType) *ParserTypes {
 	p := ParserTypes{
 		parsers: append(parser, []ParserType{
-			&extra.SectionName{Name: "defaults"},
-			&extra.SectionName{Name: "global"},
-			&extra.SectionName{Name: "frontend"},
-			&extra.SectionName{Name: "backend"},
-			&extra.SectionName{Name: "listen"},
-			&extra.SectionName{Name: "resolvers"},
-			&extra.SectionName{Name: "userlist"},
-			&extra.SectionName{Name: "peers"},
-			&extra.SectionName{Name: "mailers"},
-			&extra.SectionName{Name: "cache"},
-			&parsers.UnProcessed{},
+			&extra.Section{Name: "defaults"},
+			&extra.Section{Name: "global"},
+			&extra.Section{Name: "frontend"},
+			&extra.Section{Name: "backend"},
+			&extra.Section{Name: "listen"},
+			&extra.Section{Name: "resolvers"},
+			&extra.Section{Name: "userlist"},
+			&extra.Section{Name: "peers"},
+			&extra.Section{Name: "mailers"},
+			&extra.Section{Name: "cache"},
+			&extra.UnProcessed{},
 		}...),
 	}
 	for _, parser := range p.parsers {

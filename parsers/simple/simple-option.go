@@ -10,69 +10,31 @@ import (
 
 type SimpleOption struct {
 	Name string
+	name string
 	data *types.SimpleOption
 }
 
 func (o *SimpleOption) Init() {
+	o.name = o.Name
+	o.Name = fmt.Sprintf("option %s", o.Name)
 	o.data = nil
 }
 
-func (o *SimpleOption) GetParserName() string {
-	return fmt.Sprintf("option %s", o.Name)
-}
-
-func (p *SimpleOption) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data == nil {
-		if createIfNotExist {
-			p.data = &types.SimpleOption{}
-			return p.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (p *SimpleOption) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (p *SimpleOption) Set(data common.ParserData, index int) error {
-	if data == nil {
-		p.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.SimpleOption:
-		p.data = newValue
-	case types.SimpleOption:
-		p.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
 func (o *SimpleOption) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) > 1 && parts[0] == "option" && parts[1] == o.Name {
+	if len(parts) > 1 && parts[0] == "option" && parts[1] == o.name {
 		o.data = &types.SimpleOption{
 			Comment: comment,
 		}
 		return "", nil
 	}
-	if len(parts) > 2 && parts[0] == "no" && parts[1] == "option" && parts[2] == o.Name {
+	if len(parts) > 2 && parts[0] == "no" && parts[1] == "option" && parts[2] == o.name {
 		o.data = &types.SimpleOption{
 			NoOption: true,
 			Comment:  comment,
 		}
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: fmt.Sprintf("option %s", o.Name), Line: line}
+	return "", &errors.ParseError{Parser: fmt.Sprintf("option %s", o.name), Line: line}
 }
 
 func (o *SimpleOption) Result(AddComments bool) ([]common.ReturnResultLine, error) {
@@ -85,7 +47,7 @@ func (o *SimpleOption) Result(AddComments bool) ([]common.ReturnResultLine, erro
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data:    fmt.Sprintf("%soption %s", noOption, o.Name),
+			Data:    fmt.Sprintf("%soption %s", noOption, o.name),
 			Comment: o.data.Comment,
 		},
 	}, nil

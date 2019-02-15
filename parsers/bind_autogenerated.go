@@ -2,8 +2,6 @@
 package parsers
 
 import (
-	"fmt"
-
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/types"
@@ -25,19 +23,25 @@ func (p *Bind) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 func (p *Bind) GetOne(index int) (common.ParserData, error) {
-	if len(p.data) == 0 {
-		return nil, errors.FetchError
-	}
 	if index < 0 || index >= len(p.data) {
 		return nil, errors.FetchError
 	}
 	return p.data[index], nil
 }
 
-func (p *Bind) Set(data common.ParserData, index int) error {
+func (p *Bind) Delete(index int) error {
+	if index < 0 || index >= len(p.data) {
+		return errors.FetchError
+	}
+	copy(p.data[index:], p.data[index+1:])
+	p.data[len(p.data)-1] = types.Bind{}
+	p.data = p.data[:len(p.data)-1]
+	return nil
+}
+
+func (p *Bind) Insert(data common.ParserData, index int) error {
 	if data == nil {
-		p.Init()
-		return nil
+		return errors.InvalidData
 	}
 	switch newValue := data.(type) {
 	case []types.Bind:
@@ -59,7 +63,33 @@ func (p *Bind) Set(data common.ParserData, index int) error {
 			p.data = append(p.data, newValue)
 		}
 	default:
-		return fmt.Errorf("casting error")
+		return errors.InvalidData
+	}
+	return nil
+}
+
+func (p *Bind) Set(data common.ParserData, index int) error {
+	if data == nil {
+		p.Init()
+		return nil
+	}
+	switch newValue := data.(type) {
+	case []types.Bind:
+		p.data = newValue
+	case *types.Bind:
+		if index > -1 && index < len(p.data) {
+			p.data[index] = *newValue
+		} else {
+			return errors.IndexOutOfRange
+		}
+	case types.Bind:
+		if index > -1 && index < len(p.data) {
+			p.data[index] = newValue
+		} else {
+			return errors.IndexOutOfRange
+		}
+	default:
+		return errors.InvalidData
 	}
 	return nil
 }

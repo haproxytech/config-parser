@@ -160,11 +160,6 @@ type Peer struct {
 	Comment string
 }
 
-type Section struct {
-	Name    string
-	Comment string
-}
-
 //sections:backend
 //name:server
 //is-multiple:true
@@ -198,16 +193,6 @@ type StickTable struct {
 	NoPurge bool
 	Peers   string
 	Store   string
-	Comment string
-}
-
-type SimpleOption struct {
-	NoOption bool
-	Comment  string
-}
-
-type SimpleTimeout struct {
-	Value   string
 	Comment string
 }
 

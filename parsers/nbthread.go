@@ -13,51 +13,6 @@ type NbThread struct {
 	data *types.Int64C
 }
 
-func (n *NbThread) Init() {
-	n.data = nil
-}
-
-func (n *NbThread) GetParserName() string {
-	return "nbthread"
-}
-
-func (n *NbThread) Get(createIfNotExist bool) (common.ParserData, error) {
-	if n.data == nil {
-		if createIfNotExist {
-			n.data = &types.Int64C{}
-			return n.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return n.data, nil
-}
-
-func (p *NbThread) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (n *NbThread) Set(data common.ParserData, index int) error {
-	if data == nil {
-		n.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.Int64C:
-		n.data = newValue
-	case types.Int64C:
-		n.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
 func (n *NbThread) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "nbthread" {
 		if len(parts) < 2 {

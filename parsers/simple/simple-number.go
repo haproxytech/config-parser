@@ -14,51 +14,6 @@ type SimpleNumber struct {
 	data *types.Int64C
 }
 
-func (s *SimpleNumber) Init() {
-	s.data = nil
-}
-
-func (s *SimpleNumber) GetParserName() string {
-	return s.Name
-}
-
-func (s *SimpleNumber) Get(createIfNotExist bool) (common.ParserData, error) {
-	if s.data == nil {
-		if createIfNotExist {
-			s.data = &types.Int64C{}
-			return s.data, nil
-		}
-		return nil, errors.FetchError
-	}
-	return s.data, nil
-}
-
-func (p *SimpleNumber) GetOne(index int) (common.ParserData, error) {
-	if index != 0 {
-		return nil, errors.FetchError
-	}
-	if p.data == nil {
-		return nil, errors.FetchError
-	}
-	return p.data, nil
-}
-
-func (s *SimpleNumber) Set(data common.ParserData, index int) error {
-	if data == nil {
-		s.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case *types.Int64C:
-		s.data = newValue
-	case types.Int64C:
-		s.data = &newValue
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
 func (s *SimpleNumber) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) < 2 {

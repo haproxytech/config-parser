@@ -1,62 +1,25 @@
 package http
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/parsers/http/actions"
+	"github.com/haproxytech/config-parser/types"
 )
 
 type HTTPResponses struct {
-	data []HTTPAction
+	Name string
+	data []types.HTTPAction
 }
 
 func (h *HTTPResponses) Init() {
-	h.data = []HTTPAction{}
+	h.Name = "http-response"
+	h.data = []types.HTTPAction{}
 }
 
-func (h *HTTPResponses) GetParserName() string {
-	return "http-response"
-}
-
-func (h *HTTPResponses) Get(createIfNotExist bool) (common.ParserData, error) {
-	if len(h.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
-	}
-	return h.data, nil
-}
-
-func (p *HTTPResponses) GetOne(index int) (common.ParserData, error) {
-	if len(p.data) == 0 {
-		return nil, errors.FetchError
-	}
-	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
-	}
-	return p.data[index], nil
-}
-
-func (h *HTTPResponses) Set(data common.ParserData, index int) error {
-	if data == nil {
-		h.Init()
-		return nil
-	}
-	switch newValue := data.(type) {
-	case []HTTPAction:
-		h.data = newValue
-	case *HTTPAction:
-		h.data = append(h.data, *newValue)
-	case HTTPAction:
-		h.data = append(h.data, newValue)
-	default:
-		return fmt.Errorf("casting error")
-	}
-	return nil
-}
-
-func (f *HTTPResponses) ParseHTTPResponse(response HTTPAction, parts []string, comment string) error {
+func (f *HTTPResponses) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
 	err := response.Parse(parts, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPResponseLines", Line: ""}

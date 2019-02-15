@@ -15,7 +15,7 @@ type Enabled struct {
 	Comment string
 }
 
-//Int64 is used by parsers MaxConn, NbProc
+//Int64 is used by parsers MaxConn, NbProc, NbThread
 //gen:MaxConn
 //name:maxconn
 //test:ok:maxconn 10000
@@ -26,6 +26,11 @@ type Enabled struct {
 //test:ok:nbproc 4
 //test:ok:nbproc 4 # comment
 //test:fail:nbproc
+//gen:NbThread
+//name:nbthread
+//test:ok:nbthread 4
+//test:ok:nbthread 4 # comment
+//test:fail:nbthread
 type Int64C struct {
 	Value   int64
 	Comment string
@@ -39,6 +44,10 @@ type Int64C struct {
 //test:ok:mode health
 //test:ok:mode tcp # comment
 //test:fail:mode
+//gen:DefaultBackend
+//name:default_backend
+//test:ok:default_backend http
+//test:fail:default_backend
 type StringC struct {
 	Value   string
 	Comment string
