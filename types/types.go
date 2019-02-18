@@ -223,8 +223,8 @@ type Stick struct {
 	Name          string
 	Pattern       string
 	Table         string
-	Condition     string
-	ConditionType string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -248,8 +248,8 @@ type Nameserver struct {
 //test:fail:use_backend
 type UseBackend struct {
 	Name          string
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -277,7 +277,7 @@ type User struct {
 //test:fail:use-server
 type UseServer struct {
 	Name          string
-	Condition     string
-	ConditionType string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
