@@ -16,6 +16,8 @@ func (e *ParseError) Error() string {
 	return fmt.Sprintf("%s:%s: Parse error on %s", e.Parser, e.Message, e.Line)
 }
 
+var AttributeNotFoundErr error = errors.New("attribute not found")
+
 var FetchError error = errors.New("no data")
 
 var IndexOutOfRange error = errors.New("index out of range")

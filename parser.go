@@ -44,7 +44,7 @@ func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string)
 			return parser.Get(false)
 		}
 	}
-	return nil, fmt.Errorf("attribute not found")
+	return nil, errors.AttributeNotFoundErr
 }
 
 func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute string, createIfNotExist bool) (common.ParserData, error) {
@@ -53,7 +53,7 @@ func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute
 			return parser.Get(createIfNotExist)
 		}
 	}
-	return nil, fmt.Errorf("attribute not found")
+	return nil, errors.AttributeNotFoundErr
 }
 
 //Get get attribute from defaults section
@@ -64,13 +64,30 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string, 
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return nil, fmt.Errorf("Section [%s] not found", sectionName)
+		return nil, errors.SectionMissingErr
 	}
 	createNew := false
 	if len(createIfNotExist) > 0 && createIfNotExist[0] {
 		createNew = true
 	}
 	return section.Get(attribute, createNew)
+}
+
+//GetOne get attribute from defaults section
+func (p *Parser) GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error) {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return nil, errors.SectionMissingErr
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return nil, errors.SectionMissingErr
+	}
+	return section.GetOne(attribute, setIndex)
 }
 
 //SectionsGet lists all sections of certain type
@@ -136,7 +153,7 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return fmt.Errorf("Section [%s] not found", sectionName)
+		return errors.SectionMissingErr
 	}
 	return section.Set(attribute, data, setIndex)
 }
@@ -153,7 +170,7 @@ func (p *Parser) Delete(sectionType Section, sectionName string, attribute strin
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return fmt.Errorf("Section [%s] not found", sectionName)
+		return errors.SectionMissingErr
 	}
 	return section.Delete(attribute, setIndex)
 }
@@ -170,7 +187,7 @@ func (p *Parser) Insert(sectionType Section, sectionName string, attribute strin
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return fmt.Errorf("Section [%s] not found", sectionName)
+		return errors.SectionMissingErr
 	}
 	return section.Insert(attribute, data, setIndex)
 }

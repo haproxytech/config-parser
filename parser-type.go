@@ -1,8 +1,6 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 )
@@ -36,6 +34,19 @@ func (p *ParserTypes) Get(attribute string, createIfNotExist ...bool) (common.Pa
 	return nil, errors.ParserMissingErr
 }
 
+func (p *ParserTypes) GetOne(attribute string, index ...int) (common.ParserData, error) {
+	setIndex := -1
+	if len(index) > 0 && index[0] > -1 {
+		setIndex = index[0]
+	}
+	for _, parser := range p.parsers {
+		if parser.GetParserName() == attribute {
+			return parser.GetOne(setIndex)
+		}
+	}
+	return nil, errors.ParserMissingErr
+}
+
 //HasParser checks if we have a parser for attribute
 func (p *ParserTypes) HasParser(attribute string) bool {
 	for _, parser := range p.parsers {
@@ -57,7 +68,7 @@ func (p *ParserTypes) Set(attribute string, data common.ParserData, index ...int
 			return p.parsers[i].Set(data, setIndex)
 		}
 	}
-	return fmt.Errorf("attribute not available")
+	return errors.AttributeNotFoundErr
 }
 
 func (p *ParserTypes) Insert(attribute string, data common.ParserData, index ...int) error {
@@ -70,7 +81,7 @@ func (p *ParserTypes) Insert(attribute string, data common.ParserData, index ...
 			return p.parsers[i].Insert(data, setIndex)
 		}
 	}
-	return fmt.Errorf("attribute not available")
+	return errors.AttributeNotFoundErr
 }
 
 func (p *ParserTypes) Delete(attribute string, index ...int) error {
@@ -83,5 +94,5 @@ func (p *ParserTypes) Delete(attribute string, index ...int) error {
 			return p.parsers[i].Delete(setIndex)
 		}
 	}
-	return fmt.Errorf("attribute not available")
+	return errors.AttributeNotFoundErr
 }
