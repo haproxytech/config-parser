@@ -10,8 +10,8 @@ import (
 type Redirect struct {
 	Header        string
 	Fmt           string
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -23,9 +23,9 @@ func (f *Redirect) Parse(parts []string, comment string) error {
 		command, condition := common.SplitRequest(parts[3:])
 		f.Header = parts[2]
 		f.Fmt = strings.Join(command, " ")
-		if len(condition) > 0 {
-			f.ConditionKind = condition[0]
-			f.Condition = strings.Join(condition[1:], " ")
+		if len(condition) > 1 {
+			f.Cond = condition[0]
+			f.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -38,11 +38,11 @@ func (f *Redirect) String() string {
 	result.WriteString(f.Header)
 	result.WriteString(" ")
 	result.WriteString(f.Fmt)
-	if f.Condition != "" {
+	if f.Cond != "" {
 		result.WriteString(" ")
-		result.WriteString(f.ConditionKind)
+		result.WriteString(f.Cond)
 		result.WriteString(" ")
-		result.WriteString(f.Condition)
+		result.WriteString(f.ConditionTest)
 	}
 	return result.String()
 }

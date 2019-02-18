@@ -9,8 +9,8 @@ import (
 
 type Connection struct {
 	Action        []string
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -25,9 +25,9 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		} else {
 			return fmt.Errorf("not enough params")
 		}
-		if len(condition) > 0 {
-			f.ConditionKind = condition[0]
-			f.Condition = strings.Join(condition[1:], " ")
+		if len(condition) > 1 {
+			f.Cond = condition[0]
+			f.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -40,11 +40,11 @@ func (f *Connection) String() string {
 
 	result.WriteString(strings.Join(f.Action, " "))
 
-	if f.Condition != "" {
+	if f.Cond != "" {
 		result.WriteString(" ")
-		result.WriteString(f.ConditionKind)
+		result.WriteString(f.Cond)
 		result.WriteString(" ")
-		result.WriteString(f.Condition)
+		result.WriteString(f.ConditionTest)
 	}
 	if f.Comment != "" {
 		result.WriteString(" # ")

@@ -9,8 +9,8 @@ import (
 
 type DelHeader struct {
 	Name          string
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -21,9 +21,9 @@ func (f *DelHeader) Parse(parts []string, comment string) error {
 	if len(parts) >= 4 {
 		_, condition := common.SplitRequest(parts[3:])
 		f.Name = parts[2]
-		if len(condition) > 0 {
-			f.ConditionKind = condition[0]
-			f.Condition = strings.Join(condition[1:], " ")
+		if len(condition) > 1 {
+			f.Cond = condition[0]
+			f.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -32,8 +32,8 @@ func (f *DelHeader) Parse(parts []string, comment string) error {
 
 func (f *DelHeader) String() string {
 	condition := ""
-	if f.Condition != "" {
-		condition = fmt.Sprintf(" %s %s", f.ConditionKind, f.Condition)
+	if f.Cond != "" {
+		condition = fmt.Sprintf(" %s %s", f.Cond, f.ConditionTest)
 	}
 	return fmt.Sprintf("del-header %s%s", f.Name, condition)
 }

@@ -11,8 +11,8 @@ type SetVar struct {
 	VarScope      string
 	VarName       string
 	Expr          common.Expression
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -36,9 +36,9 @@ func (f *SetVar) Parse(parts []string, comment string) error {
 			}
 			f.Expr = expr
 		}
-		if len(condition) > 0 {
-			f.ConditionKind = condition[0]
-			f.Condition = strings.Join(condition[1:], " ")
+		if len(condition) > 1 {
+			f.Cond = condition[0]
+			f.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -47,8 +47,8 @@ func (f *SetVar) Parse(parts []string, comment string) error {
 
 func (f *SetVar) String() string {
 	condition := ""
-	if f.Condition != "" {
-		condition = fmt.Sprintf(" %s %s", f.ConditionKind, f.Condition)
+	if f.Cond != "" {
+		condition = fmt.Sprintf(" %s %s", f.Cond, f.ConditionTest)
 	}
 	return fmt.Sprintf("set-var(%s.%s) %s%s", f.VarScope, f.VarName, f.Expr.String(), condition)
 }

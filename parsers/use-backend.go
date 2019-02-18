@@ -20,9 +20,9 @@ func (h *UseBackend) parse(line string, parts []string, comment string) (*types.
 			Name:    parts[1],
 			Comment: comment,
 		}
-		if len(condition) > 0 {
-			data.ConditionKind = condition[0]
-			data.Condition = strings.Join(condition[1:], " ")
+		if len(condition) > 1 {
+			data.Cond = condition[0]
+			data.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return data, nil
 	}
@@ -36,8 +36,8 @@ func (h *UseBackend) Result(AddComments bool) ([]common.ReturnResultLine, error)
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		condition := ""
-		if req.Condition != "" {
-			condition = fmt.Sprintf(" %s %s", req.ConditionKind, req.Condition)
+		if req.Cond != "" {
+			condition = fmt.Sprintf(" %s %s", req.Cond, req.ConditionTest)
 		}
 		result[index] = common.ReturnResultLine{
 			Data:    fmt.Sprintf("use_backend %s%s", req.Name, condition),

@@ -9,8 +9,8 @@ import (
 
 type Deny struct {
 	DenyStatus    string
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -24,8 +24,8 @@ func (f *Deny) Parse(parts []string, comment string) error {
 			f.DenyStatus = command[1]
 		}
 		if len(condition) > 0 {
-			f.ConditionKind = condition[0]
-			f.Condition = strings.Join(condition[1:], " ")
+			f.Cond = condition[0]
+			f.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -39,11 +39,11 @@ func (f *Deny) String() string {
 		result.WriteString(" deny_status ")
 		result.WriteString(f.DenyStatus)
 	}
-	if f.Condition != "" {
+	if f.Cond != "" {
 		result.WriteString(" ")
-		result.WriteString(f.ConditionKind)
+		result.WriteString(f.Cond)
 		result.WriteString(" ")
-		result.WriteString(f.Condition)
+		result.WriteString(f.ConditionTest)
 	}
 	return result.String()
 }

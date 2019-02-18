@@ -8,8 +8,8 @@ import (
 )
 
 type Allow struct {
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -20,9 +20,9 @@ func (f *Allow) Parse(parts []string, comment string) error {
 	}
 	if len(parts) >= 4 {
 		_, condition := common.SplitRequest(parts[2:]) // 2 not 3 !
-		if len(condition) > 0 {
-			f.ConditionKind = condition[0]
-			f.Condition = strings.Join(condition[1:], " ")
+		if len(condition) > 1 {
+			f.Cond = condition[0]
+			f.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -31,8 +31,8 @@ func (f *Allow) Parse(parts []string, comment string) error {
 
 func (f *Allow) String() string {
 	condition := ""
-	if f.Condition != "" {
-		condition = fmt.Sprintf(" %s %s", f.ConditionKind, f.Condition)
+	if f.Cond != "" {
+		condition = fmt.Sprintf(" %s %s", f.Cond, f.ConditionTest)
 	}
 	return fmt.Sprintf("allow%s", condition)
 }

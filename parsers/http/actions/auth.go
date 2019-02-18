@@ -9,8 +9,8 @@ import (
 
 type Auth struct {
 	Realm         string
-	Condition     string
-	ConditionKind string
+	Cond          string
+	ConditionTest string
 	Comment       string
 }
 
@@ -24,8 +24,8 @@ func (f *Auth) Parse(parts []string, comment string) error {
 			f.Realm = command[1]
 		}
 		if len(condition) > 0 {
-			f.ConditionKind = condition[0]
-			f.Condition = strings.Join(condition[1:], " ")
+			f.Cond = condition[0]
+			f.ConditionTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -39,11 +39,11 @@ func (f *Auth) String() string {
 		result.WriteString(" realm ")
 		result.WriteString(f.Realm)
 	}
-	if f.Condition != "" {
+	if f.Cond != "" {
 		result.WriteString(" ")
-		result.WriteString(f.ConditionKind)
+		result.WriteString(f.Cond)
 		result.WriteString(" ")
-		result.WriteString(f.Condition)
+		result.WriteString(f.ConditionTest)
 	}
 	return result.String()
 }
