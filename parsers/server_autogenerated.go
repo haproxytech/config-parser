@@ -79,12 +79,16 @@ func (p *Server) Set(data common.ParserData, index int) error {
 	case *types.Server:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = *newValue
+		} else if index == -1 {
+			p.data = append(p.data, *newValue)
 		} else {
 			return errors.IndexOutOfRange
 		}
 	case types.Server:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = newValue
+		} else if index == -1 {
+			p.data = append(p.data, newValue)
 		} else {
 			return errors.IndexOutOfRange
 		}
