@@ -21,26 +21,65 @@ func main() {
     log.Println(err)
     log.Println(p.String())
 
-    data, err := p.GetGlobalAttr("nbproc")
-    if err == nil {
-        //NOTE simple param may at some point get own structure
-        nbproc := data.(*simple.SimpleNumber)
-        log.Println(nbproc.Value)
+    {
+        data, _ := p.Get(parser.Comments, parser.CommentsSectionName, "# _version", true)
+        if err == errors.FetchError {
+            log.Panicln("we have an fetch error !!")
+        }
+        ver, _ := data.(*types.Int64C)
+        ver.Value = ver.Value + 1
     }
 
-    data, err = p.GetGlobalAttr("stats socket")
-    if err == nil {
-        statsSockets := data.(*stats.SocketLines)
-        log.Println(statsSockets.SocketLines[0].Path)
-        statsSockets.SocketLines[0].Path = "/var/run/haproxy-runtime-api.0.sock"
+    {
+        data, err := p.Get(parser.Global, parser.GlobalSectionName, "stats socket")
+        if err != nil {
+            log.Panicln(err)
+        }
+        val, _ := data.([]types.Socket)
+        log.Println(val[0])
+        val[0].Path = "$PWD/haproxy-runtime-api.1.sock"
+        log.Println(val[0])
     }
 
-    data, err = p.GetDefaultsAttr("timeout http-request")
-    if err == nil {
-        //NOTE simple param may at some point get own structure
-        statsSocket := data.(*simple.SimpleTimeout)
-        log.Println(statsSocket.Value)
+    {
+        data, err := p.Get(parser.Global, parser.GlobalSectionName, "daemon")
+        log.Println(data, err)
+        if err == errors.FetchError {
+            log.Panicln("we have an fetch error !!")
+        }
+        //remove it
+        p.Set(parser.Global, parser.GlobalSectionName, "daemon", nil)
     }
+
+    {
+        datar, err := p.Get(parser.Resolvers, "ns1", "nameserver")
+        if err == nil {
+            ns := datar.([]types.Nameserver)
+            log.Println(ns[0].Name, ns[0].Address)
+            log.Println(ns[1].Name, ns[1].Address)
+            ns[1].Name = "hahaha"
+            ns[0].Address = "0.0.0.0:8080"
+        }
+        datar, err = p.Get(parser.Resolvers, "ns1", "nameserver")
+        if err == nil {
+            ns := datar.([]types.Nameserver)
+            log.Println(ns[0].Name, ns[0].Address)
+            log.Println(ns[1].Name, ns[1].Address)
+        }
+    }
+
+    {
+        log.Println("nbproc ==================================================")
+        data, err := p.Get(parser.Global, parser.GlobalSectionName, "nbproc")
+        if err != nil {
+            log.Println(err)
+        } else {
+            d := data.(*types.Int64C)
+            log.Println(d.Value)
+            d.Value = 5
+        }
+    }
+
     p.Save(configFilename)
 }
 
