@@ -8,10 +8,10 @@ import (
 )
 
 type Content struct {
-	Action        []string
-	Cond          string
-	ConditionTest string
-	Comment       string
+	Action   []string
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
 func (f *Content) Parse(parts []string, comment string) error {
@@ -27,7 +27,7 @@ func (f *Content) Parse(parts []string, comment string) error {
 		}
 		if len(condition) > 1 {
 			f.Cond = condition[0]
-			f.ConditionTest = strings.Join(condition[1:], " ")
+			f.CondTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -44,7 +44,7 @@ func (f *Content) String() string {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
 		result.WriteString(" ")
-		result.WriteString(f.ConditionTest)
+		result.WriteString(f.CondTest)
 	}
 	if f.Comment != "" {
 		result.WriteString(" # ")

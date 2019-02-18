@@ -22,7 +22,7 @@ func (h *UseBackend) parse(line string, parts []string, comment string) (*types.
 		}
 		if len(condition) > 1 {
 			data.Cond = condition[0]
-			data.ConditionTest = strings.Join(condition[1:], " ")
+			data.CondTest = strings.Join(condition[1:], " ")
 		}
 		return data, nil
 	}
@@ -37,7 +37,7 @@ func (h *UseBackend) Result(AddComments bool) ([]common.ReturnResultLine, error)
 	for index, req := range h.data {
 		condition := ""
 		if req.Cond != "" {
-			condition = fmt.Sprintf(" %s %s", req.Cond, req.ConditionTest)
+			condition = fmt.Sprintf(" %s %s", req.Cond, req.CondTest)
 		}
 		result[index] = common.ReturnResultLine{
 			Data:    fmt.Sprintf("use_backend %s%s", req.Name, condition),

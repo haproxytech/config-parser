@@ -8,11 +8,11 @@ import (
 )
 
 type AddAcl struct {
-	FileName      string
-	KeyFmt        string
-	Cond          string
-	ConditionTest string
-	Comment       string
+	FileName string
+	KeyFmt   string
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
 func (f *AddAcl) Parse(parts []string, comment string) error {
@@ -29,7 +29,7 @@ func (f *AddAcl) Parse(parts []string, comment string) error {
 		}
 		if len(condition) > 1 {
 			f.Cond = condition[0]
-			f.ConditionTest = strings.Join(condition[1:], " ")
+			f.CondTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -43,7 +43,7 @@ func (f *AddAcl) String() string {
 		keyfmt = " " + f.KeyFmt
 	}
 	if f.Cond != "" {
-		condition = fmt.Sprintf(" %s %s", f.Cond, f.ConditionTest)
+		condition = fmt.Sprintf(" %s %s", f.Cond, f.CondTest)
 	}
 	return fmt.Sprintf("add-acl(%s)%s%s", f.FileName, keyfmt, condition)
 }

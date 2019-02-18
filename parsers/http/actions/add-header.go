@@ -8,11 +8,11 @@ import (
 )
 
 type AddHeader struct {
-	Name          string
-	Fmt           string
-	Cond          string
-	ConditionTest string
-	Comment       string
+	Name     string
+	Fmt      string
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
 func (f *AddHeader) Parse(parts []string, comment string) error {
@@ -25,7 +25,7 @@ func (f *AddHeader) Parse(parts []string, comment string) error {
 		f.Fmt = strings.Join(command, " ")
 		if len(condition) > 1 {
 			f.Cond = condition[0]
-			f.ConditionTest = strings.Join(condition[1:], " ")
+			f.CondTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
@@ -35,7 +35,7 @@ func (f *AddHeader) Parse(parts []string, comment string) error {
 func (f *AddHeader) String() string {
 	condition := ""
 	if f.Cond != "" {
-		condition = fmt.Sprintf(" %s %s", f.Cond, f.ConditionTest)
+		condition = fmt.Sprintf(" %s %s", f.Cond, f.CondTest)
 	}
 	return fmt.Sprintf("add-header %s %s%s", f.Name, f.Fmt, condition)
 }

@@ -220,12 +220,12 @@ type Socket struct {
 //test:ok:stick store-request src table pop if !localhost
 //test:fail:stick
 type Stick struct {
-	Name          string
-	Pattern       string
-	Table         string
-	Cond          string
-	ConditionTest string
-	Comment       string
+	Name     string
+	Pattern  string
+	Table    string
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
 //sections:resolvers
@@ -247,10 +247,10 @@ type Nameserver struct {
 //test:ok:use_backend test if TRUE # deny
 //test:fail:use_backend
 type UseBackend struct {
-	Name          string
-	Cond          string
-	ConditionTest string
-	Comment       string
+	Name     string
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
 //sections:userlists
@@ -276,8 +276,8 @@ type User struct {
 //test:ok:use-server www if { req_ssl_sni -i www.example.com } # comment
 //test:fail:use-server
 type UseServer struct {
-	Name          string
-	Cond          string
-	ConditionTest string
-	Comment       string
+	Name     string
+	Cond     string
+	CondTest string
+	Comment  string
 }

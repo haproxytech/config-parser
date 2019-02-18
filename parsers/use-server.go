@@ -16,9 +16,9 @@ type UseServer struct {
 func (l *UseServer) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 3 && parts[0] == "use-server" {
 		data := types.UseServer{
-			Name:          parts[1],
-			ConditionTest: strings.Join(parts[3:], " "),
-			Comment:       comment,
+			Name:     parts[1],
+			CondTest: strings.Join(parts[3:], " "),
+			Comment:  comment,
 		}
 		switch parts[2] {
 		case "if", "unless":
@@ -40,7 +40,7 @@ func (l *UseServer) Result(AddComments bool) ([]common.ReturnResultLine, error) 
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, data := range l.data {
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("use-server %s %s %s", data.Name, data.Cond, data.ConditionTest),
+			Data:    fmt.Sprintf("use-server %s %s %s", data.Name, data.Cond, data.CondTest),
 			Comment: data.Comment,
 		}
 	}

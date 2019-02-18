@@ -25,7 +25,7 @@ func (h *Stick) Parse(line string, parts, previousParts []string, comment string
 		}
 		if len(condition) > 1 {
 			data.Cond = condition[0]
-			data.ConditionTest = strings.Join(condition[1:], " ")
+			data.CondTest = strings.Join(condition[1:], " ")
 		}
 		switch parts[1] {
 		case "match", "on", "store-request", "store-response":
@@ -61,7 +61,7 @@ func (h *Stick) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 			data.WriteString(" ")
 			data.WriteString(req.Cond)
 			data.WriteString(" ")
-			data.WriteString(req.ConditionTest)
+			data.WriteString(req.CondTest)
 		}
 		result[index] = common.ReturnResultLine{
 			Data:    data.String(),
