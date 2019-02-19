@@ -54,6 +54,8 @@ func (h *HTTPResponses) Parse(line string, parts, previousParts []string, commen
 			err = h.ParseHTTPResponse(&actions.SetHeader{}, parts, comment)
 		case "set-log-level":
 			err = h.ParseHTTPResponse(&actions.SetLogLevel{}, parts, comment)
+		case "set-status":
+			err = h.ParseHTTPResponse(&actions.SetStatus{}, parts, comment)
 		case "set-var":
 			err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 		default:
