@@ -34,20 +34,22 @@ func (h *HTTPRequests) Parse(line string, parts, previousParts []string, comment
 		switch parts[1] {
 		case "add-header":
 			err = h.ParseHTTPRequest(&actions.AddHeader{}, parts, comment)
-		case "del-header":
-			err = h.ParseHTTPRequest(&actions.DelHeader{}, parts, comment)
-		case "set-header":
-			err = h.ParseHTTPRequest(&actions.SetHeader{}, parts, comment)
-		case "set-var":
-			err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
 		case "allow":
 			err = h.ParseHTTPRequest(&actions.Allow{}, parts, comment)
+		case "auth":
+			err = h.ParseHTTPRequest(&actions.Auth{}, parts, comment)
+		case "del-header":
+			err = h.ParseHTTPRequest(&actions.DelHeader{}, parts, comment)
 		case "deny":
 			err = h.ParseHTTPRequest(&actions.Deny{}, parts, comment)
 		case "redirect":
 			err = h.ParseHTTPRequest(&actions.Redirect{}, parts, comment)
-		case "auth":
-			err = h.ParseHTTPRequest(&actions.Auth{}, parts, comment)
+		case "set-header":
+			err = h.ParseHTTPRequest(&actions.SetHeader{}, parts, comment)
+		case "set-var":
+			err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
+		case "tarpit":
+			err = h.ParseHTTPRequest(&actions.Tarpit{}, parts, comment)
 		default:
 			if strings.HasPrefix(parts[1], "add-acl(") {
 				err = h.ParseHTTPRequest(&actions.AddAcl{}, parts, comment)
