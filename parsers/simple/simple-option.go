@@ -2,6 +2,7 @@ package simple
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
@@ -15,8 +16,10 @@ type SimpleOption struct {
 }
 
 func (o *SimpleOption) Init() {
-	o.name = o.Name
-	o.Name = fmt.Sprintf("option %s", o.Name)
+	if !strings.HasPrefix(o.Name, "option") {
+		o.name = o.Name
+		o.Name = fmt.Sprintf("option %s", o.Name)
+	}
 	o.data = nil
 }
 

@@ -2,6 +2,7 @@ package simple
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
@@ -15,8 +16,10 @@ type SimpleTimeout struct {
 }
 
 func (t *SimpleTimeout) Init() {
-	t.name = t.Name
-	t.Name = fmt.Sprintf("timeout %s", t.Name)
+	if !strings.HasPrefix(t.Name, "timeout") {
+		t.name = t.Name
+		t.Name = fmt.Sprintf("timeout %s", t.Name)
+	}
 	t.data = nil
 }
 
