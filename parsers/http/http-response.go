@@ -84,7 +84,7 @@ func (h *HTTPResponses) Result(AddComments bool) ([]common.ReturnResultLine, err
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{
-			Data:    "http-request " + req.String(),
+			Data:    "http-response " + req.String(),
 			Comment: req.GetComment(),
 		}
 	}
