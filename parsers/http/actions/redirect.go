@@ -5,11 +5,14 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/common"
+	"github.com/haproxytech/config-parser/errors"
 )
 
-type Redirect struct {
-	Header   string
-	Fmt      string
+type Redirect struct { // http-request redirect location <loc> [code <code>] [<option>] [<condition>]
+	Type     string
+	Value    string
+	Code     string
+	Option   string
 	Cond     string
 	CondTest string
 	Comment  string
@@ -19,10 +22,27 @@ func (f *Redirect) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
+	/*
+	  redirect location <loc> [code <code>] <option> [{if | unless} <condition>]
+	  redirect prefix   <pfx> [code <code>] <option> [{if | unless} <condition>]
+	  redirect scheme   <sch> [code <code>] <option> [{if | unless} <condition>]
+	*/
 	if len(parts) >= 4 {
-		command, condition := common.SplitRequest(parts[3:])
-		f.Header = parts[2]
-		f.Fmt = strings.Join(command, " ")
+		command, condition := common.SplitRequest(parts[2:])
+		if len(command) < 2 {
+			return errors.InvalidData
+		}
+		f.Type = command[0]
+		f.Value = command[1]
+		index := 2
+		if command[index] == "code" {
+			index++
+			f.Code = command[index]
+			index++
+		}
+		if index < len(command) {
+			f.Option = command[index]
+		}
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
@@ -35,9 +55,17 @@ func (f *Redirect) Parse(parts []string, comment string) error {
 func (f *Redirect) String() string {
 	var result strings.Builder
 	result.WriteString("redirect ")
-	result.WriteString(f.Header)
+	result.WriteString(f.Type)
 	result.WriteString(" ")
-	result.WriteString(f.Fmt)
+	result.WriteString(f.Value)
+	if f.Code != "" {
+		result.WriteString(" code ")
+		result.WriteString(f.Code)
+	}
+	if f.Option != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Option)
+	}
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
