@@ -29,7 +29,7 @@ func (h *Stick) Parse(line string, parts, previousParts []string, comment string
 		}
 		switch parts[1] {
 		case "match", "on", "store-request", "store-response":
-			data.Name = parts[1]
+			data.Type = parts[1]
 		default:
 			return "", &errors.ParseError{Parser: "Stick", Line: line}
 		}
@@ -50,7 +50,7 @@ func (h *Stick) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	for index, req := range h.data {
 		var data strings.Builder
 		data.WriteString("stick ")
-		data.WriteString(req.Name)
+		data.WriteString(req.Type)
 		data.WriteString(" ")
 		data.WriteString(req.Pattern)
 		if req.Table != "" {

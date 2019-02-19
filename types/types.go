@@ -220,7 +220,7 @@ type Socket struct {
 //test:ok:stick store-request src table pop if !localhost
 //test:fail:stick
 type Stick struct {
-	Name     string
+	Type     string
 	Pattern  string
 	Table    string
 	Cond     string
