@@ -44,6 +44,8 @@ func (h *HTTPResponses) Parse(line string, parts, previousParts []string, commen
 			err = h.ParseHTTPResponse(&actions.Deny{}, parts, comment)
 		case "redirect":
 			err = h.ParseHTTPResponse(&actions.Redirect{}, parts, comment)
+		case "send-spoe-group":
+			err = h.ParseHTTPResponse(&actions.SetSpoeGroup{}, parts, comment)
 		case "set-header":
 			err = h.ParseHTTPResponse(&actions.SetHeader{}, parts, comment)
 		case "set-log-level":
