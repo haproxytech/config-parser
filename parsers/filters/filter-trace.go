@@ -41,7 +41,7 @@ func (f *Trace) Result() common.ReturnResultLine {
 	var result strings.Builder
 	result.WriteString("filter trace")
 	if f.Name != "" {
-		result.WriteString(" ")
+		result.WriteString(" name ")
 		result.WriteString(f.Name)
 	}
 	if f.RandomParsing {
