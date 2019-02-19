@@ -96,7 +96,12 @@ func getFrontendParser() *ParserTypes {
 		&simple.SimpleString{Name: "log-tag"},
 		&parsers.Log{},
 
+		&simple.SimpleOption{Name: "http-tunnel"},
 		&simple.SimpleOption{Name: "httpclose"},
+		&simple.SimpleOption{Name: "forceclose"},
+		&simple.SimpleOption{Name: "http-server-close"},
+		&simple.SimpleOption{Name: "http-keep-alive"},
+		&simple.SimpleOption{Name: "http-pretend-keepalive"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&simple.SimpleOption{Name: "tcplog"},
 		&simple.SimpleOption{Name: "dontlognull"},
@@ -128,18 +133,33 @@ func getBackendParser() *ParserTypes {
 		&parsers.Mode{},
 		&parsers.Balance{},
 
+		&simple.SimpleOption{Name: "http-tunnel"},
 		&simple.SimpleOption{Name: "httpclose"},
+		&simple.SimpleOption{Name: "forceclose"},
+		&simple.SimpleOption{Name: "http-server-close"},
+		&simple.SimpleOption{Name: "http-keep-alive"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&simple.SimpleOption{Name: "forwardfor"},
-		&simple.SimpleOption{Name: "http-keep-alive"},
 		&simple.SimpleOption{Name: "contstats"},
-		&simple.SimpleOption{Name: "httplog"},
+		&simple.SimpleOption{Name: "ssl-hello-check"},
+		&simple.SimpleOption{Name: "smtpchk"},
+		&simple.SimpleOption{Name: "ldap-check"},
+		&simple.SimpleOption{Name: "mysql-check"},
+		&simple.SimpleOption{Name: "pgsql-check"},
+		&simple.SimpleOption{Name: "tcp-check"},
+		&simple.SimpleOption{Name: "redis-check"},
+		&simple.SimpleOption{Name: "tcplog"},
+		&simple.SimpleOption{Name: "redispatch"},
+
 		&simple.SimpleString{Name: "log-tag"},
+
 		&parsers.OptionHttpchk{},
+		&parsers.OptionHTTPLog{},
 
 		&parsers.Log{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
+		&simple.SimpleTimeout{Name: "queue"},
 		&simple.SimpleTimeout{Name: "client"},
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
 		&simple.SimpleTimeout{Name: "check"},
@@ -157,6 +177,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleString{Name: "cookie"},
 		&parsers.UseServer{},
 		&parsers.Server{},
+		&simple.SimpleNumber{Name: "retries"},
 	})
 }
 
