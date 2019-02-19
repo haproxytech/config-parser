@@ -35,6 +35,8 @@ func (h *Filters) Parse(line string, parts, previousParts []string, comment stri
 			err = h.ParseFilter(&Compression{}, parts, comment)
 		case "cache":
 			err = h.ParseFilter(&Cache{}, parts, comment)
+		case "spoe":
+			err = h.ParseFilter(&Spoe{}, parts, comment)
 		default:
 			return "", &errors.ParseError{Parser: "FilterLines", Line: line}
 		}
