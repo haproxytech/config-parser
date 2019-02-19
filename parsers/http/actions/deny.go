@@ -23,7 +23,7 @@ func (f *Deny) Parse(parts []string, comment string) error {
 		if len(command) > 1 && command[0] == "deny_status" {
 			f.DenyStatus = command[1]
 		}
-		if len(condition) > 0 {
+		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
 		}

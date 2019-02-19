@@ -23,7 +23,7 @@ func (f *Auth) Parse(parts []string, comment string) error {
 		if len(command) > 1 && command[0] == "realm" {
 			f.Realm = command[1]
 		}
-		if len(condition) > 0 {
+		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
 		}
