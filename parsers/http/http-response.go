@@ -34,20 +34,22 @@ func (h *HTTPResponses) Parse(line string, parts, previousParts []string, commen
 		switch parts[1] {
 		case "add-header":
 			err = h.ParseHTTPResponse(&actions.AddHeader{}, parts, comment)
-		case "del-header":
-			err = h.ParseHTTPResponse(&actions.DelHeader{}, parts, comment)
-		case "set-header":
-			err = h.ParseHTTPResponse(&actions.SetHeader{}, parts, comment)
-		case "set-var":
-			err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 		case "allow":
 			err = h.ParseHTTPResponse(&actions.Allow{}, parts, comment)
+		case "auth":
+			err = h.ParseHTTPResponse(&actions.Auth{}, parts, comment)
+		case "del-header":
+			err = h.ParseHTTPResponse(&actions.DelHeader{}, parts, comment)
 		case "deny":
 			err = h.ParseHTTPResponse(&actions.Deny{}, parts, comment)
 		case "redirect":
 			err = h.ParseHTTPResponse(&actions.Redirect{}, parts, comment)
-		case "auth":
-			err = h.ParseHTTPResponse(&actions.Auth{}, parts, comment)
+		case "set-header":
+			err = h.ParseHTTPResponse(&actions.SetHeader{}, parts, comment)
+		case "set-log-level":
+			err = h.ParseHTTPResponse(&actions.SetLogLevel{}, parts, comment)
+		case "set-var":
+			err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 		default:
 			if strings.HasPrefix(parts[1], "add-acl(") {
 				err = h.ParseHTTPResponse(&actions.AddAcl{}, parts, comment)
