@@ -1,6 +1,8 @@
 package extra
 
 import (
+	"strings"
+
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/types"
@@ -18,7 +20,7 @@ func (u *UnProcessed) Init() {
 
 func (p *UnProcessed) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	p.data = append(p.data, types.UnProcessed{
-		Value: line,
+		Value: strings.TrimSpace(line),
 	})
 	return "", nil
 }
