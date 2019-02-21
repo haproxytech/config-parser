@@ -94,6 +94,9 @@ func getFrontendParser() *ParserTypes {
 		&parsers.MaxConn{},
 		&parsers.Bind{},
 		&simple.SimpleString{Name: "log-tag"},
+		&simple.SimpleString{Name: "log-format"},
+		&simple.SimpleString{Name: "log-format-sd"},
+
 		&parsers.Log{},
 
 		&simple.SimpleOption{Name: "http-tunnel"},
@@ -148,13 +151,11 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "pgsql-check"},
 		&simple.SimpleOption{Name: "tcp-check"},
 		&simple.SimpleOption{Name: "redis-check"},
-		&simple.SimpleOption{Name: "tcplog"},
 		&simple.SimpleOption{Name: "redispatch"},
 
 		&simple.SimpleString{Name: "log-tag"},
 
 		&parsers.OptionHttpchk{},
-		&parsers.OptionHTTPLog{},
 
 		&parsers.Log{},
 
@@ -165,6 +166,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "check"},
 		&simple.SimpleTimeout{Name: "tunnel"},
 		&simple.SimpleTimeout{Name: "server"},
+		&simple.SimpleTimeout{Name: "connect"},
 
 		&parsers.DefaultServer{},
 		&parsers.Stick{},
