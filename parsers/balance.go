@@ -48,7 +48,7 @@ func (p *Balance) Parse(line string, parts, previousParts []string, comment stri
 				p.data.Arguments = parts[2:]
 				return "", nil
 			}
-			return "", &errors.ParseError{Parser: "Balance", Line: line}
+			return "", nil
 		}
 		if strings.HasPrefix(parts[1], "hdr(") && strings.HasSuffix(parts[1], ")") {
 			p.data = data
