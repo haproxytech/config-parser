@@ -24,6 +24,8 @@ type Bind struct {
 //name:balance
 //is-multiple:false
 //test:ok:balance roundrobin
+//test:ok:balance uri depth 8
+//test:ok:balance uri
 //test:fails:balance something
 //test:fail:balance
 type Balance struct {
