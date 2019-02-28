@@ -36,6 +36,15 @@ const (
 //Parser reads and writes configuration on given file
 type Parser struct {
 	Parsers map[Section]map[string]*ParserTypes
+	locker  chan struct{}
+}
+
+func (p *Parser) lock() {
+	<-p.locker
+}
+
+func (p *Parser) unLock() {
+	p.locker <- struct{}{}
 }
 
 func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string) (common.ParserData, error) {
@@ -48,6 +57,8 @@ func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string)
 }
 
 func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute string, createIfNotExist bool) (common.ParserData, error) {
+	p.lock()
+	defer p.unLock()
 	for _, parser := range data[key].parsers {
 		if parser.GetParserName() == attribute {
 			return parser.Get(createIfNotExist)
@@ -58,6 +69,8 @@ func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute
 
 //Get get attribute from defaults section
 func (p *Parser) Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
+	p.lock()
+	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
 	if !ok {
 		return nil, errors.SectionMissingErr
@@ -75,6 +88,8 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string, 
 
 //GetOne get attribute from defaults section
 func (p *Parser) GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error) {
+	p.lock()
+	defer p.unLock()
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -92,6 +107,8 @@ func (p *Parser) GetOne(sectionType Section, sectionName string, attribute strin
 
 //SectionsGet lists all sections of certain type
 func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
+	p.lock()
+	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
 	if !ok {
 		return nil, errors.SectionMissingErr
@@ -107,6 +124,8 @@ func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
 
 //SectionsDelete deletes one section of sectionType
 func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
+	p.lock()
+	defer p.unLock()
 	_, ok := p.Parsers[sectionType]
 	if !ok {
 		return errors.SectionMissingErr
@@ -117,6 +136,8 @@ func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
 
 //SectionsCreate creates one section of sectionType
 func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
+	p.lock()
+	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
 	if !ok {
 		return errors.SectionMissingErr
@@ -143,6 +164,8 @@ func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 
 //Set sets attribute from defaults section, can be nil to disable/remove
 func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
+	p.lock()
+	defer p.unLock()
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -160,6 +183,8 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 
 //Delete remove attribute on defined index, in case of single attributes, index is ignored
 func (p *Parser) Delete(sectionType Section, sectionName string, attribute string, index ...int) error {
+	p.lock()
+	defer p.unLock()
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -177,6 +202,8 @@ func (p *Parser) Delete(sectionType Section, sectionName string, attribute strin
 
 //Insert put attribute on defined index, in case of single attributes, index is ignored
 func (p *Parser) Insert(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
+	p.lock()
+	defer p.unLock()
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -194,6 +221,8 @@ func (p *Parser) Insert(sectionType Section, sectionName string, attribute strin
 
 //HasParser checks if we have a parser for attribute
 func (p *Parser) HasParser(sectionType Section, attribute string) bool {
+	p.lock()
+	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
 	if !ok {
 		return false
@@ -232,6 +261,8 @@ func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder, use
 
 //String returns configuration in writable form
 func (p *Parser) String() string {
+	p.lock()
+	defer p.unLock()
 	var result strings.Builder
 
 	p.writeParsers(p.Parsers[Comments][CommentsSectionName].parsers, &result, false)
@@ -408,6 +439,8 @@ func (p *Parser) LoadData(filename string) error {
 }
 
 func (p *Parser) ParseData(dat string) error {
+	p.locker = make(chan struct{}, 1)
+	defer p.unLock()
 
 	p.Parsers = map[Section]map[string]*ParserTypes{}
 	p.Parsers[Comments] = map[string]*ParserTypes{
