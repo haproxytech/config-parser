@@ -441,6 +441,9 @@ func (p *{{ .StructName }}) Insert(data common.ParserData, index int) error {
 		p.data = newValue
 	case *types.{{ .ParserType }}:
 		if index > -1 {
+			if index > len(p.data) {
+				return errors.IndexOutOfRange
+			}
 {{- if .IsInterface }}
 			p.data = append(p.data, nil)
 {{- else }}
@@ -453,6 +456,9 @@ func (p *{{ .StructName }}) Insert(data common.ParserData, index int) error {
 		}
 	case types.{{ .ParserType }}:
 		if index > -1 {
+			if index > len(p.data) {
+				return errors.IndexOutOfRange
+			}
 {{- if .IsInterface }}
 			p.data = append(p.data, nil)
 {{- else }}

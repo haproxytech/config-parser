@@ -48,6 +48,9 @@ func (p *Mailer) Insert(data common.ParserData, index int) error {
 		p.data = newValue
 	case *types.Mailer:
 		if index > -1 {
+			if index > len(p.data) {
+				return errors.IndexOutOfRange
+			}
 			p.data = append(p.data, types.Mailer{})
 			copy(p.data[index+1:], p.data[index:])
 			p.data[index] = *newValue
@@ -56,6 +59,9 @@ func (p *Mailer) Insert(data common.ParserData, index int) error {
 		}
 	case types.Mailer:
 		if index > -1 {
+			if index > len(p.data) {
+				return errors.IndexOutOfRange
+			}
 			p.data = append(p.data, types.Mailer{})
 			copy(p.data[index+1:], p.data[index:])
 			p.data[index] = newValue
