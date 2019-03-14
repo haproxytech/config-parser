@@ -9,7 +9,7 @@ import (
 )
 
 type StickTable struct {
-	data []types.StickTable
+	data *types.StickTable
 }
 
 func (h *StickTable) parse(line string, parts []string, comment string) (*types.StickTable, error) {
@@ -64,42 +64,54 @@ func (h *StickTable) parse(line string, parts []string, comment string) (*types.
 	return nil, &errors.ParseError{Parser: "StickTable", Line: line}
 }
 
+func (p *StickTable) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+	if parts[0] == "stick-table" {
+		data, err := p.parse(line, parts, comment)
+		if err != nil {
+			return "", &errors.ParseError{Parser: "StickTable", Line: line}
+		}
+		p.data = data
+		return "", nil
+	}
+	return "", &errors.ParseError{Parser: "StickTable", Line: line}
+}
+
 func (h *StickTable) Result(AddComments bool) ([]common.ReturnResultLine, error) {
-	if len(h.data) == 0 {
+	if h.data == nil {
 		return nil, errors.FetchError
 	}
-	result := make([]common.ReturnResultLine, len(h.data))
-	for index, req := range h.data {
-		var data strings.Builder
-		data.WriteString("stick-table type ")
-		data.WriteString(req.Type)
-		if req.Length != "" {
-			data.WriteString(" len ")
-			data.WriteString(req.Length)
-		}
-		if req.Size != "" {
-			data.WriteString(" size ")
-			data.WriteString(req.Size)
-		}
-		if req.Expire != "" {
-			data.WriteString(" expire ")
-			data.WriteString(req.Expire)
-		}
-		if req.NoPurge {
-			data.WriteString(" nopurge")
-		}
-		if req.Peers != "" {
-			data.WriteString(" peers ")
-			data.WriteString(req.Peers)
-		}
-		if req.Store != "" {
-			data.WriteString(" store ")
-			data.WriteString(req.Store)
-		}
-		result[index] = common.ReturnResultLine{
-			Data:    data.String(),
-			Comment: req.Comment,
-		}
+	result := make([]common.ReturnResultLine, 1)
+	req := h.data
+
+	var data strings.Builder
+	data.WriteString("stick-table type ")
+	data.WriteString(req.Type)
+	if req.Length != "" {
+		data.WriteString(" len ")
+		data.WriteString(req.Length)
+	}
+	if req.Size != "" {
+		data.WriteString(" size ")
+		data.WriteString(req.Size)
+	}
+	if req.Expire != "" {
+		data.WriteString(" expire ")
+		data.WriteString(req.Expire)
+	}
+	if req.NoPurge {
+		data.WriteString(" nopurge")
+	}
+	if req.Peers != "" {
+		data.WriteString(" peers ")
+		data.WriteString(req.Peers)
+	}
+	if req.Store != "" {
+		data.WriteString(" store ")
+		data.WriteString(req.Store)
+	}
+	result[0] = common.ReturnResultLine{
+		Data:    data.String(),
+		Comment: req.Comment,
 	}
 	return result, nil
 }

@@ -178,7 +178,6 @@ type Server struct {
 
 //sections:frontend,backend
 //name:stick-table
-//is-multiple:true
 //test:ok:stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
 //test:ok:stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment
 //test:ok:stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)

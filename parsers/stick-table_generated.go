@@ -8,7 +8,7 @@ import (
 )
 
 func (p *StickTable) Init() {
-	p.data = []types.StickTable{}
+    p.data = nil
 }
 
 func (p *StickTable) GetParserName() string {
@@ -16,62 +16,33 @@ func (p *StickTable) GetParserName() string {
 }
 
 func (p *StickTable) Get(createIfNotExist bool) (common.ParserData, error) {
-	if len(p.data) == 0 && !createIfNotExist {
+	if p.data == nil {
+		if createIfNotExist {
+			p.data = &types.StickTable{}
+			return p.data, nil
+		}
 		return nil, errors.FetchError
 	}
 	return p.data, nil
 }
 
 func (p *StickTable) GetOne(index int) (common.ParserData, error) {
-	if index < 0 || index >= len(p.data) {
+	if index > 0 {
 		return nil, errors.FetchError
 	}
-	return p.data[index], nil
+	if p.data == nil {
+		return nil, errors.FetchError
+	}
+	return p.data, nil
 }
 
 func (p *StickTable) Delete(index int) error {
-	if index < 0 || index >= len(p.data) {
-		return errors.FetchError
-	}
-	copy(p.data[index:], p.data[index+1:])
-	p.data[len(p.data)-1] = types.StickTable{}
-	p.data = p.data[:len(p.data)-1]
+	p.Init()
 	return nil
 }
 
 func (p *StickTable) Insert(data common.ParserData, index int) error {
-	if data == nil {
-		return errors.InvalidData
-	}
-	switch newValue := data.(type) {
-	case []types.StickTable:
-		p.data = newValue
-	case *types.StickTable:
-		if index > -1 {
-			if index > len(p.data) {
-				return errors.IndexOutOfRange
-			}
-			p.data = append(p.data, types.StickTable{})
-			copy(p.data[index+1:], p.data[index:])
-			p.data[index] = *newValue
-		} else {
-			p.data = append(p.data, *newValue)
-		}
-	case types.StickTable:
-		if index > -1 {
-			if index > len(p.data) {
-				return errors.IndexOutOfRange
-			}
-			p.data = append(p.data, types.StickTable{})
-			copy(p.data[index+1:], p.data[index:])
-			p.data[index] = newValue
-		} else {
-			p.data = append(p.data, newValue)
-		}
-	default:
-		return errors.InvalidData
-	}
-	return nil
+	return p.Set(data, index)
 }
 
 func (p *StickTable) Set(data common.ParserData, index int) error {
@@ -80,38 +51,12 @@ func (p *StickTable) Set(data common.ParserData, index int) error {
 		return nil
 	}
 	switch newValue := data.(type) {
-	case []types.StickTable:
-		p.data = newValue
 	case *types.StickTable:
-		if index > -1 && index < len(p.data) {
-			p.data[index] = *newValue
-		} else if index == -1 {
-			p.data = append(p.data, *newValue)
-		} else {
-			return errors.IndexOutOfRange
-		}
+		p.data = newValue
 	case types.StickTable:
-		if index > -1 && index < len(p.data) {
-			p.data[index] = newValue
-		} else if index == -1 {
-			p.data = append(p.data, newValue)
-		} else {
-			return errors.IndexOutOfRange
-		}
+		p.data = &newValue
 	default:
 		return errors.InvalidData
 	}
 	return nil
-}
-
-func (p *StickTable) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if parts[0] == "stick-table" {
-		data, err := p.parse(line, parts, comment)
-		if err != nil {
-			return "", &errors.ParseError{Parser: "StickTable", Line: line}
-		}
-		p.data = append(p.data, *data)
-		return "", nil
-	}
-	return "", &errors.ParseError{Parser: "StickTable", Line: line}
 }
