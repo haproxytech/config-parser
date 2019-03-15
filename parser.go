@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
+	"sync"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
@@ -36,15 +37,15 @@ const (
 //Parser reads and writes configuration on given file
 type Parser struct {
 	Parsers map[Section]map[string]*ParserTypes
-	locker  chan struct{}
+	mutex   *sync.Mutex
 }
 
 func (p *Parser) lock() {
-	<-p.locker
+	p.mutex.Lock()
 }
 
 func (p *Parser) unLock() {
-	p.locker <- struct{}{}
+	p.mutex.Unlock()
 }
 
 func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string) (common.ParserData, error) {
@@ -439,8 +440,7 @@ func (p *Parser) LoadData(filename string) error {
 }
 
 func (p *Parser) ParseData(dat string) error {
-	p.locker = make(chan struct{}, 1)
-	defer p.unLock()
+	p.mutex = &sync.Mutex{}
 
 	p.Parsers = map[Section]map[string]*ParserTypes{}
 	p.Parsers[Comments] = map[string]*ParserTypes{
