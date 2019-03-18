@@ -119,9 +119,9 @@ func getFrontendParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
 
 		&filters.Filters{},
+		&tcp.TCPRequests{},
 		&http.HTTPRequests{},
 		&http.HTTPResponses{},
-		&tcp.TCPRequests{},
 		&parsers.StickTable{},
 
 		&simple.SimpleString{Name: "monitor-uri"},
@@ -171,10 +171,10 @@ func getBackendParser() *ParserTypes {
 		&parsers.DefaultServer{},
 		&parsers.Stick{},
 		&filters.Filters{},
-		&http.HTTPRequests{},
-		&http.HTTPResponses{},
 		&tcp.TCPRequests{},
 		&tcp.TCPResponses{},
+		&http.HTTPRequests{},
+		&http.HTTPResponses{},
 		&parsers.StickTable{},
 		&simple.SimpleString{Name: "cookie"},
 		&parsers.UseServer{},
