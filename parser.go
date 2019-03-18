@@ -240,11 +240,21 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) writeParsers(parsers []ParserType, result *strings.Builder, useIndentation bool) {
+func (p *Parser) writeParsers(sectionName string, parsers []ParserType, result *strings.Builder, useIndentation bool) {
+	sectionNameWritten := false
+	if sectionName == "" {
+		sectionNameWritten = true
+	}
 	for _, parser := range parsers {
 		lines, err := parser.Result(true)
 		if err != nil {
 			continue
+		}
+		if !sectionNameWritten {
+			result.WriteString("\n")
+			result.WriteString(sectionName)
+			result.WriteString(" \n")
+			sectionNameWritten = true
 		}
 		for _, line := range lines {
 			if useIndentation {
@@ -266,70 +276,33 @@ func (p *Parser) String() string {
 	defer p.unLock()
 	var result strings.Builder
 
-	p.writeParsers(p.Parsers[Comments][CommentsSectionName].parsers, &result, false)
-
-	result.WriteString("\ndefaults ")
-	result.WriteString("\n")
-	p.writeParsers(p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
-
-	result.WriteString("\nglobal ")
-	result.WriteString("\n")
-	p.writeParsers(p.Parsers[Global][GlobalSectionName].parsers, &result, true)
+	p.writeParsers("", p.Parsers[Comments][CommentsSectionName].parsers, &result, false)
+	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
+	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].parsers, &result, true)
 
 	for parserSectionName, section := range p.Parsers[UserList] {
-		result.WriteString("\nuserlist ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("userlist %s", parserSectionName), section.parsers, &result, true)
 	}
-
 	for parserSectionName, section := range p.Parsers[Peers] {
-		result.WriteString("\npeers ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("peers %s", parserSectionName), section.parsers, &result, true)
 	}
-
 	for parserSectionName, section := range p.Parsers[Mailers] {
-		result.WriteString("\nmailers ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("mailers %s", parserSectionName), section.parsers, &result, true)
 	}
-
 	for parserSectionName, section := range p.Parsers[Resolvers] {
-		result.WriteString("\nresolvers ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("resolvers %s", parserSectionName), section.parsers, &result, true)
 	}
-
 	for parserSectionName, section := range p.Parsers[Cache] {
-		result.WriteString("\ncache ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("cache %s", parserSectionName), section.parsers, &result, true)
 	}
-
 	for parserSectionName, section := range p.Parsers[Frontends] {
-		result.WriteString("\nfrontend ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("frontend %s", parserSectionName), section.parsers, &result, true)
 	}
-
 	for parserSectionName, section := range p.Parsers[Backends] {
-		result.WriteString("\nbackend ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("backend %s", parserSectionName), section.parsers, &result, true)
 	}
-
 	for parserSectionName, section := range p.Parsers[Listen] {
-		result.WriteString("\nlisten ")
-		result.WriteString(parserSectionName)
-		result.WriteString("\n")
-		p.writeParsers(section.parsers, &result, true)
+		p.writeParsers(fmt.Sprintf("listen %s", parserSectionName), section.parsers, &result, true)
 	}
 	return result.String()
 }
