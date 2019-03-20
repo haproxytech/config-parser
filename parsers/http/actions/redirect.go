@@ -35,8 +35,11 @@ func (f *Redirect) Parse(parts []string, comment string) error {
 		f.Type = command[0]
 		f.Value = command[1]
 		index := 2
-		if command[index] == "code" {
+		if index < len(command) && command[index] == "code" {
 			index++
+			if index == len(command) {
+				return fmt.Errorf("not enough params")
+			}
 			f.Code = command[index]
 			index++
 		}

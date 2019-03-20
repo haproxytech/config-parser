@@ -139,3 +139,12 @@ type TCPRequests struct{}
 //no-init:true
 //no-parse:true
 type TCPResponses struct{}
+
+//name:redirect
+//dir:http
+//is-multiple:true
+//parser-type:HTTPAction
+//is-interface:true
+//no-init:true
+//no-parse:true
+type Redirect struct{}

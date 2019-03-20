@@ -47,12 +47,13 @@ func getDefaultParser() *ParserTypes {
 
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
-		&simple.SimpleOption{Name: "redispatch"},
+		&parsers.OptionRedispatch{},
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "http-server-close"},
 		&simple.SimpleOption{Name: "http-keep-alive"},
 		&simple.SimpleOption{Name: "httplog"},
 		&simple.SimpleOption{Name: "clitcpka"},
+		&parsers.OptionForwardFor{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
 		&simple.SimpleTimeout{Name: "connect"},
@@ -122,13 +123,14 @@ func getFrontendParser() *ParserTypes {
 		&filters.Filters{},
 		&tcp.TCPRequests{},
 		&http.HTTPRequests{},
-		&http.HTTPResponses{},
-		&parsers.StickTable{},
+		&http.Redirect{},
 
 		&simple.SimpleString{Name: "monitor-uri"},
 
 		&parsers.UseBackend{},
 		&parsers.DefaultBackend{},
+		&parsers.StickTable{},
+		&http.HTTPResponses{},
 	})
 }
 
@@ -144,16 +146,16 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "http-server-close"},
 		&simple.SimpleOption{Name: "http-keep-alive"},
 		&simple.SimpleOption{Name: "http-use-htx"},
-		&simple.SimpleOption{Name: "forwardfor"},
+		&parsers.OptionForwardFor{},
 		&simple.SimpleOption{Name: "contstats"},
 		&simple.SimpleOption{Name: "ssl-hello-check"},
-		&simple.SimpleOption{Name: "smtpchk"},
+		&parsers.OptionSmtpchk{},
 		&simple.SimpleOption{Name: "ldap-check"},
-		&simple.SimpleOption{Name: "mysql-check"},
+		&parsers.OptionMysqlCheck{},
 		&simple.SimpleOption{Name: "pgsql-check"},
 		&simple.SimpleOption{Name: "tcp-check"},
 		&simple.SimpleOption{Name: "redis-check"},
-		&simple.SimpleOption{Name: "redispatch"},
+		&parsers.OptionRedispatch{},
 
 		&simple.SimpleString{Name: "log-tag"},
 
@@ -174,14 +176,15 @@ func getBackendParser() *ParserTypes {
 		&parsers.Stick{},
 		&filters.Filters{},
 		&tcp.TCPRequests{},
-		&tcp.TCPResponses{},
 		&http.HTTPRequests{},
-		&http.HTTPResponses{},
-		&parsers.StickTable{},
+		&http.Redirect{},
 		&simple.SimpleString{Name: "cookie"},
 		&parsers.UseServer{},
+		&parsers.StickTable{},
 		&parsers.Server{},
 		&simple.SimpleNumber{Name: "retries"},
+		&tcp.TCPResponses{},
+		&http.HTTPResponses{},
 	})
 }
 

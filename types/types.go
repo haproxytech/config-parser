@@ -150,6 +150,26 @@ type Mailer struct {
 	Comment string
 }
 
+//sections:frontend,backend
+//name:option forwardfor
+//no-parse:true
+//test:ok:option forwardfor
+//test:ok:option forwardfor except A
+//test:ok:option forwardfor except A header B
+//test:ok:option forwardfor except A header B if-none
+//test:ok:option forwardfor # comment
+//test:ok:option forwardfor except A # comment
+//test:fail:option forwardfor except
+//test:fail:option forwardfor except A header
+//test:fail:option forwardfor header
+type OptionForwardFor struct {
+	NoOption bool
+	Except   string
+	Header   string
+	IfNone   bool
+	Comment  string
+}
+
 //sections:defaults, backend
 //name:option httpchk
 //no-parse:true
@@ -172,6 +192,52 @@ type OptionHttpchk struct {
 type OptionHTTPLog struct {
 	NoOption bool
 	Clf      bool
+	Comment  string
+}
+
+//sections:backend
+//name:option mysql-check
+//no-parse:true
+//test:ok:option mysql-check
+//test:ok:option mysql-check user john
+//test:ok:option mysql-check user john post-41
+//test:ok:option mysql-check # comment
+//test:fail:option mysql-check user
+//test:fail:option mysql-check user # comment
+type OptionMysqlCheck struct {
+	NoOption bool
+	User     string
+	Post41   bool
+	Comment  string
+}
+
+//sections:backend
+//name:option redispatch
+//no-parse:true
+//test:ok:option redispatch
+//test:ok:no option redispatch
+//test:ok:option redispatch 1
+//test:ok:option redispatch # comment
+//test:ok:option redispatch -1 # comment
+type OptionRedispatch struct {
+	NoOption bool
+	Interval *int64
+	Comment  string
+}
+
+//sections:backend
+//name:option smtpchk
+//no-parse:true
+//test:ok:option smtpchk
+//test:ok:no option smtpchk
+//test:ok:option smtpchk HELO mydomain.org
+//test:ok:option smtpchk EHLO mydomain.org
+//test:ok:option smtpchk # comment
+//test:ok:option smtpchk HELO mydomain.org # comment
+type OptionSmtpchk struct {
+	NoOption bool
+	Hello    string
+	Domain   string
 	Comment  string
 }
 
