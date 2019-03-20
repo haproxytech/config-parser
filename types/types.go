@@ -2,6 +2,33 @@ package types
 
 import "github.com/haproxytech/config-parser/params"
 
+//sections:frontend,backend
+//name:acl
+//is-multiple:true
+//test:ok:acl url_stats path_beg /stats
+//test:ok:acl url_static path_beg -i /static /images /javascript /stylesheets
+//test:ok:acl url_static path_end -i .jpg .gif .png .css .js
+//test:ok:acl be_app_ok nbsrv(be_app) gt 0
+//test:ok:acl be_static_ok nbsrv(be_static) gt 0
+//test:ok:acl key req.hdr(X-Add-Acl-Key) -m found
+//test:ok:acl add path /addacl
+//test:ok:acl del path /delacl
+//test:ok:acl myhost hdr(Host) -f myhost.lst
+//test:ok:acl clear dst_port 80
+//test:ok:acl secure dst_port 8080
+//test:ok:acl login_page url_beg /login
+//test:ok:acl logout url_beg /logout
+//test:ok:acl uid_given url_reg /login?userid=[^&]+
+//test:ok:acl cookie_set hdr_sub(cookie) SEEN=1
+//test:fail:acl cookie
+//test:fail:acl
+type Acl struct {
+	Name      string
+	Criterion string
+	Value     string
+	Comment   string
+}
+
 //sections:frontend
 //name:bind
 //is-multiple:true

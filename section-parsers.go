@@ -93,6 +93,7 @@ func getFrontendParser() *ParserTypes {
 		&parsers.Mode{},
 		&parsers.MaxConn{},
 		&parsers.Bind{},
+		&parsers.Acl{},
 		&simple.SimpleString{Name: "log-tag"},
 		&simple.SimpleString{Name: "log-format"},
 		&simple.SimpleString{Name: "log-format-sd"},
@@ -135,6 +136,7 @@ func getBackendParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&parsers.Mode{},
 		&parsers.Balance{},
+		&parsers.Acl{},
 
 		&simple.SimpleOption{Name: "http-tunnel"},
 		&simple.SimpleOption{Name: "httpclose"},
