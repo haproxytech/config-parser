@@ -108,6 +108,7 @@ func getFrontendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "http-keep-alive"},
 		&simple.SimpleOption{Name: "http-pretend-keepalive"},
 		&simple.SimpleOption{Name: "http-use-htx"},
+		&parsers.OptionForwardFor{},
 		&simple.SimpleOption{Name: "tcplog"},
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "contstats"},
