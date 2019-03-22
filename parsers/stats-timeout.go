@@ -2,7 +2,6 @@ package parsers
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
@@ -10,7 +9,7 @@ import (
 )
 
 type StatsTimeout struct {
-	data *types.StringSliceC
+	data *types.StringC
 }
 
 func (s *StatsTimeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
@@ -18,8 +17,8 @@ func (s *StatsTimeout) Parse(line string, parts, previousParts []string, comment
 		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: "StatsTimeout", Line: line, Message: "Parse error"}
 		}
-		s.data = &types.StringSliceC{
-			Value:   parts[2:],
+		s.data = &types.StringC{
+			Value:   parts[2],
 			Comment: comment,
 		}
 		//todo add validation with simple timeouts
@@ -34,7 +33,7 @@ func (s *StatsTimeout) Result(AddComments bool) ([]common.ReturnResultLine, erro
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data:    fmt.Sprintf("stats timeout %s", strings.Join(s.data.Value, " ")),
+			Data:    fmt.Sprintf("stats timeout %s", s.data.Value),
 			Comment: s.data.Comment,
 		},
 	}, nil

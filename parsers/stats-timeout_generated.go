@@ -18,7 +18,7 @@ func (p *StatsTimeout) GetParserName() string {
 func (p *StatsTimeout) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
-			p.data = &types.StringSliceC{}
+			p.data = &types.StringC{}
 			return p.data, nil
 		}
 		return nil, errors.FetchError
@@ -51,9 +51,9 @@ func (p *StatsTimeout) Set(data common.ParserData, index int) error {
 		return nil
 	}
 	switch newValue := data.(type) {
-	case *types.StringSliceC:
+	case *types.StringC:
 		p.data = newValue
-	case types.StringSliceC:
+	case types.StringC:
 		p.data = &newValue
 	default:
 		return errors.InvalidData

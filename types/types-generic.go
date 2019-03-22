@@ -36,7 +36,7 @@ type Int64C struct {
 	Comment string
 }
 
-//String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords,
+//String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout
 //gen:Mode
 //name:mode
 //test:ok:mode tcp
@@ -48,12 +48,6 @@ type Int64C struct {
 //name:default_backend
 //test:ok:default_backend http
 //test:fail:default_backend
-type StringC struct {
-	Value   string
-	Comment string
-}
-
-//StringSliceC is used by parsers stats.Timeout (this may change)
 //gen:StatsTimeout
 //name:stats timeout
 //test:ok:stats timeout 4
@@ -61,6 +55,12 @@ type StringC struct {
 //test:fail:stats timeout
 //test:fail:stats
 //test:fail:timeout
+type StringC struct {
+	Value   string
+	Comment string
+}
+
+//StringSliceC is used by simple-string-multiple
 type StringSliceC struct {
 	Value   []string
 	Comment string
