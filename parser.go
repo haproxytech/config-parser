@@ -3,6 +3,7 @@ package parser
 import (
 	"fmt"
 	"io/ioutil"
+	"sort"
 	"strings"
 	"sync"
 
@@ -270,6 +271,17 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserType, result *
 	}
 }
 
+func (p *Parser) getSortedList(data map[string]*ParserTypes) []string {
+	result := make([]string, len(data))
+	index := 0
+	for parserSectionName, _ := range data {
+		result[index] = parserSectionName
+		index++
+	}
+	sort.Strings(result)
+	return result
+}
+
 //String returns configuration in writable form
 func (p *Parser) String() string {
 	p.lock()
@@ -280,29 +292,13 @@ func (p *Parser) String() string {
 	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
 	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].parsers, &result, true)
 
-	for parserSectionName, section := range p.Parsers[UserList] {
-		p.writeParsers(fmt.Sprintf("userlist %s", parserSectionName), section.parsers, &result, true)
-	}
-	for parserSectionName, section := range p.Parsers[Peers] {
-		p.writeParsers(fmt.Sprintf("peers %s", parserSectionName), section.parsers, &result, true)
-	}
-	for parserSectionName, section := range p.Parsers[Mailers] {
-		p.writeParsers(fmt.Sprintf("mailers %s", parserSectionName), section.parsers, &result, true)
-	}
-	for parserSectionName, section := range p.Parsers[Resolvers] {
-		p.writeParsers(fmt.Sprintf("resolvers %s", parserSectionName), section.parsers, &result, true)
-	}
-	for parserSectionName, section := range p.Parsers[Cache] {
-		p.writeParsers(fmt.Sprintf("cache %s", parserSectionName), section.parsers, &result, true)
-	}
-	for parserSectionName, section := range p.Parsers[Frontends] {
-		p.writeParsers(fmt.Sprintf("frontend %s", parserSectionName), section.parsers, &result, true)
-	}
-	for parserSectionName, section := range p.Parsers[Backends] {
-		p.writeParsers(fmt.Sprintf("backend %s", parserSectionName), section.parsers, &result, true)
-	}
-	for parserSectionName, section := range p.Parsers[Listen] {
-		p.writeParsers(fmt.Sprintf("listen %s", parserSectionName), section.parsers, &result, true)
+	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Frontends, Backends, Listen}
+
+	for _, section := range sections {
+		sortedSections := p.getSortedList(p.Parsers[section])
+		for _, sectionName := range sortedSections {
+			p.writeParsers(fmt.Sprintf("%s %s", section, sectionName), p.Parsers[section][sectionName].parsers, &result, true)
+		}
 	}
 	return result.String()
 }
