@@ -149,7 +149,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&parsers.OptionForwardFor{},
 		&simple.SimpleOption{Name: "contstats"},
-		&simple.SimpleOption{Name: "ssl-hello-check"},
+		&simple.SimpleOption{Name: "ssl-hello-chk"},
 		&parsers.OptionSmtpchk{},
 		&simple.SimpleOption{Name: "ldap-check"},
 		&parsers.OptionMysqlCheck{},
