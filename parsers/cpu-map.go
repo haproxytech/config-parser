@@ -19,8 +19,8 @@ func (c *CpuMap) parse(line string, parts []string, comment string) (*types.CpuM
 		return nil, &errors.ParseError{Parser: "CpuMap", Line: line, Message: "Parse error"}
 	}
 	cpuMap := &types.CpuMap{
-		Name:    parts[1],
-		Value:   strings.Join(parts[2:], " "),
+		Process: parts[1],
+		CpuSet:  strings.Join(parts[2:], " "),
 		Comment: comment,
 	}
 	return cpuMap, nil
@@ -33,7 +33,7 @@ func (c *CpuMap) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 	result := make([]common.ReturnResultLine, len(c.data))
 	for index, cpuMap := range c.data {
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("cpu-map %s %s", cpuMap.Name, cpuMap.Value),
+			Data:    fmt.Sprintf("cpu-map %s %s", cpuMap.Process, cpuMap.CpuSet),
 			Comment: cpuMap.Comment,
 		}
 	}
@@ -53,8 +53,8 @@ func (c *CpuMap) Equal(b *CpuMap) bool {
 	for _, cCpuMap := range c.data {
 		found := false
 		for _, bCpuMap := range b.data {
-			if cCpuMap.Name == bCpuMap.Name {
-				if cCpuMap.Value != bCpuMap.Value {
+			if cCpuMap.Process == bCpuMap.Process {
+				if cCpuMap.CpuSet != bCpuMap.CpuSet {
 					return false
 				}
 				found = true

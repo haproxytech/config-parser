@@ -70,8 +70,8 @@ type Balance struct {
 //test:ok:cpu-map auto:1-4 0-1 2-3
 //test:fail:cpu-map
 type CpuMap struct {
-	Name    string
-	Value   string
+	Process string
+	CpuSet  string
 	Comment string
 }
 
