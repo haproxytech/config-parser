@@ -16,4 +16,5 @@ type ConfiguredParsers struct {
 	Peers    *ParserTypes
 	Mailers  *ParserTypes
 	Cache    *ParserTypes
+	Program  *ParserTypes
 }

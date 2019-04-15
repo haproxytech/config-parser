@@ -22,6 +22,7 @@ func createParsers(parser []ParserType) *ParserTypes {
 			&extra.Section{Name: "peers"},
 			&extra.Section{Name: "mailers"},
 			&extra.Section{Name: "cache"},
+			&extra.Section{Name: "program"},
 			&extra.UnProcessed{},
 		}...),
 	}
@@ -222,10 +223,17 @@ func getMailersParser() *ParserTypes {
 		&parsers.Mailer{},
 	})
 }
+
 func getCacheParser() *ParserTypes {
 	return createParsers([]ParserType{
 		&simple.SimpleNumber{Name: "total-max-size"},
 		&simple.SimpleNumber{Name: "max-object-size"},
 		&simple.SimpleNumber{Name: "max-age"},
+	})
+}
+
+func getProgramParser() *ParserTypes {
+	return createParsers([]ParserType{
+		&simple.SimpleString{Name: "command"},
 	})
 }

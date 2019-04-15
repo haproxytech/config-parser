@@ -27,6 +27,7 @@ const (
 	Backends  Section = "backend"
 	Listen    Section = "listen"
 	Cache     Section = "cache"
+	Program   Section = "program"
 )
 
 const (
@@ -292,7 +293,7 @@ func (p *Parser) String() string {
 	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
 	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].parsers, &result, true)
 
-	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Frontends, Backends, Listen}
+	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Frontends, Backends, Listen, Program}
 
 	for _, section := range sections {
 		sortedSections := p.getSortedList(p.Parsers[section])
@@ -393,6 +394,14 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					p.Parsers[Cache][data.Name] = config.Cache
 					config.Active = *config.Cache
 				}
+				if config.State == "program" {
+					parserSectionName := parser.(*extra.Section)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
+					config.Program = getProgramParser()
+					p.Parsers[Program][data.Name] = config.Program
+					config.Active = *config.Program
+				}
 			}
 			break
 		}
@@ -429,6 +438,7 @@ func (p *Parser) ParseData(dat string) error {
 	p.Parsers[Peers] = map[string]*ParserTypes{}
 	p.Parsers[Mailers] = map[string]*ParserTypes{}
 	p.Parsers[Cache] = map[string]*ParserTypes{}
+	p.Parsers[Program] = map[string]*ParserTypes{}
 
 	parsers := ConfiguredParsers{
 		State:    "",
