@@ -28,6 +28,8 @@ func (f *Tarpit) Parse(parts []string, comment string) error {
 			f.CondTest = strings.Join(condition[1:], " ")
 		}
 		return nil
+	} else if len(parts) == 2 {
+		return nil
 	}
 	return fmt.Errorf("not enough params")
 }
