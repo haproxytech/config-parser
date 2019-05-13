@@ -80,7 +80,7 @@ func getGlobalParser() *ParserTypes {
 		&parsers.CpuMap{},
 		&parsers.Mode{},
 		&parsers.MaxConn{},
-		&simple.SimpleWord{Name: "pidfile"},
+		&simple.SimpleString{Name: "pidfile"},
 		&parsers.Socket{},
 		&parsers.StatsTimeout{},
 		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
@@ -97,8 +97,8 @@ func getFrontendParser() *ParserTypes {
 		&parsers.Bind{},
 		&parsers.Acl{},
 		&simple.SimpleWord{Name: "log-tag"},
-		&simple.SimpleWord{Name: "log-format"},
-		&simple.SimpleWord{Name: "log-format-sd"},
+		&simple.SimpleString{Name: "log-format"},
+		&simple.SimpleString{Name: "log-format-sd"},
 
 		&parsers.Log{},
 
@@ -159,7 +159,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "redis-check"},
 		&parsers.OptionRedispatch{},
 
-		&simple.SimpleWord{Name: "log-tag"},
+		&simple.SimpleString{Name: "log-tag"},
 
 		&parsers.OptionHttpchk{},
 
@@ -180,7 +180,7 @@ func getBackendParser() *ParserTypes {
 		&tcp.TCPRequests{},
 		&http.HTTPRequests{},
 		&http.Redirect{},
-		&simple.SimpleWord{Name: "cookie"},
+		&simple.SimpleString{Name: "cookie"},
 		&parsers.UseServer{},
 		&parsers.StickTable{},
 		&parsers.Server{},
@@ -234,6 +234,6 @@ func getCacheParser() *ParserTypes {
 
 func getProgramParser() *ParserTypes {
 	return createParsers([]ParserType{
-		&simple.SimpleWord{Name: "command"},
+		&simple.SimpleString{Name: "command"},
 	})
 }
