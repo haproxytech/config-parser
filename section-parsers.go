@@ -80,12 +80,12 @@ func getGlobalParser() *ParserTypes {
 		&parsers.CpuMap{},
 		&parsers.Mode{},
 		&parsers.MaxConn{},
-		&simple.SimpleString{Name: "pidfile"},
+		&simple.SimpleWord{Name: "pidfile"},
 		&parsers.Socket{},
 		&parsers.StatsTimeout{},
 		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
-		&simple.SimpleStringMultiple{Name: "ssl-default-bind-options"},
-		&simple.SimpleString{Name: "ssl-default-bind-ciphers"},
+		&simple.SimpleString{Name: "ssl-default-bind-options"},
+		&simple.SimpleWord{Name: "ssl-default-bind-ciphers"},
 		&parsers.Log{},
 	})
 }
@@ -96,9 +96,9 @@ func getFrontendParser() *ParserTypes {
 		&parsers.MaxConn{},
 		&parsers.Bind{},
 		&parsers.Acl{},
-		&simple.SimpleString{Name: "log-tag"},
-		&simple.SimpleString{Name: "log-format"},
-		&simple.SimpleString{Name: "log-format-sd"},
+		&simple.SimpleWord{Name: "log-tag"},
+		&simple.SimpleWord{Name: "log-format"},
+		&simple.SimpleWord{Name: "log-format-sd"},
 
 		&parsers.Log{},
 
@@ -127,7 +127,7 @@ func getFrontendParser() *ParserTypes {
 		&http.HTTPRequests{},
 		&http.Redirect{},
 
-		&simple.SimpleString{Name: "monitor-uri"},
+		&simple.SimpleWord{Name: "monitor-uri"},
 
 		&parsers.UseBackend{},
 		&parsers.DefaultBackend{},
@@ -159,7 +159,7 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "redis-check"},
 		&parsers.OptionRedispatch{},
 
-		&simple.SimpleString{Name: "log-tag"},
+		&simple.SimpleWord{Name: "log-tag"},
 
 		&parsers.OptionHttpchk{},
 
@@ -180,7 +180,7 @@ func getBackendParser() *ParserTypes {
 		&tcp.TCPRequests{},
 		&http.HTTPRequests{},
 		&http.Redirect{},
-		&simple.SimpleString{Name: "cookie"},
+		&simple.SimpleWord{Name: "cookie"},
 		&parsers.UseServer{},
 		&parsers.StickTable{},
 		&parsers.Server{},
@@ -200,7 +200,7 @@ func getResolverParser() *ParserTypes {
 		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "obsolete"}},
 		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "valid"}},
 		&simple.SimpleTimeout{Name: "retry"},
-		&simple.SimpleString{Name: "accepted_payload_size"},
+		&simple.SimpleWord{Name: "accepted_payload_size"},
 	})
 }
 
@@ -234,6 +234,6 @@ func getCacheParser() *ParserTypes {
 
 func getProgramParser() *ParserTypes {
 	return createParsers([]ParserType{
-		&simple.SimpleString{Name: "command"},
+		&simple.SimpleWord{Name: "command"},
 	})
 }

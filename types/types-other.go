@@ -52,20 +52,20 @@ type SimpleTimeout struct {
 	Comment string
 }
 
-//name:simple-string
+//name:simple-word
 //dir:simple
 //parser-type:StringC
-type SimpleString struct{}
+type SimpleWord struct{}
 
 //name:simple-number
 //dir:simple
 //parser-type:Int64C
 type SimpleNumber struct{}
 
-//name:simple-string-multiple
+//name:simple-string
 //dir:simple
 //parser-type:StringSliceC
-type SimpleStringMultiple struct{}
+type SimpleString struct{}
 
 //name:simple-time-two-words
 //dir:simple

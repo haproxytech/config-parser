@@ -18,7 +18,7 @@ func (p *SimpleString) GetParserName() string {
 func (p *SimpleString) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
-			p.data = &types.StringC{}
+			p.data = &types.StringSliceC{}
 			return p.data, nil
 		}
 		return nil, errors.FetchError
@@ -51,9 +51,9 @@ func (p *SimpleString) Set(data common.ParserData, index int) error {
 		return nil
 	}
 	switch newValue := data.(type) {
-	case *types.StringC:
+	case *types.StringSliceC:
 		p.data = newValue
-	case types.StringC:
+	case types.StringSliceC:
 		p.data = &newValue
 	default:
 		return errors.InvalidData

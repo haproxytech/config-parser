@@ -7,18 +7,18 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-func (p *SimpleStringMultiple) Init() {
+func (p *SimpleWord) Init() {
     p.data = nil
 }
 
-func (p *SimpleStringMultiple) GetParserName() string {
+func (p *SimpleWord) GetParserName() string {
     return p.Name
 }
 
-func (p *SimpleStringMultiple) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *SimpleWord) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
-			p.data = &types.StringSliceC{}
+			p.data = &types.StringC{}
 			return p.data, nil
 		}
 		return nil, errors.FetchError
@@ -26,7 +26,7 @@ func (p *SimpleStringMultiple) Get(createIfNotExist bool) (common.ParserData, er
 	return p.data, nil
 }
 
-func (p *SimpleStringMultiple) GetOne(index int) (common.ParserData, error) {
+func (p *SimpleWord) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.FetchError
 	}
@@ -36,24 +36,24 @@ func (p *SimpleStringMultiple) GetOne(index int) (common.ParserData, error) {
 	return p.data, nil
 }
 
-func (p *SimpleStringMultiple) Delete(index int) error {
+func (p *SimpleWord) Delete(index int) error {
 	p.Init()
 	return nil
 }
 
-func (p *SimpleStringMultiple) Insert(data common.ParserData, index int) error {
+func (p *SimpleWord) Insert(data common.ParserData, index int) error {
 	return p.Set(data, index)
 }
 
-func (p *SimpleStringMultiple) Set(data common.ParserData, index int) error {
+func (p *SimpleWord) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
 	}
 	switch newValue := data.(type) {
-	case *types.StringSliceC:
+	case *types.StringC:
 		p.data = newValue
-	case types.StringSliceC:
+	case types.StringC:
 		p.data = &newValue
 	default:
 		return errors.InvalidData
