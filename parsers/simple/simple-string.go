@@ -11,7 +11,7 @@ import (
 
 type SimpleString struct {
 	Name string
-	data *types.StringSliceC
+	data *types.StringC
 }
 
 func (s *SimpleString) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
@@ -19,8 +19,8 @@ func (s *SimpleString) Parse(line string, parts, previousParts []string, comment
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "SimpleString", Line: line, Message: "Parse error"}
 		}
-		s.data = &types.StringSliceC{
-			Value:   parts[1:],
+		s.data = &types.StringC{
+			Value:   strings.Join(parts[1:], " "),
 			Comment: comment,
 		}
 		return "", nil
@@ -34,7 +34,7 @@ func (s *SimpleString) Result(AddComments bool) ([]common.ReturnResultLine, erro
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data:    fmt.Sprintf("%s %s", s.Name, strings.Join(s.data.Value, " ")),
+			Data:    fmt.Sprintf("%s %s", s.Name, s.data.Value),
 			Comment: s.data.Comment,
 		},
 	}, nil

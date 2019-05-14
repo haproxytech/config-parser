@@ -64,7 +64,7 @@ type SimpleNumber struct{}
 
 //name:simple-string
 //dir:simple
-//parser-type:StringSliceC
+//parser-type:StringC
 type SimpleString struct{}
 
 //name:simple-time-two-words
