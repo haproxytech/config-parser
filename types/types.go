@@ -124,6 +124,7 @@ type Group struct {
 //test:ok:log stderr format raw daemon notice # send important events to stderr
 //test:ok:log 127.0.0.1:514 local0 notice # only send important events
 //test:ok:log 127.0.0.1:514 local0 notice notice # same but limit output level
+//test:ok:log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
 //test:fail:log
 type Log struct {
 	Global   bool

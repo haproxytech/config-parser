@@ -135,17 +135,15 @@ func (l *Log) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 			var sb strings.Builder
 			sb.WriteString("log ")
 			sb.WriteString(log.Address)
-			sb.WriteString(" ")
 			if log.Length > 0 {
-				sb.WriteString("len ")
+				sb.WriteString(" len ")
 				sb.WriteString(fmt.Sprintf("%d", log.Length))
-				sb.WriteString(" ")
 			}
 			if log.Format != "" {
 				sb.WriteString(" format ")
 				sb.WriteString(log.Format)
-				sb.WriteString(" ")
 			}
+			sb.WriteString(" ")
 			sb.WriteString(log.Facility)
 			if log.Level != "" {
 				sb.WriteString(" ")
