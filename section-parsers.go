@@ -73,6 +73,7 @@ func getDefaultParser() *ParserTypes {
 		&parsers.OptionForwardFor{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
+		&simple.SimpleTimeout{Name: "check"},
 		&simple.SimpleTimeout{Name: "connect"},
 		&simple.SimpleTimeout{Name: "client"},
 		&simple.SimpleTimeout{Name: "queue"},
