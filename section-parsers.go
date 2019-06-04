@@ -61,6 +61,7 @@ func getDefaultParser() *ParserTypes {
 		&parsers.Balance{},
 		&parsers.MaxConn{},
 		&parsers.Log{},
+		&parsers.OptionHTTPLog{},
 
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
@@ -68,7 +69,7 @@ func getDefaultParser() *ParserTypes {
 		&simple.SimpleOption{Name: "dontlognull"},
 		&simple.SimpleOption{Name: "http-server-close"},
 		&simple.SimpleOption{Name: "http-keep-alive"},
-		&simple.SimpleOption{Name: "httplog"},
+		&simple.SimpleOption{Name: "http-tunnel"},
 		&simple.SimpleOption{Name: "clitcpka"},
 		&parsers.OptionForwardFor{},
 
