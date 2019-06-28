@@ -71,6 +71,7 @@ func getDefaultParser() *ParserTypes {
 		&simple.SimpleOption{Name: "http-keep-alive"},
 		&simple.SimpleOption{Name: "http-tunnel"},
 		&simple.SimpleOption{Name: "clitcpka"},
+		&simple.SimpleOption{Name: "external-check"},
 		&parsers.OptionForwardFor{},
 
 		&simple.SimpleTimeout{Name: "http-request"},
@@ -82,6 +83,8 @@ func getDefaultParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "tunnel"},
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
 
+		&parsers.ExternalCheckPath{},
+		&parsers.ExternalCheckCommand{},
 		&parsers.DefaultServer{},
 		&parsers.ErrorFile{},
 		&parsers.DefaultBackend{},
@@ -93,6 +96,7 @@ func getGlobalParser() *ParserTypes {
 		&parsers.Daemon{},
 		//&simple.SimpleFlag{Name: "master-worker"},
 		&parsers.MasterWorker{},
+		&parsers.ExternalCheck{},
 		&parsers.NbProc{},
 		&parsers.NbThread{},
 		&parsers.CpuMap{},
@@ -176,10 +180,13 @@ func getBackendParser() *ParserTypes {
 		&simple.SimpleOption{Name: "tcp-check"},
 		&simple.SimpleOption{Name: "redis-check"},
 		&parsers.OptionRedispatch{},
+		&simple.SimpleOption{Name: "external-check"},
 
 		&simple.SimpleString{Name: "log-tag"},
 
 		&parsers.OptionHttpchk{},
+		&parsers.ExternalCheckPath{},
+		&parsers.ExternalCheckCommand{},
 
 		&parsers.Log{},
 

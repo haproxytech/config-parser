@@ -258,6 +258,24 @@ type OptionSmtpchk struct {
 	Comment  string
 }
 
+//sections:backend
+//name:external-check path
+//no-parse:true
+//test:ok:external-check path /usr/bin:/bin
+type ExternalCheckPath struct {
+	Path    string
+	Comment string
+}
+
+//sections:backend
+//name:external-check command
+//no-parse:true
+//test:ok:external-check command /bin/true
+type ExternalCheckCommand struct {
+	Command string
+	Comment string
+}
+
 //sections:peers
 //name:peer
 //is-multiple:true
