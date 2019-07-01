@@ -7,16 +7,23 @@ if you change types/types.go you need to run
 ```bash
 go run go-generate.go $(pwd)
 ```
+### Contributing
 
-### example
+For commit messages and general style please follow the haproxy project's [CONTRIBUTING guide](https://github.com/haproxy/haproxy/blob/master/CONTRIBUTING) and use that where applicable.
+
+### Example
 
 ```go
 package main
 
-//...
+import (
+    "github.com/haproxytech/config-parser"
+    // ...
+)
+// ...
 
 func main() {
-    p := Parser{}
+    p := parser.Parser{}
     err := p.LoadData("/path/to/haproxy/file.cfg")
     log.Println(err)
     log.Println(p.String())
@@ -28,6 +35,10 @@ func main() {
         }
         ver, _ := data.(*types.Int64C)
         ver.Value = ver.Value + 1
+    }
+
+    {
+        p.Set(parser.Frontends, "http", "option forwardfor", types.OptionForwardFor{})
     }
 
     {
@@ -84,3 +95,7 @@ func main() {
 }
 
 ```
+
+## License
+
+[Apache License 2.0](LICENSE)
