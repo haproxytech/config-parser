@@ -33,7 +33,7 @@ func (p *Mode) Parse(line string, parts, previousParts []string, comment string)
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Mode", Line: line, Message: "Parse error"}
 		}
-		if parts[1] == "http" || parts[1] == "tcp" || parts[1] == "health" {
+		if parts[1] == "http" || parts[1] == "tcp" {
 			p.data = &types.StringC{
 				Value:   parts[1],
 				Comment: comment,
