@@ -62,7 +62,6 @@ type Int64C struct {
 //name:mode
 //test:ok:mode tcp
 //test:ok:mode http
-//test:ok:mode health
 //test:ok:mode tcp # comment
 //test:fail:mode
 //gen:DefaultBackend
