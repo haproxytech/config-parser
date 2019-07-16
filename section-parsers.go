@@ -63,14 +63,32 @@ func getDefaultParser() *ParserTypes {
 		&parsers.Log{},
 		&parsers.OptionHTTPLog{},
 
+		&simple.SimpleWord{Name: "log-tag"},
+
+		&simple.SimpleString{Name: "log-format"},
+		&simple.SimpleString{Name: "log-format-sd"},
+		&simple.SimpleString{Name: "cookie"},
+
+		&simple.SimpleOption{Name: "tcplog"},
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&parsers.OptionRedispatch{},
 		&simple.SimpleOption{Name: "dontlognull"},
+		&simple.SimpleOption{Name: "log-separate-errors"},
 		&simple.SimpleOption{Name: "http-server-close"},
 		&simple.SimpleOption{Name: "http-keep-alive"},
-		&simple.SimpleOption{Name: "http-tunnel"},
+		&simple.SimpleOption{Name: "http-pretend-keepalive"},
 		&simple.SimpleOption{Name: "clitcpka"},
+		&simple.SimpleOption{Name: "contstats"},
+		&simple.SimpleOption{Name: "ssl-hello-chk"},
+		&parsers.OptionSmtpchk{},
+		&simple.SimpleOption{Name: "ldap-check"},
+		&parsers.OptionMysqlCheck{},
+		&simple.SimpleOption{Name: "pgsql-check"},
+		&simple.SimpleOption{Name: "tcp-check"},
+		&simple.SimpleOption{Name: "redis-check"},
+		&parsers.OptionHttpchk{},
+
 		&simple.SimpleOption{Name: "external-check"},
 		&parsers.OptionForwardFor{},
 
@@ -82,6 +100,8 @@ func getDefaultParser() *ParserTypes {
 		&simple.SimpleTimeout{Name: "server"},
 		&simple.SimpleTimeout{Name: "tunnel"},
 		&simple.SimpleTimeout{Name: "http-keep-alive"},
+
+		&simple.SimpleNumber{Name: "retries"},
 
 		&parsers.ExternalCheckPath{},
 		&parsers.ExternalCheckCommand{},
@@ -124,12 +144,10 @@ func getFrontendParser() *ParserTypes {
 
 		&parsers.Log{},
 
-		&simple.SimpleOption{Name: "http-tunnel"},
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "forceclose"},
 		&simple.SimpleOption{Name: "http-server-close"},
 		&simple.SimpleOption{Name: "http-keep-alive"},
-		&simple.SimpleOption{Name: "http-pretend-keepalive"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&parsers.OptionForwardFor{},
 		&simple.SimpleOption{Name: "tcplog"},
@@ -164,14 +182,13 @@ func getBackendParser() *ParserTypes {
 		&parsers.Balance{},
 		&parsers.Acl{},
 
-		&simple.SimpleOption{Name: "http-tunnel"},
 		&simple.SimpleOption{Name: "httpclose"},
 		&simple.SimpleOption{Name: "forceclose"},
 		&simple.SimpleOption{Name: "http-server-close"},
 		&simple.SimpleOption{Name: "http-keep-alive"},
+		&simple.SimpleOption{Name: "http-pretend-keepalive"},
 		&simple.SimpleOption{Name: "http-use-htx"},
 		&parsers.OptionForwardFor{},
-		&simple.SimpleOption{Name: "contstats"},
 		&simple.SimpleOption{Name: "ssl-hello-chk"},
 		&parsers.OptionSmtpchk{},
 		&simple.SimpleOption{Name: "ldap-check"},
