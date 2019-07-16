@@ -70,27 +70,6 @@ func TestModeNormal1(t *testing.T) {
 }
 func TestModeNormal2(t *testing.T) {
 	parser := &parsers.Mode{}
-	line := strings.TrimSpace("mode health")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	result, err := parser.Result(true)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestModeNormal3(t *testing.T) {
-	parser := &parsers.Mode{}
 	line := strings.TrimSpace("mode tcp # comment")
 	err := ProcessLine(line, parser)
 	if err != nil {
