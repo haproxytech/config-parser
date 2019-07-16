@@ -180,11 +180,10 @@ type Mailer struct {
 //test:fail:option forwardfor except A header
 //test:fail:option forwardfor header
 type OptionForwardFor struct {
-	NoOption bool
-	Except   string
-	Header   string
-	IfNone   bool
-	Comment  string
+	Except  string
+	Header  string
+	IfNone  bool
+	Comment string
 }
 
 //sections:defaults, backend
