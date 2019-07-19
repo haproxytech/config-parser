@@ -40,8 +40,7 @@ func (s *OptionHttpchk) Parse(line string, parts, previousParts []string, commen
 			s.data = &types.OptionHttpchk{
 				Comment: comment,
 			}
-		}
-		if len(parts) == 3 {
+		} else if len(parts) == 3 {
 			s.data = &types.OptionHttpchk{
 				Uri:     parts[2],
 				Comment: comment,
