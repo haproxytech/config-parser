@@ -79,7 +79,6 @@ func SplitRequest(parts []string) (command, condition []string) {
 		switch parts[index] {
 		case "if", "unless":
 			found = true
-			break
 		}
 		if found {
 			break

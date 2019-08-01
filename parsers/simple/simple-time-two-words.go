@@ -33,7 +33,7 @@ type SimpleTimeTwoWords struct {
 
 func (s *SimpleTimeTwoWords) Init() {
 	s.data = nil
-	s.Name = fmt.Sprintf(strings.Join(s.Keywords, " "))
+	s.Name = strings.Join(s.Keywords, " ")
 }
 
 func (s *SimpleTimeTwoWords) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

@@ -66,26 +66,6 @@ func (p *Parser) unLock() {
 	p.mutex.Unlock()
 }
 
-func (p *Parser) get(data map[string]*ParserTypes, key string, attribute string) (common.ParserData, error) {
-	for _, parser := range data[key].parsers {
-		if parser.GetParserName() == attribute {
-			return parser.Get(false)
-		}
-	}
-	return nil, errors.AttributeNotFoundErr
-}
-
-func (p *Parser) getOrCreate(data map[string]*ParserTypes, key string, attribute string, createIfNotExist bool) (common.ParserData, error) {
-	p.lock()
-	defer p.unLock()
-	for _, parser := range data[key].parsers {
-		if parser.GetParserName() == attribute {
-			return parser.Get(createIfNotExist)
-		}
-	}
-	return nil, errors.AttributeNotFoundErr
-}
-
 //Get get attribute from defaults section
 func (p *Parser) Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
 	p.lock()
@@ -134,7 +114,7 @@ func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
 	}
 	result := make([]string, len(st))
 	index := 0
-	for sectionName, _ := range st {
+	for sectionName := range st {
 		result[index] = sectionName
 		index++
 	}
@@ -177,7 +157,7 @@ func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 	previousLine := []string{}
 	parts := []string{string(sectionType), sectionName}
 	comment := ""
-	parsers = p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, previousLine, comment, parsers)
+	p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, previousLine, comment, parsers)
 	return nil
 }
 
@@ -247,7 +227,7 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 		return false
 	}
 	sectionName := ""
-	for name, _ := range st {
+	for name := range st {
 		sectionName = name
 		break
 	}
@@ -291,7 +271,7 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserType, result *
 func (p *Parser) getSortedList(data map[string]*ParserTypes) []string {
 	result := make([]string, len(data))
 	index := 0
-	for parserSectionName, _ := range data {
+	for parserSectionName := range data {
 		result[index] = parserSectionName
 		index++
 	}
