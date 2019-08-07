@@ -53,6 +53,7 @@ type Acl struct {
 //test:ok:bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
 //test:ok:bind :80
 //test:ok:bind :443 ssl crt /etc/haproxy/site.pem
+//test:ok:bind :443 ssl crt /etc/haproxy/site.pem alpn h2,http/1.1
 //test:ok:bind ipv6@:80
 //test:ok:bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem
 //test:ok:bind unix@ssl-frontend.sock user root mode 600 accept-proxy
