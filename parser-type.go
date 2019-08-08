@@ -21,7 +21,8 @@ import (
 	"github.com/haproxytech/config-parser/errors"
 )
 
-type ParserType interface {
+//nolint:golint
+type ParserInterface interface {
 	Init()
 	Parse(line string, parts, previousParts []string, comment string) (changeState string, err error)
 	GetParserName() string
@@ -30,14 +31,14 @@ type ParserType interface {
 	Delete(index int) error
 	Insert(data common.ParserData, index int) error
 	Set(data common.ParserData, index int) error
-	Result(AddComments bool) ([]common.ReturnResultLine, error)
+	Result(addComments bool) ([]common.ReturnResultLine, error)
 }
 
-type ParserTypes struct {
-	parsers []ParserType
+type Parsers struct {
+	parsers []ParserInterface
 }
 
-func (p *ParserTypes) Get(attribute string, createIfNotExist ...bool) (common.ParserData, error) {
+func (p *Parsers) Get(attribute string, createIfNotExist ...bool) (common.ParserData, error) {
 	createNew := false
 	if len(createIfNotExist) > 0 && createIfNotExist[0] {
 		createNew = true
@@ -47,10 +48,10 @@ func (p *ParserTypes) Get(attribute string, createIfNotExist ...bool) (common.Pa
 			return parser.Get(createNew)
 		}
 	}
-	return nil, errors.ParserMissingErr
+	return nil, errors.ErrParserMissing
 }
 
-func (p *ParserTypes) GetOne(attribute string, index ...int) (common.ParserData, error) {
+func (p *Parsers) GetOne(attribute string, index ...int) (common.ParserData, error) {
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -60,11 +61,11 @@ func (p *ParserTypes) GetOne(attribute string, index ...int) (common.ParserData,
 			return parser.GetOne(setIndex)
 		}
 	}
-	return nil, errors.ParserMissingErr
+	return nil, errors.ErrParserMissing
 }
 
 //HasParser checks if we have a parser for attribute
-func (p *ParserTypes) HasParser(attribute string) bool {
+func (p *Parsers) HasParser(attribute string) bool {
 	for _, parser := range p.parsers {
 		if parser.GetParserName() == attribute {
 			return true
@@ -74,7 +75,7 @@ func (p *ParserTypes) HasParser(attribute string) bool {
 }
 
 //Set sets data in parser, if you can have multiple items, index is a must
-func (p *ParserTypes) Set(attribute string, data common.ParserData, index ...int) error {
+func (p *Parsers) Set(attribute string, data common.ParserData, index ...int) error {
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -84,10 +85,10 @@ func (p *ParserTypes) Set(attribute string, data common.ParserData, index ...int
 			return p.parsers[i].Set(data, setIndex)
 		}
 	}
-	return errors.AttributeNotFoundErr
+	return errors.ErrAttributeNotFound
 }
 
-func (p *ParserTypes) Insert(attribute string, data common.ParserData, index ...int) error {
+func (p *Parsers) Insert(attribute string, data common.ParserData, index ...int) error {
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -97,10 +98,10 @@ func (p *ParserTypes) Insert(attribute string, data common.ParserData, index ...
 			return p.parsers[i].Insert(data, setIndex)
 		}
 	}
-	return errors.AttributeNotFoundErr
+	return errors.ErrAttributeNotFound
 }
 
-func (p *ParserTypes) Delete(attribute string, index ...int) error {
+func (p *Parsers) Delete(attribute string, index ...int) error {
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
@@ -110,5 +111,5 @@ func (p *ParserTypes) Delete(attribute string, index ...int) error {
 			return p.parsers[i].Delete(setIndex)
 		}
 	}
-	return errors.AttributeNotFoundErr
+	return errors.ErrAttributeNotFound
 }

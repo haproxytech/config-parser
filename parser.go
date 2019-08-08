@@ -54,7 +54,7 @@ const (
 
 //Parser reads and writes configuration on given file
 type Parser struct {
-	Parsers map[Section]map[string]*ParserTypes
+	Parsers map[Section]map[string]*Parsers
 	mutex   *sync.Mutex
 }
 
@@ -72,11 +72,11 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string, 
 	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return nil, errors.SectionMissingErr
+		return nil, errors.ErrSectionMissing
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return nil, errors.SectionMissingErr
+		return nil, errors.ErrSectionMissing
 	}
 	createNew := false
 	if len(createIfNotExist) > 0 && createIfNotExist[0] {
@@ -95,11 +95,11 @@ func (p *Parser) GetOne(sectionType Section, sectionName string, attribute strin
 	}
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return nil, errors.SectionMissingErr
+		return nil, errors.ErrSectionMissing
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return nil, errors.SectionMissingErr
+		return nil, errors.ErrSectionMissing
 	}
 	return section.GetOne(attribute, setIndex)
 }
@@ -110,7 +110,7 @@ func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
 	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return nil, errors.SectionMissingErr
+		return nil, errors.ErrSectionMissing
 	}
 	result := make([]string, len(st))
 	index := 0
@@ -127,7 +127,7 @@ func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
 	defer p.unLock()
 	_, ok := p.Parsers[sectionType]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	delete(p.Parsers[sectionType], sectionName)
 	return nil
@@ -139,11 +139,11 @@ func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	_, ok = st[sectionName]
 	if ok {
-		return errors.SectionAlreadyExistsErr
+		return errors.ErrSectionAlreadyExists
 	}
 
 	parsers := ConfiguredParsers{
@@ -171,11 +171,11 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 	}
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	return section.Set(attribute, data, setIndex)
 }
@@ -190,11 +190,11 @@ func (p *Parser) Delete(sectionType Section, sectionName string, attribute strin
 	}
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	return section.Delete(attribute, setIndex)
 }
@@ -209,11 +209,11 @@ func (p *Parser) Insert(sectionType Section, sectionName string, attribute strin
 	}
 	st, ok := p.Parsers[sectionType]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	section, ok := st[sectionName]
 	if !ok {
-		return errors.SectionMissingErr
+		return errors.ErrSectionMissing
 	}
 	return section.Insert(attribute, data, setIndex)
 }
@@ -238,7 +238,7 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) writeParsers(sectionName string, parsers []ParserType, result *strings.Builder, useIndentation bool) {
+func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, result *strings.Builder, useIndentation bool) {
 	sectionNameWritten := false
 	if sectionName == "" {
 		sectionNameWritten = true
@@ -268,7 +268,7 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserType, result *
 	}
 }
 
-func (p *Parser) getSortedList(data map[string]*ParserTypes) []string {
+func (p *Parser) getSortedList(data map[string]*Parsers) []string {
 	result := make([]string, len(data))
 	index := 0
 	for parserSectionName := range data {
@@ -416,25 +416,25 @@ func (p *Parser) LoadData(filename string) error {
 func (p *Parser) ParseData(dat string) error {
 	p.mutex = &sync.Mutex{}
 
-	p.Parsers = map[Section]map[string]*ParserTypes{}
-	p.Parsers[Comments] = map[string]*ParserTypes{
+	p.Parsers = map[Section]map[string]*Parsers{}
+	p.Parsers[Comments] = map[string]*Parsers{
 		CommentsSectionName: getStartParser(),
 	}
-	p.Parsers[Defaults] = map[string]*ParserTypes{
+	p.Parsers[Defaults] = map[string]*Parsers{
 		DefaultSectionName: getDefaultParser(),
 	}
-	p.Parsers[Global] = map[string]*ParserTypes{
+	p.Parsers[Global] = map[string]*Parsers{
 		GlobalSectionName: getGlobalParser(),
 	}
-	p.Parsers[Frontends] = map[string]*ParserTypes{}
-	p.Parsers[Backends] = map[string]*ParserTypes{}
-	p.Parsers[Listen] = map[string]*ParserTypes{}
-	p.Parsers[Resolvers] = map[string]*ParserTypes{}
-	p.Parsers[UserList] = map[string]*ParserTypes{}
-	p.Parsers[Peers] = map[string]*ParserTypes{}
-	p.Parsers[Mailers] = map[string]*ParserTypes{}
-	p.Parsers[Cache] = map[string]*ParserTypes{}
-	p.Parsers[Program] = map[string]*ParserTypes{}
+	p.Parsers[Frontends] = map[string]*Parsers{}
+	p.Parsers[Backends] = map[string]*Parsers{}
+	p.Parsers[Listen] = map[string]*Parsers{}
+	p.Parsers[Resolvers] = map[string]*Parsers{}
+	p.Parsers[UserList] = map[string]*Parsers{}
+	p.Parsers[Peers] = map[string]*Parsers{}
+	p.Parsers[Mailers] = map[string]*Parsers{}
+	p.Parsers[Cache] = map[string]*Parsers{}
+	p.Parsers[Program] = map[string]*Parsers{}
 
 	parsers := ConfiguredParsers{
 		State:    "",
@@ -444,7 +444,7 @@ func (p *Parser) ParseData(dat string) error {
 		Global:   p.Parsers[Global][GlobalSectionName],
 	}
 
-	lines := common.StringSplitIgnoreEmpty(string(dat), '\n')
+	lines := common.StringSplitIgnoreEmpty(dat, '\n')
 	previousLine := []string{}
 	for _, line := range lines {
 		if line == "" {

@@ -88,6 +88,10 @@ func generateTypesOther(dir string) {
 				parserData.ParserSecondName = items[1]
 			}
 		}
+		if strings.HasPrefix(line, "//struct-name:") {
+			data := common.StringSplitIgnoreEmpty(line, ':')
+			parserData.StructName = data[1]
+		}
 		if strings.HasPrefix(line, "//dir:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
 			parserData.Dir = data[1]
@@ -129,7 +133,9 @@ func generateTypesOther(dir string) {
 			continue
 		}
 		data := common.StringSplitIgnoreEmpty(line, ' ')
-		parserData.StructName = data[1]
+		if parserData.StructName == "" {
+			parserData.StructName = data[1]
+		}
 		parserData.ParserType = data[1]
 		if parserData.ParserTypeOverride != "" {
 			parserData.ParserType = parserData.ParserTypeOverride
@@ -395,7 +401,7 @@ func (p *{{ .StructName }}) GetParserName() string {
 func (p *{{ .StructName }}) Get(createIfNotExist bool) (common.ParserData, error) {
 {{- if .ParserMultiple }}
 	if len(p.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 {{- else }}
 	if p.data == nil {
@@ -403,7 +409,7 @@ func (p *{{ .StructName }}) Get(createIfNotExist bool) (common.ParserData, error
 			p.data = &types.{{ .ParserType }}{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 {{- end }}
 	return p.data, nil
@@ -413,15 +419,15 @@ func (p *{{ .StructName }}) Get(createIfNotExist bool) (common.ParserData, error
 func (p *{{ .StructName }}) GetOne(index int) (common.ParserData, error) {
 {{- if .ParserMultiple }}
 	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data[index], nil
 {{- else }}
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 {{- end }}
@@ -430,7 +436,7 @@ func (p *{{ .StructName }}) GetOne(index int) (common.ParserData, error) {
 func (p *{{ .StructName }}) Delete(index int) error {
 {{- if .ParserMultiple }}
 	if index < 0 || index >= len(p.data) {
-		return errors.FetchError
+		return errors.ErrFetch
 	}
 	copy(p.data[index:], p.data[index+1:])
 {{- if .IsInterface }}
@@ -449,7 +455,7 @@ func (p *{{ .StructName }}) Delete(index int) error {
 func (p *{{ .StructName }}) Insert(data common.ParserData, index int) error {
 {{- if .ParserMultiple }}
 	if data == nil {
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	switch newValue := data.(type) {
 	case []types.{{ .ParserType }}:
@@ -457,7 +463,7 @@ func (p *{{ .StructName }}) Insert(data common.ParserData, index int) error {
 	case *types.{{ .ParserType }}:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 {{- if .IsInterface }}
 			p.data = append(p.data, nil)
@@ -472,7 +478,7 @@ func (p *{{ .StructName }}) Insert(data common.ParserData, index int) error {
 	case types.{{ .ParserType }}:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 {{- if .IsInterface }}
 			p.data = append(p.data, nil)
@@ -485,7 +491,7 @@ func (p *{{ .StructName }}) Insert(data common.ParserData, index int) error {
 			p.data = append(p.data, newValue)
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 {{- else }}
@@ -508,7 +514,7 @@ func (p *{{ .StructName }}) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, *newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	case types.{{ .ParserType }}:
 		if index > -1 && index < len(p.data) {
@@ -516,10 +522,10 @@ func (p *{{ .StructName }}) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 {{- else }}
 	switch newValue := data.(type) {
@@ -528,7 +534,7 @@ func (p *{{ .StructName }}) Set(data common.ParserData, index int) error {
 	case types.{{ .ParserType }}:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 {{- end }}
 	return nil

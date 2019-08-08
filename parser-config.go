@@ -19,18 +19,18 @@ package parser
 type ConfiguredParsers struct {
 	_      [0]int
 	State  string
-	Active ParserTypes
+	Active Parsers
 
-	Comments *ParserTypes
-	Defaults *ParserTypes
-	Global   *ParserTypes
-	Frontend *ParserTypes
-	Backend  *ParserTypes
-	Listen   *ParserTypes
-	Resolver *ParserTypes
-	Userlist *ParserTypes
-	Peers    *ParserTypes
-	Mailers  *ParserTypes
-	Cache    *ParserTypes
-	Program  *ParserTypes
+	Comments *Parsers
+	Defaults *Parsers
+	Global   *Parsers
+	Frontend *Parsers
+	Backend  *Parsers
+	Listen   *Parsers
+	Resolver *Parsers
+	Userlist *Parsers
+	Peers    *Parsers
+	Mailers  *Parsers
+	Cache    *Parsers
+	Program  *Parsers
 }

@@ -30,7 +30,7 @@ func main() {
 
     {
         data, _ := p.Get(parser.Comments, parser.CommentsSectionName, "# _version", true)
-        if err == errors.FetchError {
+        if err == errors.ErrFetch {
             log.Panicln("we have an fetch error !!")
         }
         ver, _ := data.(*types.Int64C)
@@ -55,7 +55,7 @@ func main() {
     {
         data, err := p.Get(parser.Global, parser.GlobalSectionName, "daemon")
         log.Println(data, err)
-        if err == errors.FetchError {
+        if err == errors.ErrFetch {
             log.Panicln("we have an fetch error !!")
         }
         //remove it
