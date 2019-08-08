@@ -68,7 +68,7 @@ func (p *Balance) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: "Balance", Line: line}
 }
 
-func (p *Balance) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (p *Balance) Result() ([]common.ReturnResultLine, error) {
 	if p.data == nil {
 		return nil, errors.ErrFetch
 	}

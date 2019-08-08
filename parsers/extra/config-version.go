@@ -65,7 +65,7 @@ func (p *ConfigVersion) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "ConfigVersion", Line: line}
 }
 
-func (p *ConfigVersion) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (p *ConfigVersion) Result() ([]common.ReturnResultLine, error) {
 	if p.data == nil {
 		return nil, errors.ErrFetch
 	}

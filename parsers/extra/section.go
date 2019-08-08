@@ -47,6 +47,6 @@ func (s *Section) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: "Section", Line: line}
 }
 
-func (s *Section) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *Section) Result() ([]common.ReturnResultLine, error) {
 	return nil, fmt.Errorf("not valid")
 }

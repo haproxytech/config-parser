@@ -42,7 +42,7 @@ func (p *Comments) Parse(line string, parts, previousParts []string, comment str
 	return "", &errors.ParseError{Parser: "Comments", Line: line}
 }
 
-func (p *Comments) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (p *Comments) Result() ([]common.ReturnResultLine, error) {
 	if len(p.data) == 0 {
 		return nil, errors.ErrFetch
 	}

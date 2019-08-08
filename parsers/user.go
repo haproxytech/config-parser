@@ -56,7 +56,7 @@ func (l *User) parse(line string, parts []string, comment string) (*types.User, 
 	return nil, &errors.ParseError{Parser: "User", Line: line}
 }
 
-func (l *User) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (l *User) Result() ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
 		return nil, errors.ErrFetch
 	}

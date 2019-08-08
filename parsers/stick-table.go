@@ -92,7 +92,7 @@ func (h *StickTable) Parse(line string, parts, previousParts []string, comment s
 	return "", &errors.ParseError{Parser: "StickTable", Line: line}
 }
 
-func (h *StickTable) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *StickTable) Result() ([]common.ReturnResultLine, error) {
 	if h.data == nil {
 		return nil, errors.ErrFetch
 	}

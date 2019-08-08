@@ -60,7 +60,7 @@ func (o *OptionHTTPLog) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "option httplog", Line: line}
 }
 
-func (o *OptionHTTPLog) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (o *OptionHTTPLog) Result() ([]common.ReturnResultLine, error) {
 	if o.data == nil {
 		return nil, errors.ErrFetch
 	}

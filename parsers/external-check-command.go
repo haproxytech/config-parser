@@ -42,7 +42,7 @@ func (s *ExternalCheckCommand) Parse(line string, parts, previousParts []string,
 	return "", &errors.ParseError{Parser: "external-check command", Line: line}
 }
 
-func (s *ExternalCheckCommand) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *ExternalCheckCommand) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

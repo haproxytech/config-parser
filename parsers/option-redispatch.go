@@ -59,7 +59,7 @@ func (s *OptionRedispatch) Parse(line string, parts, previousParts []string, com
 	return "", &errors.ParseError{Parser: "option redispatch", Line: line}
 }
 
-func (s *OptionRedispatch) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionRedispatch) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

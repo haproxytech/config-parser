@@ -244,7 +244,7 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, res
 		sectionNameWritten = true
 	}
 	for _, parser := range parsers {
-		lines, err := parser.Result(true)
+		lines, err := parser.Result()
 		if err != nil {
 			continue
 		}

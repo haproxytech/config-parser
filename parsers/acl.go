@@ -41,7 +41,7 @@ func (h *ACL) parse(line string, parts []string, comment string) (*types.ACL, er
 	return nil, &errors.ParseError{Parser: "ACLLines", Line: line}
 }
 
-func (h *ACL) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *ACL) Result() ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
 		return nil, errors.ErrFetch
 	}

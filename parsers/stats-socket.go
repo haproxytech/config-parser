@@ -43,7 +43,7 @@ func (l *Socket) parse(line string, parts []string, comment string) (*types.Sock
 	return socket, nil
 }
 
-func (l *Socket) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (l *Socket) Result() ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
 		return nil, errors.ErrFetch
 	}

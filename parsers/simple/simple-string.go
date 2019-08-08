@@ -44,7 +44,7 @@ func (s *String) Parse(line string, parts, previousParts []string, comment strin
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *String) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *String) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

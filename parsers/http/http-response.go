@@ -94,7 +94,7 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 	return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 }
 
-func (h *Responses) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *Responses) Result() ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
 		return nil, errors.ErrFetch
 	}

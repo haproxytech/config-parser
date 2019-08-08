@@ -42,7 +42,7 @@ func (s *ExternalCheckPath) Parse(line string, parts, previousParts []string, co
 	return "", &errors.ParseError{Parser: "external-check path", Line: line}
 }
 
-func (s *ExternalCheckPath) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *ExternalCheckPath) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

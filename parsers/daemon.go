@@ -36,7 +36,7 @@ func (d *Daemon) Parse(line string, parts, previousParts []string, comment strin
 	return "", &errors.ParseError{Parser: "Daemon", Line: line}
 }
 
-func (d *Daemon) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (d *Daemon) Result() ([]common.ReturnResultLine, error) {
 	if d.data == nil {
 		return nil, errors.ErrFetch
 	}

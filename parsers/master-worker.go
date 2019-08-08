@@ -36,7 +36,7 @@ func (m *MasterWorker) Parse(line string, parts, previousParts []string, comment
 	return "", &errors.ParseError{Parser: "MasterWorker", Line: line}
 }
 
-func (m *MasterWorker) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (m *MasterWorker) Result() ([]common.ReturnResultLine, error) {
 	if m.data == nil {
 		return nil, errors.ErrFetch
 	}

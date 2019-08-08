@@ -47,7 +47,7 @@ func (n *NbThread) Parse(line string, parts, previousParts []string, comment str
 	return "", &errors.ParseError{Parser: "nbthread", Line: line}
 }
 
-func (n *NbThread) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (n *NbThread) Result() ([]common.ReturnResultLine, error) {
 	if n.data == nil {
 		return nil, errors.ErrFetch
 	}

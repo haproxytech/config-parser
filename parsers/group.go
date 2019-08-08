@@ -43,7 +43,7 @@ func (l *Group) parse(line string, parts []string, comment string) (*types.Group
 	return nil, &errors.ParseError{Parser: "Group", Line: line}
 }
 
-func (l *Group) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (l *Group) Result() ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
 		return nil, errors.ErrFetch
 	}

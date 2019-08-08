@@ -41,7 +41,7 @@ func (u *UnProcessed) Parse(line string, parts, previousParts []string, comment 
 	return "", nil
 }
 
-func (u *UnProcessed) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (u *UnProcessed) Result() ([]common.ReturnResultLine, error) {
 	if len(u.data) == 0 {
 		return nil, errors.ErrFetch
 	}

@@ -45,7 +45,7 @@ func (h *UseBackend) parse(line string, parts []string, comment string) (*types.
 	return nil, &errors.ParseError{Parser: "UseBackend", Line: line}
 }
 
-func (h *UseBackend) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *UseBackend) Result() ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
 		return nil, errors.ErrFetch
 	}

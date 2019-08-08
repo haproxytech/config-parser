@@ -50,7 +50,7 @@ func (s *TimeTwoWords) Parse(line string, parts, previousParts []string, comment
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *TimeTwoWords) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *TimeTwoWords) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

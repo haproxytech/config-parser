@@ -48,7 +48,7 @@ func (s *Number) Parse(line string, parts, previousParts []string, comment strin
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *Number) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *Number) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

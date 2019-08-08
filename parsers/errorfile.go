@@ -53,7 +53,7 @@ func (l *ErrorFile) parse(line string, parts []string, comment string) (*types.E
 	return errorfile, nil
 }
 
-func (l *ErrorFile) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (l *ErrorFile) Result() ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
 		return nil, errors.ErrFetch
 	}

@@ -71,7 +71,7 @@ func (s *OptionHttpchk) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "option httpchk", Line: line}
 }
 
-func (s *OptionHttpchk) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionHttpchk) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

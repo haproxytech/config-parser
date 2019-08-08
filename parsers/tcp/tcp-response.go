@@ -62,7 +62,7 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 	return "", &errors.ParseError{Parser: "Responses", Line: line}
 }
 
-func (h *Responses) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *Responses) Result() ([]common.ReturnResultLine, error) {
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{

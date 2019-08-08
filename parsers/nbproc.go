@@ -47,7 +47,7 @@ func (n *NbProc) Parse(line string, parts, previousParts []string, comment strin
 	return "", &errors.ParseError{Parser: "nbproc", Line: line}
 }
 
-func (n *NbProc) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (n *NbProc) Result() ([]common.ReturnResultLine, error) {
 	if n.data == nil {
 		return nil, errors.ErrFetch
 	}

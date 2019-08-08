@@ -64,7 +64,7 @@ func (s *OptionForwardFor) Parse(line string, parts, previousParts []string, com
 	return "", &errors.ParseError{Parser: "option forwardfor", Line: line}
 }
 
-func (s *OptionForwardFor) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionForwardFor) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

@@ -44,7 +44,7 @@ func (h *Bind) parse(line string, parts []string, comment string) (*types.Bind, 
 	return nil, &errors.ParseError{Parser: "BindLines", Line: line}
 }
 
-func (h *Bind) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *Bind) Result() ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
 		return nil, errors.ErrFetch
 	}

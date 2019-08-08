@@ -43,7 +43,7 @@ func (s *Time) Parse(line string, parts, previousParts []string, comment string)
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *Time) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *Time) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

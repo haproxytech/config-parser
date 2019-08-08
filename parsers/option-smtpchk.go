@@ -60,7 +60,7 @@ func (s *OptionSmtpchk) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "option smtpchk", Line: line}
 }
 
-func (s *OptionSmtpchk) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionSmtpchk) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

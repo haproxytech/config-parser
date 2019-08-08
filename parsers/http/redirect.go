@@ -54,7 +54,7 @@ func (h *Redirect) Parse(line string, parts, previousParts []string, comment str
 	return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 }
 
-func (h *Redirect) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *Redirect) Result() ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
 		return nil, errors.ErrFetch
 	}

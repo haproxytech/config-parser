@@ -42,7 +42,7 @@ func (c *CPUMap) parse(line string, parts []string, comment string) (*types.CPUM
 	return cpuMap, nil
 }
 
-func (c *CPUMap) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (c *CPUMap) Result() ([]common.ReturnResultLine, error) {
 	if len(c.data) == 0 {
 		return nil, errors.ErrFetch
 	}

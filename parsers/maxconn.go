@@ -47,7 +47,7 @@ func (p *MaxConn) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: "SectionName", Line: line}
 }
 
-func (p *MaxConn) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (p *MaxConn) Result() ([]common.ReturnResultLine, error) {
 	if p.data == nil {
 		return nil, errors.ErrFetch
 	}

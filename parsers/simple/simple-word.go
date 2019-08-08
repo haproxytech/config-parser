@@ -43,7 +43,7 @@ func (s *Word) Parse(line string, parts, previousParts []string, comment string)
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *Word) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (s *Word) Result() ([]common.ReturnResultLine, error) {
 	if s.data == nil {
 		return nil, errors.ErrFetch
 	}

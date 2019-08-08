@@ -50,7 +50,7 @@ func (t *Timeout) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: fmt.Sprintf("timeout %s", t.name), Line: line}
 }
 
-func (t *Timeout) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (t *Timeout) Result() ([]common.ReturnResultLine, error) {
 	if t.data == nil {
 		return nil, errors.ErrFetch
 	}

@@ -31,7 +31,7 @@ type ParserInterface interface {
 	Delete(index int) error
 	Insert(data common.ParserData, index int) error
 	Set(data common.ParserData, index int) error
-	Result(addComments bool) ([]common.ReturnResultLine, error)
+	Result() ([]common.ReturnResultLine, error)
 }
 
 type Parsers struct {

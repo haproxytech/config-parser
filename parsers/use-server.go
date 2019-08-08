@@ -48,7 +48,7 @@ func (l *UseServer) Parse(line string, parts, previousParts []string, comment st
 	return "", &errors.ParseError{Parser: "UseServer", Line: line}
 }
 
-func (l *UseServer) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (l *UseServer) Result() ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
 		return nil, errors.ErrFetch
 	}

@@ -56,7 +56,7 @@ func (o *Option) Parse(line string, parts, previousParts []string, comment strin
 	return "", &errors.ParseError{Parser: fmt.Sprintf("option %s", o.name), Line: line}
 }
 
-func (o *Option) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (o *Option) Result() ([]common.ReturnResultLine, error) {
 	if o.data == nil {
 		return nil, errors.ErrFetch
 	}

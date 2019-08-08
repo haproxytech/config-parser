@@ -131,7 +131,7 @@ func (l *Log) Parse(line string, parts, previousParts []string, comment string) 
 	return "", &errors.ParseError{Parser: "Log", Line: line}
 }
 
-func (l *Log) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (l *Log) Result() ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
 		return nil, errors.ErrFetch
 	}

@@ -64,7 +64,7 @@ func (h *Filters) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: "FilterLines", Line: line}
 }
 
-func (h *Filters) Result(addComments bool) ([]common.ReturnResultLine, error) {
+func (h *Filters) Result() ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
 		return nil, errors.ErrFetch
 	}
