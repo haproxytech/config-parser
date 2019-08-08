@@ -25,9 +25,9 @@ import (
 	"github.com/haproxytech/config-parser/parsers/tcp"
 )
 
-func createParsers(parser []ParserType) *ParserTypes {
-	p := ParserTypes{
-		parsers: append(parser, []ParserType{
+func createParsers(parser []ParserInterface) *Parsers {
+	p := Parsers{
+		parsers: append(parser, []ParserInterface{
 			&extra.Section{Name: "defaults"},
 			&extra.Section{Name: "global"},
 			&extra.Section{Name: "frontend"},
@@ -48,60 +48,60 @@ func createParsers(parser []ParserType) *ParserTypes {
 	return &p
 }
 
-func getStartParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getStartParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&extra.ConfigVersion{},
 		&extra.Comments{},
 	})
 }
 
-func getDefaultParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getDefaultParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&parsers.Mode{},
 		&parsers.Balance{},
 		&parsers.MaxConn{},
 		&parsers.Log{},
 		&parsers.OptionHTTPLog{},
 
-		&simple.SimpleWord{Name: "log-tag"},
+		&simple.Word{Name: "log-tag"},
 
-		&simple.SimpleString{Name: "log-format"},
-		&simple.SimpleString{Name: "log-format-sd"},
-		&simple.SimpleString{Name: "cookie"},
+		&simple.String{Name: "log-format"},
+		&simple.String{Name: "log-format-sd"},
+		&simple.String{Name: "cookie"},
 
-		&simple.SimpleOption{Name: "tcplog"},
-		&simple.SimpleOption{Name: "httpclose"},
-		&simple.SimpleOption{Name: "http-use-htx"},
+		&simple.Option{Name: "tcplog"},
+		&simple.Option{Name: "httpclose"},
+		&simple.Option{Name: "http-use-htx"},
 		&parsers.OptionRedispatch{},
-		&simple.SimpleOption{Name: "dontlognull"},
-		&simple.SimpleOption{Name: "log-separate-errors"},
-		&simple.SimpleOption{Name: "http-server-close"},
-		&simple.SimpleOption{Name: "http-keep-alive"},
-		&simple.SimpleOption{Name: "http-pretend-keepalive"},
-		&simple.SimpleOption{Name: "clitcpka"},
-		&simple.SimpleOption{Name: "contstats"},
-		&simple.SimpleOption{Name: "ssl-hello-chk"},
+		&simple.Option{Name: "dontlognull"},
+		&simple.Option{Name: "log-separate-errors"},
+		&simple.Option{Name: "http-server-close"},
+		&simple.Option{Name: "http-keep-alive"},
+		&simple.Option{Name: "http-pretend-keepalive"},
+		&simple.Option{Name: "clitcpka"},
+		&simple.Option{Name: "contstats"},
+		&simple.Option{Name: "ssl-hello-chk"},
 		&parsers.OptionSmtpchk{},
-		&simple.SimpleOption{Name: "ldap-check"},
+		&simple.Option{Name: "ldap-check"},
 		&parsers.OptionMysqlCheck{},
-		&simple.SimpleOption{Name: "pgsql-check"},
-		&simple.SimpleOption{Name: "tcp-check"},
-		&simple.SimpleOption{Name: "redis-check"},
+		&simple.Option{Name: "pgsql-check"},
+		&simple.Option{Name: "tcp-check"},
+		&simple.Option{Name: "redis-check"},
 		&parsers.OptionHttpchk{},
 
-		&simple.SimpleOption{Name: "external-check"},
+		&simple.Option{Name: "external-check"},
 		&parsers.OptionForwardFor{},
 
-		&simple.SimpleTimeout{Name: "http-request"},
-		&simple.SimpleTimeout{Name: "check"},
-		&simple.SimpleTimeout{Name: "connect"},
-		&simple.SimpleTimeout{Name: "client"},
-		&simple.SimpleTimeout{Name: "queue"},
-		&simple.SimpleTimeout{Name: "server"},
-		&simple.SimpleTimeout{Name: "tunnel"},
-		&simple.SimpleTimeout{Name: "http-keep-alive"},
+		&simple.Timeout{Name: "http-request"},
+		&simple.Timeout{Name: "check"},
+		&simple.Timeout{Name: "connect"},
+		&simple.Timeout{Name: "client"},
+		&simple.Timeout{Name: "queue"},
+		&simple.Timeout{Name: "server"},
+		&simple.Timeout{Name: "tunnel"},
+		&simple.Timeout{Name: "http-keep-alive"},
 
-		&simple.SimpleNumber{Name: "retries"},
+		&simple.Number{Name: "retries"},
 
 		&parsers.ExternalCheckPath{},
 		&parsers.ExternalCheckCommand{},
@@ -111,95 +111,95 @@ func getDefaultParser() *ParserTypes {
 	})
 }
 
-func getGlobalParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getGlobalParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&parsers.Daemon{},
 		//&simple.SimpleFlag{Name: "master-worker"},
 		&parsers.MasterWorker{},
 		&parsers.ExternalCheck{},
 		&parsers.NbProc{},
 		&parsers.NbThread{},
-		&parsers.CpuMap{},
+		&parsers.CPUMap{},
 		&parsers.Mode{},
 		&parsers.MaxConn{},
-		&simple.SimpleString{Name: "pidfile"},
+		&simple.String{Name: "pidfile"},
 		&parsers.Socket{},
 		&parsers.StatsTimeout{},
-		&simple.SimpleNumber{Name: "tune.ssl.default-dh-param"},
-		&simple.SimpleString{Name: "ssl-default-bind-options"},
-		&simple.SimpleWord{Name: "ssl-default-bind-ciphers"},
+		&simple.Number{Name: "tune.ssl.default-dh-param"},
+		&simple.String{Name: "ssl-default-bind-options"},
+		&simple.Word{Name: "ssl-default-bind-ciphers"},
 		&parsers.Log{},
 	})
 }
 
-func getFrontendParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getFrontendParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&parsers.Mode{},
 		&parsers.MaxConn{},
 		&parsers.Bind{},
-		&parsers.Acl{},
-		&simple.SimpleWord{Name: "log-tag"},
-		&simple.SimpleString{Name: "log-format"},
-		&simple.SimpleString{Name: "log-format-sd"},
+		&parsers.ACL{},
+		&simple.Word{Name: "log-tag"},
+		&simple.String{Name: "log-format"},
+		&simple.String{Name: "log-format-sd"},
 
 		&parsers.Log{},
 
-		&simple.SimpleOption{Name: "httpclose"},
-		&simple.SimpleOption{Name: "forceclose"},
-		&simple.SimpleOption{Name: "http-server-close"},
-		&simple.SimpleOption{Name: "http-keep-alive"},
-		&simple.SimpleOption{Name: "http-use-htx"},
+		&simple.Option{Name: "httpclose"},
+		&simple.Option{Name: "forceclose"},
+		&simple.Option{Name: "http-server-close"},
+		&simple.Option{Name: "http-keep-alive"},
+		&simple.Option{Name: "http-use-htx"},
 		&parsers.OptionForwardFor{},
-		&simple.SimpleOption{Name: "tcplog"},
-		&simple.SimpleOption{Name: "dontlognull"},
-		&simple.SimpleOption{Name: "contstats"},
-		&simple.SimpleOption{Name: "log-separate-errors"},
-		&simple.SimpleOption{Name: "clitcpka"},
+		&simple.Option{Name: "tcplog"},
+		&simple.Option{Name: "dontlognull"},
+		&simple.Option{Name: "contstats"},
+		&simple.Option{Name: "log-separate-errors"},
+		&simple.Option{Name: "clitcpka"},
 
 		&parsers.OptionHTTPLog{},
 
-		&simple.SimpleTimeout{Name: "http-request"},
-		&simple.SimpleTimeout{Name: "client"},
-		&simple.SimpleTimeout{Name: "http-keep-alive"},
+		&simple.Timeout{Name: "http-request"},
+		&simple.Timeout{Name: "client"},
+		&simple.Timeout{Name: "http-keep-alive"},
 
 		&filters.Filters{},
-		&tcp.TCPRequests{},
-		&http.HTTPRequests{},
+		&tcp.Requests{},
+		&http.Requests{},
 		&http.Redirect{},
 
-		&simple.SimpleWord{Name: "monitor-uri"},
+		&simple.Word{Name: "monitor-uri"},
 
 		&parsers.UseBackend{},
 		&parsers.DefaultBackend{},
 		&parsers.StickTable{},
-		&http.HTTPResponses{},
+		&http.Responses{},
 	})
 }
 
-func getBackendParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getBackendParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&parsers.Mode{},
 		&parsers.Balance{},
-		&parsers.Acl{},
+		&parsers.ACL{},
 
-		&simple.SimpleOption{Name: "httpclose"},
-		&simple.SimpleOption{Name: "forceclose"},
-		&simple.SimpleOption{Name: "http-server-close"},
-		&simple.SimpleOption{Name: "http-keep-alive"},
-		&simple.SimpleOption{Name: "http-pretend-keepalive"},
-		&simple.SimpleOption{Name: "http-use-htx"},
+		&simple.Option{Name: "httpclose"},
+		&simple.Option{Name: "forceclose"},
+		&simple.Option{Name: "http-server-close"},
+		&simple.Option{Name: "http-keep-alive"},
+		&simple.Option{Name: "http-pretend-keepalive"},
+		&simple.Option{Name: "http-use-htx"},
 		&parsers.OptionForwardFor{},
-		&simple.SimpleOption{Name: "ssl-hello-chk"},
+		&simple.Option{Name: "ssl-hello-chk"},
 		&parsers.OptionSmtpchk{},
-		&simple.SimpleOption{Name: "ldap-check"},
+		&simple.Option{Name: "ldap-check"},
 		&parsers.OptionMysqlCheck{},
-		&simple.SimpleOption{Name: "pgsql-check"},
-		&simple.SimpleOption{Name: "tcp-check"},
-		&simple.SimpleOption{Name: "redis-check"},
+		&simple.Option{Name: "pgsql-check"},
+		&simple.Option{Name: "tcp-check"},
+		&simple.Option{Name: "redis-check"},
 		&parsers.OptionRedispatch{},
-		&simple.SimpleOption{Name: "external-check"},
+		&simple.Option{Name: "external-check"},
 
-		&simple.SimpleString{Name: "log-tag"},
+		&simple.String{Name: "log-tag"},
 
 		&parsers.OptionHttpchk{},
 		&parsers.ExternalCheckPath{},
@@ -207,75 +207,75 @@ func getBackendParser() *ParserTypes {
 
 		&parsers.Log{},
 
-		&simple.SimpleTimeout{Name: "http-request"},
-		&simple.SimpleTimeout{Name: "queue"},
-		&simple.SimpleTimeout{Name: "client"},
-		&simple.SimpleTimeout{Name: "http-keep-alive"},
-		&simple.SimpleTimeout{Name: "check"},
-		&simple.SimpleTimeout{Name: "tunnel"},
-		&simple.SimpleTimeout{Name: "server"},
-		&simple.SimpleTimeout{Name: "connect"},
+		&simple.Timeout{Name: "http-request"},
+		&simple.Timeout{Name: "queue"},
+		&simple.Timeout{Name: "client"},
+		&simple.Timeout{Name: "http-keep-alive"},
+		&simple.Timeout{Name: "check"},
+		&simple.Timeout{Name: "tunnel"},
+		&simple.Timeout{Name: "server"},
+		&simple.Timeout{Name: "connect"},
 
 		&parsers.DefaultServer{},
 		&parsers.Stick{},
 		&filters.Filters{},
-		&tcp.TCPRequests{},
-		&http.HTTPRequests{},
+		&tcp.Requests{},
+		&http.Requests{},
 		&http.Redirect{},
-		&simple.SimpleString{Name: "cookie"},
+		&simple.String{Name: "cookie"},
 		&parsers.UseServer{},
 		&parsers.StickTable{},
 		&parsers.Server{},
-		&simple.SimpleNumber{Name: "retries"},
-		&tcp.TCPResponses{},
-		&http.HTTPResponses{},
+		&simple.Number{Name: "retries"},
+		&tcp.Responses{},
+		&http.Responses{},
 	})
 }
 
-func getListenParser() *ParserTypes {
-	return createParsers([]ParserType{})
+func getListenParser() *Parsers {
+	return createParsers([]ParserInterface{})
 }
 
-func getResolverParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getResolverParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&parsers.Nameserver{},
-		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "obsolete"}},
-		&simple.SimpleTimeTwoWords{Keywords: []string{"hold", "valid"}},
-		&simple.SimpleTimeout{Name: "retry"},
-		&simple.SimpleWord{Name: "accepted_payload_size"},
+		&simple.TimeTwoWords{Keywords: []string{"hold", "obsolete"}},
+		&simple.TimeTwoWords{Keywords: []string{"hold", "valid"}},
+		&simple.Timeout{Name: "retry"},
+		&simple.Word{Name: "accepted_payload_size"},
 	})
 }
 
-func getUserlistParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getUserlistParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&parsers.Group{},
 		&parsers.User{},
 	})
 }
 
-func getPeersParser() *ParserTypes {
-	return createParsers([]ParserType{
+func getPeersParser() *Parsers {
+	return createParsers([]ParserInterface{
 		&parsers.Peer{},
 	})
 }
 
-func getMailersParser() *ParserTypes {
-	return createParsers([]ParserType{
-		&simple.SimpleTimeTwoWords{Keywords: []string{"timeout", "mail"}},
+func getMailersParser() *Parsers {
+	return createParsers([]ParserInterface{
+		&simple.TimeTwoWords{Keywords: []string{"timeout", "mail"}},
 		&parsers.Mailer{},
 	})
 }
 
-func getCacheParser() *ParserTypes {
-	return createParsers([]ParserType{
-		&simple.SimpleNumber{Name: "total-max-size"},
-		&simple.SimpleNumber{Name: "max-object-size"},
-		&simple.SimpleNumber{Name: "max-age"},
+func getCacheParser() *Parsers {
+	return createParsers([]ParserInterface{
+		&simple.Number{Name: "total-max-size"},
+		&simple.Number{Name: "max-object-size"},
+		&simple.Number{Name: "max-age"},
 	})
 }
 
-func getProgramParser() *ParserTypes {
-	return createParsers([]ParserType{
-		&simple.SimpleString{Name: "command"},
+func getProgramParser() *Parsers {
+	return createParsers([]ParserInterface{
+		&simple.String{Name: "command"},
 	})
 }

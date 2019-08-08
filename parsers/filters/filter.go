@@ -32,12 +32,12 @@ func (h *Filters) Init() {
 	h.Name = "filter"
 }
 
-func (f *Filters) ParseFilter(filter types.Filter, parts []string, comment string) error {
+func (h *Filters) ParseFilter(filter types.Filter, parts []string, comment string) error {
 	err := filter.Parse(parts, "")
 	if err != nil {
 		return &errors.ParseError{Parser: "FilterLines", Line: ""}
 	}
-	f.data = append(f.data, filter)
+	h.data = append(h.data, filter)
 	return nil
 }
 
@@ -64,9 +64,9 @@ func (h *Filters) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: "FilterLines", Line: line}
 }
 
-func (h *Filters) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Filters) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

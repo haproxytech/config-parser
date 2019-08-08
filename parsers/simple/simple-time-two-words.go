@@ -25,21 +25,21 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type SimpleTimeTwoWords struct {
+type TimeTwoWords struct {
 	Keywords []string
 	Name     string
 	data     *types.StringC
 }
 
-func (s *SimpleTimeTwoWords) Init() {
+func (s *TimeTwoWords) Init() {
 	s.data = nil
 	s.Name = strings.Join(s.Keywords, " ")
 }
 
-func (s *SimpleTimeTwoWords) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *TimeTwoWords) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) >= 2 && parts[0] == s.Keywords[0] && parts[1] == s.Keywords[1] {
 		if len(parts) < 3 {
-			return "", &errors.ParseError{Parser: "SimpleTimeTwoWords", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "TimeTwoWords", Line: line, Message: "Parse error"}
 		}
 		s.data = &types.StringC{
 			Value:   parts[2],
@@ -50,9 +50,9 @@ func (s *SimpleTimeTwoWords) Parse(line string, parts, previousParts []string, c
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *SimpleTimeTwoWords) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *TimeTwoWords) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

@@ -25,15 +25,15 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type SimpleString struct {
+type String struct {
 	Name string
 	data *types.StringC
 }
 
-func (s *SimpleString) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *String) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) < 2 {
-			return "", &errors.ParseError{Parser: "SimpleString", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "String", Line: line, Message: "Parse error"}
 		}
 		s.data = &types.StringC{
 			Value:   strings.Join(parts[1:], " "),
@@ -44,9 +44,9 @@ func (s *SimpleString) Parse(line string, parts, previousParts []string, comment
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *SimpleString) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *String) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

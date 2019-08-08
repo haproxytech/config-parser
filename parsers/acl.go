@@ -24,13 +24,13 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type Acl struct {
-	data []types.Acl
+type ACL struct {
+	data []types.ACL
 }
 
-func (h *Acl) parse(line string, parts []string, comment string) (*types.Acl, error) {
+func (h *ACL) parse(line string, parts []string, comment string) (*types.ACL, error) {
 	if len(parts) >= 3 {
-		data := &types.Acl{
+		data := &types.ACL{
 			Name:      parts[1],
 			Criterion: parts[2],
 			Value:     strings.Join(parts[3:], " "),
@@ -38,12 +38,12 @@ func (h *Acl) parse(line string, parts []string, comment string) (*types.Acl, er
 		}
 		return data, nil
 	}
-	return nil, &errors.ParseError{Parser: "AclLines", Line: line}
+	return nil, &errors.ParseError{Parser: "ACLLines", Line: line}
 }
 
-func (h *Acl) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *ACL) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

@@ -53,6 +53,7 @@ type UnProcessed struct {
 }
 
 //name:simple-option
+//struct-name:Option
 //dir:simple
 //no-init:true
 type SimpleOption struct {
@@ -61,6 +62,7 @@ type SimpleOption struct {
 }
 
 //name:simple-timeout
+//struct-name:Timeout
 //dir:simple
 //no-init:true
 type SimpleTimeout struct {
@@ -69,27 +71,32 @@ type SimpleTimeout struct {
 }
 
 //name:simple-word
+//struct-name:Word
 //dir:simple
 //parser-type:StringC
 type SimpleWord struct{}
 
 //name:simple-number
+//struct-name:Number
 //dir:simple
 //parser-type:Int64C
 type SimpleNumber struct{}
 
 //name:simple-string
+//struct-name:String
 //dir:simple
 //parser-type:StringC
 type SimpleString struct{}
 
 //name:simple-time-two-words
+//struct-name:TimeTwoWords
 //dir:simple
 //parser-type:StringC
 //no-init:true
 type SimpleTimeTwoWords struct{}
 
 //name:simple-time
+//struct-name:Time
 //dir:simple
 //parser-type:StringC
 type SimpleTime struct{}
@@ -115,6 +122,7 @@ type HTTPAction interface {
 }
 
 //name:http-request
+//struct-name:Requests
 //dir:http
 //is-multiple:true
 //parser-type:HTTPAction
@@ -124,6 +132,7 @@ type HTTPAction interface {
 type HTTPRequests struct{}
 
 //name:http-response
+//struct-name:Responses
 //dir:http
 //is-multiple:true
 //parser-type:HTTPAction
@@ -139,6 +148,7 @@ type TCPAction interface {
 }
 
 //name:tcp-request
+//struct-name:Requests
 //dir:tcp
 //is-multiple:true
 //parser-type:TCPAction
@@ -148,6 +158,7 @@ type TCPAction interface {
 type TCPRequests struct{}
 
 //name:tcp-response
+//struct-name:Responses
 //dir:tcp
 //is-multiple:true
 //parser-type:TCPAction

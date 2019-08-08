@@ -33,12 +33,12 @@ func (h *Redirect) Init() {
 	h.data = []types.HTTPAction{}
 }
 
-func (f *Redirect) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
+func (h *Redirect) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
 	err := response.Parse(parts, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPResponseLines", Line: ""}
 	}
-	f.data = append(f.data, response)
+	h.data = append(h.data, response)
 	return nil
 }
 
@@ -54,9 +54,9 @@ func (h *Redirect) Parse(line string, parts, previousParts []string, comment str
 	return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 }
 
-func (h *Redirect) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Redirect) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, res := range h.data {

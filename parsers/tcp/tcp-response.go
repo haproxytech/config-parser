@@ -23,27 +23,27 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type TCPResponses struct {
+type Responses struct {
 	Name string
 	Mode string //frontent, backend
 	data []types.TCPAction
 }
 
-func (h *TCPResponses) Init() {
+func (h *Responses) Init() {
 	h.Name = "tcp-response"
 	h.data = []types.TCPAction{}
 }
 
-func (f *TCPResponses) ParseTCPRequest(request types.TCPAction, parts []string, comment string) error {
+func (h *Responses) ParseTCPRequest(request types.TCPAction, parts []string, comment string) error {
 	err := request.Parse(parts, comment)
 	if err != nil {
-		return &errors.ParseError{Parser: "TCPResponses", Line: ""}
+		return &errors.ParseError{Parser: "Responses", Line: ""}
 	}
-	f.data = append(f.data, request)
+	h.data = append(h.data, request)
 	return nil
 }
 
-func (h *TCPResponses) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *Responses) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) >= 2 && parts[0] == "tcp-response" {
 		var err error
 		switch parts[1] {
@@ -52,17 +52,17 @@ func (h *TCPResponses) Parse(line string, parts, previousParts []string, comment
 		case "inspect-delay":
 			err = h.ParseTCPRequest(&actions.InspectDelay{}, parts, comment)
 		default:
-			return "", &errors.ParseError{Parser: "TCPResponses", Line: line}
+			return "", &errors.ParseError{Parser: "Responses", Line: line}
 		}
 		if err != nil {
 			return "", err
 		}
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: "TCPResponses", Line: line}
+	return "", &errors.ParseError{Parser: "Responses", Line: line}
 }
 
-func (h *TCPResponses) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Responses) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{

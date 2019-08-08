@@ -23,27 +23,27 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type TCPRequests struct {
+type Requests struct {
 	Name string
 	Mode string //frontent, backend
 	data []types.TCPAction
 }
 
-func (h *TCPRequests) Init() {
+func (h *Requests) Init() {
 	h.Name = "tcp-request"
 	h.data = []types.TCPAction{}
 }
 
-func (f *TCPRequests) ParseTCPRequest(request types.TCPAction, parts []string, comment string) error {
+func (h *Requests) ParseTCPRequest(request types.TCPAction, parts []string, comment string) error {
 	err := request.Parse(parts, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPRequestLines", Line: ""}
 	}
-	f.data = append(f.data, request)
+	h.data = append(h.data, request)
 	return nil
 }
 
-func (h *TCPRequests) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *Requests) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) >= 2 && parts[0] == "tcp-request" {
 		var err error
 		switch parts[1] {
@@ -72,7 +72,7 @@ func (h *TCPRequests) Parse(line string, parts, previousParts []string, comment 
 	return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
 }
 
-func (h *TCPRequests) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Requests) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{

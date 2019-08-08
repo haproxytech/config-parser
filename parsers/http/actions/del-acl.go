@@ -23,7 +23,7 @@ import (
 	"github.com/haproxytech/config-parser/common"
 )
 
-type DelAcl struct {
+type DelACL struct {
 	FileName string
 	KeyFmt   string
 	Cond     string
@@ -31,7 +31,7 @@ type DelAcl struct {
 	Comment  string
 }
 
-func (f *DelAcl) Parse(parts []string, comment string) error {
+func (f *DelACL) Parse(parts []string, comment string) error {
 	//we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment
@@ -52,7 +52,7 @@ func (f *DelAcl) Parse(parts []string, comment string) error {
 	return fmt.Errorf("not enough params")
 }
 
-func (f *DelAcl) String() string {
+func (f *DelACL) String() string {
 	keyfmt := ""
 	condition := ""
 	if f.KeyFmt != "" {
@@ -64,6 +64,6 @@ func (f *DelAcl) String() string {
 	return fmt.Sprintf("del-acl(%s)%s%s", f.FileName, keyfmt, condition)
 }
 
-func (f *DelAcl) GetComment() string {
+func (f *DelACL) GetComment() string {
 	return f.Comment
 }

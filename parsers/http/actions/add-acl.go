@@ -23,7 +23,7 @@ import (
 	"github.com/haproxytech/config-parser/common"
 )
 
-type AddAcl struct {
+type AddACL struct {
 	FileName string
 	KeyFmt   string
 	Cond     string
@@ -31,7 +31,7 @@ type AddAcl struct {
 	Comment  string
 }
 
-func (f *AddAcl) Parse(parts []string, comment string) error {
+func (f *AddACL) Parse(parts []string, comment string) error {
 	//we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment
@@ -52,7 +52,7 @@ func (f *AddAcl) Parse(parts []string, comment string) error {
 	return fmt.Errorf("not enough params")
 }
 
-func (f *AddAcl) String() string {
+func (f *AddACL) String() string {
 	keyfmt := ""
 	condition := ""
 	if f.KeyFmt != "" {
@@ -64,6 +64,6 @@ func (f *AddAcl) String() string {
 	return fmt.Sprintf("add-acl(%s)%s%s", f.FileName, keyfmt, condition)
 }
 
-func (f *AddAcl) GetComment() string {
+func (f *AddACL) GetComment() string {
 	return f.Comment
 }

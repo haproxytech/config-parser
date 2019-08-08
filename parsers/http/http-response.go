@@ -25,26 +25,26 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type HTTPResponses struct {
+type Responses struct {
 	Name string
 	data []types.HTTPAction
 }
 
-func (h *HTTPResponses) Init() {
+func (h *Responses) Init() {
 	h.Name = "http-response"
 	h.data = []types.HTTPAction{}
 }
 
-func (f *HTTPResponses) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
+func (h *Responses) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
 	err := response.Parse(parts, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPResponseLines", Line: ""}
 	}
-	f.data = append(f.data, response)
+	h.data = append(h.data, response)
 	return nil
 }
 
-func (h *HTTPResponses) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *Responses) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) >= 2 && parts[0] == "http-response" {
 		var err error
 		switch parts[1] {
@@ -75,13 +75,14 @@ func (h *HTTPResponses) Parse(line string, parts, previousParts []string, commen
 		case "set-var":
 			err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 		default:
-			if strings.HasPrefix(parts[1], "add-acl(") {
-				err = h.ParseHTTPResponse(&actions.AddAcl{}, parts, comment)
-			} else if strings.HasPrefix(parts[1], "del-acl(") {
-				err = h.ParseHTTPResponse(&actions.DelAcl{}, parts, comment)
-			} else if strings.HasPrefix(parts[1], "set-var(") {
+			switch {
+			case strings.HasPrefix(parts[1], "add-acl("):
+				err = h.ParseHTTPResponse(&actions.AddACL{}, parts, comment)
+			case strings.HasPrefix(parts[1], "del-acl("):
+				err = h.ParseHTTPResponse(&actions.DelACL{}, parts, comment)
+			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
-			} else {
+			default:
 				return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 			}
 		}
@@ -93,9 +94,9 @@ func (h *HTTPResponses) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 }
 
-func (h *HTTPResponses) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Responses) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, res := range h.data {

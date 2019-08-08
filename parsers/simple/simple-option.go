@@ -25,13 +25,13 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type SimpleOption struct {
+type Option struct {
 	Name string
 	name string
 	data *types.SimpleOption
 }
 
-func (o *SimpleOption) Init() {
+func (o *Option) Init() {
 	if !strings.HasPrefix(o.Name, "option") {
 		o.name = o.Name
 		o.Name = fmt.Sprintf("option %s", o.Name)
@@ -39,7 +39,7 @@ func (o *SimpleOption) Init() {
 	o.data = nil
 }
 
-func (o *SimpleOption) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (o *Option) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == o.name {
 		o.data = &types.SimpleOption{
 			Comment: comment,
@@ -56,9 +56,9 @@ func (o *SimpleOption) Parse(line string, parts, previousParts []string, comment
 	return "", &errors.ParseError{Parser: fmt.Sprintf("option %s", o.name), Line: line}
 }
 
-func (o *SimpleOption) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (o *Option) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if o.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	noOption := ""
 	if o.data.NoOption {

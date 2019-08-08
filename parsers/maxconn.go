@@ -37,20 +37,19 @@ func (p *MaxConn) Parse(line string, parts, previousParts []string, comment stri
 		var num int64
 		if num, err = strconv.ParseInt(parts[1], 10, 64); err != nil {
 			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: err.Error()}
-		} else {
-			p.data = &types.Int64C{
-				Value:   num,
-				Comment: comment,
-			}
+		}
+		p.data = &types.Int64C{
+			Value:   num,
+			Comment: comment,
 		}
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "SectionName", Line: line}
 }
 
-func (p *MaxConn) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (p *MaxConn) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

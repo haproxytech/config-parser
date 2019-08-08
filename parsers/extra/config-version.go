@@ -36,27 +36,27 @@ func (p *ConfigVersion) Init() {
 	p.data = nil
 }
 
-func (s *ConfigVersion) Get(createIfNotExist bool) (common.ParserData, error) {
-	if s.data != nil {
-		return s.data, nil
+func (p *ConfigVersion) Get(createIfNotExist bool) (common.ParserData, error) {
+	if p.data != nil {
+		return p.data, nil
 	} else if createIfNotExist {
-		s.data = &types.ConfigVersion{
+		p.data = &types.ConfigVersion{
 			Value: 1,
 		}
-		return s.data, nil
+		return p.data, nil
 	}
-	return nil, fmt.Errorf("No data")
+	return nil, fmt.Errorf("no data")
 }
 
 //Parse see if we have version, since it is not haproxy keyword, it's in comments
-func (s *ConfigVersion) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *ConfigVersion) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if strings.HasPrefix(comment, "_version") {
 		data := common.StringSplitIgnoreEmpty(comment, '=')
 		if len(data) < 2 {
 			return "", &errors.ParseError{Parser: "ConfigVersion", Line: line}
 		}
 		if version, err := strconv.ParseInt(data[1], 10, 64); err == nil {
-			s.data = &types.ConfigVersion{
+			p.data = &types.ConfigVersion{
 				Value: version,
 			}
 		}
@@ -65,14 +65,14 @@ func (s *ConfigVersion) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "ConfigVersion", Line: line}
 }
 
-func (s *ConfigVersion) Result(AddComments bool) ([]common.ReturnResultLine, error) {
-	if s.data == nil {
-		return nil, errors.FetchError
+func (p *ConfigVersion) Result(addComments bool) ([]common.ReturnResultLine, error) {
+	if p.data == nil {
+		return nil, errors.ErrFetch
 	}
 
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data:    fmt.Sprintf("# _version=%d", s.data.Value),
+			Data:    fmt.Sprintf("# _version=%d", p.data.Value),
 			Comment: "",
 		},
 	}, nil

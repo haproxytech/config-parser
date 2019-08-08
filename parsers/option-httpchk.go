@@ -17,7 +17,6 @@ limitations under the License.
 package parsers
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/haproxytech/config-parser/common"
@@ -36,32 +35,33 @@ option httpchk <method> <uri> <version>
 */
 func (s *OptionHttpchk) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == "httpchk" {
-		if len(parts) == 2 {
+		switch len(parts) {
+		case 2:
 			s.data = &types.OptionHttpchk{
 				Comment: comment,
 			}
-		} else if len(parts) == 3 {
+		case 3:
 			s.data = &types.OptionHttpchk{
-				Uri:     parts[2],
+				URI:     parts[2],
 				Comment: comment,
 			}
-		} else if len(parts) == 4 {
+		case 4:
 			s.data = &types.OptionHttpchk{
 				Method:  parts[2],
-				Uri:     parts[3],
+				URI:     parts[3],
 				Comment: comment,
 			}
-		} else if len(parts) == 5 {
+		case 5:
 			s.data = &types.OptionHttpchk{
 				Method:  parts[2],
-				Uri:     parts[3],
+				URI:     parts[3],
 				Version: parts[4],
 				Comment: comment,
 			}
-		} else {
+		default: // > 5
 			s.data = &types.OptionHttpchk{
 				Method:  parts[2],
-				Uri:     parts[3],
+				URI:     parts[3],
 				Version: strings.Join(parts[4:], " "),
 				Comment: comment,
 			}
@@ -71,23 +71,27 @@ func (s *OptionHttpchk) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "option httpchk", Line: line}
 }
 
-func (s *OptionHttpchk) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionHttpchk) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
-	var data string
+	var sb strings.Builder
+	sb.WriteString("option httpchk")
+	if s.data.Method != "" {
+		sb.WriteString(" ")
+		sb.WriteString(s.data.Method)
+	}
+	if s.data.URI != "" {
+		sb.WriteString(" ")
+		sb.WriteString(s.data.URI)
+	}
 	if s.data.Version != "" {
-		data = fmt.Sprintf("option httpchk %s %s %s", s.data.Method, s.data.Uri, s.data.Version)
-	} else if s.data.Method != "" {
-		data = fmt.Sprintf("option httpchk %s %s", s.data.Method, s.data.Uri)
-	} else if s.data.Uri != "" {
-		data = fmt.Sprintf("option httpchk %s", s.data.Uri)
-	} else {
-		data = fmt.Sprintf("option httpchk")
+		sb.WriteString(" ")
+		sb.WriteString(s.data.Version)
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data:    data,
+			Data:    sb.String(),
 			Comment: s.data.Comment,
 		},
 	}, nil

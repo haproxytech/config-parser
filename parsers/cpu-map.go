@@ -25,38 +25,38 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type CpuMap struct {
-	data []types.CpuMap
+type CPUMap struct {
+	data []types.CPUMap
 }
 
-func (c *CpuMap) parse(line string, parts []string, comment string) (*types.CpuMap, error) {
+func (c *CPUMap) parse(line string, parts []string, comment string) (*types.CPUMap, error) {
 
 	if len(parts) < 3 {
-		return nil, &errors.ParseError{Parser: "CpuMap", Line: line, Message: "Parse error"}
+		return nil, &errors.ParseError{Parser: "CPUMap", Line: line, Message: "Parse error"}
 	}
-	cpuMap := &types.CpuMap{
+	cpuMap := &types.CPUMap{
 		Process: parts[1],
-		CpuSet:  strings.Join(parts[2:], " "),
+		CPUSet:  strings.Join(parts[2:], " "),
 		Comment: comment,
 	}
 	return cpuMap, nil
 }
 
-func (c *CpuMap) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (c *CPUMap) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(c.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(c.data))
 	for index, cpuMap := range c.data {
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("cpu-map %s %s", cpuMap.Process, cpuMap.CpuSet),
+			Data:    fmt.Sprintf("cpu-map %s %s", cpuMap.Process, cpuMap.CPUSet),
 			Comment: cpuMap.Comment,
 		}
 	}
 	return result, nil
 }
 
-func (c *CpuMap) Equal(b *CpuMap) bool {
+func (c *CPUMap) Equal(b *CPUMap) bool {
 	if b == nil {
 		return false
 	}
@@ -66,11 +66,11 @@ func (c *CpuMap) Equal(b *CpuMap) bool {
 	if len(c.data) != len(b.data) {
 		return false
 	}
-	for _, cCpuMap := range c.data {
+	for _, cCPUMap := range c.data {
 		found := false
-		for _, bCpuMap := range b.data {
-			if cCpuMap.Process == bCpuMap.Process {
-				if cCpuMap.CpuSet != bCpuMap.CpuSet {
+		for _, bCPUMap := range b.data {
+			if cCPUMap.Process == bCPUMap.Process {
+				if cCPUMap.CPUSet != bCPUMap.CPUSet {
 					return false
 				}
 				found = true

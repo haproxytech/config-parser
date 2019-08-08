@@ -26,7 +26,7 @@ import "github.com/haproxytech/config-parser/params"
 //test:ok:acl url_static path_end -i .jpg .gif .png .css .js
 //test:ok:acl be_app_ok nbsrv(be_app) gt 0
 //test:ok:acl be_static_ok nbsrv(be_static) gt 0
-//test:ok:acl key req.hdr(X-Add-Acl-Key) -m found
+//test:ok:acl key req.hdr(X-Add-ACL-Key) -m found
 //test:ok:acl add path /addacl
 //test:ok:acl del path /delacl
 //test:ok:acl myhost hdr(Host) -f myhost.lst
@@ -38,7 +38,7 @@ import "github.com/haproxytech/config-parser/params"
 //test:ok:acl cookie_set hdr_sub(cookie) SEEN=1
 //test:fail:acl cookie
 //test:fail:acl
-type Acl struct {
+type ACL struct {
 	Name      string
 	Criterion string
 	Value     string
@@ -86,9 +86,9 @@ type Balance struct {
 //test:ok:cpu-map auto:1-4 0-3
 //test:ok:cpu-map auto:1-4 0-1 2-3
 //test:fail:cpu-map
-type CpuMap struct {
+type CPUMap struct {
 	Process string
-	CpuSet  string
+	CPUSet  string
 	Comment string
 }
 
@@ -191,9 +191,12 @@ type OptionForwardFor struct {
 //name:option httpchk
 //no-parse:true
 //test:ok:option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
+//test:ok:option httpchk <uri>
+//test:ok:option httpchk <method> <uri>
+//test:ok:option httpchk <method> <uri> <version>
 type OptionHttpchk struct {
 	Method  string
-	Uri     string
+	URI     string
 	Version string
 	Comment string
 }

@@ -24,15 +24,15 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type SimpleWord struct {
+type Word struct {
 	Name string
 	data *types.StringC
 }
 
-func (s *SimpleWord) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *Word) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) < 2 {
-			return "", &errors.ParseError{Parser: "SimpleWord", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "Word", Line: line, Message: "Parse error"}
 		}
 		s.data = &types.StringC{
 			Value:   parts[1],
@@ -43,9 +43,9 @@ func (s *SimpleWord) Parse(line string, parts, previousParts []string, comment s
 	return "", &errors.ParseError{Parser: s.Name, Line: line}
 }
 
-func (s *SimpleWord) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *Word) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

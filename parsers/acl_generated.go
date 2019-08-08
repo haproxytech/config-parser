@@ -22,111 +22,111 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-func (p *Acl) Init() {
-	p.data = []types.Acl{}
+func (p *ACL) Init() {
+	p.data = []types.ACL{}
 }
 
-func (p *Acl) GetParserName() string {
+func (p *ACL) GetParserName() string {
 	return "acl"
 }
 
-func (p *Acl) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *ACL) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(p.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *Acl) GetOne(index int) (common.ParserData, error) {
+func (p *ACL) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data[index], nil
 }
 
-func (p *Acl) Delete(index int) error {
+func (p *ACL) Delete(index int) error {
 	if index < 0 || index >= len(p.data) {
-		return errors.FetchError
+		return errors.ErrFetch
 	}
 	copy(p.data[index:], p.data[index+1:])
-	p.data[len(p.data)-1] = types.Acl{}
+	p.data[len(p.data)-1] = types.ACL{}
 	p.data = p.data[:len(p.data)-1]
 	return nil
 }
 
-func (p *Acl) Insert(data common.ParserData, index int) error {
+func (p *ACL) Insert(data common.ParserData, index int) error {
 	if data == nil {
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	switch newValue := data.(type) {
-	case []types.Acl:
+	case []types.ACL:
 		p.data = newValue
-	case *types.Acl:
+	case *types.ACL:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
-			p.data = append(p.data, types.Acl{})
+			p.data = append(p.data, types.ACL{})
 			copy(p.data[index+1:], p.data[index:])
 			p.data[index] = *newValue
 		} else {
 			p.data = append(p.data, *newValue)
 		}
-	case types.Acl:
+	case types.ACL:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
-			p.data = append(p.data, types.Acl{})
+			p.data = append(p.data, types.ACL{})
 			copy(p.data[index+1:], p.data[index:])
 			p.data[index] = newValue
 		} else {
 			p.data = append(p.data, newValue)
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }
 
-func (p *Acl) Set(data common.ParserData, index int) error {
+func (p *ACL) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
 	}
 	switch newValue := data.(type) {
-	case []types.Acl:
+	case []types.ACL:
 		p.data = newValue
-	case *types.Acl:
+	case *types.ACL:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = *newValue
 		} else if index == -1 {
 			p.data = append(p.data, *newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
-	case types.Acl:
+	case types.ACL:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = newValue
 		} else if index == -1 {
 			p.data = append(p.data, newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }
 
-func (p *Acl) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *ACL) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "acl" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
-			return "", &errors.ParseError{Parser: "Acl", Line: line}
+			return "", &errors.ParseError{Parser: "ACL", Line: line}
 		}
 		p.data = append(p.data, *data)
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: "Acl", Line: line}
+	return "", &errors.ParseError{Parser: "ACL", Line: line}
 }

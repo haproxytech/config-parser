@@ -25,13 +25,13 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-type SimpleTimeout struct {
+type Timeout struct {
 	Name string
 	name string
 	data *types.SimpleTimeout
 }
 
-func (t *SimpleTimeout) Init() {
+func (t *Timeout) Init() {
 	if !strings.HasPrefix(t.Name, "timeout") {
 		t.name = t.Name
 		t.Name = fmt.Sprintf("timeout %s", t.Name)
@@ -39,7 +39,7 @@ func (t *SimpleTimeout) Init() {
 	t.data = nil
 }
 
-func (t *SimpleTimeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (t *Timeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 2 && parts[0] == "timeout" && parts[1] == t.name {
 		t.data = &types.SimpleTimeout{
 			Value:   parts[2],
@@ -50,9 +50,9 @@ func (t *SimpleTimeout) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: fmt.Sprintf("timeout %s", t.name), Line: line}
 }
 
-func (t *SimpleTimeout) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (t *Timeout) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if t.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
