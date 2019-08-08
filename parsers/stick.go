@@ -30,7 +30,6 @@ type Stick struct {
 
 func (h *Stick) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) >= 2 && parts[0] == "stick" {
-		var err error
 		command, condition := common.SplitRequest(parts[2:])
 		data := types.Stick{
 			Pattern: command[0],
@@ -48,9 +47,6 @@ func (h *Stick) Parse(line string, parts, previousParts []string, comment string
 			data.Type = parts[1]
 		default:
 			return "", &errors.ParseError{Parser: "Stick", Line: line}
-		}
-		if err != nil {
-			return "", err
 		}
 		h.data = append(h.data, data)
 		return "", nil
