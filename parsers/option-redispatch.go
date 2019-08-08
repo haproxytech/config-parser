@@ -42,7 +42,7 @@ func (s *OptionRedispatch) Parse(line string, parts, previousParts []string, com
 			if interval, err := strconv.ParseInt(parts[2], 10, 64); err == nil {
 				data.Interval = &interval
 			} else {
-				return "", errors.InvalidData
+				return "", errors.ErrInvalidData
 			}
 		}
 		s.data = data
@@ -59,9 +59,9 @@ func (s *OptionRedispatch) Parse(line string, parts, previousParts []string, com
 	return "", &errors.ParseError{Parser: "option redispatch", Line: line}
 }
 
-func (s *OptionRedispatch) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionRedispatch) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	var sb strings.Builder
 	if s.data.NoOption {

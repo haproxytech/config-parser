@@ -46,9 +46,9 @@ func (l *Mailer) parse(line string, parts []string, comment string) (*types.Mail
 	return nil, &errors.ParseError{Parser: "MailerLines", Line: line}
 }
 
-func (l *Mailer) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (l *Mailer) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, peer := range l.data {

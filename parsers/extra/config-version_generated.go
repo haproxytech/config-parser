@@ -28,10 +28,10 @@ func (p *ConfigVersion) GetParserName() string {
 
 func (p *ConfigVersion) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
@@ -56,7 +56,7 @@ func (p *ConfigVersion) Set(data common.ParserData, index int) error {
 	case types.ConfigVersion:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

@@ -22,41 +22,41 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-func (p *SimpleOption) GetParserName() string {
+func (p *Option) GetParserName() string {
     return p.Name
 }
 
-func (p *SimpleOption) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *Option) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
 			p.data = &types.SimpleOption{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleOption) GetOne(index int) (common.ParserData, error) {
+func (p *Option) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleOption) Delete(index int) error {
+func (p *Option) Delete(index int) error {
 	p.Init()
 	return nil
 }
 
-func (p *SimpleOption) Insert(data common.ParserData, index int) error {
+func (p *Option) Insert(data common.ParserData, index int) error {
 	return p.Set(data, index)
 }
 
-func (p *SimpleOption) Set(data common.ParserData, index int) error {
+func (p *Option) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -67,7 +67,7 @@ func (p *SimpleOption) Set(data common.ParserData, index int) error {
 	case types.SimpleOption:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

@@ -21,7 +21,7 @@ import (
 	"github.com/haproxytech/config-parser/common"
 )
 
-func ProcessLine(line string, parser configparser.ParserType) error {
+func ProcessLine(line string, parser configparser.ParserInterface) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
 	parser.Init()
 	_, err := parser.Parse("  "+line, parts, []string{}, comment)

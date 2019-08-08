@@ -38,7 +38,7 @@ func (f *SetLogLevel) Parse(parts []string, comment string) error {
 	if len(parts) >= 3 {
 		command, condition := common.SplitRequest(parts[2:])
 		if len(command) == 0 {
-			return errors.InvalidData
+			return errors.ErrInvalidData
 		}
 		f.Level = command[0]
 		if len(condition) > 1 {

@@ -43,9 +43,9 @@ func (h *Server) parse(line string, parts []string, comment string) (*types.Serv
 	return nil, &errors.ParseError{Parser: "Server", Line: line}
 }
 
-func (h *Server) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Server) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

@@ -42,9 +42,9 @@ func (p *Comments) Parse(line string, parts, previousParts []string, comment str
 	return "", &errors.ParseError{Parser: "Comments", Line: line}
 }
 
-func (p *Comments) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (p *Comments) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(p.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(p.data))
 	for index, comment := range p.data {

@@ -36,9 +36,9 @@ func (m *ExternalCheck) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "ExternalCheck", Line: line}
 }
 
-func (m *ExternalCheck) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (m *ExternalCheck) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if m.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

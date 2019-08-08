@@ -40,7 +40,7 @@ func (f *ReplaceValue) Parse(parts []string, comment string) error {
 	if len(parts) >= 4 {
 		command, condition := common.SplitRequest(parts[2:])
 		if len(command) < 3 {
-			return errors.InvalidData
+			return errors.ErrInvalidData
 		}
 		f.Name = command[0]
 		f.MatchRegex = command[1]
@@ -51,7 +51,7 @@ func (f *ReplaceValue) Parse(parts []string, comment string) error {
 		}
 		return nil
 	}
-	return errors.InvalidData
+	return errors.ErrInvalidData
 }
 
 func (f *ReplaceValue) String() string {

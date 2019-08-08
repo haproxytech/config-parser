@@ -26,8 +26,8 @@ import (
 )
 
 
-func TestAclNormal0(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal0(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl url_stats path_beg /stats")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -47,8 +47,8 @@ func TestAclNormal0(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal1(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal1(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl url_static path_beg -i /static /images /javascript /stylesheets")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -68,8 +68,8 @@ func TestAclNormal1(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal2(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal2(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl url_static path_end -i .jpg .gif .png .css .js")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -89,8 +89,8 @@ func TestAclNormal2(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal3(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal3(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl be_app_ok nbsrv(be_app) gt 0")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -110,8 +110,8 @@ func TestAclNormal3(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal4(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal4(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl be_static_ok nbsrv(be_static) gt 0")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -131,9 +131,9 @@ func TestAclNormal4(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal5(t *testing.T) {
-	parser := &parsers.Acl{}
-	line := strings.TrimSpace("acl key req.hdr(X-Add-Acl-Key) -m found")
+func TestACLNormal5(t *testing.T) {
+	parser := &parsers.ACL{}
+	line := strings.TrimSpace("acl key req.hdr(X-Add-ACL-Key) -m found")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -152,8 +152,8 @@ func TestAclNormal5(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal6(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal6(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl add path /addacl")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -173,8 +173,8 @@ func TestAclNormal6(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal7(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal7(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl del path /delacl")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -194,8 +194,8 @@ func TestAclNormal7(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal8(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal8(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl myhost hdr(Host) -f myhost.lst")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -215,8 +215,8 @@ func TestAclNormal8(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal9(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal9(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl clear dst_port 80")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -236,8 +236,8 @@ func TestAclNormal9(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal10(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal10(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl secure dst_port 8080")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -257,8 +257,8 @@ func TestAclNormal10(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal11(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal11(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl login_page url_beg /login")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -278,8 +278,8 @@ func TestAclNormal11(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal12(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal12(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl logout url_beg /logout")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -299,8 +299,8 @@ func TestAclNormal12(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal13(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal13(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl uid_given url_reg /login?userid=[^&]+")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -320,8 +320,8 @@ func TestAclNormal13(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclNormal14(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLNormal14(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl cookie_set hdr_sub(cookie) SEEN=1")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -341,8 +341,8 @@ func TestAclNormal14(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestAclFail0(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLFail0(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl cookie")
 	err := ProcessLine(line, parser)
 	if err == nil {
@@ -353,8 +353,8 @@ func TestAclFail0(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
-func TestAclFail1(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLFail1(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("acl")
 	err := ProcessLine(line, parser)
 	if err == nil {
@@ -365,8 +365,8 @@ func TestAclFail1(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
-func TestAclFail2(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLFail2(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("---")
 	err := ProcessLine(line, parser)
 	if err == nil {
@@ -377,8 +377,8 @@ func TestAclFail2(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
-func TestAclFail3(t *testing.T) {
-	parser := &parsers.Acl{}
+func TestACLFail3(t *testing.T) {
+	parser := &parsers.ACL{}
 	line := strings.TrimSpace("--- ---")
 	err := ProcessLine(line, parser)
 	if err == nil {

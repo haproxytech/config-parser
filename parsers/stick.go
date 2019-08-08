@@ -58,9 +58,9 @@ func (h *Stick) Parse(line string, parts, previousParts []string, comment string
 	return "", &errors.ParseError{Parser: "Stick", Line: line}
 }
 
-func (h *Stick) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *Stick) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

@@ -22,45 +22,45 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-func (p *SimpleTime) Init() {
+func (p *Time) Init() {
     p.data = nil
 }
 
-func (p *SimpleTime) GetParserName() string {
+func (p *Time) GetParserName() string {
     return p.Name
 }
 
-func (p *SimpleTime) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *Time) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
 			p.data = &types.StringC{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleTime) GetOne(index int) (common.ParserData, error) {
+func (p *Time) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleTime) Delete(index int) error {
+func (p *Time) Delete(index int) error {
 	p.Init()
 	return nil
 }
 
-func (p *SimpleTime) Insert(data common.ParserData, index int) error {
+func (p *Time) Insert(data common.ParserData, index int) error {
 	return p.Set(data, index)
 }
 
-func (p *SimpleTime) Set(data common.ParserData, index int) error {
+func (p *Time) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -71,7 +71,7 @@ func (p *SimpleTime) Set(data common.ParserData, index int) error {
 	case types.StringC:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

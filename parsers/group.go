@@ -43,9 +43,9 @@ func (l *Group) parse(line string, parts []string, comment string) (*types.Group
 	return nil, &errors.ParseError{Parser: "Group", Line: line}
 }
 
-func (l *Group) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (l *Group) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, group := range l.data {

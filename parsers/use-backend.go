@@ -45,9 +45,9 @@ func (h *UseBackend) parse(line string, parts []string, comment string) (*types.
 	return nil, &errors.ParseError{Parser: "UseBackend", Line: line}
 }
 
-func (h *UseBackend) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *UseBackend) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(h.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {

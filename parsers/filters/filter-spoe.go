@@ -46,7 +46,7 @@ func (f *Spoe) Parse(parts []string, comment string) error {
 		index++
 	}
 	if f.Config == "" {
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

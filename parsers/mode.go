@@ -45,9 +45,9 @@ func (p *Mode) Parse(line string, parts, previousParts []string, comment string)
 	return "", &errors.ParseError{Parser: "Mode", Line: line}
 }
 
-func (p *Mode) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (p *Mode) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

@@ -28,21 +28,21 @@ func (p *UnProcessed) GetParserName() string {
 
 func (p *UnProcessed) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(p.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
 func (p *UnProcessed) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data[index], nil
 }
 
 func (p *UnProcessed) Delete(index int) error {
 	if index < 0 || index >= len(p.data) {
-		return errors.FetchError
+		return errors.ErrFetch
 	}
 	copy(p.data[index:], p.data[index+1:])
 	p.data[len(p.data)-1] = types.UnProcessed{}
@@ -52,7 +52,7 @@ func (p *UnProcessed) Delete(index int) error {
 
 func (p *UnProcessed) Insert(data common.ParserData, index int) error {
 	if data == nil {
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	switch newValue := data.(type) {
 	case []types.UnProcessed:
@@ -60,7 +60,7 @@ func (p *UnProcessed) Insert(data common.ParserData, index int) error {
 	case *types.UnProcessed:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 			p.data = append(p.data, types.UnProcessed{})
 			copy(p.data[index+1:], p.data[index:])
@@ -71,7 +71,7 @@ func (p *UnProcessed) Insert(data common.ParserData, index int) error {
 	case types.UnProcessed:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 			p.data = append(p.data, types.UnProcessed{})
 			copy(p.data[index+1:], p.data[index:])
@@ -80,7 +80,7 @@ func (p *UnProcessed) Insert(data common.ParserData, index int) error {
 			p.data = append(p.data, newValue)
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -99,7 +99,7 @@ func (p *UnProcessed) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, *newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	case types.UnProcessed:
 		if index > -1 && index < len(p.data) {
@@ -107,10 +107,10 @@ func (p *UnProcessed) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

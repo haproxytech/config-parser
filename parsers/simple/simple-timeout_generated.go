@@ -22,41 +22,41 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-func (p *SimpleTimeout) GetParserName() string {
+func (p *Timeout) GetParserName() string {
     return p.Name
 }
 
-func (p *SimpleTimeout) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *Timeout) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
 			p.data = &types.SimpleTimeout{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleTimeout) GetOne(index int) (common.ParserData, error) {
+func (p *Timeout) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleTimeout) Delete(index int) error {
+func (p *Timeout) Delete(index int) error {
 	p.Init()
 	return nil
 }
 
-func (p *SimpleTimeout) Insert(data common.ParserData, index int) error {
+func (p *Timeout) Insert(data common.ParserData, index int) error {
 	return p.Set(data, index)
 }
 
-func (p *SimpleTimeout) Set(data common.ParserData, index int) error {
+func (p *Timeout) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -67,7 +67,7 @@ func (p *SimpleTimeout) Set(data common.ParserData, index int) error {
 	case types.SimpleTimeout:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

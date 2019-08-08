@@ -37,20 +37,19 @@ func (n *NbProc) Parse(line string, parts, previousParts []string, comment strin
 		var num int64
 		if num, err = strconv.ParseInt(parts[1], 10, 64); err != nil {
 			return "", &errors.ParseError{Parser: "NbProc", Line: line, Message: err.Error()}
-		} else {
-			n.data = &types.Int64C{
-				Value:   num,
-				Comment: comment,
-			}
+		}
+		n.data = &types.Int64C{
+			Value:   num,
+			Comment: comment,
 		}
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "nbproc", Line: line}
 }
 
-func (n *NbProc) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (n *NbProc) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if n.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

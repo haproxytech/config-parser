@@ -53,9 +53,9 @@ func (l *ErrorFile) parse(line string, parts []string, comment string) (*types.E
 	return errorfile, nil
 }
 
-func (l *ErrorFile) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (l *ErrorFile) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, data := range l.data {

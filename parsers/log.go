@@ -131,9 +131,9 @@ func (l *Log) Parse(line string, parts, previousParts []string, comment string) 
 	return "", &errors.ParseError{Parser: "Log", Line: line}
 }
 
-func (l *Log) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (l *Log) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, log := range l.data {
@@ -142,37 +142,39 @@ func (l *Log) Result(AddComments bool) ([]common.ReturnResultLine, error) {
 				Data:    "log global",
 				Comment: log.Comment,
 			}
-		} else if log.NoLog {
+			return result, nil
+		}
+		if log.NoLog {
 			result[index] = common.ReturnResultLine{
 				Data:    "no log",
 				Comment: log.Comment,
 			}
-		} else {
-			var sb strings.Builder
-			sb.WriteString("log ")
-			sb.WriteString(log.Address)
-			if log.Length > 0 {
-				sb.WriteString(" len ")
-				sb.WriteString(fmt.Sprintf("%d", log.Length))
-			}
-			if log.Format != "" {
-				sb.WriteString(" format ")
-				sb.WriteString(log.Format)
-			}
+			return result, nil
+		}
+		var sb strings.Builder
+		sb.WriteString("log ")
+		sb.WriteString(log.Address)
+		if log.Length > 0 {
+			sb.WriteString(" len ")
+			sb.WriteString(fmt.Sprintf("%d", log.Length))
+		}
+		if log.Format != "" {
+			sb.WriteString(" format ")
+			sb.WriteString(log.Format)
+		}
+		sb.WriteString(" ")
+		sb.WriteString(log.Facility)
+		if log.Level != "" {
 			sb.WriteString(" ")
-			sb.WriteString(log.Facility)
-			if log.Level != "" {
+			sb.WriteString(log.Level)
+			if log.MinLevel != "" {
 				sb.WriteString(" ")
-				sb.WriteString(log.Level)
-				if log.MinLevel != "" {
-					sb.WriteString(" ")
-					sb.WriteString(log.MinLevel)
-				}
+				sb.WriteString(log.MinLevel)
 			}
-			result[index] = common.ReturnResultLine{
-				Data:    sb.String(),
-				Comment: log.Comment,
-			}
+		}
+		result[index] = common.ReturnResultLine{
+			Data:    sb.String(),
+			Comment: log.Comment,
 		}
 	}
 	return result, nil

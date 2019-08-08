@@ -22,41 +22,41 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-func (p *SimpleTimeTwoWords) GetParserName() string {
+func (p *TimeTwoWords) GetParserName() string {
     return p.Name
 }
 
-func (p *SimpleTimeTwoWords) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *TimeTwoWords) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
 			p.data = &types.StringC{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleTimeTwoWords) GetOne(index int) (common.ParserData, error) {
+func (p *TimeTwoWords) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleTimeTwoWords) Delete(index int) error {
+func (p *TimeTwoWords) Delete(index int) error {
 	p.Init()
 	return nil
 }
 
-func (p *SimpleTimeTwoWords) Insert(data common.ParserData, index int) error {
+func (p *TimeTwoWords) Insert(data common.ParserData, index int) error {
 	return p.Set(data, index)
 }
 
-func (p *SimpleTimeTwoWords) Set(data common.ParserData, index int) error {
+func (p *TimeTwoWords) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -67,7 +67,7 @@ func (p *SimpleTimeTwoWords) Set(data common.ParserData, index int) error {
 	case types.StringC:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

@@ -32,21 +32,21 @@ func (p *DefaultServer) GetParserName() string {
 
 func (p *DefaultServer) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(p.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
 func (p *DefaultServer) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data[index], nil
 }
 
 func (p *DefaultServer) Delete(index int) error {
 	if index < 0 || index >= len(p.data) {
-		return errors.FetchError
+		return errors.ErrFetch
 	}
 	copy(p.data[index:], p.data[index+1:])
 	p.data[len(p.data)-1] = types.DefaultServer{}
@@ -56,7 +56,7 @@ func (p *DefaultServer) Delete(index int) error {
 
 func (p *DefaultServer) Insert(data common.ParserData, index int) error {
 	if data == nil {
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	switch newValue := data.(type) {
 	case []types.DefaultServer:
@@ -64,7 +64,7 @@ func (p *DefaultServer) Insert(data common.ParserData, index int) error {
 	case *types.DefaultServer:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 			p.data = append(p.data, types.DefaultServer{})
 			copy(p.data[index+1:], p.data[index:])
@@ -75,7 +75,7 @@ func (p *DefaultServer) Insert(data common.ParserData, index int) error {
 	case types.DefaultServer:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 			p.data = append(p.data, types.DefaultServer{})
 			copy(p.data[index+1:], p.data[index:])
@@ -84,7 +84,7 @@ func (p *DefaultServer) Insert(data common.ParserData, index int) error {
 			p.data = append(p.data, newValue)
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -103,7 +103,7 @@ func (p *DefaultServer) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, *newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	case types.DefaultServer:
 		if index > -1 && index < len(p.data) {
@@ -111,10 +111,10 @@ func (p *DefaultServer) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

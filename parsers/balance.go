@@ -29,19 +29,6 @@ type Balance struct {
 	data *types.Balance
 }
 
-/*func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data == nil {
-		if createIfNotExist {
-			p.data = &types.Balance{
-				Arguments: []string{},
-			}
-			return p.data, nil
-		}
-		return p.data, nil
-	}
-	return nil, errors.FetchError
-}*/
-
 func (p *Balance) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "balance" {
 		if len(parts) < 2 {
@@ -81,9 +68,9 @@ func (p *Balance) Parse(line string, parts, previousParts []string, comment stri
 	return "", &errors.ParseError{Parser: "Balance", Line: line}
 }
 
-func (p *Balance) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (p *Balance) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	params := ""
 	if len(p.data.Arguments) > 0 {

@@ -42,9 +42,9 @@ func (s *ExternalCheckCommand) Parse(line string, parts, previousParts []string,
 	return "", &errors.ParseError{Parser: "external-check command", Line: line}
 }
 
-func (s *ExternalCheckCommand) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *ExternalCheckCommand) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	var data string
 	if s.data.Command != "" {

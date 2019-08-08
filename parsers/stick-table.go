@@ -80,21 +80,21 @@ func (h *StickTable) parse(line string, parts []string, comment string) (*types.
 	return nil, &errors.ParseError{Parser: "StickTable", Line: line}
 }
 
-func (p *StickTable) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *StickTable) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "stick-table" {
-		data, err := p.parse(line, parts, comment)
+		data, err := h.parse(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "StickTable", Line: line}
 		}
-		p.data = data
+		h.data = data
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "StickTable", Line: line}
 }
 
-func (h *StickTable) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (h *StickTable) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if h.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, 1)
 	req := h.data

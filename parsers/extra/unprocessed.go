@@ -34,16 +34,16 @@ func (u *UnProcessed) Init() {
 	u.data = []types.UnProcessed{}
 }
 
-func (p *UnProcessed) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	p.data = append(p.data, types.UnProcessed{
+func (u *UnProcessed) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+	u.data = append(u.data, types.UnProcessed{
 		Value: strings.TrimSpace(line),
 	})
 	return "", nil
 }
 
-func (u *UnProcessed) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (u *UnProcessed) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if len(u.data) == 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	result := make([]common.ReturnResultLine, len(u.data))
 	for index, d := range u.data {

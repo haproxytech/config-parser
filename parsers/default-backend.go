@@ -42,9 +42,9 @@ func (s *DefaultBackend) Parse(line string, parts, previousParts []string, comme
 	return "", &errors.ParseError{Parser: "default_backend", Line: line}
 }
 
-func (s *DefaultBackend) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *DefaultBackend) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

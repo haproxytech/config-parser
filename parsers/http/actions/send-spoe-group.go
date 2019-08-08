@@ -39,7 +39,7 @@ func (f *SendSpoeGroup) Parse(parts []string, comment string) error {
 	if len(parts) >= 4 {
 		command, condition := common.SplitRequest(parts[2:])
 		if len(command) < 2 {
-			return errors.InvalidData
+			return errors.ErrInvalidData
 		}
 		f.Engine = command[0]
 		f.Group = command[1]

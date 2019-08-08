@@ -38,7 +38,7 @@ func (s *OptionSmtpchk) Parse(line string, parts, previousParts []string, commen
 		}
 		if len(parts) > 2 {
 			if len(parts) != 4 {
-				return "", errors.InvalidData
+				return "", errors.ErrInvalidData
 			}
 			data.Hello = parts[2]
 			data.Domain = parts[3]
@@ -60,9 +60,9 @@ func (s *OptionSmtpchk) Parse(line string, parts, previousParts []string, commen
 	return "", &errors.ParseError{Parser: "option smtpchk", Line: line}
 }
 
-func (s *OptionSmtpchk) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionSmtpchk) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	var sb strings.Builder
 	if s.data.NoOption {

@@ -32,21 +32,21 @@ func (p *Peer) GetParserName() string {
 
 func (p *Peer) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(p.data) == 0 && !createIfNotExist {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
 func (p *Peer) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data[index], nil
 }
 
 func (p *Peer) Delete(index int) error {
 	if index < 0 || index >= len(p.data) {
-		return errors.FetchError
+		return errors.ErrFetch
 	}
 	copy(p.data[index:], p.data[index+1:])
 	p.data[len(p.data)-1] = types.Peer{}
@@ -56,7 +56,7 @@ func (p *Peer) Delete(index int) error {
 
 func (p *Peer) Insert(data common.ParserData, index int) error {
 	if data == nil {
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	switch newValue := data.(type) {
 	case []types.Peer:
@@ -64,7 +64,7 @@ func (p *Peer) Insert(data common.ParserData, index int) error {
 	case *types.Peer:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 			p.data = append(p.data, types.Peer{})
 			copy(p.data[index+1:], p.data[index:])
@@ -75,7 +75,7 @@ func (p *Peer) Insert(data common.ParserData, index int) error {
 	case types.Peer:
 		if index > -1 {
 			if index > len(p.data) {
-				return errors.IndexOutOfRange
+				return errors.ErrIndexOutOfRange
 			}
 			p.data = append(p.data, types.Peer{})
 			copy(p.data[index+1:], p.data[index:])
@@ -84,7 +84,7 @@ func (p *Peer) Insert(data common.ParserData, index int) error {
 			p.data = append(p.data, newValue)
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }
@@ -103,7 +103,7 @@ func (p *Peer) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, *newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	case types.Peer:
 		if index > -1 && index < len(p.data) {
@@ -111,10 +111,10 @@ func (p *Peer) Set(data common.ParserData, index int) error {
 		} else if index == -1 {
 			p.data = append(p.data, newValue)
 		} else {
-			return errors.IndexOutOfRange
+			return errors.ErrIndexOutOfRange
 		}
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

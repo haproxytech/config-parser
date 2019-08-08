@@ -39,7 +39,7 @@ func (f *SetStatus) Parse(parts []string, comment string) error {
 	if len(parts) >= 4 {
 		command, condition := common.SplitRequest(parts[2:])
 		if len(command) < 1 {
-			return errors.InvalidData
+			return errors.ErrInvalidData
 		}
 		f.Status = command[0]
 		index := 1

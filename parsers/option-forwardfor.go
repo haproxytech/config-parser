@@ -42,19 +42,19 @@ func (s *OptionForwardFor) Parse(line string, parts, previousParts []string, com
 			case "except":
 				index++
 				if index == len(parts) {
-					return "", errors.InvalidData
+					return "", errors.ErrInvalidData
 				}
 				data.Except = parts[index]
 			case "header":
 				index++
 				if index == len(parts) {
-					return "", errors.InvalidData
+					return "", errors.ErrInvalidData
 				}
 				data.Header = parts[index]
 			case "if-none":
 				data.IfNone = true
 			default:
-				return "", errors.InvalidData
+				return "", errors.ErrInvalidData
 			}
 			index++
 		}
@@ -64,9 +64,9 @@ func (s *OptionForwardFor) Parse(line string, parts, previousParts []string, com
 	return "", &errors.ParseError{Parser: "option forwardfor", Line: line}
 }
 
-func (s *OptionForwardFor) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionForwardFor) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	var sb strings.Builder
 	sb.WriteString("option forwardfor")

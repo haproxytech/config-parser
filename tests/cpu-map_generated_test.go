@@ -26,8 +26,8 @@ import (
 )
 
 
-func TestCpuMapNormal0(t *testing.T) {
-	parser := &parsers.CpuMap{}
+func TestCPUMapNormal0(t *testing.T) {
+	parser := &parsers.CPUMap{}
 	line := strings.TrimSpace("cpu-map 1-4 0-3")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -47,8 +47,8 @@ func TestCpuMapNormal0(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestCpuMapNormal1(t *testing.T) {
-	parser := &parsers.CpuMap{}
+func TestCPUMapNormal1(t *testing.T) {
+	parser := &parsers.CPUMap{}
 	line := strings.TrimSpace("cpu-map 1/all 0-3")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -68,8 +68,8 @@ func TestCpuMapNormal1(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestCpuMapNormal2(t *testing.T) {
-	parser := &parsers.CpuMap{}
+func TestCPUMapNormal2(t *testing.T) {
+	parser := &parsers.CPUMap{}
 	line := strings.TrimSpace("cpu-map auto:1-4 0-3")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -89,8 +89,8 @@ func TestCpuMapNormal2(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestCpuMapNormal3(t *testing.T) {
-	parser := &parsers.CpuMap{}
+func TestCPUMapNormal3(t *testing.T) {
+	parser := &parsers.CPUMap{}
 	line := strings.TrimSpace("cpu-map auto:1-4 0-1 2-3")
 	err := ProcessLine(line, parser)
 	if err != nil {
@@ -110,8 +110,8 @@ func TestCpuMapNormal3(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
-func TestCpuMapFail0(t *testing.T) {
-	parser := &parsers.CpuMap{}
+func TestCPUMapFail0(t *testing.T) {
+	parser := &parsers.CPUMap{}
 	line := strings.TrimSpace("cpu-map")
 	err := ProcessLine(line, parser)
 	if err == nil {
@@ -122,8 +122,8 @@ func TestCpuMapFail0(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
-func TestCpuMapFail1(t *testing.T) {
-	parser := &parsers.CpuMap{}
+func TestCPUMapFail1(t *testing.T) {
+	parser := &parsers.CPUMap{}
 	line := strings.TrimSpace("---")
 	err := ProcessLine(line, parser)
 	if err == nil {
@@ -134,8 +134,8 @@ func TestCpuMapFail1(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
-func TestCpuMapFail2(t *testing.T) {
-	parser := &parsers.CpuMap{}
+func TestCPUMapFail2(t *testing.T) {
+	parser := &parsers.CPUMap{}
 	line := strings.TrimSpace("--- ---")
 	err := ProcessLine(line, parser)
 	if err == nil {

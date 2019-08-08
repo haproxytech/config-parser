@@ -39,20 +39,20 @@ func (s *OptionMysqlCheck) Parse(line string, parts, previousParts []string, com
 		if len(parts) > 2 {
 			if len(parts) < 6 {
 				if parts[2] != "user" {
-					return "", errors.InvalidData
+					return "", errors.ErrInvalidData
 				}
 				if len(parts) < 4 {
-					return "", errors.InvalidData
+					return "", errors.ErrInvalidData
 				}
 				data.User = parts[3]
 				if len(parts) == 5 {
 					if parts[4] != "post-41" {
-						return "", errors.InvalidData
+						return "", errors.ErrInvalidData
 					}
 					data.Post41 = true
 				}
 			} else {
-				return "", errors.InvalidData
+				return "", errors.ErrInvalidData
 			}
 		}
 		s.data = data
@@ -61,9 +61,9 @@ func (s *OptionMysqlCheck) Parse(line string, parts, previousParts []string, com
 	return "", &errors.ParseError{Parser: "option mysql-check", Line: line}
 }
 
-func (s *OptionMysqlCheck) Result(AddComments bool) ([]common.ReturnResultLine, error) {
+func (s *OptionMysqlCheck) Result(addComments bool) ([]common.ReturnResultLine, error) {
 	if s.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	var sb strings.Builder
 	sb.WriteString("option mysql-check")

@@ -36,17 +36,17 @@ func (p *OptionHTTPLog) Get(createIfNotExist bool) (common.ParserData, error) {
 			p.data = &types.OptionHTTPLog{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
 func (p *OptionHTTPLog) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
@@ -71,7 +71,7 @@ func (p *OptionHTTPLog) Set(data common.ParserData, index int) error {
 	case types.OptionHTTPLog:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

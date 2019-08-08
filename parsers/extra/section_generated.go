@@ -32,17 +32,17 @@ func (p *Section) Get(createIfNotExist bool) (common.ParserData, error) {
 			p.data = &types.Section{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
 func (p *Section) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
@@ -67,7 +67,7 @@ func (p *Section) Set(data common.ParserData, index int) error {
 	case types.Section:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

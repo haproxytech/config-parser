@@ -36,17 +36,17 @@ func (p *MasterWorker) Get(createIfNotExist bool) (common.ParserData, error) {
 			p.data = &types.Enabled{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
 func (p *MasterWorker) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
@@ -71,7 +71,7 @@ func (p *MasterWorker) Set(data common.ParserData, index int) error {
 	case types.Enabled:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }

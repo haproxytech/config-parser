@@ -22,45 +22,45 @@ import (
 	"github.com/haproxytech/config-parser/types"
 )
 
-func (p *SimpleNumber) Init() {
+func (p *Number) Init() {
     p.data = nil
 }
 
-func (p *SimpleNumber) GetParserName() string {
+func (p *Number) GetParserName() string {
     return p.Name
 }
 
-func (p *SimpleNumber) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *Number) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
 			p.data = &types.Int64C{}
 			return p.data, nil
 		}
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleNumber) GetOne(index int) (common.ParserData, error) {
+func (p *Number) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	if p.data == nil {
-		return nil, errors.FetchError
+		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SimpleNumber) Delete(index int) error {
+func (p *Number) Delete(index int) error {
 	p.Init()
 	return nil
 }
 
-func (p *SimpleNumber) Insert(data common.ParserData, index int) error {
+func (p *Number) Insert(data common.ParserData, index int) error {
 	return p.Set(data, index)
 }
 
-func (p *SimpleNumber) Set(data common.ParserData, index int) error {
+func (p *Number) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
@@ -71,7 +71,7 @@ func (p *SimpleNumber) Set(data common.ParserData, index int) error {
 	case types.Int64C:
 		p.data = &newValue
 	default:
-		return errors.InvalidData
+		return errors.ErrInvalidData
 	}
 	return nil
 }
