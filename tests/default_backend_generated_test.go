@@ -33,7 +33,7 @@ func TestDefaultBackendNormal0(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -54,7 +54,7 @@ func TestDefaultBackendFail0(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
@@ -66,7 +66,7 @@ func TestDefaultBackendFail1(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
@@ -78,7 +78,7 @@ func TestDefaultBackendFail2(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}

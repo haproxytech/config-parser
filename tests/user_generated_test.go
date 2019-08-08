@@ -33,7 +33,7 @@ func TestUserNormal0(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -54,7 +54,7 @@ func TestUserNormal1(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -75,7 +75,7 @@ func TestUserNormal2(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -96,7 +96,7 @@ func TestUserFail0(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
@@ -108,7 +108,7 @@ func TestUserFail1(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
@@ -120,7 +120,7 @@ func TestUserFail2(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}

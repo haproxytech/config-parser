@@ -33,7 +33,7 @@ func TestSocketNormal0(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -54,7 +54,7 @@ func TestSocketNormal1(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -75,7 +75,7 @@ func TestSocketNormal2(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -96,7 +96,7 @@ func TestSocketNormal3(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	result, err := parser.Result(true)
+	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -117,7 +117,7 @@ func TestSocketFail0(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
@@ -129,7 +129,7 @@ func TestSocketFail1(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
@@ -141,7 +141,7 @@ func TestSocketFail2(t *testing.T) {
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
 	}
-	_, err = parser.Result(true)
+	_, err = parser.Result()
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}

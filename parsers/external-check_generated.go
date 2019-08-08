@@ -23,7 +23,7 @@ import (
 )
 
 func (p *ExternalCheck) Init() {
-	p.data = nil
+    p.data = nil
 }
 
 func (p *ExternalCheck) GetParserName() string {

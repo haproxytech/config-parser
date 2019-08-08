@@ -23,7 +23,7 @@ import (
 )
 
 func (p *Daemon) Init() {
-	p.data = nil
+    p.data = nil
 }
 
 func (p *Daemon) GetParserName() string {
