@@ -11,6 +11,8 @@ go run go-generate.go $(pwd)
 
 For commit messages and general style please follow the haproxy project's [CONTRIBUTING guide](https://github.com/haproxy/haproxy/blob/master/CONTRIBUTING) and use that where applicable.
 
+Please use `golangci-lint run` from [github.com/golangci/golangci-lint](https://github.com/golangci/golangci-lint) for linting code.
+
 ### Example
 
 ```go
