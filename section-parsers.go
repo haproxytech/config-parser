@@ -58,6 +58,7 @@ func getStartParser() *Parsers {
 func getDefaultParser() *Parsers {
 	return createParsers([]ParserInterface{
 		&parsers.Mode{},
+		&parsers.HashType{},
 		&parsers.Balance{},
 		&parsers.MaxConn{},
 		&parsers.Log{},
@@ -179,6 +180,7 @@ func getFrontendParser() *Parsers {
 func getBackendParser() *Parsers {
 	return createParsers([]ParserInterface{
 		&parsers.Mode{},
+		&parsers.HashType{},
 		&parsers.Balance{},
 		&parsers.ACL{},
 

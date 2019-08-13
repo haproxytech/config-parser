@@ -130,6 +130,37 @@ type Group struct {
 	Comment string
 }
 
+//sections:defaults,backend
+//name:hash-type
+//test:ok:hash-type map-based
+//test:ok:hash-type map-based avalanche
+//test:ok:hash-type consistent
+//test:ok:hash-type consistent avalanche
+//test:ok:hash-type avalanche
+//test:ok:hash-type map-based sdbm
+//test:ok:hash-type map-based djb2
+//test:ok:hash-type map-based wt6
+//test:ok:hash-type map-based crc32
+//test:ok:hash-type consistent sdbm
+//test:ok:hash-type consistent djb2
+//test:ok:hash-type consistent wt6
+//test:ok:hash-type consistent crc32
+//test:ok:hash-type map-based sdbm avalanche
+//test:ok:hash-type map-based djb2 avalanche
+//test:ok:hash-type map-based wt6 avalanche
+//test:ok:hash-type map-based crc32 avalanche
+//test:ok:hash-type consistent sdbm avalanche
+//test:ok:hash-type consistent djb2 avalanche
+//test:ok:hash-type consistent wt6 avalanche
+//test:ok:hash-type consistent crc32 avalanche
+//test:fail:hash-type
+type HashType struct {
+	Method   string
+	Function string
+	Modifier string
+	Comment  string
+}
+
 //sections:defaults,frontend,backend
 //name:log
 //is-multiple:true
