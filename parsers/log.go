@@ -142,14 +142,14 @@ func (l *Log) Result() ([]common.ReturnResultLine, error) {
 				Data:    "log global",
 				Comment: log.Comment,
 			}
-			return result, nil
+			continue
 		}
 		if log.NoLog {
 			result[index] = common.ReturnResultLine{
 				Data:    "no log",
 				Comment: log.Comment,
 			}
-			return result, nil
+			continue
 		}
 		var sb strings.Builder
 		sb.WriteString("log ")
