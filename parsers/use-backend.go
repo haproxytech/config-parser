@@ -30,7 +30,7 @@ type UseBackend struct {
 }
 
 func (h *UseBackend) parse(line string, parts []string, comment string) (*types.UseBackend, error) {
-	if len(parts) >= 4 {
+	if len(parts) >= 2 {
 		_, condition := common.SplitRequest(parts[2:])
 		data := &types.UseBackend{
 			Name:    parts[1],
