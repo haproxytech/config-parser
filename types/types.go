@@ -408,6 +408,7 @@ type Nameserver struct {
 //is-multiple:true
 //test:ok:use_backend test if TRUE
 //test:ok:use_backend test if TRUE # deny
+//test:ok:use_backend test # deny
 //test:fail:use_backend
 type UseBackend struct {
 	Name     string

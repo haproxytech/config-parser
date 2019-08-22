@@ -68,6 +68,27 @@ func TestUseBackendNormal1(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
 }
+func TestUseBackendNormal2(t *testing.T) {
+	parser := &parsers.UseBackend{}
+	line := strings.TrimSpace("use_backend test # deny")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
 func TestUseBackendFail0(t *testing.T) {
 	parser := &parsers.UseBackend{}
 	line := strings.TrimSpace("use_backend")
