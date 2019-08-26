@@ -286,8 +286,8 @@ func (p *Parser) String() string {
 	var result strings.Builder
 
 	p.writeParsers("", p.Parsers[Comments][CommentsSectionName].parsers, &result, false)
-	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
 	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].parsers, &result, true)
+	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
 
 	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Frontends, Backends, Listen, Program}
 
