@@ -76,6 +76,7 @@ func getDefaultParser() *Parsers {
 		&parsers.OptionRedispatch{},
 		&simple.Option{Name: "dontlognull"},
 		&simple.Option{Name: "log-separate-errors"},
+		&simple.Option{Name: "http-buffer-request"},
 		&simple.Option{Name: "http-server-close"},
 		&simple.Option{Name: "http-keep-alive"},
 		&simple.Option{Name: "http-pretend-keepalive"},
@@ -147,6 +148,7 @@ func getFrontendParser() *Parsers {
 
 		&simple.Option{Name: "httpclose"},
 		&simple.Option{Name: "forceclose"},
+		&simple.Option{Name: "http-buffer-request"},
 		&simple.Option{Name: "http-server-close"},
 		&simple.Option{Name: "http-keep-alive"},
 		&simple.Option{Name: "http-use-htx"},
@@ -186,6 +188,7 @@ func getBackendParser() *Parsers {
 
 		&simple.Option{Name: "httpclose"},
 		&simple.Option{Name: "forceclose"},
+		&simple.Option{Name: "http-buffer-request"},
 		&simple.Option{Name: "http-server-close"},
 		&simple.Option{Name: "http-keep-alive"},
 		&simple.Option{Name: "http-pretend-keepalive"},
