@@ -72,6 +72,10 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.SetHeader{}, parts, comment)
 		case "set-log-level":
 			err = h.ParseHTTPRequest(&actions.SetLogLevel{}, parts, comment)
+		case "set-query":
+			err = h.ParseHTTPRequest(&actions.SetQuery{}, parts, comment)
+		case "set-uri":
+			err = h.ParseHTTPRequest(&actions.SetURI{}, parts, comment)
 		case "set-var":
 			err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
 		case "tarpit":
