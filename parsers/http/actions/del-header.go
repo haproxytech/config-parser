@@ -30,11 +30,13 @@ type DelHeader struct {
 	Comment  string
 }
 
+// Parse parses { http-request | http-response } del-header <name> [ { if | unless } <condition> ]
 func (f *DelHeader) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 4 {
+
+	if len(parts) >= 3 {
 		_, condition := common.SplitRequest(parts[3:])
 		f.Name = parts[2]
 		if len(condition) > 1 {
