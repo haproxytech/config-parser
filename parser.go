@@ -20,9 +20,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 
+	"github.com/Jeffail/gabs/v2"
 	"github.com/haproxytech/config-parser/common"
 	"github.com/haproxytech/config-parser/errors"
 	"github.com/haproxytech/config-parser/parsers/extra"
@@ -268,6 +270,74 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, res
 	}
 }
 
+func (p *Parser) writeJSONParsers(sectionName string, parsers []ParserInterface, jsonConfig *gabs.Container) {
+	for _, parser := range parsers {
+		lines, err := parser.Result()
+		if err != nil {
+			continue
+		}
+
+		sectionFields := strings.Fields(sectionName)
+		sectionNameFirst := sectionFields[0]
+
+		for _, line := range lines {
+			lineFields := strings.Fields(line.Data)
+			lineName := lineFields[0]
+
+			if strings.HasPrefix(lineName, "#") {
+				continue
+			}
+
+			lineData := strings.Join(lineFields[1:], " ")
+			// snip inline comments
+			lineData = strings.TrimSpace(strings.Split(lineData, "#")[0])
+
+			jsonPath := []string{sectionNameFirst}
+
+			if len(sectionFields) > 1 {
+				jsonPath = append(jsonPath, strings.Join(sectionFields[1:], " "))
+			}
+
+			jsonPath = append(jsonPath, lineName)
+
+			if len(lineFields) > 2 {
+				// the line has additional fields, so go one deeper in the JSON
+				jsonPath = append(jsonPath, lineFields[1])
+				lineData = strings.Join(lineFields[2:], " ")
+			}
+
+			if len(lineData) == 0 {
+				// boolean
+				jsonConfig.Set(true, jsonPath...)
+			} else {
+				if intVal, err := strconv.ParseInt(lineData, 10, 64); err == nil {
+					// int
+					jsonConfig.Set(intVal, jsonPath...)
+				} else if floatVal, err := strconv.ParseFloat(lineData, 64); err == nil {
+					// float
+					jsonConfig.Set(floatVal, jsonPath...)
+				} else {
+					// string
+					existing, exists := jsonConfig.Search(jsonPath...).Data().(string)
+
+					if exists {
+						// line with same name found, turn into an array
+						jsonConfig.Array(jsonPath...)
+						jsonConfig.ArrayAppend(existing, jsonPath...)
+						jsonConfig.ArrayAppend(lineData, jsonPath...)
+					} else {
+						if jsonConfig.Exists(jsonPath...) {
+							jsonConfig.ArrayAppend(lineData, jsonPath...)
+						} else {
+							jsonConfig.Set(lineData, jsonPath...)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 func (p *Parser) getSortedList(data map[string]*Parsers) []string {
 	result := make([]string, len(data))
 	index := 0
@@ -277,6 +347,28 @@ func (p *Parser) getSortedList(data map[string]*Parsers) []string {
 	}
 	sort.Strings(result)
 	return result
+}
+
+//JSON returns configuration in JSON format
+func (p *Parser) JSON() string {
+	p.lock()
+	defer p.unLock()
+
+	jsonConfig := gabs.New()
+
+	p.writeJSONParsers("global", p.Parsers[Global][GlobalSectionName].parsers, jsonConfig)
+	p.writeJSONParsers("default", p.Parsers[Defaults][DefaultSectionName].parsers, jsonConfig)
+
+	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Frontends, Backends, Listen, Program}
+
+	for _, section := range sections {
+		sortedSections := p.getSortedList(p.Parsers[section])
+		for _, sectionName := range sortedSections {
+			p.writeJSONParsers(fmt.Sprintf("%s %s", section, sectionName), p.Parsers[section][sectionName].parsers, jsonConfig)
+		}
+	}
+
+	return jsonConfig.StringIndent("", "  ")
 }
 
 //String returns configuration in writable form
