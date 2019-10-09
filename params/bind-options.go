@@ -144,7 +144,6 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "backlog"},
 		&BindOptionValue{Name: "curves"},
 		&BindOptionValue{Name: "ecdhe"},
-		&BindOptionValue{Name: "allow-0rtt"},
 		&BindOptionValue{Name: "ca-file"},
 		&BindOptionValue{Name: "ca-ignore-err"},
 		&BindOptionValue{Name: "ca-sign-file"},

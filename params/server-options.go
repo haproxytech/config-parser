@@ -121,6 +121,7 @@ func (b *ServerOptionValue) String() string {
 func getServerOptions() []ServerOption {
 	return []ServerOption{
 		&ServerOptionWord{Name: "agent-check"},
+		&ServerOptionWord{Name: "allow-0rtt"},
 		&ServerOptionWord{Name: "backup"},
 		&ServerOptionWord{Name: "check"},
 		&ServerOptionWord{Name: "check-send-proxy"},
