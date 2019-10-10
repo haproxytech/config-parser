@@ -60,6 +60,7 @@ func getDefaultParser() *Parsers {
 		&parsers.Mode{},
 		&parsers.HashType{},
 		&parsers.Balance{},
+
 		&parsers.MaxConn{},
 		&parsers.Log{},
 		&parsers.OptionHTTPLog{},
@@ -68,7 +69,7 @@ func getDefaultParser() *Parsers {
 
 		&simple.String{Name: "log-format"},
 		&simple.String{Name: "log-format-sd"},
-		&simple.String{Name: "cookie"},
+		&parsers.Cookie{},
 
 		&simple.Option{Name: "tcplog"},
 		&simple.Option{Name: "httpclose"},
@@ -227,7 +228,7 @@ func getBackendParser() *Parsers {
 		&tcp.Requests{},
 		&http.Requests{},
 		&http.Redirect{},
-		&simple.String{Name: "cookie"},
+		&parsers.Cookie{},
 		&parsers.UseServer{},
 		&parsers.StickTable{},
 		&parsers.Server{},
