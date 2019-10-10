@@ -79,6 +79,35 @@ type Balance struct {
 	Comment   string
 }
 
+//sections:defaults,backend
+//name:cookie
+//is-multiple:false
+//test:ok:cookie test
+//test:ok:cookie myCookie domain dom1 indirect postonly
+//test:ok:cookie myCookie domain dom1 domain dom2 indirect postonly
+//test:ok:cookie myCookie indirect maxidle 10 maxlife 5 postonly
+//test:ok:cookie myCookie indirect maxidle 10
+//test:ok:cookie myCookie indirect maxlife 10
+//test:ok:cookie myCookie domain dom1 domain dom2 httponly indirect maxidle 10 maxlife 5 nocache postonly preserve rewrite secure
+//test:fail:cookie
+//test:fail:cookie myCookie maxidle something
+//test:fail:cookie myCookie maxlife something
+type Cookie struct {
+	Domain   []string
+	Dynamic  bool
+	Httponly bool
+	Indirect bool
+	Maxidle  int64
+	Maxlife  int64
+	Name     string
+	Nocache  bool
+	Postonly bool
+	Preserve bool
+	Type     string
+	Secure   bool
+	Comment  string
+}
+
 //sections:global
 //name:cpu-map
 //is-multiple:true
