@@ -17,8 +17,8 @@ limitations under the License.
 package parser
 
 import (
-	"github.com/haproxytech/config-parser/common"
-	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/v2/common"
+	"github.com/haproxytech/config-parser/v2/errors"
 )
 
 //nolint:golint

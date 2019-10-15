@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/parsers"
+	"github.com/haproxytech/config-parser/v2/parsers"
 )
 
 

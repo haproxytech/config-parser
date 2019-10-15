@@ -30,7 +30,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/haproxytech/config-parser/common"
+	"github.com/haproxytech/config-parser/v2/common"
 )
 
 type Data struct {
@@ -368,9 +368,9 @@ package parsers
 {{- end }}
 
 import (
-	"github.com/haproxytech/config-parser/common"
-	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/types"
+	"github.com/haproxytech/config-parser/v2/common"
+	"github.com/haproxytech/config-parser/v2/errors"
+	"github.com/haproxytech/config-parser/v2/types"
 )
 
 {{- if not .NoInit }}
@@ -584,7 +584,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/parsers"
+	"github.com/haproxytech/config-parser/v2/parsers"
 )
 
 {{ $StructName := .StructName }}

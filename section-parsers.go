@@ -17,12 +17,12 @@ limitations under the License.
 package parser
 
 import (
-	"github.com/haproxytech/config-parser/parsers"
-	"github.com/haproxytech/config-parser/parsers/extra"
-	"github.com/haproxytech/config-parser/parsers/filters"
-	"github.com/haproxytech/config-parser/parsers/http"
-	"github.com/haproxytech/config-parser/parsers/simple"
-	"github.com/haproxytech/config-parser/parsers/tcp"
+	"github.com/haproxytech/config-parser/v2/parsers"
+	"github.com/haproxytech/config-parser/v2/parsers/extra"
+	"github.com/haproxytech/config-parser/v2/parsers/filters"
+	"github.com/haproxytech/config-parser/v2/parsers/http"
+	"github.com/haproxytech/config-parser/v2/parsers/simple"
+	"github.com/haproxytech/config-parser/v2/parsers/tcp"
 )
 
 func createParsers(parser []ParserInterface) *Parsers {

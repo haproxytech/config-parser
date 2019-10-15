@@ -23,10 +23,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/haproxytech/config-parser/common"
-	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/parsers/extra"
-	"github.com/haproxytech/config-parser/types"
+	"github.com/haproxytech/config-parser/v2/common"
+	"github.com/haproxytech/config-parser/v2/errors"
+	"github.com/haproxytech/config-parser/v2/parsers/extra"
+	"github.com/haproxytech/config-parser/v2/types"
 )
 
 type Section string

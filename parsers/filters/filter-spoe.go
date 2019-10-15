@@ -19,8 +19,8 @@ package filters
 import (
 	"strings"
 
-	"github.com/haproxytech/config-parser/common"
-	"github.com/haproxytech/config-parser/errors"
+	"github.com/haproxytech/config-parser/v2/common"
+	"github.com/haproxytech/config-parser/v2/errors"
 )
 
 type Spoe struct { //filter spoe [engine <name>] config <file>

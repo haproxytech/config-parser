@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/common"
+	"github.com/haproxytech/config-parser/v2/common"
 )
 
 type Session struct {

@@ -19,10 +19,10 @@ package http
 import (
 	"strings"
 
-	"github.com/haproxytech/config-parser/common"
-	"github.com/haproxytech/config-parser/errors"
-	"github.com/haproxytech/config-parser/parsers/http/actions"
-	"github.com/haproxytech/config-parser/types"
+	"github.com/haproxytech/config-parser/v2/common"
+	"github.com/haproxytech/config-parser/v2/errors"
+	"github.com/haproxytech/config-parser/v2/parsers/http/actions"
+	"github.com/haproxytech/config-parser/v2/types"
 )
 
 type Requests struct {
