@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v2/common"
 	"github.com/haproxytech/config-parser/v2/errors"
+	"github.com/haproxytech/config-parser/v2/params"
 	"github.com/haproxytech/config-parser/v2/types"
 )
 
@@ -29,41 +30,70 @@ type Balance struct {
 	data *types.Balance
 }
 
-func (p *Balance) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if parts[0] == "balance" {
-		if len(parts) < 2 {
-			return "", &errors.ParseError{Parser: "Balance", Line: line, Message: "Parse error"}
+func (p *Balance) parseBalanceParams(pb params.BalanceParams, line string, parts []string) (b *types.Balance, err error) {
+	if len(parts) >= 2 {
+		b, err := pb.Parse(parts[1:])
+		if err != nil {
+			return nil, &errors.ParseError{Parser: "Balance", Line: line}
 		}
 		data := &types.Balance{
-			Arguments: []string{},
-			Comment:   comment,
+			Params: b,
+		}
+		return data, nil
+	}
+
+	return nil, &errors.ParseError{Parser: "Balance", Line: line}
+}
+
+func (p *Balance) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+
+	if parts[0] == "balance" {
+		if len(parts) < 2 {
+			return "", &errors.ParseError{Parser: "Balance", Line: line}
 		}
 
+		data := &types.Balance{
+			Comment: comment,
+		}
+
+		var err error
+		var pb *types.Balance
+
 		switch parts[1] {
-		case "roundrobin", "static-rr", "leastconn", "first", "source", "random":
+		case "roundrobin", "static-rr", "leastconn", "first", "source", "random", "rdp-cookie":
 			data.Algorithm = parts[1]
-			p.data = data
-			return "", nil
-		case "uri", "url_param":
-			p.data = data
+		case "uri":
+			pb, err = p.parseBalanceParams(&params.BalanceURI{}, line, parts)
 			data.Algorithm = parts[1]
-			if len(parts) > 2 {
-				p.data.Arguments = parts[2:]
-				return "", nil
+		case "url_param":
+			pb, err = p.parseBalanceParams(&params.BalanceURLParam{}, line, parts)
+			data.Algorithm = parts[1]
+		default:
+			switch {
+			case strings.HasPrefix(parts[1], "random(") && strings.HasSuffix(parts[1], ")"):
+				pb, err = p.parseBalanceParams(&params.BalanceRandom{}, line, parts)
+				data.Algorithm = "random"
+			case strings.HasPrefix(parts[1], "rdp-cookie(") && strings.HasSuffix(parts[1], ")"):
+				pb, err = p.parseBalanceParams(&params.BalanceRdpCookie{}, line, parts)
+				data.Algorithm = "rdp-cookie"
+			case strings.HasPrefix(parts[1], "hdr(") && strings.HasSuffix(parts[1], ")"):
+				pb, err = p.parseBalanceParams(&params.BalanceHdr{}, line, parts)
+				data.Algorithm = "hdr"
+			default:
+				return "", &errors.ParseError{Parser: "Balance", Line: line}
 			}
-			return "", nil
 		}
-		if strings.HasPrefix(parts[1], "hdr(") && strings.HasSuffix(parts[1], ")") {
-			p.data = data
-			data.Algorithm = parts[1]
-			return "", nil
+
+		if err != nil {
+			return "", &errors.ParseError{Parser: "Balance", Line: line}
 		}
-		if strings.HasPrefix(parts[1], "rdp-cookie(") && strings.HasSuffix(parts[1], ")") {
-			p.data = data
-			data.Algorithm = parts[1]
-			return "", nil
+
+		if pb != nil && pb.Params != nil {
+			data.Params = pb.Params
 		}
-		return "", &errors.ParseError{Parser: "Balance", Line: line}
+
+		p.data = data
+		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Balance", Line: line}
 }
@@ -72,13 +102,16 @@ func (p *Balance) Result() ([]common.ReturnResultLine, error) {
 	if p.data == nil {
 		return nil, errors.ErrFetch
 	}
+
 	params := ""
-	if len(p.data.Arguments) > 0 {
-		params = fmt.Sprintf(" %s", strings.Join(p.data.Arguments, " "))
+	if p.data.Params != nil {
+		params = p.data.Params.String()
 	}
+
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{
-			Data: fmt.Sprintf("balance %s%s", p.data.Algorithm, params),
+			Data:    fmt.Sprintf("balance %s%s", p.data.Algorithm, params),
+			Comment: p.data.Comment,
 		},
 	}, nil
 }
