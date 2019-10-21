@@ -69,13 +69,29 @@ type Bind struct {
 //name:balance
 //is-multiple:false
 //test:ok:balance roundrobin
-//test:ok:balance uri depth 8
 //test:ok:balance uri
+//test:ok:balance uri whole
+//test:ok:balance uri len 12
+//test:ok:balance uri depth 8
+//test:ok:balance uri depth 8 whole
+//test:ok:balance uri depth 8 len 12 whole
+//test:ok:balance url_param
+//test:ok:balance url_param check_post 10
+//test:ok:balance url_param check_post 10 max_wait 20
+//test:ok:balance hdr(hdrName)
+//test:ok:balance hdr(hdrName) use_domain_only
+//test:ok:balance random
+//test:ok:balance random(15)
+//test:ok:balance rdp-cookie
+//test:ok:balance rdp-cookie(something)
 //test:fails:balance something
 //test:fail:balance
+//test:fail:balance uri len notInteger
+//test:fail:balance uri depth notInteger
+//test:fail:balance url_param check_post notInteger
 type Balance struct {
 	Algorithm string
-	Arguments []string
+	Params    params.BalanceParams
 	Comment   string
 }
 

@@ -49,7 +49,7 @@ func TestBalanceNormal0(t *testing.T) {
 }
 func TestBalanceNormal1(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance uri depth 8")
+	line := strings.TrimSpace("balance uri")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -70,7 +70,280 @@ func TestBalanceNormal1(t *testing.T) {
 }
 func TestBalanceNormal2(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance uri")
+	line := strings.TrimSpace("balance uri whole")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal3(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance uri len 12")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal4(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance uri depth 8")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal5(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance uri depth 8 whole")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal6(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance uri depth 8 len 12 whole")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal7(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance url_param")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal8(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance url_param check_post 10")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal9(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance url_param check_post 10 max_wait 20")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal10(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance hdr(hdrName)")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal11(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance hdr(hdrName) use_domain_only")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal12(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance random")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal13(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance random(15)")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal14(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance rdp-cookie")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal15(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance rdp-cookie(something)")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -115,7 +388,7 @@ func TestBalanceFail1(t *testing.T) {
 }
 func TestBalanceFail2(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("---")
+	line := strings.TrimSpace("balance uri len notInteger")
 	err := ProcessLine(line, parser)
 	if err == nil {
 		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
@@ -126,6 +399,42 @@ func TestBalanceFail2(t *testing.T) {
 	}
 }
 func TestBalanceFail3(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance uri depth notInteger")
+	err := ProcessLine(line, parser)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result()
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+	}
+}
+func TestBalanceFail4(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance url_param check_post notInteger")
+	err := ProcessLine(line, parser)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result()
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+	}
+}
+func TestBalanceFail5(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("---")
+	err := ProcessLine(line, parser)
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+	}
+	_, err = parser.Result()
+	if err == nil {
+		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+	}
+}
+func TestBalanceFail6(t *testing.T) {
 	parser := &parsers.Balance{}
 	line := strings.TrimSpace("--- ---")
 	err := ProcessLine(line, parser)
