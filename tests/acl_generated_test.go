@@ -32,10 +32,12 @@ func TestACLNormal0(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -53,10 +55,12 @@ func TestACLNormal1(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -74,10 +78,12 @@ func TestACLNormal2(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -95,10 +101,12 @@ func TestACLNormal3(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -116,10 +124,12 @@ func TestACLNormal4(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -137,10 +147,12 @@ func TestACLNormal5(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -158,10 +170,12 @@ func TestACLNormal6(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -179,10 +193,12 @@ func TestACLNormal7(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -200,10 +216,12 @@ func TestACLNormal8(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -221,10 +239,12 @@ func TestACLNormal9(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -242,10 +262,12 @@ func TestACLNormal10(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -263,10 +285,12 @@ func TestACLNormal11(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -284,10 +308,12 @@ func TestACLNormal12(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -305,10 +331,12 @@ func TestACLNormal13(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -326,10 +354,12 @@ func TestACLNormal14(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {

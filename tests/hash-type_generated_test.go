@@ -32,10 +32,12 @@ func TestHashTypeNormal0(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -53,10 +55,12 @@ func TestHashTypeNormal1(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -74,10 +78,12 @@ func TestHashTypeNormal2(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -95,10 +101,12 @@ func TestHashTypeNormal3(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -116,10 +124,12 @@ func TestHashTypeNormal4(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -137,10 +147,12 @@ func TestHashTypeNormal5(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -158,10 +170,12 @@ func TestHashTypeNormal6(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -179,10 +193,12 @@ func TestHashTypeNormal7(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -200,10 +216,12 @@ func TestHashTypeNormal8(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -221,10 +239,12 @@ func TestHashTypeNormal9(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -242,10 +262,12 @@ func TestHashTypeNormal10(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -263,10 +285,12 @@ func TestHashTypeNormal11(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -284,10 +308,12 @@ func TestHashTypeNormal12(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -305,10 +331,12 @@ func TestHashTypeNormal13(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -326,10 +354,12 @@ func TestHashTypeNormal14(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -347,10 +377,12 @@ func TestHashTypeNormal15(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -368,10 +400,12 @@ func TestHashTypeNormal16(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -389,10 +423,12 @@ func TestHashTypeNormal17(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -410,10 +446,12 @@ func TestHashTypeNormal18(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -431,10 +469,12 @@ func TestHashTypeNormal19(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -452,10 +492,12 @@ func TestHashTypeNormal20(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {

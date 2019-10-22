@@ -32,10 +32,12 @@ func TestBindNormal0(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -53,10 +55,12 @@ func TestBindNormal1(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -74,10 +78,12 @@ func TestBindNormal2(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -95,10 +101,12 @@ func TestBindNormal3(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -116,10 +124,12 @@ func TestBindNormal4(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -137,10 +147,12 @@ func TestBindNormal5(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -158,10 +170,12 @@ func TestBindNormal6(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -179,10 +193,12 @@ func TestBindNormal7(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -200,10 +216,12 @@ func TestBindNormal8(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -221,10 +239,12 @@ func TestBindNormal9(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
