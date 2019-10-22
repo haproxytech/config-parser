@@ -32,10 +32,12 @@ func TestStickNormal0(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -53,10 +55,12 @@ func TestStickNormal1(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -74,10 +78,12 @@ func TestStickNormal2(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {

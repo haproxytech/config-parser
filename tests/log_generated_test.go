@@ -32,10 +32,12 @@ func TestLogNormal0(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -53,10 +55,12 @@ func TestLogNormal1(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -74,10 +78,12 @@ func TestLogNormal2(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -95,10 +101,12 @@ func TestLogNormal3(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -116,10 +124,12 @@ func TestLogNormal4(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -137,10 +147,12 @@ func TestLogNormal5(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
@@ -158,10 +170,12 @@ func TestLogNormal6(t *testing.T) {
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	result, err := parser.Result()
 	if err != nil {
 		t.Errorf(err.Error())
+		return
 	}
 	var returnLine string
 	if result[0].Comment == "" {
