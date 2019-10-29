@@ -78,6 +78,7 @@ type Bind struct {
 //test:ok:balance url_param
 //test:ok:balance url_param check_post 10
 //test:ok:balance url_param check_post 10 max_wait 20
+//test:ok:balance url_param session_id check_post 10 max_wait 20
 //test:ok:balance hdr(hdrName)
 //test:ok:balance hdr(hdrName) use_domain_only
 //test:ok:balance random
