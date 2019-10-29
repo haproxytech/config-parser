@@ -66,12 +66,17 @@ func (b *BalanceURI) Parse(parts []string) (bp BalanceParams, err error) {
 }
 
 type BalanceURLParam struct {
+	Param     string
 	CheckPost int64
 	MaxWait   int64
 }
 
 func (u *BalanceURLParam) String() string {
 	var result strings.Builder
+	if u.Param != "" {
+		result.WriteString(" ")
+		result.WriteString(u.Param)
+	}
 	if u.CheckPost > 0 {
 		result.WriteString(" check_post ")
 		result.WriteString(strconv.FormatInt(u.CheckPost, 10))
@@ -103,6 +108,10 @@ func (u *BalanceURLParam) Parse(parts []string) (bp BalanceParams, err error) {
 					if u.MaxWait, err = strconv.ParseInt(parts[i], 10, 64); err != nil {
 						return nil, &errors.ParseError{Parser: "Balance", Message: err.Error()}
 					}
+				}
+			default:
+				if i > 0 && (arg != "check_post" || arg != "max_wait") {
+					u.Param = arg
 				}
 			}
 		}
