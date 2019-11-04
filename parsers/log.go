@@ -26,21 +26,31 @@ import (
 	"github.com/haproxytech/config-parser/v2/types"
 )
 
+var logAllowedFacitlites = map[string]struct{}{
+	"kern": struct{}{}, "user": struct{}{}, "mail": struct{}{}, "daemon": struct{}{},
+	"auth": struct{}{}, "syslog": struct{}{}, "lpr": struct{}{}, "news": struct{}{},
+	"uucp": struct{}{}, "cron": struct{}{}, "auth2": struct{}{}, "ftp": struct{}{},
+	"ntp": struct{}{}, "audit": struct{}{}, "alert": struct{}{}, "cron2": struct{}{},
+	"local0": struct{}{}, "local1": struct{}{}, "local2": struct{}{}, "local3": struct{}{},
+	"local4": struct{}{}, "local5": struct{}{}, "local6": struct{}{}, "local7": struct{}{},
+}
+var logAllowedLevels = map[string]struct{}{
+	"emerg":   struct{}{},
+	"alert":   struct{}{},
+	"crit":    struct{}{},
+	"err":     struct{}{},
+	"warning": struct{}{},
+	"notice":  struct{}{},
+	"info":    struct{}{},
+	"debug":   struct{}{},
+}
+
 type Log struct {
-	data              []types.Log
-	allowedLevels     map[string]bool
-	allowedFacitlites map[string]bool
+	data []types.Log
 }
 
 func (l *Log) Init() {
 	l.data = []types.Log{}
-	l.allowedFacitlites = map[string]bool{}
-	l.allowedLevels = map[string]bool{}
-	common.AddToBoolMap(l.allowedFacitlites,
-		"kern", "user", "mail", "daemon", "auth", "syslog", "lpr", "news",
-		"uucp", "cron", "auth2", "ftp", "ntp", "audit", "alert", "cron2",
-		"local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7")
-	common.AddToBoolMap(l.allowedLevels, "emerg", "alert", "crit", "err", "warning", "notice", "info", "debug")
 }
 
 func (l *Log) parse(line string, parts []string, comment string) (*types.Log, error) {
@@ -85,7 +95,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 		return log, &errors.ParseError{Parser: "Log", Line: line}
 	}
 	facility := parts[currIndex]
-	if _, ok := l.allowedFacitlites[facility]; !ok {
+	if _, ok := logAllowedFacitlites[facility]; !ok {
 		return log, &errors.ParseError{Parser: "Log", Line: line}
 	}
 	log.Facility = facility
@@ -95,7 +105,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 		return log, nil
 	}
 	level := parts[currIndex]
-	if _, ok := l.allowedLevels[level]; !ok {
+	if _, ok := logAllowedLevels[level]; !ok {
 		return log, nil
 	}
 	log.Level = level
@@ -105,7 +115,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 		return log, nil
 	}
 	level = parts[currIndex]
-	if _, ok := l.allowedLevels[level]; !ok {
+	if _, ok := logAllowedLevels[level]; !ok {
 		return log, nil
 	}
 	log.MinLevel = level
