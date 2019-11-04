@@ -24,17 +24,26 @@ import (
 	"github.com/haproxytech/config-parser/v2/types"
 )
 
+var errorFileAllowedCode = map[string]struct{}{
+	"200": struct{}{},
+	"400": struct{}{},
+	"403": struct{}{},
+	"405": struct{}{},
+	"408": struct{}{},
+	"425": struct{}{},
+	"429": struct{}{},
+	"500": struct{}{},
+	"502": struct{}{},
+	"503": struct{}{},
+	"504": struct{}{},
+}
+
 type ErrorFile struct {
-	data        []types.ErrorFile
-	allowedCode map[string]bool
+	data []types.ErrorFile
 }
 
 func (l *ErrorFile) Init() {
 	l.data = []types.ErrorFile{}
-	l.allowedCode = map[string]bool{}
-	common.AddToBoolMap(l.allowedCode,
-		"200", "400", "403", "405", "408", "425", "429",
-		"500", "502", "503", "504")
 }
 
 func (l *ErrorFile) parse(line string, parts []string, comment string) (*types.ErrorFile, error) {
@@ -46,7 +55,7 @@ func (l *ErrorFile) parse(line string, parts []string, comment string) (*types.E
 		Comment: comment,
 	}
 	code := parts[1]
-	if _, ok := l.allowedCode[code]; !ok {
+	if _, ok := errorFileAllowedCode[code]; !ok {
 		return errorfile, nil
 	}
 	errorfile.Code = code

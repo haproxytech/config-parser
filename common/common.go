@@ -18,12 +18,6 @@ package common
 
 import "strings"
 
-func AddToBoolMap(data map[string]bool, items ...string) {
-	for _, item := range items {
-		data[item] = true
-	}
-}
-
 //StringSplitIgnoreEmpty while spliting, removes empty items
 func StringSplitIgnoreEmpty(s string, separators ...rune) []string {
 	f := func(c rune) bool {
