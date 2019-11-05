@@ -76,6 +76,7 @@ type Bind struct {
 //test:ok:balance uri depth 8 whole
 //test:ok:balance uri depth 8 len 12 whole
 //test:ok:balance url_param
+//test:ok:balance url_param session_id
 //test:ok:balance url_param check_post 10
 //test:ok:balance url_param check_post 10 max_wait 20
 //test:ok:balance url_param session_id check_post 10 max_wait 20

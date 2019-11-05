@@ -91,7 +91,7 @@ func (u *BalanceURLParam) String() string {
 func (u *BalanceURLParam) Parse(parts []string) (bp BalanceParams, err error) {
 	if len(parts) > 0 {
 
-		for i := 0; i < len(parts); i++ {
+		for i := 1; i < len(parts); i++ {
 			arg := parts[i]
 
 			switch arg {
@@ -110,7 +110,7 @@ func (u *BalanceURLParam) Parse(parts []string) (bp BalanceParams, err error) {
 					}
 				}
 			default:
-				if i > 0 && (arg != "check_post" || arg != "max_wait") {
+				if i == 1 {
 					u.Param = arg
 				}
 			}
