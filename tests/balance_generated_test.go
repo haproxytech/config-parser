@@ -211,7 +211,7 @@ func TestBalanceNormal7(t *testing.T) {
 }
 func TestBalanceNormal8(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance url_param check_post 10")
+	line := strings.TrimSpace("balance url_param session_id")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -234,7 +234,7 @@ func TestBalanceNormal8(t *testing.T) {
 }
 func TestBalanceNormal9(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance url_param check_post 10 max_wait 20")
+	line := strings.TrimSpace("balance url_param check_post 10")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -257,7 +257,7 @@ func TestBalanceNormal9(t *testing.T) {
 }
 func TestBalanceNormal10(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance url_param session_id check_post 10 max_wait 20")
+	line := strings.TrimSpace("balance url_param check_post 10 max_wait 20")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -280,7 +280,7 @@ func TestBalanceNormal10(t *testing.T) {
 }
 func TestBalanceNormal11(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance hdr(hdrName)")
+	line := strings.TrimSpace("balance url_param session_id check_post 10 max_wait 20")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -303,7 +303,7 @@ func TestBalanceNormal11(t *testing.T) {
 }
 func TestBalanceNormal12(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance hdr(hdrName) use_domain_only")
+	line := strings.TrimSpace("balance hdr(hdrName)")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -326,7 +326,7 @@ func TestBalanceNormal12(t *testing.T) {
 }
 func TestBalanceNormal13(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance random")
+	line := strings.TrimSpace("balance hdr(hdrName) use_domain_only")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -349,7 +349,7 @@ func TestBalanceNormal13(t *testing.T) {
 }
 func TestBalanceNormal14(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance random(15)")
+	line := strings.TrimSpace("balance random")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -372,7 +372,7 @@ func TestBalanceNormal14(t *testing.T) {
 }
 func TestBalanceNormal15(t *testing.T) {
 	parser := &parsers.Balance{}
-	line := strings.TrimSpace("balance rdp-cookie")
+	line := strings.TrimSpace("balance random(15)")
 	err := ProcessLine(line, parser)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -394,6 +394,29 @@ func TestBalanceNormal15(t *testing.T) {
 	}
 }
 func TestBalanceNormal16(t *testing.T) {
+	parser := &parsers.Balance{}
+	line := strings.TrimSpace("balance rdp-cookie")
+	err := ProcessLine(line, parser)
+	if err != nil {
+		t.Errorf(err.Error())
+		return
+	}
+	result, err := parser.Result()
+	if err != nil {
+		t.Errorf(err.Error())
+		return
+	}
+	var returnLine string
+	if result[0].Comment == "" {
+		returnLine = fmt.Sprintf("%s", result[0].Data)
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
+func TestBalanceNormal17(t *testing.T) {
 	parser := &parsers.Balance{}
 	line := strings.TrimSpace("balance rdp-cookie(something)")
 	err := ProcessLine(line, parser)
