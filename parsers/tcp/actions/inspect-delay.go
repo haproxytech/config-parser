@@ -44,13 +44,8 @@ func (f *InspectDelay) Parse(parts []string, comment string) error {
 func (f *InspectDelay) String() string {
 	var result strings.Builder
 	result.WriteString("inspect-delay ")
-
 	result.WriteString(f.Timeout)
 
-	if f.Comment != "" {
-		result.WriteString(" # ")
-		result.WriteString(f.Comment)
-	}
 	return result.String()
 }
 

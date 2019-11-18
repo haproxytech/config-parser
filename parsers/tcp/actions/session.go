@@ -62,10 +62,6 @@ func (f *Session) String() string {
 		result.WriteString(" ")
 		result.WriteString(f.CondTest)
 	}
-	if f.Comment != "" {
-		result.WriteString(" # ")
-		result.WriteString(f.Comment)
-	}
 	return result.String()
 }
 
