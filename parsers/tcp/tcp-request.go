@@ -37,7 +37,7 @@ func (h *Requests) Init() {
 func (h *Requests) ParseTCPRequest(request types.TCPAction, parts []string, comment string) error {
 	err := request.Parse(parts, comment)
 	if err != nil {
-		return &errors.ParseError{Parser: "HTTPRequestLines", Line: ""}
+		return &errors.ParseError{Parser: "TCPRequest", Line: ""}
 	}
 	h.data = append(h.data, request)
 	return nil
@@ -49,12 +49,12 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 		switch parts[1] {
 		case "connection":
 			if h.Mode == "backend" {
-				return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
+				return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 			}
 			err = h.ParseTCPRequest(&actions.Connection{}, parts, comment)
 		case "session":
 			if h.Mode == "backend" {
-				return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
+				return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 			}
 			err = h.ParseTCPRequest(&actions.Session{}, parts, comment)
 		case "content":
@@ -62,14 +62,14 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 		case "inspect-delay":
 			err = h.ParseTCPRequest(&actions.InspectDelay{}, parts, comment)
 		default:
-			return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
+			return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 		}
 		if err != nil {
 			return "", err
 		}
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
+	return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 }
 
 func (h *Requests) Result() ([]common.ReturnResultLine, error) {
