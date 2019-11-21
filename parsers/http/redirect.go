@@ -36,7 +36,7 @@ func (h *Redirect) Init() {
 func (h *Redirect) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
 	err := response.Parse(parts, comment)
 	if err != nil {
-		return &errors.ParseError{Parser: "HTTPResponseLines", Line: ""}
+		return &errors.ParseError{Parser: "Redirect", Line: ""}
 	}
 	h.data = append(h.data, response)
 	return nil
@@ -51,7 +51,7 @@ func (h *Redirect) Parse(line string, parts, previousParts []string, comment str
 		}
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
+	return "", &errors.ParseError{Parser: "Redirect", Line: line}
 }
 
 func (h *Redirect) Result() ([]common.ReturnResultLine, error) {

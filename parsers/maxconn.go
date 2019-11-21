@@ -32,11 +32,11 @@ type MaxConn struct {
 func (p *MaxConn) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "maxconn" {
 		if len(parts) < 2 {
-			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "Maxconn", Line: line, Message: "Parse error"}
 		}
 		var num int64
 		if num, err = strconv.ParseInt(parts[1], 10, 64); err != nil {
-			return "", &errors.ParseError{Parser: "SectionName", Line: line, Message: err.Error()}
+			return "", &errors.ParseError{Parser: "Maxconn", Line: line, Message: err.Error()}
 		}
 		p.data = &types.Int64C{
 			Value:   num,
@@ -44,7 +44,7 @@ func (p *MaxConn) Parse(line string, parts, previousParts []string, comment stri
 		}
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: "SectionName", Line: line}
+	return "", &errors.ParseError{Parser: "Maxconn", Line: line}
 }
 
 func (p *MaxConn) Result() ([]common.ReturnResultLine, error) {
