@@ -48,11 +48,10 @@ func (f *Reject) Parse(parts []string, comment string) error {
 }
 
 func (f *Reject) String() string {
-	condition := ""
 	if f.Cond != "" {
-		condition = fmt.Sprintf(" %s %s", f.Cond, f.CondTest)
+		return fmt.Sprintf("reject %s %s", f.Cond, f.CondTest)
 	}
-	return fmt.Sprintf("reject%s", condition)
+	return "reject"
 }
 
 func (f *Reject) GetComment() string {

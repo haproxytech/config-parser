@@ -19,57 +19,63 @@ package tcp
 import (
 	"github.com/haproxytech/config-parser/v2/common"
 	"github.com/haproxytech/config-parser/v2/errors"
-	"github.com/haproxytech/config-parser/v2/parsers/tcp/actions"
+	tcptypes "github.com/haproxytech/config-parser/v2/parsers/tcp/types"
 	"github.com/haproxytech/config-parser/v2/types"
 )
 
 type Requests struct {
 	Name string
-	Mode string //frontent, backend
-	data []types.TCPAction
+	Mode string //frontent, backend, listen
+	data []types.TCPType
 }
 
 func (h *Requests) Init() {
 	h.Name = "tcp-request"
-	h.data = []types.TCPAction{}
+	h.data = []types.TCPType{}
 }
 
-func (h *Requests) ParseTCPRequest(request types.TCPAction, parts []string, comment string) error {
+func (h *Requests) ParseTCPRequest(request types.TCPType, parts []string, comment string) error {
+
 	err := request.Parse(parts, comment)
+
 	if err != nil {
 		return &errors.ParseError{Parser: "TCPRequest", Line: ""}
 	}
+
 	h.data = append(h.data, request)
+
 	return nil
 }
 
 func (h *Requests) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) >= 2 && parts[0] == "tcp-request" {
-		var err error
-		switch parts[1] {
-		case "connection":
-			if h.Mode == "backend" {
-				return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
-			}
-			err = h.ParseTCPRequest(&actions.Connection{}, parts, comment)
-		case "session":
-			if h.Mode == "backend" {
-				return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
-			}
-			err = h.ParseTCPRequest(&actions.Session{}, parts, comment)
-		case "content":
-			err = h.ParseTCPRequest(&actions.Content{}, parts, comment)
-		case "inspect-delay":
-			err = h.ParseTCPRequest(&actions.InspectDelay{}, parts, comment)
-		default:
+	if len(parts) < 2 || parts[0] != "tcp-request" {
+		return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
+	}
+
+	switch parts[1] {
+	case "connection":
+		if h.Mode == "backend" {
 			return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 		}
-		if err != nil {
-			return "", err
+		err = h.ParseTCPRequest(&tcptypes.Connection{}, parts, comment)
+	case "session":
+		if h.Mode == "backend" {
+			return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 		}
-		return "", nil
+		err = h.ParseTCPRequest(&tcptypes.Session{}, parts, comment)
+	case "content":
+		err = h.ParseTCPRequest(&tcptypes.Content{}, parts, comment)
+	case "inspect-delay":
+		err = h.ParseTCPRequest(&tcptypes.InspectDelay{}, parts, comment)
+	default:
+		return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 	}
-	return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
+
+	if err != nil {
+		return "", err
+	}
+
+	return "", nil
 }
 
 func (h *Requests) Result() ([]common.ReturnResultLine, error) {

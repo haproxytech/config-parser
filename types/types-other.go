@@ -141,17 +141,22 @@ type HTTPRequests struct{}
 //no-parse:true
 type HTTPResponses struct{}
 
-type TCPAction interface {
+type TCPType interface {
 	Parse(parts []string, comment string) error
 	String() string
 	GetComment() string
+}
+
+type TCPAction interface {
+	Parse(command []string) error
+	String() string
 }
 
 //name:tcp-request
 //struct-name:Requests
 //dir:tcp
 //is-multiple:true
-//parser-type:TCPAction
+//parser-type:TCPType
 //is-interface:true
 //no-init:true
 //no-parse:true
@@ -161,7 +166,7 @@ type TCPRequests struct{}
 //struct-name:Responses
 //dir:tcp
 //is-multiple:true
-//parser-type:TCPAction
+//parser-type:TCPType
 //is-interface:true
 //no-init:true
 //no-parse:true
