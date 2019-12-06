@@ -169,7 +169,7 @@ func getFrontendParser() *Parsers {
 
 		&filters.Filters{},
 		&tcp.Requests{},
-		&http.Requests{},
+		&http.Requests{Mode: "frontend"},
 		&http.Redirect{},
 
 		&simple.Word{Name: "monitor-uri"},
@@ -177,7 +177,7 @@ func getFrontendParser() *Parsers {
 		&parsers.UseBackend{},
 		&parsers.DefaultBackend{},
 		&parsers.StickTable{},
-		&http.Responses{},
+		&http.Responses{Mode: "frontend"},
 	})
 }
 
@@ -228,7 +228,7 @@ func getBackendParser() *Parsers {
 		&parsers.Stick{},
 		&filters.Filters{},
 		&tcp.Requests{},
-		&http.Requests{},
+		&http.Requests{Mode: "backend"},
 		&http.Redirect{},
 		&parsers.Cookie{},
 		&parsers.UseServer{},
@@ -236,7 +236,7 @@ func getBackendParser() *Parsers {
 		&parsers.Server{},
 		&simple.Number{Name: "retries"},
 		&tcp.Responses{},
-		&http.Responses{},
+		&http.Responses{Mode: "backend"},
 	})
 }
 

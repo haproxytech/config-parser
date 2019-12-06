@@ -27,6 +27,7 @@ import (
 
 type Requests struct {
 	Name string
+	Mode string
 	data []types.HTTPAction
 }
 
@@ -54,6 +55,11 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.Allow{}, parts, comment)
 		case "auth":
 			err = h.ParseHTTPRequest(&actions.Auth{}, parts, comment)
+		case "capture":
+			if h.Mode == "backend" {
+				return "", &errors.ParseError{Parser: "HTTPRequest", Line: line}
+			}
+			err = h.ParseHTTPRequest(&actions.Capture{}, parts, comment)
 		case "del-header":
 			err = h.ParseHTTPRequest(&actions.DelHeader{}, parts, comment)
 		case "deny":
