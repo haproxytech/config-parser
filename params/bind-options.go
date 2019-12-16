@@ -171,7 +171,7 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "no-tlsv11"},
 		&BindOptionValue{Name: "no-tlsv12"},
 		&BindOptionValue{Name: "no-tlsv13"},
-		&BindOptionValue{Name: "npm"},
+		&BindOptionValue{Name: "npn"},
 		&BindOptionValue{Name: "process"},
 		&BindOptionValue{Name: "ssl-max-ver"},
 		&BindOptionValue{Name: "ssl-min-ver"},
