@@ -285,5 +285,8 @@ func getCacheParser() *Parsers {
 func getProgramParser() *Parsers {
 	return createParsers([]ParserInterface{
 		&simple.String{Name: "command"},
+		&simple.String{Name: "user"},
+		&simple.String{Name: "group"},
+		&simple.Option{Name: "start-on-reload"},
 	})
 }
