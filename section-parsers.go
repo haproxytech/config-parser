@@ -247,10 +247,20 @@ func getListenParser() *Parsers {
 func getResolverParser() *Parsers {
 	return createParsers([]ParserInterface{
 		&parsers.Nameserver{},
+
+		&simple.TimeTwoWords{Keywords: []string{"hold", "nx"}},
 		&simple.TimeTwoWords{Keywords: []string{"hold", "obsolete"}},
+		&simple.TimeTwoWords{Keywords: []string{"hold", "other"}},
+		&simple.TimeTwoWords{Keywords: []string{"hold", "refused"}},
+		&simple.TimeTwoWords{Keywords: []string{"hold", "timeout"}},
 		&simple.TimeTwoWords{Keywords: []string{"hold", "valid"}},
+
+		&simple.Timeout{Name: "resolve"},
 		&simple.Timeout{Name: "retry"},
+
 		&simple.Word{Name: "accepted_payload_size"},
+		&simple.Word{Name: "parse-resolv-conf"},
+		&simple.Word{Name: "resolve_retries"},
 	})
 }
 
