@@ -45,3 +45,7 @@ var ErrParserMissing = errors.New("parser missing")
 var ErrSectionAlreadyExists = errors.New("section already exists")
 
 var ErrSectionMissing = errors.New("section missing")
+
+var ErrScopeMissing = errors.New("scope missing")
+
+var ErrScopeAlreadyExists = errors.New("scope already exists")

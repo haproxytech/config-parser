@@ -33,4 +33,8 @@ type ConfiguredParsers struct {
 	Mailers  *Parsers
 	Cache    *Parsers
 	Program  *Parsers
+	//spoe parsers
+	SPOEAgent   *Parsers
+	SPOEGroup   *Parsers
+	SPOEMessage *Parsers
 }

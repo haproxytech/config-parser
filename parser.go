@@ -44,6 +44,10 @@ const (
 	Listen    Section = "listen"
 	Cache     Section = "cache"
 	Program   Section = "program"
+	//spoe sections
+	SPOEAgent   Section = "spoe-agent"
+	SPOEGroup   Section = "spoe-group"
+	SPOEMessage Section = "spoe-message"
 )
 
 const (
@@ -285,16 +289,16 @@ func (p *Parser) String() string {
 	defer p.unLock()
 	var result strings.Builder
 
-	p.writeParsers("", p.Parsers[Comments][CommentsSectionName].parsers, &result, false)
-	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].parsers, &result, true)
-	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].parsers, &result, true)
+	p.writeParsers("", p.Parsers[Comments][CommentsSectionName].Parsers, &result, false)
+	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].Parsers, &result, true)
+	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].Parsers, &result, true)
 
 	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Frontends, Backends, Listen, Program}
 
 	for _, section := range sections {
 		sortedSections := p.getSortedList(p.Parsers[section])
 		for _, sectionName := range sortedSections {
-			p.writeParsers(fmt.Sprintf("%s %s", section, sectionName), p.Parsers[section][sectionName].parsers, &result, true)
+			p.writeParsers(fmt.Sprintf("%s %s", section, sectionName), p.Parsers[section][sectionName].Parsers, &result, true)
 		}
 	}
 	return result.String()
@@ -311,7 +315,7 @@ func (p *Parser) Save(filename string) error {
 
 //ProcessLine parses line plus determines if we need to change state
 func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers {
-	for _, parser := range config.Active.parsers {
+	for _, parser := range config.Active.Parsers {
 		if newState, err := parser.Parse(line, parts, previousParts, comment); err == nil {
 			//should we have an option to remove it when found?
 			if newState != "" {

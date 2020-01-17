@@ -27,7 +27,7 @@ import (
 
 func createParsers(parser []ParserInterface) *Parsers {
 	p := Parsers{
-		parsers: append(parser, []ParserInterface{
+		Parsers: append(parser, []ParserInterface{
 			&extra.Section{Name: "defaults"},
 			&extra.Section{Name: "global"},
 			&extra.Section{Name: "frontend"},
@@ -42,7 +42,7 @@ func createParsers(parser []ParserInterface) *Parsers {
 			&extra.UnProcessed{},
 		}...),
 	}
-	for _, parser := range p.parsers {
+	for _, parser := range p.Parsers {
 		parser.Init()
 	}
 	return &p

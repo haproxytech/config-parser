@@ -48,6 +48,7 @@ type Data struct {
 	ModeOther          bool
 	TestOK             []string
 	TestFail           []string
+	DataDir 		   string
 }
 
 func main() {
@@ -61,9 +62,11 @@ func main() {
 	}
 
 	log.Println(dir)
-	generateTypes(dir)
+	generateTypes(dir, "")
 	generateTypesGeneric(dir)
 	generateTypesOther(dir)
+	//spoe
+	generateTypes(dir,"spoe/")
 }
 
 func generateTypesOther(dir string) {
@@ -251,8 +254,8 @@ func generateTypesGeneric(dir string) {
 	}
 }
 
-func generateTypes(dir string) {
-	dat, err := ioutil.ReadFile("types/types.go")
+func generateTypes(dir string, dataDir string) {
+	dat, err := ioutil.ReadFile(dataDir+"types/types.go")
 	if err != nil {
 		log.Println(err)
 	}
@@ -260,6 +263,7 @@ func generateTypes(dir string) {
 	//fmt.Print(lines)
 
 	parserData := Data{}
+	parserData.DataDir = dataDir
 	for _, line := range lines {
 		if strings.HasPrefix(line, "//sections:") {
 			//log.Println(line)
@@ -308,7 +312,7 @@ func generateTypes(dir string) {
 			filename = fmt.Sprintf("%s %s", filename, parserData.ParserSecondName)
 		}
 
-		filePath := path.Join(dir, "parsers", cleanFileName(filename)+"_generated.go")
+		filePath := path.Join(dir,dataDir, "parsers", cleanFileName(filename)+"_generated.go")
 		log.Println(filePath)
 		f, err := os.Create(filePath)
 		CheckErr(err)
@@ -321,7 +325,7 @@ func generateTypes(dir string) {
 		parserData.TestFail = append(parserData.TestFail, "---")
 		parserData.TestFail = append(parserData.TestFail, "--- ---")
 
-		filePath = path.Join(dir, "tests", cleanFileName(filename)+"_generated_test.go")
+		filePath = path.Join(dir, dataDir, "tests", cleanFileName(filename)+"_generated_test.go")
 		log.Println(filePath)
 		f, err = os.Create(filePath)
 		CheckErr(err)
@@ -370,7 +374,7 @@ package parsers
 import (
 	"github.com/haproxytech/config-parser/v2/common"
 	"github.com/haproxytech/config-parser/v2/errors"
-	"github.com/haproxytech/config-parser/v2/types"
+	"github.com/haproxytech/config-parser/v2/{{ .DataDir }}types"
 )
 
 {{- if not .NoInit }}
@@ -584,7 +588,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/parsers"
+	"github.com/haproxytech/config-parser/v2/{{ .DataDir }}parsers"
 )
 
 {{ $StructName := .StructName }}
