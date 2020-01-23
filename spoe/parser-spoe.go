@@ -126,7 +126,7 @@ func (p *Parser) SectionsGet(scope string, sectionType parser.Section) ([]string
 	return result, nil
 }
 
-//SectionsDelete deletes one section of sectionType
+//ScopeDelete deletes one section of sectionType
 func (p *Parser) ScopeDelete(scope string, scopeName string) error {
 	p.lock()
 	defer p.unLock()
@@ -154,7 +154,7 @@ func (p *Parser) SectionsDelete(scope string, sectionType parser.Section, sectio
 	return nil
 }
 
-//SectionsCreate creates one section of sectionType
+//ScopeCreate creates one section of sectionType
 func (p *Parser) ScopeCreate(scope string) error {
 	p.lock()
 	defer p.unLock()
@@ -390,7 +390,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 	scope = previousParts[0]
 	if p.IsScope(line) {
 		scope = line
-		p.ScopeCreate(scope)
+		_ = p.ScopeCreate(scope)
 		return config, scope
 	}
 	for _, prsr := range config.Active.Parsers {

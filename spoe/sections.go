@@ -2,7 +2,9 @@ package spoe
 
 import (
 	parser "github.com/haproxytech/config-parser/v2"
+	configparser "github.com/haproxytech/config-parser/v2/parsers"
 	"github.com/haproxytech/config-parser/v2/parsers/extra"
+	"github.com/haproxytech/config-parser/v2/parsers/simple"
 	"github.com/haproxytech/config-parser/v2/spoe/parsers"
 )
 
@@ -29,11 +31,40 @@ func createParsers(psrs []parser.ParserInterface) *parser.Parsers {
 }
 
 func getSPOEAgentParser() *parser.Parsers {
-	return createParsers([]parser.ParserInterface{})
+	return createParsers([]parser.ParserInterface{
+		&simple.String{Name: "groups"},
+		&configparser.Log{},
+		&simple.Number{Name: "maxconnrate"},
+		&simple.Number{Name: "maxerrrate"},
+		&simple.Number{Name: "max-frame-size"},
+		&simple.Number{Name: "max-waiting-frames"},
+		&simple.String{Name: "messages"},
+		&simple.Option{Name: "async"},
+		&simple.Option{Name: "continue-on-error"},
+		&simple.Option{Name: "dontlog-normal"},
+		&simple.Option{Name: "force-set-var"},
+		&simple.Option{Name: "pipelining"},
+		&simple.Option{Name: "send-frag-payload"},
+		&simple.TimeTwoWords{Keywords: []string{"option", "set-on-error"}},
+		&simple.TimeTwoWords{Keywords: []string{"option", "set-process-time"}},
+		&simple.TimeTwoWords{Keywords: []string{"option", "set-total-time"}},
+		&simple.TimeTwoWords{Keywords: []string{"option", "var-prefix"}},
+		&simple.String{Name: "register-var-names"},
+		&simple.TimeTwoWords{Keywords: []string{"timeout", "hello"}},
+		&simple.TimeTwoWords{Keywords: []string{"timeout", "idle"}},
+		&simple.TimeTwoWords{Keywords: []string{"timeout", "processing"}},
+		&simple.Word{Name: "use-backend"},
+	})
 }
 func getSPOEGroupParser() *parser.Parsers {
-	return createParsers([]parser.ParserInterface{})
+	return createParsers([]parser.ParserInterface{
+		&simple.String{Name: "messages"},
+	})
 }
 func getSPOEMessageParser() *parser.Parsers {
-	return createParsers([]parser.ParserInterface{})
+	return createParsers([]parser.ParserInterface{
+		&configparser.ACL{},
+		&simple.String{Name: "args"},
+		&parsers.Event{},
+	})
 }

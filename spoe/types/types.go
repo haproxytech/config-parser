@@ -22,3 +22,15 @@ type SPOESection struct {
 	Name    string
 	Comment string
 }
+
+//name:event
+//is-multiple:false
+//test:ok:event on-client-session
+//test:ok:event on-client-session if ! { src -f /etc/haproxy/whitelist.lst }
+//test:fail:event
+type Event struct {
+	Name     string
+	Cond     string
+	CondTest string
+	Comment  string
+}
