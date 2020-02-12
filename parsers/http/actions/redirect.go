@@ -48,24 +48,27 @@ func (f *Redirect) Parse(parts []string, comment string) error {
 		if len(command) < 2 {
 			return errors.ErrInvalidData
 		}
-		f.Type = command[0]
-		f.Value = command[1]
-		index := 2
-		if index < len(command) && command[index] == "code" {
-			index++
-			if index == len(command) {
-				return fmt.Errorf("not enough params")
+
+		var index int
+		for index = 0; index < len(command)-1; index++ {
+			switch command[index] {
+			case "code":
+				index++
+				f.Code = command[index]
+			case "location", "prefix", "scheme":
+				f.Type = command[index]
+				index++
+				f.Value = command[index]
+			default:
+				f.Option = fmt.Sprintf("%s %s", command[index], command[index+1])
 			}
-			f.Code = command[index]
-			index++
 		}
-		if index < len(command) {
-			f.Option = command[index]
-		}
+
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
 		}
+
 		return nil
 	}
 	return fmt.Errorf("not enough params")
