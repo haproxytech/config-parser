@@ -173,7 +173,7 @@ func TestTCPRequestConnectionExpectProxy(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -205,7 +205,7 @@ func TestTCPRequestConnectionExpectNetscalerCip(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -237,7 +237,7 @@ func TestTCPRequestConnectionCapture(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -269,7 +269,7 @@ func TestTCPRequestConnectionTrackSc0(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -301,7 +301,7 @@ func TestTCPRequestConnectionTrackSc0WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -333,7 +333,7 @@ func TestTCPRequestConnectionTrackSc1(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -365,7 +365,7 @@ func TestTCPRequestConnectionTrackSc1WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -397,7 +397,7 @@ func TestTCPRequestConnectionTrackSc2(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -429,7 +429,7 @@ func TestTCPRequestConnectionTrackSc2WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -461,7 +461,7 @@ func TestTCPRequestConnectionScIncGpc0(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -493,7 +493,7 @@ func TestTCPRequestConnectionScIncGpc0WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -525,7 +525,7 @@ func TestTCPRequestConnectionScIncGpc1(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -557,7 +557,7 @@ func TestTCPRequestConnectionScIncGpc1WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -589,7 +589,7 @@ func TestTCPRequestConnectionScSetGpt0(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -621,7 +621,7 @@ func TestTCPRequestConnectionScSetGpt0WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -653,7 +653,7 @@ func TestTCPRequestConnectionSetSrc(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -685,7 +685,7 @@ func TestTCPRequestConnectionSetSrcWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -717,7 +717,7 @@ func TestTCPRequestConnectionSetSrcSecond(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -749,7 +749,7 @@ func TestTCPRequestConnectionSetSrcSecondWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}

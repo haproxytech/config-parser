@@ -45,7 +45,7 @@ func TestTCPRequestContentAccept(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -77,7 +77,7 @@ func TestTCPRequestContentAcceptWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -109,7 +109,7 @@ func TestTCPRequestContentReject(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -140,7 +140,7 @@ func TestTCPRequestContentRejectWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -172,7 +172,7 @@ func TestTCPRequestContentCapture(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -204,7 +204,7 @@ func TestTCPRequestContentCaptureWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -236,7 +236,7 @@ func TestTCPRequestContentSetPriorityClass(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -268,7 +268,7 @@ func TestTCPRequestContentSetPriorityClassWithConditions(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -300,7 +300,7 @@ func TestTCPRequestContentSetPriorityOffset(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -332,7 +332,7 @@ func TestTCPRequestContentSetPriorityOffsetWithConditions(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -364,7 +364,7 @@ func TestTCPRequestContentTrackSc0(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -396,7 +396,7 @@ func TestTCPRequestContentTrackSc0WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -428,7 +428,7 @@ func TestTCPRequestContentTrackSc1(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -460,7 +460,7 @@ func TestTCPRequestContentTrackSc1WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -492,7 +492,7 @@ func TestTCPRequestContentTrackSc2(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -524,7 +524,7 @@ func TestTCPRequestContentTrackSc2WithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -556,7 +556,7 @@ func TestTCPRequestContentSetDst(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -588,7 +588,7 @@ func TestTCPRequestContentSilentDrop(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -620,7 +620,7 @@ func TestTCPRequestContentSilentDropWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -652,7 +652,7 @@ func TestTCPRequestContentSendSpoeGroup(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -686,7 +686,7 @@ func TestTCPRequestContentUseService(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -720,7 +720,7 @@ func TestTCPRequestContentUseServiceWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
