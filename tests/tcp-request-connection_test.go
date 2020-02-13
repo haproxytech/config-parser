@@ -45,7 +45,7 @@ func TestTCPRequestConnectionAccept(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -77,7 +77,7 @@ func TestTCPRequestConnectionAcceptWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -109,7 +109,7 @@ func TestTCPRequestConnectionReject(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
@@ -141,7 +141,7 @@ func TestTCPRequestConnectionRejectWithCondition(t *testing.T) {
 	var returnLine string
 
 	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
+		returnLine = result[0].Data
 	} else {
 		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
 	}
