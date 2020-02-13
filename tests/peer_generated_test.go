@@ -25,87 +25,48 @@ import (
 	"github.com/haproxytech/config-parser/v2/parsers"
 )
 
-
-func TestPeerNormal0(t *testing.T) {
+func TestPeer(t *testing.T) {
+	tests := map[string]bool{
+		"peer name 127.0.0.1:8080": true,
+		"peer name 127.0.0.1": false,
+		"peer name :8080": false,
+		"peer": false,
+		"---": false,
+		"--- ---": false,
+	}
 	parser := &parsers.Peer{}
-	line := strings.TrimSpace("peer name 127.0.0.1:8080")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestPeerFail0(t *testing.T) {
-	parser := &parsers.Peer{}
-	line := strings.TrimSpace("peer name 127.0.0.1")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestPeerFail1(t *testing.T) {
-	parser := &parsers.Peer{}
-	line := strings.TrimSpace("peer name :8080")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestPeerFail2(t *testing.T) {
-	parser := &parsers.Peer{}
-	line := strings.TrimSpace("peer")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestPeerFail3(t *testing.T) {
-	parser := &parsers.Peer{}
-	line := strings.TrimSpace("---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestPeerFail4(t *testing.T) {
-	parser := &parsers.Peer{}
-	line := strings.TrimSpace("--- ---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+	for command, shouldPass := range tests {
+		t.Run(command, func(t *testing.T) {
+			line := strings.TrimSpace(command)
+			err := ProcessLine(line, parser)
+			if shouldPass {
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				result, err := parser.Result()
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				var returnLine string
+				if result[0].Comment == "" {
+					returnLine = result[0].Data
+				} else {
+					returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+				}
+				if line != returnLine {
+					t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+				}
+			} else {
+				if err == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+				}
+				_, parseErr := parser.Result()
+				if parseErr == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+				}
+			}
+		})
 	}
 }

@@ -25,166 +25,50 @@ import (
 	"github.com/haproxytech/config-parser/v2/parsers"
 )
 
-
-func TestOptionSmtpchkNormal0(t *testing.T) {
+func TestOptionSmtpchk(t *testing.T) {
+	tests := map[string]bool{
+		"option smtpchk": true,
+		"no option smtpchk": true,
+		"option smtpchk HELO mydomain.org": true,
+		"option smtpchk EHLO mydomain.org": true,
+		"option smtpchk # comment": true,
+		"option smtpchk HELO mydomain.org # comment": true,
+		"---": false,
+		"--- ---": false,
+	}
 	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("option smtpchk")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestOptionSmtpchkNormal1(t *testing.T) {
-	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("no option smtpchk")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestOptionSmtpchkNormal2(t *testing.T) {
-	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("option smtpchk HELO mydomain.org")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestOptionSmtpchkNormal3(t *testing.T) {
-	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("option smtpchk EHLO mydomain.org")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestOptionSmtpchkNormal4(t *testing.T) {
-	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("option smtpchk # comment")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestOptionSmtpchkNormal5(t *testing.T) {
-	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("option smtpchk HELO mydomain.org # comment")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestOptionSmtpchkFail0(t *testing.T) {
-	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestOptionSmtpchkFail1(t *testing.T) {
-	parser := &parsers.OptionSmtpchk{}
-	line := strings.TrimSpace("--- ---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+	for command, shouldPass := range tests {
+		t.Run(command, func(t *testing.T) {
+			line := strings.TrimSpace(command)
+			err := ProcessLine(line, parser)
+			if shouldPass {
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				result, err := parser.Result()
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				var returnLine string
+				if result[0].Comment == "" {
+					returnLine = result[0].Data
+				} else {
+					returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+				}
+				if line != returnLine {
+					t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+				}
+			} else {
+				if err == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+				}
+				_, parseErr := parser.Result()
+				if parseErr == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+				}
+			}
+		})
 	}
 }

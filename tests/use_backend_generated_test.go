@@ -25,109 +25,48 @@ import (
 	"github.com/haproxytech/config-parser/v2/parsers"
 )
 
-
-func TestUseBackendNormal0(t *testing.T) {
+func TestUseBackend(t *testing.T) {
+	tests := map[string]bool{
+		"use_backend test if TRUE": true,
+		"use_backend test if TRUE # deny": true,
+		"use_backend test # deny": true,
+		"use_backend": false,
+		"---": false,
+		"--- ---": false,
+	}
 	parser := &parsers.UseBackend{}
-	line := strings.TrimSpace("use_backend test if TRUE")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestUseBackendNormal1(t *testing.T) {
-	parser := &parsers.UseBackend{}
-	line := strings.TrimSpace("use_backend test if TRUE # deny")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestUseBackendNormal2(t *testing.T) {
-	parser := &parsers.UseBackend{}
-	line := strings.TrimSpace("use_backend test # deny")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestUseBackendFail0(t *testing.T) {
-	parser := &parsers.UseBackend{}
-	line := strings.TrimSpace("use_backend")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestUseBackendFail1(t *testing.T) {
-	parser := &parsers.UseBackend{}
-	line := strings.TrimSpace("---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestUseBackendFail2(t *testing.T) {
-	parser := &parsers.UseBackend{}
-	line := strings.TrimSpace("--- ---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+	for command, shouldPass := range tests {
+		t.Run(command, func(t *testing.T) {
+			line := strings.TrimSpace(command)
+			err := ProcessLine(line, parser)
+			if shouldPass {
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				result, err := parser.Result()
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				var returnLine string
+				if result[0].Comment == "" {
+					returnLine = result[0].Data
+				} else {
+					returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+				}
+				if line != returnLine {
+					t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+				}
+			} else {
+				if err == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+				}
+				_, parseErr := parser.Result()
+				if parseErr == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+				}
+			}
+		})
 	}
 }

@@ -25,225 +25,54 @@ import (
 	"github.com/haproxytech/config-parser/v2/parsers"
 )
 
-
-func TestCookieNormal0(t *testing.T) {
+func TestCookie(t *testing.T) {
+	tests := map[string]bool{
+		"cookie test": true,
+		"cookie myCookie domain dom1 indirect postonly": true,
+		"cookie myCookie domain dom1 domain dom2 indirect postonly": true,
+		"cookie myCookie indirect maxidle 10 maxlife 5 postonly": true,
+		"cookie myCookie indirect maxidle 10": true,
+		"cookie myCookie indirect maxlife 10": true,
+		"cookie myCookie domain dom1 domain dom2 httponly indirect maxidle 10 maxlife 5 nocache postonly preserve rewrite secure": true,
+		"cookie": false,
+		"cookie myCookie maxidle something": false,
+		"cookie myCookie maxlife something": false,
+		"---": false,
+		"--- ---": false,
+	}
 	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie test")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestCookieNormal1(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie domain dom1 indirect postonly")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestCookieNormal2(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie domain dom1 domain dom2 indirect postonly")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestCookieNormal3(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie indirect maxidle 10 maxlife 5 postonly")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestCookieNormal4(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie indirect maxidle 10")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestCookieNormal5(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie indirect maxlife 10")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestCookieNormal6(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie domain dom1 domain dom2 httponly indirect maxidle 10 maxlife 5 nocache postonly preserve rewrite secure")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
-	}
-}
-func TestCookieFail0(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestCookieFail1(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie maxidle something")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestCookieFail2(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("cookie myCookie maxlife something")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestCookieFail3(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-func TestCookieFail4(t *testing.T) {
-	parser := &parsers.Cookie{}
-	line := strings.TrimSpace("--- ---")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+	for command, shouldPass := range tests {
+		t.Run(command, func(t *testing.T) {
+			line := strings.TrimSpace(command)
+			err := ProcessLine(line, parser)
+			if shouldPass {
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				result, err := parser.Result()
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				var returnLine string
+				if result[0].Comment == "" {
+					returnLine = result[0].Data
+				} else {
+					returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+				}
+				if line != returnLine {
+					t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+				}
+			} else {
+				if err == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+				}
+				_, parseErr := parser.Result()
+				if parseErr == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+				}
+			}
+		})
 	}
 }

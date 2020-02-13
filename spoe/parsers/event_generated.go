@@ -23,7 +23,7 @@ import (
 )
 
 func (p *Event) Init() {
-	p.data = nil
+    p.data = nil
 }
 
 func (p *Event) GetParserName() string {
