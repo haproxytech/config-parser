@@ -311,6 +311,20 @@ type OptionMysqlCheck struct {
 }
 
 //sections:backend
+//name:option pgsql-check
+//no-parse:true
+//test:ok:option pgsql-check
+//test:ok:option pgsql-check user john
+//test:ok:option pgsql-check # comment
+//test:fail:option pgsql-check user
+//test:fail:option pgsql-check user # comment
+type OptionPgsqlCheck struct {
+	NoOption bool
+	User     string
+	Comment  string
+}
+
+//sections:backend
 //name:option redispatch
 //no-parse:true
 //test:ok:option redispatch
