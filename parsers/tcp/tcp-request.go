@@ -35,20 +35,20 @@ func (h *Requests) Init() {
 }
 
 func (h *Requests) ParseTCPRequest(request types.TCPType, parts []string, comment string) error {
-
 	err := request.Parse(parts, comment)
-
 	if err != nil {
 		return &errors.ParseError{Parser: "TCPRequest", Line: ""}
 	}
-
 	h.data = append(h.data, request)
 
 	return nil
 }
 
 func (h *Requests) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) < 2 || parts[0] != "tcp-request" {
+	if parts[0] != "tcp-request" {
+		return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
+	}
+	if len(parts) < 2 {
 		return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 	}
 
@@ -79,6 +79,9 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 }
 
 func (h *Requests) Result() ([]common.ReturnResultLine, error) {
+	if len(h.data) == 0 {
+		return nil, errors.ErrFetch
+	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{
