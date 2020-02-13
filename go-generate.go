@@ -48,7 +48,7 @@ type Data struct {
 	ModeOther          bool
 	TestOK             []string
 	TestFail           []string
-	DataDir 		   string
+	DataDir            string
 }
 
 func main() {
@@ -66,7 +66,7 @@ func main() {
 	generateTypesGeneric(dir)
 	generateTypesOther(dir)
 	//spoe
-	generateTypes(dir,"spoe/")
+	generateTypes(dir, "spoe/")
 }
 
 func generateTypesOther(dir string) {
@@ -255,7 +255,7 @@ func generateTypesGeneric(dir string) {
 }
 
 func generateTypes(dir string, dataDir string) {
-	dat, err := ioutil.ReadFile(dataDir+"types/types.go")
+	dat, err := ioutil.ReadFile(dataDir + "types/types.go")
 	if err != nil {
 		log.Println(err)
 	}
@@ -263,8 +263,9 @@ func generateTypes(dir string, dataDir string) {
 	//fmt.Print(lines)
 
 	parserData := Data{}
-	parserData.DataDir = dataDir
+
 	for _, line := range lines {
+		parserData.DataDir = dataDir
 		if strings.HasPrefix(line, "//sections:") {
 			//log.Println(line)
 		}
@@ -312,7 +313,7 @@ func generateTypes(dir string, dataDir string) {
 			filename = fmt.Sprintf("%s %s", filename, parserData.ParserSecondName)
 		}
 
-		filePath := path.Join(dir,dataDir, "parsers", cleanFileName(filename)+"_generated.go")
+		filePath := path.Join(dir, dataDir, "parsers", cleanFileName(filename)+"_generated.go")
 		log.Println(filePath)
 		f, err := os.Create(filePath)
 		CheckErr(err)
@@ -590,46 +591,50 @@ import (
 
 	"github.com/haproxytech/config-parser/v2/{{ .DataDir }}parsers"
 )
-
 {{ $StructName := .StructName }}
-{{- range $index, $val := .TestOK}}
-func Test{{ $StructName }}Normal{{$index}}(t *testing.T) {
+func Test{{ $StructName }}(t *testing.T) {
+	tests := map[string]bool{
+	{{- range $index, $val := .TestOK}}
+		"{{- $val -}}": true,
+	{{- end }}
+	{{- range $index, $val := .TestFail}}
+		"{{- $val -}}": false,
+	{{- end }}
+	}
 	parser := &parsers.{{ $StructName }}{}
-	line := strings.TrimSpace("{{- $val -}}")
-	err := ProcessLine(line, parser)
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	result, err := parser.Result()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	var returnLine string
-	if result[0].Comment == "" {
-		returnLine = fmt.Sprintf("%s", result[0].Data)
-	} else {
-		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-	}
-	if line != returnLine {
-		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	for command, shouldPass := range tests {
+		t.Run(command, func(t *testing.T) {
+			line := strings.TrimSpace(command)
+			err := ProcessLine(line, parser)
+			if shouldPass {
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				result, err := parser.Result()
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				var returnLine string
+				if result[0].Comment == "" {
+					returnLine = result[0].Data
+				} else {
+					returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+				}
+				if line != returnLine {
+					t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+				}
+			} else {
+				if err == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+				}
+				_, parseErr := parser.Result()
+				if parseErr == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+				}
+			}
+		})
 	}
 }
-{{- end }}
-
-{{- range $index, $val := .TestFail}}
-func Test{{ $StructName }}Fail{{$index}}(t *testing.T) {
-	parser := &parsers.{{ $StructName }}{}
-	line := strings.TrimSpace("{{- $val -}}")
-	err := ProcessLine(line, parser)
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
-	}
-	_, err = parser.Result()
-	if err == nil {
-		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
-	}
-}
-{{- end }}
 `))
