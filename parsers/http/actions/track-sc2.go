@@ -18,12 +18,16 @@ package actions
 
 import (
 	"fmt"
+	"strings"
+	"github.com/haproxytech/config-parser/v2/common"
 )
 
 type TrackSc2 struct {
-	Key   string
-	Table string
+	Key     string
+	Table   string
 	Comment string
+	Cond string
+	CondTest string
 }
 
 func (f *TrackSc2) Parse(parts []string, comment string) error {
@@ -32,26 +36,36 @@ func (f *TrackSc2) Parse(parts []string, comment string) error {
 		return fmt.Errorf("not enough params")
 	}
 
-	f.Key = parts[2]
+	command, condition := common.SplitRequest(parts[2:])
 
-	if len(parts) == 4 {
-		f.Table = parts[3]
+	f.Key = command[0]
+
+	if len(parts) == 2 {
+		f.Table = command[1]
 	}
-
-	if comment != "" {
-		f.Comment = comment
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
 	}
 
 	return nil
 }
 
 func (f *TrackSc2) String() string {
-
+	var result strings.Builder
+	result.WriteString("track-sc2 ")
+	result.WriteString(f.Key)
 	if f.Table != "" {
-		return fmt.Sprintf("track-sc2 %s %s", f.Key, f.Table)
+		result.WriteString(" ")
+		result.WriteString(f.Table)
 	}
-
-	return fmt.Sprintf("track-sc2 %s", f.Key)
+	if f.Cond != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Cond)
+		result.WriteString(" ")
+		result.WriteString(f.CondTest)
+	}
+	return result.String()
 }
 func (f *TrackSc2) GetComment() string {
 	return f.Comment
