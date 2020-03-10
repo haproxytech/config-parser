@@ -19,14 +19,15 @@ package actions
 import (
 	"fmt"
 	"strings"
+
 	"github.com/haproxytech/config-parser/v2/common"
 )
 
 type TrackSc2 struct {
-	Key     string
-	Table   string
-	Comment string
-	Cond string
+	Key      string
+	Table    string
+	Comment  string
+	Cond     string
 	CondTest string
 }
 
