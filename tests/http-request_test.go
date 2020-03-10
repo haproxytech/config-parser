@@ -72,3 +72,66 @@ func TestHTTPRequestSetPathFail(t *testing.T) {
 		t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 	}
 }
+
+func TestHTTPRequestConnectionTrackSc0(t *testing.T) {
+
+	parser := &http.Requests{}
+
+	line := strings.TrimSpace("http-request track-sc0 src")
+
+	err := ProcessLine(line, parser)
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	result, err := parser.Result()
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	var returnLine string
+
+	if result[0].Comment == "" {
+		returnLine = result[0].Data
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+
+}
+
+func TestHTTPRequestConnectionTrackSc0WithCondition(t *testing.T) {
+
+	parser := &http.Requests{}
+
+	line := strings.TrimSpace("http-request track-sc0 src if some_check")
+
+	err := ProcessLine(line, parser)
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	result, err := parser.Result()
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	var returnLine string
+
+	if result[0].Comment == "" {
+		returnLine = result[0].Data
+	} else {
+		returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+	}
+
+	if line != returnLine {
+		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
+	}
+}
