@@ -63,6 +63,9 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 }
 
 func (h *Responses) Result() ([]common.ReturnResultLine, error) {
+	if len(h.data) == 0 {
+		return nil, errors.ErrFetch
+	}
 	result := make([]common.ReturnResultLine, len(h.data))
 	for index, req := range h.data {
 		result[index] = common.ReturnResultLine{

@@ -25,13 +25,13 @@ import (
 	"github.com/haproxytech/config-parser/v2/parsers/tcp"
 )
 
-func TestRequeststcp(t *testing.T) {
+func TestResponsestcp(t *testing.T) {
 	tests := map[string]bool{
-		"tcp-request": false,
+		"tcp-response": false,
 		"---": false,
 		"--- ---": false,
 	}
-	parser := &tcp.Requests{}
+	parser := &tcp.Responses{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
 			line := strings.TrimSpace(command)

@@ -160,6 +160,7 @@ type TCPAction interface {
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:fail:tcp-request
 type TCPRequests struct{}
 
 //name:tcp-response
@@ -170,7 +171,7 @@ type TCPRequests struct{}
 //is-interface:true
 //no-init:true
 //no-parse:true
-//test:skip
+//test:fail:tcp-response
 type TCPResponses struct{}
 
 //name:redirect
