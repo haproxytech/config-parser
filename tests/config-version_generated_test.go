@@ -22,20 +22,15 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/parsers"
+	"github.com/haproxytech/config-parser/v2/parsers/extra"
 )
 
-func TestOptionPgsqlCheck(t *testing.T) {
+func TestConfigVersionextra(t *testing.T) {
 	tests := map[string]bool{
-		"option pgsql-check": true,
-		"option pgsql-check user john": true,
-		"option pgsql-check # comment": true,
-		"option pgsql-check user": false,
-		"option pgsql-check user # comment": false,
 		"---": false,
 		"--- ---": false,
 	}
-	parser := &parsers.OptionPgsqlCheck{}
+	parser := &extra.ConfigVersion{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
 			line := strings.TrimSpace(command)

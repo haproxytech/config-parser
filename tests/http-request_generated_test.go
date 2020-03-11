@@ -22,20 +22,19 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/parsers"
+	"github.com/haproxytech/config-parser/v2/parsers/http"
 )
 
-func TestOptionPgsqlCheck(t *testing.T) {
+func TestRequestshttp(t *testing.T) {
 	tests := map[string]bool{
-		"option pgsql-check": true,
-		"option pgsql-check user john": true,
-		"option pgsql-check # comment": true,
-		"option pgsql-check user": false,
-		"option pgsql-check user # comment": false,
+		"http-request capture req.cook_cnt(FirstVisit),bool len 10": true,
+		"http-request deny deny_status 0 unless { src 127.0.0.1 }": true,
+		"http-request": false,
+		"http-request capture req.cook_cnt(FirstVisit),bool strlen 10": false,
 		"---": false,
 		"--- ---": false,
 	}
-	parser := &parsers.OptionPgsqlCheck{}
+	parser := &http.Requests{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
 			line := strings.TrimSpace(command)

@@ -48,6 +48,7 @@ type Data struct {
 	ModeOther          bool
 	TestOK             []string
 	TestFail           []string
+	TestSkip           bool
 	DataDir            string
 }
 
@@ -126,6 +127,9 @@ func generateTypesOther(dir string) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
 		}
+		if strings.HasPrefix(line, "//test:skip") {
+			parserData.TestSkip = true
+		}
 
 		if !strings.HasPrefix(line, "type ") {
 			continue
@@ -158,6 +162,21 @@ func generateTypesOther(dir string) {
 		parserData.ModeOther = true
 		err = typeTemplate.Execute(f, parserData)
 		CheckErr(err)
+
+		if !parserData.TestSkip {
+			parserData.TestFail = append(parserData.TestFail, "---")
+			parserData.TestFail = append(parserData.TestFail, "--- ---")
+			dataDir := ""
+
+			filePath = path.Join(dir, dataDir, "tests", cleanFileName(filename)+"_generated_test.go")
+			log.Println(filePath)
+			f, err = os.Create(filePath)
+			CheckErr(err)
+			defer f.Close()
+
+			err = testTemplate.Execute(f, parserData)
+			CheckErr(err)
+		}
 
 		parserData = Data{}
 	}
@@ -589,10 +608,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/{{ .DataDir }}parsers"
+	"github.com/haproxytech/config-parser/v2/{{ .DataDir }}parsers{{- if .ModeOther}}/{{ .Dir }}{{- end }}"
 )
 {{ $StructName := .StructName }}
-func Test{{ $StructName }}(t *testing.T) {
+func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {
 	tests := map[string]bool{
 	{{- range $index, $val := .TestOK}}
 		"{{- $val -}}": true,
@@ -601,7 +620,7 @@ func Test{{ $StructName }}(t *testing.T) {
 		"{{- $val -}}": false,
 	{{- end }}
 	}
-	parser := &parsers.{{ $StructName }}{}
+	parser := {{- if .ModeOther}} &{{ .Dir }}{{- else }} &parsers{{- end }}.{{ $StructName }}{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
 			line := strings.TrimSpace(command)

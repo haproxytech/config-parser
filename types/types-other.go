@@ -48,6 +48,7 @@ type Comments struct {
 //is-multiple:true
 //no-init:true
 //no-parse:true
+//test:skip
 type UnProcessed struct {
 	Value string
 }
@@ -88,13 +89,6 @@ type SimpleNumber struct{}
 //parser-type:StringC
 type SimpleString struct{}
 
-//name:simple-time-two-words
-//struct-name:TimeTwoWords
-//dir:simple
-//parser-type:StringC
-//no-init:true
-type SimpleTimeTwoWords struct{}
-
 //name:simple-time
 //struct-name:Time
 //dir:simple
@@ -129,6 +123,10 @@ type HTTPAction interface {
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:fail:http-request
+//test:fail:http-request capture req.cook_cnt(FirstVisit),bool strlen 10
+//test:ok:http-request capture req.cook_cnt(FirstVisit),bool len 10
+//test:ok:http-request deny deny_status 0 unless { src 127.0.0.1 }
 type HTTPRequests struct{}
 
 //name:http-response
@@ -139,6 +137,8 @@ type HTTPRequests struct{}
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:fail:http-response
+//test:ok:http-response capture res.hdr(Server) id 0
 type HTTPResponses struct{}
 
 type TCPType interface {
@@ -170,6 +170,7 @@ type TCPRequests struct{}
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:skip
 type TCPResponses struct{}
 
 //name:redirect
