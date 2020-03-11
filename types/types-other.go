@@ -181,4 +181,6 @@ type TCPResponses struct{}
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:fail:redirect
+//test:ok:redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 type Redirect struct{}

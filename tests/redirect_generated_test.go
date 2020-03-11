@@ -27,6 +27,8 @@ import (
 
 func TestRedirecthttp(t *testing.T) {
 	tests := map[string]bool{
+		"redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }": true,
+		"redirect": false,
 		"---": false,
 		"--- ---": false,
 	}
