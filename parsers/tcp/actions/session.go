@@ -14,52 +14,57 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package types
+package actions
 
 import (
 	"fmt"
 	"strings"
+
+	"github.com/haproxytech/config-parser/v2/common"
 )
 
-type InspectDelay struct {
-	Timeout string
-	Comment string
+type Session struct {
+	Action   []string
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
-func (f *InspectDelay) Parse(parts []string, comment string) error {
-
+func (f *Session) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-
 	if len(parts) >= 3 {
-
-		if len(parts) > 1 {
-			f.Timeout = parts[2]
+		command, condition := common.SplitRequest(parts[2:])
+		if len(command) > 0 {
+			f.Action = command
 		} else {
 			return fmt.Errorf("not enough params")
+		}
+		if len(condition) > 1 {
+			f.Cond = condition[0]
+			f.CondTest = strings.Join(condition[1:], " ")
 		}
 		return nil
 	}
 	return fmt.Errorf("not enough params")
 }
 
-func (f *InspectDelay) String() string {
-
+func (f *Session) String() string {
 	var result strings.Builder
+	result.WriteString("content ")
 
-	result.WriteString("inspect-delay")
-	result.WriteString(" ")
-	result.WriteString(f.Timeout)
+	result.WriteString(strings.Join(f.Action, " "))
 
-	if f.Comment != "" {
-		result.WriteString(" # ")
-		result.WriteString(f.Comment)
+	if f.Cond != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Cond)
+		result.WriteString(" ")
+		result.WriteString(f.CondTest)
 	}
-
 	return result.String()
 }
 
-func (f *InspectDelay) GetComment() string {
+func (f *Session) GetComment() string {
 	return f.Comment
 }
