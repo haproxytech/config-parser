@@ -247,6 +247,12 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, res
 	if sectionName == "" {
 		sectionNameWritten = true
 	}
+	if sectionName != "global" && sectionName != "default" {
+		result.WriteString("\n")
+		result.WriteString(sectionName)
+		result.WriteString(" \n")
+		sectionNameWritten = true
+	}
 	for _, parser := range parsers {
 		lines, err := parser.Result()
 		if err != nil {
