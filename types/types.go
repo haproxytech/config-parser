@@ -542,6 +542,26 @@ type User struct {
 	Comment    string
 }
 
+//sections:defaults,frontend
+//name:unique-id-format
+//test:ok:unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
+//test:ok:unique-id-format %{+X}o_%cp_%fi:%fp_%Ts_%rt:%pid
+//test:ok:unique-id-format %{+X}o_%fi:%fp_%Ts_%rt:%pid
+//test:fail:unique-id-format
+type UniqueIDFormat struct {
+	LogFormat string
+	Comment   string
+}
+
+//sections:defaults,frontend
+//name:unique-id-header
+//test:ok:unique-id-header X-Unique-ID
+//test:fail:unique-id-header
+type UniqueIDHeader struct {
+	Name    string
+	Comment string
+}
+
 //sections:backend
 //name:use-server
 //is-multiple:true

@@ -115,6 +115,8 @@ func getDefaultParser() *Parsers {
 		&parsers.DefaultServer{},
 		&parsers.ErrorFile{},
 		&parsers.DefaultBackend{},
+		&parsers.UniqueIDFormat{},
+		&parsers.UniqueIDHeader{},
 	})
 }
 
@@ -187,6 +189,8 @@ func getFrontendParser() *Parsers {
 		&parsers.DefaultBackend{},
 		&parsers.StickTable{},
 		&http.Responses{Mode: "frontend"},
+		&parsers.UniqueIDFormat{},
+		&parsers.UniqueIDHeader{},
 	})
 }
 
