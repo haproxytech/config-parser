@@ -96,6 +96,7 @@ func getDefaultParser() *Parsers {
 		&simple.Option{Name: "external-check"},
 		&parsers.OptionForwardFor{},
 
+		&parsers.HTTPReuse{},
 		&simple.Timeout{Name: "http-request"},
 		&simple.Timeout{Name: "check"},
 		&simple.Timeout{Name: "connect"},
@@ -228,6 +229,7 @@ func getBackendParser() *Parsers {
 		&parsers.Stick{},
 		&filters.Filters{},
 		&tcp.Requests{},
+		&parsers.HTTPReuse{},
 		&http.Requests{Mode: "backend"},
 		&http.Redirect{},
 		&parsers.Cookie{},

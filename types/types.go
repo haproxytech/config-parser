@@ -209,6 +209,19 @@ type HashType struct {
 	Comment  string
 }
 
+//secitions:default,backend
+//name:http-reuse
+//is-multiple:false
+//test:ok:http-reuse never
+//test:ok:http-reuse safe
+//test:ok:http-reuse aggressive
+//test:ok:http-reuse always
+//test:fail:http-reuse sometimes
+type HTTPReuse struct {
+	ShareType string
+	Comment   string
+}
+
 //sections:defaults,frontend,backend
 //name:log
 //is-multiple:true
