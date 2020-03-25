@@ -121,6 +121,9 @@ func getDefaultParser() *Parsers {
 func getGlobalParser() *Parsers {
 	return createParsers([]ParserInterface{
 		&parsers.Daemon{},
+		&simple.Word{Name: "chroot"},
+		&simple.Word{Name: "user"},
+		&simple.Word{Name: "group"},
 		//&simple.SimpleFlag{Name: "master-worker"},
 		&parsers.MasterWorker{},
 		&parsers.ExternalCheck{},
@@ -135,6 +138,8 @@ func getGlobalParser() *Parsers {
 		&simple.Number{Name: "tune.ssl.default-dh-param"},
 		&simple.String{Name: "ssl-default-bind-options"},
 		&simple.Word{Name: "ssl-default-bind-ciphers"},
+		&simple.String{Name: "ssl-default-server-options"},
+		&simple.Word{Name: "ssl-default-server-ciphers"},
 		&parsers.Log{},
 	})
 }
