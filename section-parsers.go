@@ -70,6 +70,7 @@ func getDefaultParser() *Parsers {
 		&simple.String{Name: "log-format"},
 		&simple.String{Name: "log-format-sd"},
 		&parsers.Cookie{},
+		&parsers.HTTPCheck{},
 
 		&simple.Option{Name: "tcplog"},
 		&simple.Option{Name: "httpclose"},
@@ -188,6 +189,7 @@ func getBackendParser() *Parsers {
 		&parsers.HashType{},
 		&parsers.Balance{},
 		&parsers.ACL{},
+		&parsers.HTTPCheck{},
 
 		&simple.Option{Name: "httpclose"},
 		&simple.Option{Name: "forceclose"},
