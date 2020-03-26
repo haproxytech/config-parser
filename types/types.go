@@ -65,6 +65,23 @@ type Bind struct {
 	Comment string
 }
 
+//sections:frontend
+//name:bind-process
+//is-multiple:false
+//test:ok:bind-process all
+//test:ok:bind-process odd
+//test:ok:bind-process even
+//test:ok:bind-process 1 2 3 4
+//test:ok:bind-process 1-4
+//test:fail:bind-process none
+//test:fail:bind-process 1+4
+//test:fail:bind-process none-none
+//test:fail:bind-process 1-4 1-3
+type BindProcess struct {
+	Process string
+	Comment string
+}
+
 //sections:defaults,backend
 //name:balance
 //is-multiple:false

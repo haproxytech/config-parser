@@ -71,6 +71,7 @@ func getDefaultParser() *Parsers {
 		&simple.String{Name: "log-format-sd"},
 		&parsers.Cookie{},
 		&parsers.HTTPCheck{},
+		&parsers.BindProcess{},
 
 		&simple.Option{Name: "tcplog"},
 		&simple.Option{Name: "httpclose"},
@@ -144,6 +145,7 @@ func getFrontendParser() *Parsers {
 		&parsers.MaxConn{},
 		&parsers.Bind{},
 		&parsers.ACL{},
+		&parsers.BindProcess{},
 		&simple.Word{Name: "log-tag"},
 		&simple.String{Name: "log-format"},
 		&simple.String{Name: "log-format-sd"},
@@ -190,6 +192,7 @@ func getBackendParser() *Parsers {
 		&parsers.Balance{},
 		&parsers.ACL{},
 		&parsers.HTTPCheck{},
+		&parsers.BindProcess{},
 
 		&simple.Option{Name: "httpclose"},
 		&simple.Option{Name: "forceclose"},
