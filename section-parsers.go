@@ -22,6 +22,7 @@ import (
 	"github.com/haproxytech/config-parser/v2/parsers/filters"
 	"github.com/haproxytech/config-parser/v2/parsers/http"
 	"github.com/haproxytech/config-parser/v2/parsers/simple"
+	"github.com/haproxytech/config-parser/v2/parsers/stats"
 	"github.com/haproxytech/config-parser/v2/parsers/tcp"
 )
 
@@ -64,6 +65,7 @@ func getDefaultParser() *Parsers {
 		&parsers.MaxConn{},
 		&parsers.Log{},
 		&parsers.OptionHTTPLog{},
+		&stats.Stats{},
 
 		&simple.Word{Name: "log-tag"},
 
@@ -180,6 +182,7 @@ func getFrontendParser() *Parsers {
 
 		&filters.Filters{},
 		&tcp.Requests{},
+		&stats.Stats{},
 		&http.Requests{Mode: "frontend"},
 		&http.Redirect{},
 
@@ -243,6 +246,7 @@ func getBackendParser() *Parsers {
 		&parsers.Stick{},
 		&filters.Filters{},
 		&tcp.Requests{},
+		&stats.Stats{},
 		&parsers.HTTPReuse{},
 		&http.Requests{Mode: "backend"},
 		&http.Redirect{},

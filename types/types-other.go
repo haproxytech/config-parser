@@ -179,3 +179,56 @@ type TCPResponses struct{}
 //test:fail:redirect
 //test:ok:redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 type Redirect struct{}
+
+type StatsSettings interface {
+	Parse(parts []string, comment string) error
+	String() string
+	GetComment() string
+}
+
+//name:stats
+//struct-name:Stats
+//dir:stats
+//is-multiple:true
+//parser-type:StatsSettings
+//is-interface:true
+//no-init:true
+//no-parse:true
+//test:fail:stats
+//test:ok:stats admin if LOCALHOST
+//test:ok:stats auth admin1:AdMiN123
+//test:fail:stats auth admin1:
+//test:fail:stats auth
+//test:ok:stats enable
+//test:ok:stats hide-version
+//test:ok:stats show-legends
+//test:fail:stats NON-EXISTS
+//test:ok:stats maxconn 10
+//test:fail:stats maxconn WORD
+//test:ok:stats realm HAProxy\\ Statistics
+//test:ok:stats refresh 10s
+//test:fail:stats refresh
+//test:ok:stats scope .
+//test:fail:stats scope
+//test:ok:stats show-desc Master node for Europe, Asia, Africa
+//test:ok:stats show-node
+//test:ok:stats show-node Europe-1
+//test:ok:stats uri /admin?stats
+//test:fail:stats uri
+//test:ok:stats bind-process all
+//test:ok:stats bind-process odd
+//test:ok:stats bind-process even
+//test:ok:stats bind-process 1 2 3 4
+//test:ok:stats bind-process 1-4
+//test:fail:stats bind-process none
+//test:fail:stats bind-process 1+4
+//test:fail:stats bind-process none-none
+//test:fail:stats bind-process 1-4 1-3
+//test:ok:stats http-request realm HAProxy\\ Statistics
+//test:ok:stats http-request realm HAProxy\\ Statistics if something
+//test:ok:stats http-request auth if something
+//test:ok:stats http-request deny unless something
+//test:ok:stats http-request allow
+//test:fail:stats http-request
+//test:fail:stats http-request none
+type Stats struct{}
