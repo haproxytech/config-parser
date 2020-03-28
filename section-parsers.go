@@ -65,7 +65,7 @@ func getDefaultParser() *Parsers {
 		&parsers.MaxConn{},
 		&parsers.Log{},
 		&parsers.OptionHTTPLog{},
-		&stats.Stats{},
+		&stats.Stats{Mode: "defaults"},
 
 		&simple.Word{Name: "log-tag"},
 
@@ -182,7 +182,7 @@ func getFrontendParser() *Parsers {
 
 		&filters.Filters{},
 		&tcp.Requests{},
-		&stats.Stats{},
+		&stats.Stats{Mode: "frontend"},
 		&http.Requests{Mode: "frontend"},
 		&http.Redirect{},
 
@@ -246,7 +246,7 @@ func getBackendParser() *Parsers {
 		&parsers.Stick{},
 		&filters.Filters{},
 		&tcp.Requests{},
-		&stats.Stats{},
+		&stats.Stats{Mode: "backend"},
 		&parsers.HTTPReuse{},
 		&http.Requests{Mode: "backend"},
 		&http.Redirect{},
