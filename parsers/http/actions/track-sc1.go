@@ -57,7 +57,7 @@ func (f *TrackSc1) String() string {
 	result.WriteString("track-sc1 ")
 	result.WriteString(f.Key)
 	if f.Table != "" {
-		result.WriteString(" ")
+		result.WriteString(" table ")
 		result.WriteString(f.Table)
 	}
 	if f.Cond != "" {
