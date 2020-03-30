@@ -97,6 +97,8 @@ func getDefaultParser() *Parsers {
 		&simple.Option{Name: "redis-check"},
 		&parsers.OptionHttpchk{},
 
+		&simple.Option{Name: "logasap"},
+		&simple.Option{Name: "allbackups"},
 		&simple.Option{Name: "external-check"},
 		&parsers.OptionForwardFor{},
 
@@ -174,6 +176,7 @@ func getFrontendParser() *Parsers {
 		&simple.Option{Name: "log-separate-errors"},
 		&simple.Option{Name: "clitcpka"},
 
+		&simple.Option{Name: "logasap"},
 		&parsers.OptionHTTPLog{},
 
 		&simple.Timeout{Name: "http-request"},
@@ -226,6 +229,7 @@ func getBackendParser() *Parsers {
 		&simple.Option{Name: "external-check"},
 
 		&simple.String{Name: "log-tag"},
+		&simple.Option{Name: "allbackups"},
 
 		&parsers.OptionHttpchk{},
 		&parsers.ExternalCheckPath{},
