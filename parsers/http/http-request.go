@@ -94,6 +94,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.TrackSc1{}, parts, comment)
 		case "track-sc2":
 			err = h.ParseHTTPRequest(&actions.TrackSc2{}, parts, comment)
+		case "use-service":
+			err = h.ParseHTTPRequest(&actions.UseService{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):
