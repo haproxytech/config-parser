@@ -18,6 +18,7 @@ package parsers
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/v2/common"
 	"github.com/haproxytech/config-parser/v2/errors"
@@ -29,14 +30,14 @@ type UniqueIDFormat struct {
 }
 
 func (p *UniqueIDFormat) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) != 2 {
+	if len(parts) < 2 {
 		return "", &errors.ParseError{Parser: "unique-id-format", Line: line}
 	}
 	if parts[0] != "unique-id-format" {
 		return "", &errors.ParseError{Parser: "unique-id-format", Line: line}
 	}
 	p.data = &types.UniqueIDFormat{
-		LogFormat: parts[1],
+		LogFormat: strings.Join(parts[1:], " "),
 		Comment:   comment,
 	}
 	return "", nil
