@@ -247,7 +247,7 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, res
 	if sectionName == "" {
 		sectionNameWritten = true
 	}
-	if sectionName != "global" && sectionName != "default" {
+	if sectionName != "global" && sectionName != "defaults" {
 		result.WriteString("\n")
 		result.WriteString(sectionName)
 		result.WriteString(" \n")
