@@ -244,10 +244,12 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 
 func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, result *strings.Builder, useIndentation bool) {
 	sectionNameWritten := false
-	if sectionName == "" {
+	switch sectionName {
+	case "":
 		sectionNameWritten = true
-	}
-	if sectionName != "global" && sectionName != "defaults" {
+	case "global", "defaults":
+		break
+	default:
 		result.WriteString("\n")
 		result.WriteString(sectionName)
 		result.WriteString(" \n")
