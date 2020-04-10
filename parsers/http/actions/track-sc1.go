@@ -41,8 +41,8 @@ func (f *TrackSc1) Parse(parts []string, comment string) error {
 
 	f.Key = command[0]
 
-	if len(parts) == 2 {
-		f.Table = command[1]
+	if len(command) == 3 && command[1] == "table" {
+		f.Table = command[2]
 	}
 	if len(condition) > 1 {
 		f.Cond = condition[0]
