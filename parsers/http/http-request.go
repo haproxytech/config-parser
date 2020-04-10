@@ -68,6 +68,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.Redirect{}, parts, comment)
 		case "reject":
 			err = h.ParseHTTPRequest(&actions.Reject{}, parts, comment)
+		case "replace-path":
+			err = h.ParseHTTPRequest(&actions.ReplacePath{}, parts, comment)
 		case "replace-header":
 			err = h.ParseHTTPRequest(&actions.ReplaceHeader{}, parts, comment)
 		case "replace-value":
