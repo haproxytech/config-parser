@@ -196,7 +196,7 @@ func (p *Parser) SectionsCreate(scope string, sectionType parser.Section, sectio
 		Comments: p.Parsers[scope][parser.Comments][parser.CommentsSectionName],
 	}
 
-	previousLine := []string{}
+	previousLine := []string{scope}
 	parts := []string{string(sectionType), sectionName}
 	comment := ""
 	p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, previousLine, comment, parsers)
