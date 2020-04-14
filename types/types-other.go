@@ -160,7 +160,81 @@ type TCPAction interface {
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:ok:tcp-request content accept
+//test:ok:tcp-request content accept if !HTTP
+//test:ok:tcp-request content reject
+//test:ok:tcp-request content reject if !HTTP
+//test:ok:tcp-request content capture req.payload(0,6) len 6
+//test:ok:tcp-request content capture req.payload(0,6) len 6 if !HTTP
+//test:ok:tcp-request content set-priority-class int(1)
+//test:ok:tcp-request content set-priority-class int(1) if some_check
+//test:ok:tcp-request content set-priority-offset int(10)
+//test:ok:tcp-request content set-priority-offset int(10) if some_check
+//test:ok:tcp-request content track-sc0 src
+//test:ok:tcp-request content track-sc0 src if some_check
+//test:ok:tcp-request content track-sc1 src
+//test:ok:tcp-request content track-sc1 src if some_check
+//test:ok:tcp-request content track-sc2 src
+//test:ok:tcp-request content track-sc2 src if some_check
+//test:ok:tcp-request content set-dst ipv4(10.0.0.1)
+//test:ok:tcp-request content set-var(sess.src) src
+//test:ok:tcp-request content set-var(sess.dn) ssl_c_s_dn
+//test:ok:tcp-request content unset-var(sess.src)
+//test:ok:tcp-request content unset-var(sess.dn)
+//test:ok:tcp-request content silent-drop
+//test:ok:tcp-request content silent-drop if !HTTP
+//test:ok:tcp-request content send-spoe-group engine group
+//test:ok:tcp-request content use-service lua.deny
+//test:ok:tcp-request content use-service lua.deny if !HTTP
+//test:ok:tcp-request connection accept
+//test:ok:tcp-request connection accept if !HTTP
+//test:ok:tcp-request connection reject
+//test:ok:tcp-request connection reject if !HTTP
+//test:ok:tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
+//test:ok:tcp-request connection expect-netscaler-cip layer4
+//test:ok:tcp-request connection capture req.payload(0,6) len 6
+//test:ok:tcp-request connection track-sc0 src
+//test:ok:tcp-request connection track-sc0 src if some_check
+//test:ok:tcp-request connection track-sc1 src
+//test:ok:tcp-request connection track-sc1 src if some_check
+//test:ok:tcp-request connection track-sc2 src
+//test:ok:tcp-request connection track-sc2 src if some_check
+//test:ok:tcp-request connection sc-inc-gpc0(2)
+//test:ok:tcp-request connection sc-inc-gpc0(2) if is-error
+//test:ok:tcp-request connection sc-inc-gpc1(2)
+//test:ok:tcp-request connection sc-inc-gpc1(2) if is-error
+//test:ok:tcp-request connection sc-set-gpt0(0) 1337
+//test:ok:tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
+//test:ok:tcp-request connection set-src src,ipmask(24)
+//test:ok:tcp-request connection set-src src,ipmask(24) if some_check
+//test:ok:tcp-request connection set-src hdr(x-forwarded-for)
+//test:ok:tcp-request connection set-src hdr(x-forwarded-for) if some_check
+//test:ok:tcp-request session accept
+//test:ok:tcp-request session accept if !HTTP
+//test:ok:tcp-request session reject
+//test:ok:tcp-request session reject if !HTTP
+//test:ok:tcp-request session track-sc0 src
+//test:ok:tcp-request session track-sc0 src if some_check
+//test:ok:tcp-request session track-sc1 src
+//test:ok:tcp-request session track-sc1 src if some_check
+//test:ok:tcp-request session track-sc2 src
+//test:ok:tcp-request session track-sc2 src if some_check
+//test:ok:tcp-request session sc-inc-gpc0(2)
+//test:ok:tcp-request session sc-inc-gpc0(2) if is-error
+//test:ok:tcp-request session sc-inc-gpc1(2)
+//test:ok:tcp-request session sc-inc-gpc1(2) if is-error
+//test:ok:tcp-request session sc-set-gpt0(0) 1337
+//test:ok:tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
+//test:ok:tcp-request session set-var(sess.src) src
+//test:ok:tcp-request session set-var(sess.dn) ssl_c_s_dn
+//test:ok:tcp-request session unset-var(sess.src)
+//test:ok:tcp-request session unset-var(sess.dn)
+//test:ok:tcp-request session silent-drop
+//test:ok:tcp-request session silent-drop if !HTTP
 //test:fail:tcp-request
+//test:fail:tcp-request content
+//test:fail:tcp-request connection
+//test:fail:tcp-request session
 type TCPRequests struct{}
 
 //name:tcp-response
