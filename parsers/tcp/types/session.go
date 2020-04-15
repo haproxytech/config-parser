@@ -76,7 +76,7 @@ func (f *Session) Parse(parts []string, comment string) error {
 			default:
 				switch {
 				case strings.HasPrefix(command[0], "sc-inc-gpc0"):
-					err = f.ParseAction(&actions.TrackSc0{}, command)
+					err = f.ParseAction(&actions.ScIncGpc0{}, command)
 				case strings.HasPrefix(command[0], "sc-inc-gpc1"):
 					err = f.ParseAction(&actions.ScIncGpc1{}, command)
 				case strings.HasPrefix(command[0], "sc-set-gpt0"):
