@@ -78,8 +78,6 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 			err = h.ParseHTTPResponse(&actions.SetLogLevel{}, parts, comment)
 		case "set-status":
 			err = h.ParseHTTPResponse(&actions.SetStatus{}, parts, comment)
-		case "set-var":
-			err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):

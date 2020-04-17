@@ -31,37 +31,28 @@ type SetVar struct {
 
 func (f *SetVar) Parse(parts []string) error {
 
-	data := strings.TrimPrefix(parts[1], "set-var(")
-
-	data = strings.TrimRight(data, ")")
-
-	d := strings.SplitN(data, ".", 2)
-
-	f.VarScope = d[0]
-
-	f.VarName = d[1]
-
-	if len(parts) >= 3 {
-
-		command, _ := common.SplitRequest(parts[2:]) // 2 not 3 !
-
-		if len(command) > 0 {
-
-			expr := common.Expression{}
-
-			err := expr.Parse(command)
-
-			if err != nil {
-				return fmt.Errorf("not enough params")
-			}
-
-			f.Expr = expr
-		}
-
-		return nil
+	if len(parts) < 2 {
+		return fmt.Errorf("not enough params")
 	}
 
-	return fmt.Errorf("not enough params")
+	data := strings.TrimPrefix(parts[0], "set-var(")
+	data = strings.TrimRight(data, ")")
+	d := strings.SplitN(data, ".", 2)
+	if len(d) != 2 {
+		return fmt.Errorf("incorrect variable name")
+	}
+	f.VarScope = d[0]
+	f.VarName = d[1]
+
+	command, _ := common.SplitRequest(parts[1:])
+	expr := common.Expression{}
+	err := expr.Parse(command)
+	if err != nil {
+		return err
+	}
+	f.Expr = expr
+
+	return nil
 }
 
 func (f *SetVar) String() string {

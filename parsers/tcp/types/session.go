@@ -71,10 +71,6 @@ func (f *Session) Parse(parts []string, comment string) error {
 				err = f.ParseAction(&actions.TrackSc1{}, command)
 			case "track-sc2":
 				err = f.ParseAction(&actions.TrackSc2{}, command)
-			case "set-var":
-				err = f.ParseAction(&actions.SetVar{}, command)
-			case "unset-var":
-				err = f.ParseAction(&actions.UnsetVar{}, command)
 			case "silent-drop":
 				err = f.ParseAction(&actions.SilentDrop{}, command)
 			default:
@@ -85,6 +81,10 @@ func (f *Session) Parse(parts []string, comment string) error {
 					err = f.ParseAction(&actions.ScIncGpc1{}, command)
 				case strings.HasPrefix(command[0], "sc-set-gpt0"):
 					err = f.ParseAction(&actions.ScSetGpt0{}, command)
+				case strings.HasPrefix(command[0], "set-var"):
+					err = f.ParseAction(&actions.SetVar{}, command)
+				case strings.HasPrefix(command[0], "unset-var"):
+					err = f.ParseAction(&actions.UnsetVar{}, command)
 				default:
 					return err
 				}
