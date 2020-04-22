@@ -19,14 +19,11 @@ package actions
 import (
 	"fmt"
 	"strings"
-
-	"github.com/haproxytech/config-parser/v2/common"
 )
 
 type UnsetVar struct {
 	VarScope string
 	VarName  string
-	Expr     common.Expression
 }
 
 func (f *UnsetVar) Parse(parts []string) error {
@@ -47,5 +44,5 @@ func (f *UnsetVar) Parse(parts []string) error {
 }
 
 func (f *UnsetVar) String() string {
-	return fmt.Sprintf("unset-var(%s.%s) %s", f.VarScope, f.VarName, f.Expr.String())
+	return fmt.Sprintf("unset-var(%s.%s)", f.VarScope, f.VarName)
 }
