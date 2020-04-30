@@ -107,8 +107,10 @@ func getDefaultParser() *Parsers {
 		&simple.Timeout{Name: "check"},
 		&simple.Timeout{Name: "connect"},
 		&simple.Timeout{Name: "client"},
+		&simple.Timeout{Name: "client-fin"},
 		&simple.Timeout{Name: "queue"},
 		&simple.Timeout{Name: "server"},
+		&simple.Timeout{Name: "server-fin"},
 		&simple.Timeout{Name: "tunnel"},
 		&simple.Timeout{Name: "http-keep-alive"},
 
@@ -181,6 +183,7 @@ func getFrontendParser() *Parsers {
 
 		&simple.Timeout{Name: "http-request"},
 		&simple.Timeout{Name: "client"},
+		&simple.Timeout{Name: "client-fin"},
 		&simple.Timeout{Name: "http-keep-alive"},
 
 		&filters.Filters{},
@@ -244,6 +247,7 @@ func getBackendParser() *Parsers {
 		&simple.Timeout{Name: "check"},
 		&simple.Timeout{Name: "tunnel"},
 		&simple.Timeout{Name: "server"},
+		&simple.Timeout{Name: "server-fin"},
 		&simple.Timeout{Name: "connect"},
 
 		&parsers.DefaultServer{},
