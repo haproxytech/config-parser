@@ -242,7 +242,6 @@ func getBackendParser() *Parsers {
 
 		&simple.Timeout{Name: "http-request"},
 		&simple.Timeout{Name: "queue"},
-		&simple.Timeout{Name: "client"},
 		&simple.Timeout{Name: "http-keep-alive"},
 		&simple.Timeout{Name: "check"},
 		&simple.Timeout{Name: "tunnel"},
