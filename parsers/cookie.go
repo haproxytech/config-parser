@@ -17,7 +17,6 @@ limitations under the License.
 package parsers
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -61,7 +60,7 @@ func (p *Cookie) Parse(line string, parts, previousParts []string, comment strin
 			case "domain":
 				if (i + 1) < len(parts) {
 					i++
-					data.Domain = append(data.Domain, fmt.Sprintf("%s %s", el, parts[i]))
+					data.Domain = append(data.Domain, parts[i])
 				}
 			case "maxidle":
 				if (i + 1) < len(parts) {
@@ -105,7 +104,7 @@ func (p *Cookie) Result() ([]common.ReturnResultLine, error) {
 
 	if len(p.data.Domain) > 0 {
 		for _, domain := range p.data.Domain {
-			result.WriteString(" ")
+			result.WriteString(" domain ")
 			result.WriteString(domain)
 		}
 	}
