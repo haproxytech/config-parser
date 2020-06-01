@@ -127,14 +127,14 @@ func (p *Parser) SectionsGet(scope string, sectionType parser.Section) ([]string
 }
 
 //ScopeDelete deletes one section of sectionType
-func (p *Parser) ScopeDelete(scope string, scopeName string) error {
+func (p *Parser) ScopeDelete(scope string) error {
 	p.lock()
 	defer p.unLock()
 	_, ok := p.Parsers[scope]
 	if !ok {
 		return errors.ErrScopeMissing
 	}
-	delete(p.Parsers, scopeName)
+	delete(p.Parsers, scope)
 	return nil
 }
 
@@ -379,6 +379,9 @@ func (p *Parser) Save(filename string) error {
 }
 
 func (p *Parser) IsScope(line string) bool {
+	if line == "" {
+		return false
+	}
 	if line[0] == '[' && line[len(line)-1] == ']' {
 		return true
 	}
