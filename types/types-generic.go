@@ -16,7 +16,7 @@ limitations under the License.
 
 package types
 
-//Enabled is used by parsers Daemon, MasterWorker, ExternalCheck
+//Enabled is used by parsers Daemon, MasterWorker, ExternalCheck, NoSplice
 //gen:Daemon
 //name:daemon
 //create-type:bool
@@ -32,6 +32,11 @@ package types
 //create-type:bool
 //test:ok:external-check
 //test:ok:external-check # comment
+//gen:NoSplice
+//name:nosplice
+//create-type:bool
+//test:ok:nosplice
+//test:ok:nosplice # comment
 type Enabled struct {
 	Comment string
 }
