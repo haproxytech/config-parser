@@ -36,6 +36,7 @@ func (p *Cookie) Parse(line string, parts, previousParts []string, comment strin
 		}
 		data := &types.Cookie{
 			Domain:  []string{},
+			Attr:    []string{},
 			Name:    parts[1],
 			Comment: comment,
 		}
@@ -43,6 +44,8 @@ func (p *Cookie) Parse(line string, parts, previousParts []string, comment strin
 		for i := 2; i < len(parts); i++ {
 			el := parts[i]
 			switch el {
+			case "insert", "rewrite", "prefix":
+				data.Type = el
 			case "dynamic":
 				data.Dynamic = true
 			case "httponly":
@@ -62,6 +65,14 @@ func (p *Cookie) Parse(line string, parts, previousParts []string, comment strin
 					i++
 					data.Domain = append(data.Domain, parts[i])
 				}
+			case "attr":
+				if (i + 1) < len(parts) {
+					i++
+					if strings.ContainsAny(parts[i], "\x00\a\b\t\n\v\f\r;") {
+						return "", &errors.ParseError{Parser: "attr", Line: line, Message: "cookie attr contained control character or semicolon"}
+					}
+					data.Attr = append(data.Attr, parts[i])
+				}
 			case "maxidle":
 				if (i + 1) < len(parts) {
 					i++
@@ -75,10 +86,6 @@ func (p *Cookie) Parse(line string, parts, previousParts []string, comment strin
 					if data.Maxlife, err = strconv.ParseInt(parts[i], 10, 64); err != nil {
 						return "", &errors.ParseError{Parser: "maxlife", Line: line, Message: err.Error()}
 					}
-				}
-			default:
-				if el == "rewrite" || el == "insert" || el == "prefix" {
-					data.Type = el
 				}
 			}
 		}
@@ -106,6 +113,12 @@ func (p *Cookie) Result() ([]common.ReturnResultLine, error) {
 		for _, domain := range p.data.Domain {
 			result.WriteString(" domain ")
 			result.WriteString(domain)
+		}
+	}
+	if len(p.data.Attr) > 0 {
+		for _, attr := range p.data.Attr {
+			result.WriteString(" attr ")
+			result.WriteString(attr)
 		}
 	}
 	if p.data.Dynamic {
@@ -143,7 +156,7 @@ func (p *Cookie) Result() ([]common.ReturnResultLine, error) {
 	}
 
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    result.String(),
 			Comment: p.data.Comment,
 		},
