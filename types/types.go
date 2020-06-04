@@ -124,11 +124,14 @@ type Balance struct {
 //test:ok:cookie myCookie indirect maxidle 10
 //test:ok:cookie myCookie indirect maxlife 10
 //test:ok:cookie myCookie domain dom1 domain dom2 httponly indirect maxidle 10 maxlife 5 nocache postonly preserve rewrite secure
+//test:ok:cookie myCookie attr \"SameSite=Strict\" attr \"mykey=myvalue\" insert
 //test:fail:cookie
 //test:fail:cookie myCookie maxidle something
 //test:fail:cookie myCookie maxlife something
+//test:fail:cookie myCookie attr \"SameSite=Lax;\"
 type Cookie struct {
 	Domain   []string
+	Attr     []string
 	Dynamic  bool
 	Httponly bool
 	Indirect bool

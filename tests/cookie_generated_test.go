@@ -34,9 +34,11 @@ func TestCookie(t *testing.T) {
 		"cookie myCookie indirect maxidle 10": true,
 		"cookie myCookie indirect maxlife 10": true,
 		"cookie myCookie domain dom1 domain dom2 httponly indirect maxidle 10 maxlife 5 nocache postonly preserve rewrite secure": true,
+		"cookie myCookie attr \"SameSite=Strict\" attr \"mykey=myvalue\" insert": true,
 		"cookie": false,
 		"cookie myCookie maxidle something": false,
 		"cookie myCookie maxlife something": false,
+		"cookie myCookie attr \"SameSite=Lax;\"": false,
 		"---": false,
 		"--- ---": false,
 	}
