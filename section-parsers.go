@@ -96,7 +96,9 @@ func getDefaultParser() *Parsers {
 		&simple.Option{Name: "tcp-check"},
 		&simple.Option{Name: "redis-check"},
 		&parsers.OptionHttpchk{},
-
+		&simple.Option{Name: "splice-auto"},
+		&simple.Option{Name: "splice-request"},
+		&simple.Option{Name: "splice-response"},
 		&simple.Option{Name: "logasap"},
 		&simple.Option{Name: "allbackups"},
 		&simple.Option{Name: "external-check"},
@@ -136,6 +138,7 @@ func getGlobalParser() *Parsers {
 		//&simple.SimpleFlag{Name: "master-worker"},
 		&parsers.MasterWorker{},
 		&parsers.ExternalCheck{},
+		&parsers.NoSplice{},
 		&parsers.NbProc{},
 		&parsers.NbThread{},
 		&parsers.CPUMap{},
@@ -184,7 +187,9 @@ func getFrontendParser() *Parsers {
 		&simple.Option{Name: "contstats"},
 		&simple.Option{Name: "log-separate-errors"},
 		&simple.Option{Name: "clitcpka"},
-
+		&simple.Option{Name: "splice-auto"},
+		&simple.Option{Name: "splice-request"},
+		&simple.Option{Name: "splice-response"},
 		&simple.Option{Name: "logasap"},
 		&parsers.OptionHTTPLog{},
 
@@ -238,7 +243,9 @@ func getBackendParser() *Parsers {
 		&simple.Option{Name: "redis-check"},
 		&parsers.OptionRedispatch{},
 		&simple.Option{Name: "external-check"},
-
+		&simple.Option{Name: "splice-auto"},
+		&simple.Option{Name: "splice-request"},
+		&simple.Option{Name: "splice-response"},
 		&simple.String{Name: "log-tag"},
 		&simple.Option{Name: "allbackups"},
 
