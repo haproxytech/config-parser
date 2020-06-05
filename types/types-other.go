@@ -185,6 +185,24 @@ type HTTPAction interface {
 //test:fail:http-request track-sc1
 //test:ok:http-request track-sc2 src
 //test:fail:http-request track-sc2
+//test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower
+//test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower if { var(txn.myip) -m found }
+//test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower unless { var(txn.myip) -m found }
+//test:ok:http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
+//test:ok:http-request do-resolve(txn.myip,mydns,ipv6) hdr(Host),lower
+//test:fail:http-request do-resolve(txn.myip)
+//test:fail:http-request do-resolve(txn.myip,mydns)
+//test:fail:http-request do-resolve(txn.myip,mydns,ipv4)
+//test:ok:http-request set-dst var(txn.myip)
+//test:ok:http-request set-dst var(txn.myip) if { var(txn.myip) -m found }
+//test:ok:http-request set-dst var(txn.myip) unless { var(txn.myip) -m found }
+//test:fail:http-request set-dst
+//test:ok:http-request set-dst-port hdr(x-port)
+//test:ok:http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
+//test:ok:http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
+//test:ok:http-request set-dst-port int(4000)
+//test:fail:http-request set-dst-port
+
 type HTTPRequests struct{}
 
 //name:http-response

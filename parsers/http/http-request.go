@@ -82,6 +82,10 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.ReplaceValue{}, parts, comment)
 		case "send-spoe-group":
 			err = h.ParseHTTPRequest(&actions.SendSpoeGroup{}, parts, comment)
+		case "set-dst":
+			err = h.ParseHTTPRequest(&actions.SetDst{}, parts, comment)
+		case "set-dst-port":
+			err = h.ParseHTTPRequest(&actions.SetDstPort{}, parts, comment)
 		case "set-header":
 			err = h.ParseHTTPRequest(&actions.SetHeader{}, parts, comment)
 		case "set-log-level":
@@ -114,6 +118,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 				err = h.ParseHTTPRequest(&actions.DelMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
+			case strings.HasPrefix(parts[1], "do-resolve("):
+				err = h.ParseHTTPRequest(&actions.DoResolve{}, parts, comment)
 			default:
 				return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
 			}
