@@ -80,7 +80,10 @@ type StringC struct {
 	Comment string
 }
 
-//StringSliceC is used by simple-string-multiple
+//StringSliceC is used by ConfigSnippet
+//gen:ConfigSnippet
+//name:config-snippet
+//test:skip
 type StringSliceC struct {
 	Value   []string
 	Comment string

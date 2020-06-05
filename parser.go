@@ -410,6 +410,13 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					p.Parsers[Program][data.Name] = config.Program
 					config.Active = *config.Program
 				}
+				if config.State == "snippet_beg" {
+					config.Previous = config.Active
+					config.Active = Parsers{Parsers: []ParserInterface{parser}}
+				}
+				if config.State == "snippet_end" {
+					config.Active = config.Previous
+				}
 			}
 			break
 		}

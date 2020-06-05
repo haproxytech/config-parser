@@ -123,6 +123,7 @@ func getDefaultParser() *Parsers {
 		&parsers.DefaultBackend{},
 		&parsers.UniqueIDFormat{},
 		&parsers.UniqueIDHeader{},
+		&parsers.ConfigSnippet{},
 	})
 }
 
@@ -149,6 +150,7 @@ func getGlobalParser() *Parsers {
 		&simple.String{Name: "ssl-default-server-options"},
 		&simple.Word{Name: "ssl-default-server-ciphers"},
 		&parsers.Log{},
+		&parsers.ConfigSnippet{},
 	})
 }
 
@@ -194,6 +196,7 @@ func getFrontendParser() *Parsers {
 
 		&simple.Word{Name: "monitor-uri"},
 
+		&parsers.ConfigSnippet{},
 		&parsers.UseBackend{},
 		&parsers.DefaultBackend{},
 		&parsers.StickTable{},
@@ -260,6 +263,7 @@ func getBackendParser() *Parsers {
 		&parsers.Cookie{},
 		&parsers.UseServer{},
 		&parsers.StickTable{},
+		&parsers.ConfigSnippet{},
 		&parsers.Server{},
 		&simple.Number{Name: "retries"},
 		&tcp.Responses{},
