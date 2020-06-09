@@ -46,6 +46,7 @@ func TestRedirect(t *testing.T) {
 		line := strings.TrimSpace(d[0])
 		expected := d[1]
 
+		parser.Init()
 		err := ProcessLine(line, parser)
 
 		if err != nil {

@@ -83,7 +83,8 @@ type StringC struct {
 //StringSliceC is used by ConfigSnippet
 //gen:ConfigSnippet
 //name:config-snippet
-//test:skip
+//test:ok:###_config-snippet_### BEGIN\n  tune.ssl.default-dh-param 2048\n  tune.bufsize 32768\n  ###_config-snippet_### END
+//test:fail:tune.ssl.default-dh-param 2048\ntune.bufsize 32768
 type StringSliceC struct {
 	Value   []string
 	Comment string
