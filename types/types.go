@@ -229,7 +229,8 @@ type HashType struct {
 	Comment  string
 }
 
-//secitions:default,backend
+//sections:default,backend
+//no-sections:true
 //name:http-reuse
 //is-multiple:false
 //test:ok:http-reuse never
@@ -317,7 +318,7 @@ type OptionForwardFor struct {
 	Comment string
 }
 
-//sections:defaults, backend
+//sections:defaults,backend
 //name:option httpchk
 //no-parse:true
 //test:ok:option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www

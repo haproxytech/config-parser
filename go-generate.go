@@ -27,14 +27,17 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sort"
 	"strings"
 	"text/template"
 
+	"github.com/google/renameio"
 	"github.com/haproxytech/config-parser/v2/common"
 )
 
 type Data struct {
 	ParserMultiple     bool
+	ParserSections     []string
 	ParserName         string
 	ParserSecondName   string
 	StructName         string
@@ -43,6 +46,7 @@ type Data struct {
 	NoInit             bool
 	NoParse            bool
 	NoGet              bool
+	NoSections         bool
 	IsInterface        bool
 	Dir                string
 	ModeOther          bool
@@ -51,6 +55,102 @@ type Data struct {
 	TestSkip           bool
 	DataDir            string
 }
+
+type ConfigFile struct {
+	Section map[string][]string
+	Tests   strings.Builder
+}
+
+func (c *ConfigFile) AddParserData(parser Data) error {
+	sections := parser.ParserSections
+	testOK := parser.TestOK
+	if len(sections) == 0 && !parser.NoSections {
+		log.Fatalf("parser %s does not have any section defined", parser.ParserName)
+	}
+	var lines []string
+	for _, s := range sections {
+		_, ok := c.Section[s]
+		if !ok {
+			c.Section[s] = []string{}
+		}
+		//line = testOK[0]
+		if parser.ParserMultiple {
+			lines = testOK
+			for _, line := range testOK {
+				c.Section[s] = append(c.Section[s], line)
+			}
+		} else {
+			lines = []string{testOK[0]}
+			c.Section[s] = append(c.Section[s], testOK[0])
+		}
+	}
+	if len(lines) == 0 {
+		if parser.NoSections {
+			return nil
+		} else {
+			log.Fatalf("parser %s does not have any tests defined", parser.ParserName)
+		}
+	}
+	if !parser.NoSections {
+		for _, line := range lines {
+			c.Tests.WriteString(fmt.Sprintf("  {`  %s\n`, %d},\n", line, len(sections)))
+		}
+	}
+
+	return nil
+}
+
+func (c *ConfigFile) String() string {
+	var result strings.Builder
+
+	result.WriteString(license)
+	result.WriteString("package configs\n\n")
+	result.WriteString("const generatedConfig = `# _version=1\n# HAProxy Technologies\n# https://www.haproxy.com/\n#sections are in alphabetical order (except global & default) for code generation\n\n")
+
+	first := true
+	sectionNames := make([]string, len(c.Section)-2)
+	index := 0
+	for sectionName := range c.Section {
+		if sectionName == "global" || sectionName == "defaults" {
+			continue
+		}
+		sectionNames[index] = sectionName
+		index++
+	}
+	sort.Strings(sectionNames)
+
+	writeSection := func(sectionName string) {
+		if !first {
+			result.WriteString("\n")
+		} else {
+			first = false
+		}
+		result.WriteString(sectionName)
+		result.WriteString(" test\n")
+		lines := c.Section[sectionName]
+		for _, line := range lines {
+			result.WriteString("  ")
+			result.WriteString(line)
+			result.WriteString("\n")
+		}
+	}
+
+	writeSection("global")
+	writeSection("defaults")
+	for _, sectionName := range sectionNames {
+		writeSection(sectionName)
+	}
+	result.WriteString("`\n\n")
+
+	result.WriteString("var configTests = []configTest{")
+	result.WriteString(c.Tests.String())
+	result.WriteString("}")
+
+	result.WriteString("\n")
+	return result.String()
+}
+
+var configFile = ConfigFile{}
 
 func main() {
 
@@ -61,16 +161,24 @@ func main() {
 	if len(os.Args) > 1 {
 		dir = os.Args[1]
 	}
-
 	log.Println(dir)
+
+	configFile.Section = map[string][]string{}
+
 	generateTypes(dir, "")
 	generateTypesGeneric(dir)
 	generateTypesOther(dir)
 	//spoe
 	generateTypes(dir, "spoe/")
+
+	filePath := path.Join(dir, "tests", "configs", "haproxy_generated.cfg.go")
+	err = renameio.WriteFile(filePath, []byte(configFile.String()), 0644)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
-func fileExists(filePath string) bool{
+func fileExists(filePath string) bool {
 	_, err := os.Stat(filePath)
 	if !os.IsNotExist(err) {
 		log.Println("File " + filePath + " already exists")
@@ -87,6 +195,13 @@ func generateTypesOther(dir string) {
 
 	parserData := Data{}
 	for _, line := range lines {
+		if strings.HasPrefix(line, "//sections:") {
+			s := strings.Split(line, ":")
+			parserData.ParserSections = strings.Split(s[1], ",")
+		}
+		if strings.HasPrefix(line, "//no-sections:true") {
+			parserData.NoSections = true
+		}
 		if strings.HasPrefix(line, "//name:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
 			items := common.StringSplitIgnoreEmpty(data[1], ' ')
@@ -197,6 +312,7 @@ func generateTypesOther(dir string) {
 			CheckErr(err)
 		}
 
+		configFile.AddParserData(parserData)
 		parserData = Data{}
 	}
 }
@@ -211,6 +327,13 @@ func generateTypesGeneric(dir string) {
 	parsers := map[string]*Data{}
 	parserData := &Data{}
 	for _, line := range lines {
+		if strings.HasPrefix(line, "//sections:") {
+			s := strings.Split(line, ":")
+			parserData.ParserSections = strings.Split(s[1], ",")
+		}
+		if strings.HasPrefix(line, "//no-sections:true") {
+			parserData.NoSections = true
+		}
 		if strings.HasPrefix(line, "//name:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
 			items := common.StringSplitIgnoreEmpty(data[1], ' ')
@@ -281,6 +404,7 @@ func generateTypesGeneric(dir string) {
 			err = testTemplate.Execute(f, parserData)
 			CheckErr(err)
 		}
+		//configFile.AddParserData(parserData)
 		parsers = map[string]*Data{}
 		parserData = &Data{}
 	}
@@ -297,6 +421,13 @@ func generateTypes(dir string, dataDir string) {
 
 	for _, line := range lines {
 		parserData.DataDir = dataDir
+		if strings.HasPrefix(line, "//sections:") {
+			s := strings.Split(line, ":")
+			parserData.ParserSections = strings.Split(s[1], ",")
+		}
+		if strings.HasPrefix(line, "//no-sections:true") {
+			parserData.NoSections = true
+		}
 		if strings.HasPrefix(line, "//name:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
 			items := common.StringSplitIgnoreEmpty(data[1], ' ')
@@ -363,6 +494,7 @@ func generateTypes(dir string, dataDir string) {
 		err = testTemplate.Execute(f, parserData)
 		CheckErr(err)
 
+		configFile.AddParserData(parserData)
 		parserData = Data{}
 	}
 }
@@ -396,7 +528,7 @@ limitations under the License.
 `
 
 var typeOthersAPITemplate = template.Must(template.New("").Parse(license +
-`{{- if .ModeOther}}
+	`{{- if .ModeOther}}
 package {{ .Dir }}
 {{- else }}
 package parsers

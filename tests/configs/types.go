@@ -13,26 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package configs
 
-package types
-
-//name:spoe-section
-//no-sections:true
-//no-init:true
-type SPOESection struct {
-	Name    string
-	Comment string
-}
-
-//name:event
-//no-sections:true
-//is-multiple:false
-//test:ok:event on-client-session
-//test:ok:event on-client-session if ! { src -f /etc/haproxy/whitelist.lst }
-//test:fail:event
-type Event struct {
-	Name     string
-	Cond     string
-	CondTest string
-	Comment  string
+type configTest struct {
+	Line  string
+	Count int
 }

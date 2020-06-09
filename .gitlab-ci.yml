@@ -15,4 +15,4 @@ test:
     - docker
   script:
     - go build -v .
-    - go test -v tests/*
+    - go test -v ./...

@@ -19,6 +19,7 @@ package types
 import "github.com/haproxytech/config-parser/v2/common"
 
 //name:section
+//no-sections:true
 //dir:extra
 //no-init:true
 type Section struct {
@@ -27,6 +28,7 @@ type Section struct {
 }
 
 //name:config-version
+//no-sections:true
 //dir:extra
 //no-init:true
 //no-get:true
@@ -35,6 +37,7 @@ type ConfigVersion struct {
 }
 
 //name:comments
+//no-sections:true
 //dir:extra
 //is-multiple:true
 //no-init:true
@@ -44,6 +47,7 @@ type Comments struct {
 }
 
 //name:unprocessed
+//no-sections:true
 //dir:extra
 //is-multiple:true
 //no-init:true
@@ -54,6 +58,7 @@ type UnProcessed struct {
 }
 
 //name:simple-option
+//no-sections:true
 //struct-name:Option
 //dir:simple
 //no-init:true
@@ -63,6 +68,7 @@ type SimpleOption struct {
 }
 
 //name:simple-timeout
+//no-sections:true
 //struct-name:Timeout
 //dir:simple
 //no-init:true
@@ -72,24 +78,28 @@ type SimpleTimeout struct {
 }
 
 //name:simple-word
+//no-sections:true
 //struct-name:Word
 //dir:simple
 //parser-type:StringC
 type SimpleWord struct{}
 
 //name:simple-number
+//no-sections:true
 //struct-name:Number
 //dir:simple
 //parser-type:Int64C
 type SimpleNumber struct{}
 
 //name:simple-string
+//no-sections:true
 //struct-name:String
 //dir:simple
 //parser-type:StringC
 type SimpleString struct{}
 
 //name:simple-time
+//no-sections:true
 //struct-name:Time
 //dir:simple
 //parser-type:StringC
@@ -101,6 +111,7 @@ type Filter interface {
 }
 
 //name:filter
+//no-sections:true
 //dir:filters
 //is-multiple:true
 //parser-type:Filter
@@ -115,6 +126,7 @@ type HTTPAction interface {
 	GetComment() string
 }
 
+//sections:frontend,backend
 //name:http-request
 //struct-name:Requests
 //dir:http
@@ -266,6 +278,7 @@ type HTTPAction interface {
 type HTTPRequests struct{}
 
 //name:http-response
+//sections:frontend,backend
 //struct-name:Responses
 //dir:http
 //is-multiple:true
@@ -371,6 +384,7 @@ type TCPAction interface {
 }
 
 //name:tcp-request
+//sections:frontend,backend
 //struct-name:Requests
 //dir:tcp
 //is-multiple:true
@@ -466,6 +480,7 @@ type TCPAction interface {
 type TCPRequests struct{}
 
 //name:tcp-response
+//sections:frontend,backend
 //struct-name:Responses
 //dir:tcp
 //is-multiple:true
@@ -482,6 +497,7 @@ type TCPRequests struct{}
 type TCPResponses struct{}
 
 //name:redirect
+//sections:frontend,backend
 //dir:http
 //is-multiple:true
 //parser-type:HTTPAction
@@ -499,6 +515,7 @@ type StatsSettings interface {
 }
 
 //name:stats
+//sections:defaults,frontend,backend
 //struct-name:Stats
 //dir:stats
 //is-multiple:true

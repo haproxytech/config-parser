@@ -13,26 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package configs
 
-package types
+const configBasic1 = `# _version=1
+# HAProxy Technologies
+# https://www.haproxy.com/
 
-//name:spoe-section
-//no-sections:true
-//no-init:true
-type SPOESection struct {
-	Name    string
-	Comment string
-}
+global 
+  master-worker
 
-//name:event
-//no-sections:true
-//is-multiple:false
-//test:ok:event on-client-session
-//test:ok:event on-client-session if ! { src -f /etc/haproxy/whitelist.lst }
-//test:fail:event
-type Event struct {
-	Name     string
-	Cond     string
-	CondTest string
-	Comment  string
-}
+defaults 
+  log global
+
+frontend http 
+  mode http
+  bind 0.0.0.0:80 name bind_1
+  bind :::80 v4v6 name bind_2
+  default_backend default_backend
+
+backend default_backend 
+  mode http
+  http-request deny deny_status 400 # deny
+`

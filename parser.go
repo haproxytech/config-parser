@@ -17,7 +17,9 @@ limitations under the License.
 package parser
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"sort"
 	"strings"
@@ -449,6 +451,67 @@ func (p *Parser) LoadData(filename string) error {
 		return err
 	}
 	return p.ParseData(string(dat))
+}
+
+func (p *Parser) Process(reader io.Reader) error {
+	p.mutex = &sync.Mutex{}
+
+	p.Parsers = map[Section]map[string]*Parsers{}
+	p.Parsers[Comments] = map[string]*Parsers{
+		CommentsSectionName: getStartParser(),
+	}
+	p.Parsers[Defaults] = map[string]*Parsers{
+		DefaultSectionName: getDefaultParser(),
+	}
+	p.Parsers[Global] = map[string]*Parsers{
+		GlobalSectionName: getGlobalParser(),
+	}
+	p.Parsers[Frontends] = map[string]*Parsers{}
+	p.Parsers[Backends] = map[string]*Parsers{}
+	p.Parsers[Listen] = map[string]*Parsers{}
+	p.Parsers[Resolvers] = map[string]*Parsers{}
+	p.Parsers[UserList] = map[string]*Parsers{}
+	p.Parsers[Peers] = map[string]*Parsers{}
+	p.Parsers[Mailers] = map[string]*Parsers{}
+	p.Parsers[Cache] = map[string]*Parsers{}
+	p.Parsers[Program] = map[string]*Parsers{}
+
+	parsers := ConfiguredParsers{
+		State:    "",
+		Active:   *p.Parsers[Comments][CommentsSectionName],
+		Comments: p.Parsers[Comments][CommentsSectionName],
+		Defaults: p.Parsers[Defaults][DefaultSectionName],
+		Global:   p.Parsers[Global][GlobalSectionName],
+	}
+
+	bufferedReader := bufio.NewReader(reader)
+
+	var line string
+	var err error
+	previousLine := []string{}
+
+	for {
+		line, err = bufferedReader.ReadString('\n')
+		if err != nil {
+			break
+		}
+		line = strings.Trim(line, " \n")
+
+		//for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
+		if len(parts) == 0 && comment != "" {
+			parts = []string{""}
+		}
+		if len(parts) == 0 {
+			continue
+		}
+		parsers = p.ProcessLine(line, parts, previousLine, comment, parsers)
+		previousLine = parts
+	}
+	return nil
 }
 
 func (p *Parser) ParseData(dat string) error {

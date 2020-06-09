@@ -24,4 +24,4 @@ jobs:
         go build -v .
     - name: Test
       run: |
-        go test -v tests/*
+        go test -v ./...
