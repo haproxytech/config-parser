@@ -100,6 +100,7 @@ func getDefaultParser() *Parsers {
 		&simple.Option{Name: "splice-request"},
 		&simple.Option{Name: "splice-response"},
 		&simple.Option{Name: "logasap"},
+		&simple.Option{Name: "log-health-checks"},
 		&simple.Option{Name: "allbackups"},
 		&simple.Option{Name: "external-check"},
 		&parsers.OptionForwardFor{},
@@ -246,6 +247,7 @@ func getBackendParser() *Parsers {
 		&simple.Option{Name: "splice-auto"},
 		&simple.Option{Name: "splice-request"},
 		&simple.Option{Name: "splice-response"},
+		&simple.Option{Name: "log-health-checks"},
 		&simple.String{Name: "log-tag"},
 		&simple.Option{Name: "allbackups"},
 
