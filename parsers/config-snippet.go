@@ -31,9 +31,9 @@ type ConfigSnippet struct {
 
 func (p *ConfigSnippet) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if comment != "" {
-		parts = strings.Fields(comment)
-		if len(parts) > 1 || parts[0] == "##_config-snippet_###" {
-			switch parts[1] {
+		commentParts := strings.Fields(comment)
+		if len(commentParts) > 1 || commentParts[0] == "##_config-snippet_###" {
+			switch commentParts[1] {
 			case "BEGIN":
 				p.active = true
 				p.data = &types.StringSliceC{}
