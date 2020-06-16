@@ -28,7 +28,13 @@ import (
 func TestResponseshttp(t *testing.T) {
 	tests := map[string]bool{
 		"http-response capture res.hdr(Server) id 0": true,
+		"http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value": true,
+		"http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]": true,
+		"http-response del-map(map.lst) %[src] if ! value": true,
+		"http-response del-map(map.lst) %[src]": true,
 		"http-response": false,
+		"http-response set-map(map.lst) %[src]": false,
+		"http-response del-map(map.lst)": false,
 		"---": false,
 		"--- ---": false,
 	}

@@ -29,8 +29,14 @@ func TestRequestshttp(t *testing.T) {
 	tests := map[string]bool{
 		"http-request capture req.cook_cnt(FirstVisit),bool len 10": true,
 		"http-request deny deny_status 0 unless { src 127.0.0.1 }": true,
+		"http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value": true,
+		"http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]": true,
+		"http-request del-map(map.lst) %[src] if ! value": true,
+		"http-request del-map(map.lst) %[src]": true,
 		"http-request": false,
 		"http-request capture req.cook_cnt(FirstVisit),bool strlen 10": false,
+		"http-request set-map(map.lst) %[src]": false,
+		"http-request del-map(map.lst)": false,
 		"---": false,
 		"--- ---": false,
 	}

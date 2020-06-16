@@ -84,6 +84,10 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 				err = h.ParseHTTPResponse(&actions.AddACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-acl("):
 				err = h.ParseHTTPResponse(&actions.DelACL{}, parts, comment)
+			case strings.HasPrefix(parts[1], "set-map("):
+				err = h.ParseHTTPResponse(&actions.SetMap{}, parts, comment)
+			case strings.HasPrefix(parts[1], "del-map("):
+				err = h.ParseHTTPResponse(&actions.DelMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 			default:

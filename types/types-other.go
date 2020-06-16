@@ -127,6 +127,12 @@ type HTTPAction interface {
 //test:fail:http-request capture req.cook_cnt(FirstVisit),bool strlen 10
 //test:ok:http-request capture req.cook_cnt(FirstVisit),bool len 10
 //test:ok:http-request deny deny_status 0 unless { src 127.0.0.1 }
+//test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
+//test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
+//test:fail:http-request set-map(map.lst) %[src]
+//test:ok:http-request del-map(map.lst) %[src] if ! value
+//test:ok:http-request del-map(map.lst) %[src]
+//test:fail:http-request del-map(map.lst)
 type HTTPRequests struct{}
 
 //name:http-response
@@ -139,6 +145,12 @@ type HTTPRequests struct{}
 //no-parse:true
 //test:fail:http-response
 //test:ok:http-response capture res.hdr(Server) id 0
+//test:ok:http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+//test:ok:http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+//test:fail:http-response set-map(map.lst) %[src]
+//test:ok:http-response del-map(map.lst) %[src] if ! value
+//test:ok:http-response del-map(map.lst) %[src]
+//test:fail:http-response del-map(map.lst)
 type HTTPResponses struct{}
 
 type TCPType interface {
