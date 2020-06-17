@@ -9,7 +9,7 @@ golangci_lint:
     - golangci-lint run -v
 test:
   image:
-    name: golang:1.12
+    name: golang:1.14
     entrypoint: [""]
   tags:
     - docker
