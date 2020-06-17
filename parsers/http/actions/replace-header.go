@@ -37,7 +37,7 @@ func (f *ReplaceHeader) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 4 {
+	if len(parts) >= 5 {
 		command, condition := common.SplitRequest(parts[2:])
 		if len(command) < 3 {
 			return errors.ErrInvalidData

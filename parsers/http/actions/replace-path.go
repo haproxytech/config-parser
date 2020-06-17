@@ -36,7 +36,7 @@ func (f *ReplacePath) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
+	if len(parts) >= 4 {
 		command, condition := common.SplitRequest(parts[2:])
 		if len(command) < 2 {
 			return errors.ErrInvalidData

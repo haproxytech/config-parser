@@ -130,9 +130,50 @@ type HTTPAction interface {
 //test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 //test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
 //test:fail:http-request set-map(map.lst) %[src]
+//test:ok:http-request add-acl(map.lst) [src]
+//test:fail:http-request add-acl(map.lst)
+//test:ok:http-request add-header X-value value
+//test:fail:http-request add-header X-value
+//test:ok:http-request del-acl(map.lst) [src]
+//test:fail:http-request del-acl(map.lst)
+//test:ok:http-request allow
+//test:ok:http-request auth
+//test:ok:http-request del-header X-value
+//test:fail:http-request del-header
 //test:ok:http-request del-map(map.lst) %[src] if ! value
 //test:ok:http-request del-map(map.lst) %[src]
 //test:fail:http-request del-map(map.lst)
+//test:ok:http-request deny
+//test:ok:http-request redirect prefix https://mysite.com
+//test:fail:http-request redirect prefix
+//test:ok:http-request reject
+//test:ok:http-request replace-header User-agent curl foo
+//test:fail:http-request replace-header User-agent curl
+//test:ok:http-request replace-path (.*) /foo
+//test:fail:http-request replace-path (.*)
+//test:ok:http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+//test:fail:http-request replace-value X-Forwarded-For ^192.168.(.*)$
+//test:ok:http-request send-spoe-group engine group
+//test:fail:http-request send-spoe-group engine
+//test:ok:http-request set-header X-value value
+//test:fail:http-request set-header X-value
+//test:ok:http-request set-log-level silent
+//test:fail:http-request set-log-level
+//test:ok:http-request set-path /%[hdr(host)]%[path]
+//test:fail:http-request set-path
+//test:ok:http-request set-query %[query,regsub(%3D,=,g)]
+//test:fail:http-request set-query
+//test:ok:http-request set-uri /%[hdr(host)]%[path]
+//test:fail:http-request set-uri
+//test:ok:http-request set-var(req.my_var) req.fhdr(user-agent),lower
+//test:fail:http-request set-var(req.my_var)
+//test:ok:http-request tarpit
+//test:ok:http-request track-sc0 src
+//test:fail:http-request track-sc0
+//test:ok:http-request track-sc1 src
+//test:fail:http-request track-sc1
+//test:ok:http-request track-sc2 src
+//test:fail:http-request track-sc2
 type HTTPRequests struct{}
 
 //name:http-response
@@ -148,9 +189,35 @@ type HTTPRequests struct{}
 //test:ok:http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
 //test:ok:http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
 //test:fail:http-response set-map(map.lst) %[src]
+//test:ok:http-response add-acl(map.lst) [src]
+//test:fail:http-response add-acl(map.lst)
+//test:ok:http-response add-header X-value value
+//test:fail:http-response add-header X-value
+//test:ok:http-response del-acl(map.lst) [src]
+//test:fail:http-response del-acl(map.lst)
+//test:ok:http-response allow
+//test:ok:http-response del-header X-value
+//test:fail:http-response del-header
 //test:ok:http-response del-map(map.lst) %[src] if ! value
 //test:ok:http-response del-map(map.lst) %[src]
 //test:fail:http-response del-map(map.lst)
+//test:ok:http-response deny
+//test:ok:http-response redirect prefix https://mysite.com
+//test:fail:http-response redirect prefix
+//test:ok:http-response replace-header User-agent curl foo
+//test:fail:http-response replace-header User-agent curl
+//test:ok:http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+//test:fail:http-response replace-value X-Forwarded-For ^192.168.(.*)$
+//test:ok:http-response send-spoe-group engine group
+//test:fail:http-response send-spoe-group engine
+//test:ok:http-response set-header X-value value
+//test:fail:http-response set-header X-value
+//test:ok:http-response set-log-level silent
+//test:fail:http-response set-log-level
+//test:ok:http-response set-status 503
+//test:fail:http-response set-status
+//test:ok:http-response set-var(req.my_var) res.fhdr(user-agent),lower
+//test:fail:http-response set-var(req.my_var)
 type HTTPResponses struct{}
 
 type TCPType interface {

@@ -38,7 +38,7 @@ func (f *DelACL) Parse(parts []string, comment string) error {
 	}
 	f.FileName = strings.TrimPrefix(parts[1], "del-acl(")
 	f.FileName = strings.TrimRight(f.FileName, ")")
-	if len(parts) >= 4 {
+	if len(parts) >= 3 {
 		command, condition := common.SplitRequest(parts[2:]) // 2 not 3 !
 		if len(command) > 0 {
 			f.KeyFmt = command[0]
