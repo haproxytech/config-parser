@@ -60,10 +60,16 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 				return "", &errors.ParseError{Parser: "HTTPRequest", Line: line}
 			}
 			err = h.ParseHTTPRequest(&actions.Capture{}, parts, comment)
+		case "cache-use":
+			err = h.ParseHTTPRequest(&actions.CacheUse{}, parts, comment)
 		case "del-header":
 			err = h.ParseHTTPRequest(&actions.DelHeader{}, parts, comment)
 		case "deny":
 			err = h.ParseHTTPRequest(&actions.Deny{}, parts, comment)
+		case "disable-l7-retry":
+			err = h.ParseHTTPRequest(&actions.DisableL7Retry{}, parts, comment)
+		case "early-hint":
+			err = h.ParseHTTPRequest(&actions.EarlyHint{}, parts, comment)
 		case "redirect":
 			err = h.ParseHTTPRequest(&actions.Redirect{}, parts, comment)
 		case "reject":

@@ -134,6 +134,10 @@ type HTTPAction interface {
 //test:fail:http-request add-acl(map.lst)
 //test:ok:http-request add-header X-value value
 //test:fail:http-request add-header X-value
+//test:ok:http-request cache-use cache-name
+//test:ok:http-request cache-use cache-name if FALSE
+//test:fail:http-request cache-use
+//test:fail:http-request cache-use if FALSE
 //test:ok:http-request del-acl(map.lst) [src]
 //test:fail:http-request del-acl(map.lst)
 //test:ok:http-request allow
@@ -144,6 +148,13 @@ type HTTPAction interface {
 //test:ok:http-request del-map(map.lst) %[src]
 //test:fail:http-request del-map(map.lst)
 //test:ok:http-request deny
+//test:ok:http-request disable-l7-retry
+//test:ok:http-request disable-l7-retry if FALSE
+//test:ok:http-request early-hint hint %[src]
+//test:ok:http-request early-hint hint %[src] if FALSE
+//test:ok:http-request early-hint if FALSE
+//test:fail:http-request early-hint hint
+//test:fail:http-request early-hint hint if FALSE
 //test:ok:http-request redirect prefix https://mysite.com
 //test:fail:http-request redirect prefix
 //test:ok:http-request reject
