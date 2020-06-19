@@ -118,6 +118,10 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 				err = h.ParseHTTPRequest(&actions.SetMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-map("):
 				err = h.ParseHTTPRequest(&actions.DelMap{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-inc-gpc0("):
+				err = h.ParseHTTPRequest(&actions.ScIncGpc0{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-inc-gpc1("):
+				err = h.ParseHTTPRequest(&actions.ScIncGpc1{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
 			case strings.HasPrefix(parts[1], "do-resolve("):

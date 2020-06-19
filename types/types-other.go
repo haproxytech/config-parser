@@ -169,6 +169,12 @@ type HTTPAction interface {
 //test:fail:http-request replace-uri ^http://(.*) if FALSE
 //test:ok:http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 //test:fail:http-request replace-value X-Forwarded-For ^192.168.(.*)$
+//test:ok:http-request sc-inc-gpc0(1)
+//test:ok:http-request sc-inc-gpc0(1) if FALSE
+//test:fail:http-request sc-inc-gpc0
+//test:ok:http-request sc-inc-gpc1(1)
+//test:ok:http-request sc-inc-gpc1(1) if FALSE
+//test:fail:http-request sc-inc-gpc1
 //test:ok:http-request send-spoe-group engine group
 //test:fail:http-request send-spoe-group engine
 //test:ok:http-request set-header X-value value
@@ -242,6 +248,12 @@ type HTTPRequests struct{}
 //test:fail:http-response replace-header User-agent curl
 //test:ok:http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 //test:fail:http-response replace-value X-Forwarded-For ^192.168.(.*)$
+//test:ok:http-response sc-inc-gpc0(1)
+//test:ok:http-response sc-inc-gpc0(1) if FALSE
+//test:fail:http-response sc-inc-gpc0
+//test:ok:http-response sc-inc-gpc1(1)
+//test:ok:http-response sc-inc-gpc1(1) if FALSE
+//test:fail:http-response sc-inc-gpc1
 //test:ok:http-response send-spoe-group engine group
 //test:fail:http-response send-spoe-group engine
 //test:ok:http-response set-header X-value value
