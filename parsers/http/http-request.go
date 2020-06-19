@@ -78,6 +78,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.ReplacePath{}, parts, comment)
 		case "replace-header":
 			err = h.ParseHTTPRequest(&actions.ReplaceHeader{}, parts, comment)
+		case "replace-uri":
+			err = h.ParseHTTPRequest(&actions.ReplaceURI{}, parts, comment)
 		case "replace-value":
 			err = h.ParseHTTPRequest(&actions.ReplaceValue{}, parts, comment)
 		case "send-spoe-group":

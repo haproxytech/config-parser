@@ -162,6 +162,11 @@ type HTTPAction interface {
 //test:fail:http-request replace-header User-agent curl
 //test:ok:http-request replace-path (.*) /foo
 //test:fail:http-request replace-path (.*)
+//test:ok:http-request replace-uri ^http://(.*) https://1
+//test:ok:http-request replace-uri ^http://(.*) https://1 if FALSE
+//test:fail:http-request replace-uri ^http://(.*)
+//test:fail:http-request replace-uri
+//test:fail:http-request replace-uri ^http://(.*) if FALSE
 //test:ok:http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 //test:fail:http-request replace-value X-Forwarded-For ^192.168.(.*)$
 //test:ok:http-request send-spoe-group engine group
