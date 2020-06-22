@@ -76,6 +76,10 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 			err = h.ParseHTTPResponse(&actions.SetHeader{}, parts, comment)
 		case "set-log-level":
 			err = h.ParseHTTPResponse(&actions.SetLogLevel{}, parts, comment)
+		case "set-mark":
+			err = h.ParseHTTPResponse(&actions.SetMark{}, parts, comment)
+		case "set-nice":
+			err = h.ParseHTTPResponse(&actions.SetNice{}, parts, comment)
 		case "set-status":
 			err = h.ParseHTTPResponse(&actions.SetStatus{}, parts, comment)
 		default:
@@ -88,6 +92,8 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 				err = h.ParseHTTPResponse(&actions.ScIncGpc0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc1("):
 				err = h.ParseHTTPResponse(&actions.ScIncGpc1{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-set-gpt0("):
+				err = h.ParseHTTPResponse(&actions.ScSetGpt0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-map("):
 				err = h.ParseHTTPResponse(&actions.SetMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-map("):

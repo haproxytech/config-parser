@@ -92,6 +92,10 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.SetHeader{}, parts, comment)
 		case "set-log-level":
 			err = h.ParseHTTPRequest(&actions.SetLogLevel{}, parts, comment)
+		case "set-mark":
+			err = h.ParseHTTPRequest(&actions.SetMark{}, parts, comment)
+		case "set-nice":
+			err = h.ParseHTTPRequest(&actions.SetNice{}, parts, comment)
 		case "set-path":
 			err = h.ParseHTTPRequest(&actions.SetPath{}, parts, comment)
 		case "set-query":
@@ -122,6 +126,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 				err = h.ParseHTTPRequest(&actions.ScIncGpc0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc1("):
 				err = h.ParseHTTPRequest(&actions.ScIncGpc1{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-set-gpt0("):
+				err = h.ParseHTTPRequest(&actions.ScSetGpt0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
 			case strings.HasPrefix(parts[1], "do-resolve("):

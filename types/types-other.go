@@ -175,12 +175,24 @@ type HTTPAction interface {
 //test:ok:http-request sc-inc-gpc1(1)
 //test:ok:http-request sc-inc-gpc1(1) if FALSE
 //test:fail:http-request sc-inc-gpc1
+//test:ok:http-request sc-set-gpt0(1) hdr(Host),lower
+//test:ok:http-request sc-set-gpt0(1) 10
+//test:ok:http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
+//test:fail:http-request sc-set-gpt0(1)
+//test:fail:http-request sc-set-gpt0
+//test:fail:http-request sc-set-gpt0(1) if FALSE
 //test:ok:http-request send-spoe-group engine group
 //test:fail:http-request send-spoe-group engine
 //test:ok:http-request set-header X-value value
 //test:fail:http-request set-header X-value
 //test:ok:http-request set-log-level silent
 //test:fail:http-request set-log-level
+//test:ok:http-request set-mark 20
+//test:ok:http-request set-mark 0x1Ab
+//test:fail:http-request set-mark
+//test:ok:http-request set-nice 0
+//test:ok:http-request set-nice 0 if FALSE
+//test:fail:http-request set-nice
 //test:ok:http-request set-path /%[hdr(host)]%[path]
 //test:fail:http-request set-path
 //test:ok:http-request set-query %[query,regsub(%3D,=,g)]
@@ -254,12 +266,24 @@ type HTTPRequests struct{}
 //test:ok:http-response sc-inc-gpc1(1)
 //test:ok:http-response sc-inc-gpc1(1) if FALSE
 //test:fail:http-response sc-inc-gpc1
+//test:ok:http-response sc-set-gpt0(1) hdr(Host),lower
+//test:ok:http-response sc-set-gpt0(1) 10
+//test:ok:http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
+//test:fail:http-response sc-set-gpt0(1)
+//test:fail:http-response sc-set-gpt0
+//test:fail:http-response sc-set-gpt0(1) if FALSE
 //test:ok:http-response send-spoe-group engine group
 //test:fail:http-response send-spoe-group engine
 //test:ok:http-response set-header X-value value
 //test:fail:http-response set-header X-value
 //test:ok:http-response set-log-level silent
 //test:fail:http-response set-log-level
+//test:ok:http-response set-mark 20
+//test:ok:http-response set-mark 0x1Ab
+//test:fail:http-response set-mark
+//test:ok:http-response set-nice 0
+//test:ok:http-response set-nice 0 if FALSE
+//test:fail:http-response set-nice
 //test:ok:http-response set-status 503
 //test:fail:http-response set-status
 //test:ok:http-response set-var(req.my_var) res.fhdr(user-agent),lower
