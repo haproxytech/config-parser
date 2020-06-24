@@ -193,8 +193,17 @@ type HTTPAction interface {
 //test:ok:http-request set-nice 0
 //test:ok:http-request set-nice 0 if FALSE
 //test:fail:http-request set-nice
+//test:ok:http-request set-method POST
+//test:ok:http-request set-method POST if FALSE
+//test:fail:http-request set-method
 //test:ok:http-request set-path /%[hdr(host)]%[path]
 //test:fail:http-request set-path
+//test:ok:http-request set-priority-class req.hdr(priority)
+//test:ok:http-request set-priority-class req.hdr(priority) if FALSE
+//test:fail:http-request set-priority-class
+//test:ok:http-request set-priority-offset req.hdr(offset)
+//test:ok:http-request set-priority-offset req.hdr(offset) if FALSE
+//test:fail:http-request set-priority-offset
 //test:ok:http-request set-query %[query,regsub(%3D,=,g)]
 //test:fail:http-request set-query
 //test:ok:http-request set-uri /%[hdr(host)]%[path]
