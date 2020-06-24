@@ -229,7 +229,7 @@ type HashType struct {
 	Comment  string
 }
 
-//secitions:default,backend
+//sections:defaults,backend
 //name:http-reuse
 //is-multiple:false
 //test:ok:http-reuse never
@@ -245,19 +245,106 @@ type HTTPReuse struct {
 //sections:defaults,backend
 //name:http-check
 //is-multiple:true
+//test:ok:http-check comment testcomment
+//test:ok:http-check connect
+//test:ok:http-check connect default
+//test:ok:http-check connect port 8080
+//test:ok:http-check connect addr 8.8.8.8
+//test:ok:http-check connect send-proxy
+//test:ok:http-check connect via-socks4
+//test:ok:http-check connect ssl
+//test:ok:http-check connect sni haproxy.1wt.eu
+//test:ok:http-check connect alpn h2,http/1.1
+//test:ok:http-check connect proto h2
+//test:ok:http-check connect linger
+//test:ok:http-check connect comment testcomment
+//test:ok:http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
 //test:ok:http-check disable-on-404
-//test:ok:http-check send-state
 //test:ok:http-check expect status 200
+//test:ok:http-check expect min-recv 50 status 200
+//test:ok:http-check expect comment testcomment status 200
+//test:ok:http-check expect ok-status L7OK status 200
+//test:ok:http-check expect error-status L7RSP status 200
+//test:ok:http-check expect tout-status L7TOUT status 200
+//test:ok:http-check expect on-success \"my-log-format\" status 200
+//test:ok:http-check expect on-error \"my-log-format\" status 200
+//test:ok:http-check expect status-code \"500\" status 200
 //test:ok:http-check expect ! string SQL\\ Error
 //test:ok:http-check expect ! rstatus ^5
 //test:ok:http-check expect rstring <!--tag:[0-9a-f]*--></html>
+//test:ok:http-check send meth GET
+//test:ok:http-check send uri /health
+//test:ok:http-check send ver \"HTTP/1.1\"
+//test:ok:http-check send comment testcomment
+//test:ok:http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
+//test:ok:http-check send uri-lf my-log-format body-lf 'my-log-format'
+//test:ok:http-check send-state
 //test:fail:http-check
+//test:fail:http-check comment
+//test:fail:http-check expect
+//test:fail:http-check expect status
+// //test:ok:http-check expect comment testcomment
 type HTTPCheck struct {
-	Type            string
+	Type string
+
+	Connect HTTPCheckConnect
+
+	// DEPRECATED: use the equivalent fields inside the Expect struct
+	// These 3 fields are from the initial implementation of http-check expect,
+	// prior to the additional fields added in 2.2. As such, they continue to
+	// be supported, but it is preferred to use the equivalent fields inside
+	// the Expect struct below.
 	ExclamationMark bool
 	Match           string
 	Pattern         string
-	Comment         string
+
+	Expect HTTPCheckExpect
+
+	Send HTTPCheckSend
+
+	CheckComment string
+	Comment      string
+}
+
+type HTTPCheckConnect struct {
+	Default   bool
+	Port      string // TODO: int64?
+	Addr      string
+	SendProxy bool
+	ViaSOCKS4 bool
+	SSL       bool
+	SNI       string
+	ALPN      string
+	Linger    bool
+	Proto     string
+}
+
+type HTTPCheckSend struct {
+	Method        string
+	URI           string
+	URILogFormat  string
+	Version       string
+	Header        []HTTPCheckSendHeader
+	Body          string
+	BodyLogFormat string
+}
+
+type HTTPCheckSendHeader struct {
+	Name   string
+	Format string
+}
+
+type HTTPCheckExpect struct {
+	MinRecv         *int64
+	OKStatus        string
+	ErrorStatus     string
+	TimeoutStatus   string
+	OnSuccess       string
+	OnError         string
+	StatusCode      string
+	ExclamationMark bool
+	Match           string
+	Pattern         string
 }
 
 //sections:defaults,frontend,backend
