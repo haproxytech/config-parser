@@ -106,6 +106,10 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.SetPriorityOffset{}, parts, comment)
 		case "set-query":
 			err = h.ParseHTTPRequest(&actions.SetQuery{}, parts, comment)
+		case "set-src":
+			err = h.ParseHTTPRequest(&actions.SetSrc{}, parts, comment)
+		case "set-src-port":
+			err = h.ParseHTTPRequest(&actions.SetSrcPort{}, parts, comment)
 		case "set-uri":
 			err = h.ParseHTTPRequest(&actions.SetURI{}, parts, comment)
 		case "tarpit":
@@ -118,6 +122,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.TrackSc2{}, parts, comment)
 		case "use-service":
 			err = h.ParseHTTPRequest(&actions.UseService{}, parts, comment)
+		case "wait-for-handshake":
+			err = h.ParseHTTPRequest(&actions.WaitForHandshake{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):

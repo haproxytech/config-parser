@@ -206,6 +206,12 @@ type HTTPAction interface {
 //test:fail:http-request set-priority-offset
 //test:ok:http-request set-query %[query,regsub(%3D,=,g)]
 //test:fail:http-request set-query
+//test:ok:http-request set-src hdr(src)
+//test:ok:http-request set-src hdr(src) if FALSE
+//test:fail:http-request set-src
+//test:ok:http-request set-src-port hdr(port)
+//test:ok:http-request set-src-port hdr(port) if FALSE
+//test:fail:http-request set-src-port
 //test:ok:http-request set-uri /%[hdr(host)]%[path]
 //test:fail:http-request set-uri
 //test:ok:http-request set-var(req.my_var) req.fhdr(user-agent),lower
@@ -217,6 +223,8 @@ type HTTPAction interface {
 //test:fail:http-request track-sc1
 //test:ok:http-request track-sc2 src
 //test:fail:http-request track-sc2
+//test:ok:http-request wait-for-handshake
+//test:ok:http-request wait-for-handshake if FALSE
 //test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower
 //test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower if { var(txn.myip) -m found }
 //test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower unless { var(txn.myip) -m found }
