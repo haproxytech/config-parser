@@ -212,10 +212,15 @@ type HTTPAction interface {
 //test:ok:http-request set-src-port hdr(port)
 //test:ok:http-request set-src-port hdr(port) if FALSE
 //test:fail:http-request set-src-port
+//test:ok:http-request set-tos 0 if FALSE
+//test:ok:http-request set-tos 0
+//test:fail:http-request set-tos
 //test:ok:http-request set-uri /%[hdr(host)]%[path]
 //test:fail:http-request set-uri
 //test:ok:http-request set-var(req.my_var) req.fhdr(user-agent),lower
 //test:fail:http-request set-var(req.my_var)
+//test:ok:http-request silent-drop
+//test:ok:http-request silent-drop if FALSE
 //test:ok:http-request tarpit
 //test:ok:http-request track-sc0 src
 //test:fail:http-request track-sc0
@@ -223,6 +228,10 @@ type HTTPAction interface {
 //test:fail:http-request track-sc1
 //test:ok:http-request track-sc2 src
 //test:fail:http-request track-sc2
+//test:ok:http-request unset-var(req.my_var)
+//test:ok:http-request unset-var(req.my_var) if FALSE
+//test:fail:http-request unset-var(req.)
+//test:fail:http-request unset-var(req)
 //test:ok:http-request wait-for-handshake
 //test:ok:http-request wait-for-handshake if FALSE
 //test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower
@@ -303,8 +312,17 @@ type HTTPRequests struct{}
 //test:fail:http-response set-nice
 //test:ok:http-response set-status 503
 //test:fail:http-response set-status
+//test:ok:http-response set-tos 0 if FALSE
+//test:ok:http-response set-tos 0
+//test:fail:http-response set-tos
 //test:ok:http-response set-var(req.my_var) res.fhdr(user-agent),lower
 //test:fail:http-response set-var(req.my_var)
+//test:ok:http-response silent-drop
+//test:ok:http-response silent-drop if FALSE
+//test:ok:http-response unset-var(req.my_var)
+//test:ok:http-response unset-var(req.my_var) if FALSE
+//test:fail:http-response unset-var(req.)
+//test:fail:http-response unset-var(req)
 type HTTPResponses struct{}
 
 type TCPType interface {

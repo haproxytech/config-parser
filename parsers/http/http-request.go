@@ -110,8 +110,12 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.SetSrc{}, parts, comment)
 		case "set-src-port":
 			err = h.ParseHTTPRequest(&actions.SetSrcPort{}, parts, comment)
+		case "set-tos":
+			err = h.ParseHTTPRequest(&actions.SetTos{}, parts, comment)
 		case "set-uri":
 			err = h.ParseHTTPRequest(&actions.SetURI{}, parts, comment)
+		case "silent-drop":
+			err = h.ParseHTTPRequest(&actions.SilentDrop{}, parts, comment)
 		case "tarpit":
 			err = h.ParseHTTPRequest(&actions.Tarpit{}, parts, comment)
 		case "track-sc0":
@@ -142,6 +146,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 				err = h.ParseHTTPRequest(&actions.ScSetGpt0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
+			case strings.HasPrefix(parts[1], "unset-var("):
+				err = h.ParseHTTPRequest(&actions.UnsetVar{}, parts, comment)
 			case strings.HasPrefix(parts[1], "do-resolve("):
 				err = h.ParseHTTPRequest(&actions.DoResolve{}, parts, comment)
 			default:

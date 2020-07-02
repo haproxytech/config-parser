@@ -82,6 +82,10 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 			err = h.ParseHTTPResponse(&actions.SetNice{}, parts, comment)
 		case "set-status":
 			err = h.ParseHTTPResponse(&actions.SetStatus{}, parts, comment)
+		case "set-tos":
+			err = h.ParseHTTPResponse(&actions.SetTos{}, parts, comment)
+		case "silent-drop":
+			err = h.ParseHTTPResponse(&actions.SilentDrop{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):
@@ -100,6 +104,8 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 				err = h.ParseHTTPResponse(&actions.DelMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
+			case strings.HasPrefix(parts[1], "unset-var("):
+				err = h.ParseHTTPResponse(&actions.UnsetVar{}, parts, comment)
 			default:
 				return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 			}
