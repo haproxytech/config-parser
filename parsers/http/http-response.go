@@ -86,6 +86,12 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 			err = h.ParseHTTPResponse(&actions.SetTos{}, parts, comment)
 		case "silent-drop":
 			err = h.ParseHTTPResponse(&actions.SilentDrop{}, parts, comment)
+		case "track-sc0":
+			err = h.ParseHTTPResponse(&actions.TrackSc0{}, parts, comment)
+		case "track-sc1":
+			err = h.ParseHTTPResponse(&actions.TrackSc1{}, parts, comment)
+		case "track-sc2":
+			err = h.ParseHTTPResponse(&actions.TrackSc2{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):

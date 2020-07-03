@@ -323,6 +323,18 @@ type HTTPRequests struct{}
 //test:ok:http-response unset-var(req.my_var) if FALSE
 //test:fail:http-response unset-var(req.)
 //test:fail:http-response unset-var(req)
+//test:ok:http-response track-sc0 src if FALSE
+//test:ok:http-response track-sc0 src table tr if FALSE
+//test:ok:http-response track-sc0 src
+//test:fail:http-response track-sc0
+//test:ok:http-response track-sc1 src if FALSE
+//test:ok:http-response track-sc1 src table tr if FALSE
+//test:ok:http-response track-sc1 src
+//test:fail:http-response track-sc1
+//test:ok:http-response track-sc2 src if FALSE
+//test:ok:http-response track-sc2 src table tr if FALSE
+//test:ok:http-response track-sc2 src
+//test:fail:http-response track-sc2
 type HTTPResponses struct{}
 
 type TCPType interface {
