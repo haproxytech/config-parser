@@ -72,6 +72,8 @@ func TestResponseshttp(t *testing.T) {
 		"http-response track-sc2 src if FALSE": true,
 		"http-response track-sc2 src table tr if FALSE": true,
 		"http-response track-sc2 src": true,
+		"http-response strict-mode on": true,
+		"http-response strict-mode on if FALSE": true,
 		"http-response": false,
 		"http-response set-map(map.lst) %[src]": false,
 		"http-response add-acl(map.lst)": false,
@@ -100,6 +102,8 @@ func TestResponseshttp(t *testing.T) {
 		"http-response track-sc0": false,
 		"http-response track-sc1": false,
 		"http-response track-sc2": false,
+		"http-response strict-mode": false,
+		"http-response strict-mode if FALSE": false,
 		"---": false,
 		"--- ---": false,
 	}

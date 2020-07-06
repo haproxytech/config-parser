@@ -221,6 +221,10 @@ type HTTPAction interface {
 //test:fail:http-request set-var(req.my_var)
 //test:ok:http-request silent-drop
 //test:ok:http-request silent-drop if FALSE
+//test:ok:http-request strict-mode on
+//test:ok:http-request strict-mode on if FALSE
+//test:fail:http-request strict-mode
+//test:fail:http-request strict-mode if FALSE
 //test:ok:http-request tarpit
 //test:ok:http-request track-sc0 src
 //test:fail:http-request track-sc0
@@ -335,6 +339,10 @@ type HTTPRequests struct{}
 //test:ok:http-response track-sc2 src table tr if FALSE
 //test:ok:http-response track-sc2 src
 //test:fail:http-response track-sc2
+//test:ok:http-response strict-mode on
+//test:ok:http-response strict-mode on if FALSE
+//test:fail:http-response strict-mode
+//test:fail:http-response strict-mode if FALSE
 type HTTPResponses struct{}
 
 type TCPType interface {

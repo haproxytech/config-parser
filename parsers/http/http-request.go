@@ -116,6 +116,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.SetURI{}, parts, comment)
 		case "silent-drop":
 			err = h.ParseHTTPRequest(&actions.SilentDrop{}, parts, comment)
+		case "strict-mode":
+			err = h.ParseHTTPRequest(&actions.StrictMode{}, parts, comment)
 		case "tarpit":
 			err = h.ParseHTTPRequest(&actions.Tarpit{}, parts, comment)
 		case "track-sc0":
