@@ -23,6 +23,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/google/renameio"
 	parser "github.com/haproxytech/config-parser/v2"
 	"github.com/haproxytech/config-parser/v2/common"
 	"github.com/haproxytech/config-parser/v2/errors"
@@ -371,7 +372,7 @@ func (p *Parser) String() string {
 
 func (p *Parser) Save(filename string) error {
 	d1 := []byte(p.String())
-	err := ioutil.WriteFile(filename, d1, 0644)
+	err := renameio.WriteFile(filename, d1, 0644)
 	if err != nil {
 		return err
 	}
