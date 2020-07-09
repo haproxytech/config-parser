@@ -133,6 +133,7 @@ func getDefaultParser() *Parsers {
 func getGlobalParser() *Parsers {
 	return createParsers([]ParserInterface{
 		&parsers.Daemon{},
+		&simple.String{Name: "localpeer"},
 		&simple.Word{Name: "chroot"},
 		&simple.Word{Name: "user"},
 		&simple.Word{Name: "group"},
