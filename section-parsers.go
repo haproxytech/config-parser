@@ -40,6 +40,8 @@ func createParsers(parser []ParserInterface) *Parsers {
 			&extra.Section{Name: "mailers"},
 			&extra.Section{Name: "cache"},
 			&extra.Section{Name: "program"},
+			&extra.Section{Name: "http-errors"},
+			&extra.Section{Name: "ring"},
 			&extra.UnProcessed{},
 		}...),
 	}
@@ -345,4 +347,12 @@ func getProgramParser() *Parsers {
 		&simple.String{Name: "group"},
 		&simple.Option{Name: "start-on-reload"},
 	})
+}
+
+func getHTTPErrorsParser() *Parsers {
+	return createParsers([]ParserInterface{})
+}
+
+func getRingParser() *Parsers {
+	return createParsers([]ParserInterface{})
 }

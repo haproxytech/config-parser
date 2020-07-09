@@ -33,18 +33,20 @@ import (
 type Section string
 
 const (
-	Comments  Section = "#"
-	Defaults  Section = "defaults"
-	Global    Section = "global"
-	Resolvers Section = "resolvers"
-	UserList  Section = "userlist"
-	Peers     Section = "peers"
-	Mailers   Section = "mailers"
-	Frontends Section = "frontend"
-	Backends  Section = "backend"
-	Listen    Section = "listen"
-	Cache     Section = "cache"
-	Program   Section = "program"
+	Comments   Section = "#"
+	Defaults   Section = "defaults"
+	Global     Section = "global"
+	Resolvers  Section = "resolvers"
+	UserList   Section = "userlist"
+	Peers      Section = "peers"
+	Mailers    Section = "mailers"
+	Frontends  Section = "frontend"
+	Backends   Section = "backend"
+	Listen     Section = "listen"
+	Cache      Section = "cache"
+	Program    Section = "program"
+	HTTPErrors Section = "http-errors"
+	Ring       Section = "ring"
 	//spoe sections
 	SPOEAgent   Section = "spoe-agent"
 	SPOEGroup   Section = "spoe-group"
@@ -302,7 +304,7 @@ func (p *Parser) String() string {
 	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].Parsers, &result, true)
 	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].Parsers, &result, true)
 
-	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Frontends, Backends, Listen, Program}
+	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Ring, HTTPErrors, Frontends, Backends, Listen, Program}
 
 	for _, section := range sections {
 		sortedSections := p.getSortedList(p.Parsers[section])
@@ -411,6 +413,22 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					p.Parsers[Program][data.Name] = config.Program
 					config.Active = *config.Program
 				}
+				if config.State == "http-errors" {
+					parserSectionName := parser.(*extra.Section)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
+					config.HTTPErrors = getHTTPErrorsParser()
+					p.Parsers[HTTPErrors][data.Name] = config.HTTPErrors
+					config.Active = *config.HTTPErrors
+				}
+				if config.State == "ring" {
+					parserSectionName := parser.(*extra.Section)
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section)
+					config.Ring = getRingParser()
+					p.Parsers[Ring][data.Name] = config.Ring
+					config.Active = *config.Ring
+				}
 				if config.State == "snippet_beg" {
 					config.Previous = config.Active
 					config.Active = Parsers{Parsers: []ParserInterface{parser}}
@@ -455,6 +473,8 @@ func (p *Parser) ParseData(dat string) error {
 	p.Parsers[Mailers] = map[string]*Parsers{}
 	p.Parsers[Cache] = map[string]*Parsers{}
 	p.Parsers[Program] = map[string]*Parsers{}
+	p.Parsers[HTTPErrors] = map[string]*Parsers{}
+	p.Parsers[Ring] = map[string]*Parsers{}
 
 	parsers := ConfiguredParsers{
 		State:    "",
