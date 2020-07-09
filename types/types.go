@@ -578,3 +578,13 @@ type UseServer struct {
 	CondTest string
 	Comment  string
 }
+
+//sections:global
+//name:lua-load
+//is-multiple:true
+//test:ok:lua-load /etc/haproxy/lua/foo.lua
+//test:fail:lua-load
+type LuaLoad struct {
+	File    string
+	Comment string
+}
