@@ -41,5 +41,5 @@ type ErrNotEnoughParams struct {
 }
 
 func (e *ErrNotEnoughParams) Error() string {
-	return fmt.Sprintf("error: not enough params")
+	return "error: not enough params"
 }

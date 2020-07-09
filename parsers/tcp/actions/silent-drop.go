@@ -16,10 +16,6 @@ limitations under the License.
 
 package actions
 
-import (
-	"fmt"
-)
-
 type SilentDrop struct {
 }
 
@@ -28,5 +24,5 @@ func (f *SilentDrop) Parse(parts []string) error {
 }
 
 func (f *SilentDrop) String() string {
-	return fmt.Sprintf("silent-drop")
+	return "silent-drop"
 }

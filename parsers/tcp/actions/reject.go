@@ -16,10 +16,6 @@ limitations under the License.
 
 package actions
 
-import (
-	"fmt"
-)
-
 type Reject struct {
 }
 
@@ -28,5 +24,5 @@ func (f *Reject) Parse(parts []string) error {
 }
 
 func (f *Reject) String() string {
-	return fmt.Sprintf("reject")
+	return "reject"
 }
