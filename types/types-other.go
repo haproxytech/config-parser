@@ -155,6 +155,13 @@ type HTTPAction interface {
 //test:ok:http-request early-hint if FALSE
 //test:fail:http-request early-hint hint
 //test:fail:http-request early-hint hint if FALSE
+//test:ok:http-request lua.foo
+//test:ok:http-request lua.foo if FALSE
+//test:ok:http-request lua.foo param
+//test:ok:http-request lua.foo param param2
+//test:fail:http-request lua.
+//test:fail:http-request lua. if FALSE
+//test:fail:http-request lua. param
 //test:ok:http-request redirect prefix https://mysite.com
 //test:fail:http-request redirect prefix
 //test:ok:http-request reject
@@ -284,6 +291,13 @@ type HTTPRequests struct{}
 //test:ok:http-response del-map(map.lst) %[src]
 //test:fail:http-response del-map(map.lst)
 //test:ok:http-response deny
+//test:ok:http-response lua.foo
+//test:ok:http-response lua.foo if FALSE
+//test:ok:http-response lua.foo param
+//test:ok:http-response lua.foo param param2
+//test:fail:http-response lua.
+//test:fail:http-response lua. if FALSE
+//test:fail:http-response lua. param
 //test:ok:http-response redirect prefix https://mysite.com
 //test:fail:http-response redirect prefix
 //test:ok:http-response replace-header User-agent curl foo
