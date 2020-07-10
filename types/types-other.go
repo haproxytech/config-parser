@@ -404,6 +404,9 @@ type TCPAction interface {
 //test:ok:tcp-request content send-spoe-group engine group
 //test:ok:tcp-request content use-service lua.deny
 //test:ok:tcp-request content use-service lua.deny if !HTTP
+//test:ok:tcp-request content lua.foo
+//test:ok:tcp-request content lua.foo param if !HTTP
+//test:ok:tcp-request content lua.foo param param1
 //test:ok:tcp-request connection accept
 //test:ok:tcp-request connection accept if !HTTP
 //test:ok:tcp-request connection reject
@@ -427,6 +430,9 @@ type TCPAction interface {
 //test:ok:tcp-request connection set-src src,ipmask(24) if some_check
 //test:ok:tcp-request connection set-src hdr(x-forwarded-for)
 //test:ok:tcp-request connection set-src hdr(x-forwarded-for) if some_check
+//test:ok:tcp-request connection lua.foo
+//test:ok:tcp-request connection lua.foo param if !HTTP
+//test:ok:tcp-request connection lua.foo param param1
 //test:ok:tcp-request session accept
 //test:ok:tcp-request session accept if !HTTP
 //test:ok:tcp-request session reject
@@ -453,6 +459,10 @@ type TCPAction interface {
 //test:fail:tcp-request content
 //test:fail:tcp-request connection
 //test:fail:tcp-request session
+//test:fail:tcp-request content lua.
+//test:fail:tcp-request content lua. param
+//test:fail:tcp-request connection lua.
+//test:fail:tcp-request connection lua. param
 type TCPRequests struct{}
 
 //name:tcp-response
@@ -463,7 +473,12 @@ type TCPRequests struct{}
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:ok:tcp-response content lua.foo
+//test:ok:tcp-response content lua.foo param if !HTTP
+//test:ok:tcp-response content lua.foo param param1
 //test:fail:tcp-response
+//test:fail:tcp-response content lua.
+//test:fail:tcp-response content lua. param
 type TCPResponses struct{}
 
 //name:redirect

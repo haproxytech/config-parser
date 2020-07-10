@@ -27,7 +27,12 @@ import (
 
 func TestResponsestcp(t *testing.T) {
 	tests := map[string]bool{
+		"tcp-response content lua.foo": true,
+		"tcp-response content lua.foo param if !HTTP": true,
+		"tcp-response content lua.foo param param1": true,
 		"tcp-response": false,
+		"tcp-response content lua.": false,
+		"tcp-response content lua. param": false,
 		"---": false,
 		"--- ---": false,
 	}

@@ -91,6 +91,8 @@ func (f *Content) Parse(parts []string, comment string) error {
 				err = f.ParseAction(&actions.UseService{}, command)
 			default:
 				switch {
+				case strings.HasPrefix(command[0], "lua."):
+					err = f.ParseAction(&actions.Lua{}, command)
 				case strings.HasPrefix(command[0], "sc-inc-gpc0"):
 					err = f.ParseAction(&actions.ScIncGpc0{}, command)
 				case strings.HasPrefix(command[0], "sc-inc-gpc1"):
