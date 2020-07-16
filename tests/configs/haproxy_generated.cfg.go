@@ -38,6 +38,7 @@ defaults test
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
   hash-type map-based
+  http-reuse never
   http-check disable-on-404
   http-check send-state
   http-check expect status 200
@@ -378,9 +379,6 @@ backend test
   stats http-request auth if something
   stats http-request deny unless something
   stats http-request allow
-
-default test
-  http-reuse never
 
 frontend test
   acl url_stats path_beg /stats
@@ -769,6 +767,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  group G1
 `, 1},
   {`  hash-type map-based
+`, 2},
+  {`  http-reuse never
 `, 2},
   {`  http-check disable-on-404
 `, 2},

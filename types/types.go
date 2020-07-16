@@ -229,8 +229,7 @@ type HashType struct {
 	Comment  string
 }
 
-//sections:default,backend
-//no-sections:true
+//sections:defaults,backend
 //name:http-reuse
 //is-multiple:false
 //test:ok:http-reuse never
