@@ -475,6 +475,8 @@ func (p *Parser) Process(reader io.Reader) error {
 	p.Parsers[Mailers] = map[string]*Parsers{}
 	p.Parsers[Cache] = map[string]*Parsers{}
 	p.Parsers[Program] = map[string]*Parsers{}
+	p.Parsers[HTTPErrors] = map[string]*Parsers{}
+	p.Parsers[Ring] = map[string]*Parsers{}
 
 	parsers := ConfiguredParsers{
 		State:    "",
