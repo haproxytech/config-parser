@@ -44,7 +44,7 @@ func (f *ReplaceHeader) Parse(parts []string, comment string) error {
 		}
 		f.Name = command[0]
 		f.MatchRegex = command[1]
-		f.ReplaceFmt = command[2]
+		f.ReplaceFmt = strings.Join(command[2:], "")
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
