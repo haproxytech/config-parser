@@ -408,6 +408,12 @@ type TCPAction interface {
 //test:ok:tcp-request content track-sc1 src if some_check
 //test:ok:tcp-request content track-sc2 src
 //test:ok:tcp-request content track-sc2 src if some_check
+//test:ok:tcp-request content track-sc0 src table foo
+//test:ok:tcp-request content track-sc0 src table foo if some_check
+//test:ok:tcp-request content track-sc1 src table foo
+//test:ok:tcp-request content track-sc1 src table foo if some_check
+//test:ok:tcp-request content track-sc2 src table foo
+//test:ok:tcp-request content track-sc2 src table foo if some_check
 //test:ok:tcp-request content set-dst ipv4(10.0.0.1)
 //test:ok:tcp-request content set-var(sess.src) src
 //test:ok:tcp-request content set-var(sess.dn) ssl_c_s_dn
@@ -434,6 +440,12 @@ type TCPAction interface {
 //test:ok:tcp-request connection track-sc1 src if some_check
 //test:ok:tcp-request connection track-sc2 src
 //test:ok:tcp-request connection track-sc2 src if some_check
+//test:ok:tcp-request connection track-sc0 src table foo
+//test:ok:tcp-request connection track-sc0 src table foo if some_check
+//test:ok:tcp-request connection track-sc1 src table foo
+//test:ok:tcp-request connection track-sc1 src table foo if some_check
+//test:ok:tcp-request connection track-sc2 src table foo
+//test:ok:tcp-request connection track-sc2 src table foo if some_check
 //test:ok:tcp-request connection sc-inc-gpc0(2)
 //test:ok:tcp-request connection sc-inc-gpc0(2) if is-error
 //test:ok:tcp-request connection sc-inc-gpc1(2)
@@ -457,6 +469,12 @@ type TCPAction interface {
 //test:ok:tcp-request session track-sc1 src if some_check
 //test:ok:tcp-request session track-sc2 src
 //test:ok:tcp-request session track-sc2 src if some_check
+//test:ok:tcp-request session track-sc0 src table foo
+//test:ok:tcp-request session track-sc0 src table foo if some_check
+//test:ok:tcp-request session track-sc1 src table foo
+//test:ok:tcp-request session track-sc1 src table foo if some_check
+//test:ok:tcp-request session track-sc2 src table foo
+//test:ok:tcp-request session track-sc2 src table foo if some_check
 //test:ok:tcp-request session sc-inc-gpc0(2)
 //test:ok:tcp-request session sc-inc-gpc0(2) if is-error
 //test:ok:tcp-request session sc-inc-gpc1(2)
@@ -477,6 +495,24 @@ type TCPAction interface {
 //test:fail:tcp-request content lua. param
 //test:fail:tcp-request connection lua.
 //test:fail:tcp-request connection lua. param
+//test:fail:tcp-request content track-sc0 src table
+//test:fail:tcp-request content track-sc0 src table if some_check
+//test:fail:tcp-request content track-sc1 src table
+//test:fail:tcp-request content track-sc1 src table if some_check
+//test:fail:tcp-request content track-sc2 src table
+//test:fail:tcp-request content track-sc2 src table if some_check
+//test:fail:tcp-request connection track-sc0 src table
+//test:fail:tcp-request connection track-sc0 src table if some_check
+//test:fail:tcp-request connection track-sc1 src table
+//test:fail:tcp-request connection track-sc1 src table if some_check
+//test:fail:tcp-request connection track-sc2 src table
+//test:fail:tcp-request connection track-sc2 src table if some_check
+//test:fail:tcp-request session track-sc0 src table
+//test:fail:tcp-request session track-sc0 src table if some_check
+//test:fail:tcp-request session track-sc1 src table
+//test:fail:tcp-request session track-sc1 src table if some_check
+//test:fail:tcp-request session track-sc2 src table
+//test:fail:tcp-request session track-sc2 src table if some_check
 type TCPRequests struct{}
 
 //name:tcp-response
