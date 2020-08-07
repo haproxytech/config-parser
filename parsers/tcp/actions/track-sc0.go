@@ -26,25 +26,31 @@ type TrackSc0 struct {
 }
 
 func (f *TrackSc0) Parse(parts []string) error {
-
 	if len(parts) <= 1 {
 		return fmt.Errorf("not enough params")
 	}
 
 	f.Key = parts[1]
 
-	if len(parts) == 3 {
-		f.Table = parts[2]
+	if len(parts) >= 3 {
+		if parts[2] != "table" {
+			return fmt.Errorf("table keyword not provided")
+		} else if len(parts) < 4 {
+			return fmt.Errorf("table keyword provided without value")
+		}
+
+		f.Table = parts[3]
 	}
 
 	return nil
 }
 
 func (f *TrackSc0) String() string {
+	result := fmt.Sprintf("track-sc0 %s", f.Key)
 
 	if f.Table != "" {
-		return fmt.Sprintf("track-sc0 %s %s", f.Key, f.Table)
+		result += fmt.Sprintf(" table %s", f.Table)
 	}
 
-	return fmt.Sprintf("track-sc0 %s", f.Key)
+	return result
 }

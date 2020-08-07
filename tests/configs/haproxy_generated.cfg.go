@@ -291,6 +291,12 @@ backend test
   tcp-request content track-sc1 src if some_check
   tcp-request content track-sc2 src
   tcp-request content track-sc2 src if some_check
+  tcp-request content track-sc0 src table foo
+  tcp-request content track-sc0 src table foo if some_check
+  tcp-request content track-sc1 src table foo
+  tcp-request content track-sc1 src table foo if some_check
+  tcp-request content track-sc2 src table foo
+  tcp-request content track-sc2 src table foo if some_check
   tcp-request content set-dst ipv4(10.0.0.1)
   tcp-request content set-var(sess.src) src
   tcp-request content set-var(sess.dn) ssl_c_s_dn
@@ -317,6 +323,12 @@ backend test
   tcp-request connection track-sc1 src if some_check
   tcp-request connection track-sc2 src
   tcp-request connection track-sc2 src if some_check
+  tcp-request connection track-sc0 src table foo
+  tcp-request connection track-sc0 src table foo if some_check
+  tcp-request connection track-sc1 src table foo
+  tcp-request connection track-sc1 src table foo if some_check
+  tcp-request connection track-sc2 src table foo
+  tcp-request connection track-sc2 src table foo if some_check
   tcp-request connection sc-inc-gpc0(2)
   tcp-request connection sc-inc-gpc0(2) if is-error
   tcp-request connection sc-inc-gpc1(2)
@@ -340,6 +352,12 @@ backend test
   tcp-request session track-sc1 src if some_check
   tcp-request session track-sc2 src
   tcp-request session track-sc2 src if some_check
+  tcp-request session track-sc0 src table foo
+  tcp-request session track-sc0 src table foo if some_check
+  tcp-request session track-sc1 src table foo
+  tcp-request session track-sc1 src table foo if some_check
+  tcp-request session track-sc2 src table foo
+  tcp-request session track-sc2 src table foo if some_check
   tcp-request session sc-inc-gpc0(2)
   tcp-request session sc-inc-gpc0(2) if is-error
   tcp-request session sc-inc-gpc1(2)
@@ -578,6 +596,12 @@ frontend test
   tcp-request content track-sc1 src if some_check
   tcp-request content track-sc2 src
   tcp-request content track-sc2 src if some_check
+  tcp-request content track-sc0 src table foo
+  tcp-request content track-sc0 src table foo if some_check
+  tcp-request content track-sc1 src table foo
+  tcp-request content track-sc1 src table foo if some_check
+  tcp-request content track-sc2 src table foo
+  tcp-request content track-sc2 src table foo if some_check
   tcp-request content set-dst ipv4(10.0.0.1)
   tcp-request content set-var(sess.src) src
   tcp-request content set-var(sess.dn) ssl_c_s_dn
@@ -604,6 +628,12 @@ frontend test
   tcp-request connection track-sc1 src if some_check
   tcp-request connection track-sc2 src
   tcp-request connection track-sc2 src if some_check
+  tcp-request connection track-sc0 src table foo
+  tcp-request connection track-sc0 src table foo if some_check
+  tcp-request connection track-sc1 src table foo
+  tcp-request connection track-sc1 src table foo if some_check
+  tcp-request connection track-sc2 src table foo
+  tcp-request connection track-sc2 src table foo if some_check
   tcp-request connection sc-inc-gpc0(2)
   tcp-request connection sc-inc-gpc0(2) if is-error
   tcp-request connection sc-inc-gpc1(2)
@@ -627,6 +657,12 @@ frontend test
   tcp-request session track-sc1 src if some_check
   tcp-request session track-sc2 src
   tcp-request session track-sc2 src if some_check
+  tcp-request session track-sc0 src table foo
+  tcp-request session track-sc0 src table foo if some_check
+  tcp-request session track-sc1 src table foo
+  tcp-request session track-sc1 src table foo if some_check
+  tcp-request session track-sc2 src table foo
+  tcp-request session track-sc2 src table foo if some_check
   tcp-request session sc-inc-gpc0(2)
   tcp-request session sc-inc-gpc0(2) if is-error
   tcp-request session sc-inc-gpc1(2)
@@ -1172,6 +1208,18 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  tcp-request content track-sc2 src if some_check
 `, 2},
+  {`  tcp-request content track-sc0 src table foo
+`, 2},
+  {`  tcp-request content track-sc0 src table foo if some_check
+`, 2},
+  {`  tcp-request content track-sc1 src table foo
+`, 2},
+  {`  tcp-request content track-sc1 src table foo if some_check
+`, 2},
+  {`  tcp-request content track-sc2 src table foo
+`, 2},
+  {`  tcp-request content track-sc2 src table foo if some_check
+`, 2},
   {`  tcp-request content set-dst ipv4(10.0.0.1)
 `, 2},
   {`  tcp-request content set-var(sess.src) src
@@ -1224,6 +1272,18 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  tcp-request connection track-sc2 src if some_check
 `, 2},
+  {`  tcp-request connection track-sc0 src table foo
+`, 2},
+  {`  tcp-request connection track-sc0 src table foo if some_check
+`, 2},
+  {`  tcp-request connection track-sc1 src table foo
+`, 2},
+  {`  tcp-request connection track-sc1 src table foo if some_check
+`, 2},
+  {`  tcp-request connection track-sc2 src table foo
+`, 2},
+  {`  tcp-request connection track-sc2 src table foo if some_check
+`, 2},
   {`  tcp-request connection sc-inc-gpc0(2)
 `, 2},
   {`  tcp-request connection sc-inc-gpc0(2) if is-error
@@ -1269,6 +1329,18 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  tcp-request session track-sc2 src
 `, 2},
   {`  tcp-request session track-sc2 src if some_check
+`, 2},
+  {`  tcp-request session track-sc0 src table foo
+`, 2},
+  {`  tcp-request session track-sc0 src table foo if some_check
+`, 2},
+  {`  tcp-request session track-sc1 src table foo
+`, 2},
+  {`  tcp-request session track-sc1 src table foo if some_check
+`, 2},
+  {`  tcp-request session track-sc2 src table foo
+`, 2},
+  {`  tcp-request session track-sc2 src table foo if some_check
 `, 2},
   {`  tcp-request session sc-inc-gpc0(2)
 `, 2},
