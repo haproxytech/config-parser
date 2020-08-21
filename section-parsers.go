@@ -94,7 +94,7 @@ func getDefaultParser() *Parsers {
 		&simple.Option{Name: "ldap-check"},
 		&parsers.OptionMysqlCheck{},
 		&simple.Option{Name: "abortonclose"},
-		&simple.Option{Name: "pgsql-check"},
+		&parsers.OptionPgsqlCheck{},
 		&simple.Option{Name: "tcp-check"},
 		&simple.Option{Name: "redis-check"},
 		&parsers.OptionHttpchk{},
