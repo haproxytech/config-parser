@@ -39,12 +39,6 @@ defaults test
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
   hash-type map-based
   http-reuse never
-  http-check disable-on-404
-  http-check send-state
-  http-check expect status 200
-  http-check expect ! string SQL\\ Error
-  http-check expect ! rstatus ^5
-  http-check expect rstring <!--tag:[0-9a-f]*--></html>
   log global
   log stdout format short daemon # send log to systemd
   log stdout format raw daemon # send everything to stdout
@@ -55,6 +49,40 @@ defaults test
   option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
   unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
   unique-id-header X-Unique-ID
+  http-check comment testcomment
+  http-check connect
+  http-check connect default
+  http-check connect port 8080
+  http-check connect addr 8.8.8.8
+  http-check connect send-proxy
+  http-check connect via-socks4
+  http-check connect ssl
+  http-check connect sni haproxy.1wt.eu
+  http-check connect alpn h2,http/1.1
+  http-check connect proto h2
+  http-check connect linger
+  http-check connect comment testcomment
+  http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
+  http-check disable-on-404
+  http-check expect status 200
+  http-check expect min-recv 50 status 200
+  http-check expect comment testcomment status 200
+  http-check expect ok-status L7OK status 200
+  http-check expect error-status L7RSP status 200
+  http-check expect tout-status L7TOUT status 200
+  http-check expect on-success \"my-log-format\" status 200
+  http-check expect on-error \"my-log-format\" status 200
+  http-check expect status-code \"500\" status 200
+  http-check expect ! string SQL\\ Error
+  http-check expect ! rstatus ^5
+  http-check expect rstring <!--tag:[0-9a-f]*--></html>
+  http-check send meth GET
+  http-check send uri /health
+  http-check send ver \"HTTP/1.1\"
+  http-check send comment testcomment
+  http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
+  http-check send uri-lf my-log-format body-lf 'my-log-format'
+  http-check send-state
   stats admin if LOCALHOST
   stats auth admin1:AdMiN123
   stats enable
@@ -105,12 +133,6 @@ backend test
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
   hash-type map-based
   http-reuse never
-  http-check disable-on-404
-  http-check send-state
-  http-check expect status 200
-  http-check expect ! string SQL\\ Error
-  http-check expect ! rstatus ^5
-  http-check expect rstring <!--tag:[0-9a-f]*--></html>
   log global
   log stdout format short daemon # send log to systemd
   log stdout format raw daemon # send everything to stdout
@@ -275,6 +297,40 @@ backend test
   http-response track-sc2 src
   http-response strict-mode on
   http-response strict-mode on if FALSE
+  http-check comment testcomment
+  http-check connect
+  http-check connect default
+  http-check connect port 8080
+  http-check connect addr 8.8.8.8
+  http-check connect send-proxy
+  http-check connect via-socks4
+  http-check connect ssl
+  http-check connect sni haproxy.1wt.eu
+  http-check connect alpn h2,http/1.1
+  http-check connect proto h2
+  http-check connect linger
+  http-check connect comment testcomment
+  http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
+  http-check disable-on-404
+  http-check expect status 200
+  http-check expect min-recv 50 status 200
+  http-check expect comment testcomment status 200
+  http-check expect ok-status L7OK status 200
+  http-check expect error-status L7RSP status 200
+  http-check expect tout-status L7TOUT status 200
+  http-check expect on-success \"my-log-format\" status 200
+  http-check expect on-error \"my-log-format\" status 200
+  http-check expect status-code \"500\" status 200
+  http-check expect ! string SQL\\ Error
+  http-check expect ! rstatus ^5
+  http-check expect rstring <!--tag:[0-9a-f]*--></html>
+  http-check send meth GET
+  http-check send uri /health
+  http-check send ver \"HTTP/1.1\"
+  http-check send comment testcomment
+  http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
+  http-check send uri-lf my-log-format body-lf 'my-log-format'
+  http-check send-state
   tcp-request content accept
   tcp-request content accept if !HTTP
   tcp-request content reject
@@ -806,18 +862,6 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-reuse never
 `, 2},
-  {`  http-check disable-on-404
-`, 2},
-  {`  http-check send-state
-`, 2},
-  {`  http-check expect status 200
-`, 2},
-  {`  http-check expect ! string SQL\\ Error
-`, 2},
-  {`  http-check expect ! rstatus ^5
-`, 2},
-  {`  http-check expect rstring <!--tag:[0-9a-f]*--></html>
-`, 2},
   {`  log global
 `, 3},
   {`  log stdout format short daemon # send log to systemd
@@ -1175,6 +1219,74 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-response strict-mode on
 `, 2},
   {`  http-response strict-mode on if FALSE
+`, 2},
+  {`  http-check comment testcomment
+`, 2},
+  {`  http-check connect
+`, 2},
+  {`  http-check connect default
+`, 2},
+  {`  http-check connect port 8080
+`, 2},
+  {`  http-check connect addr 8.8.8.8
+`, 2},
+  {`  http-check connect send-proxy
+`, 2},
+  {`  http-check connect via-socks4
+`, 2},
+  {`  http-check connect ssl
+`, 2},
+  {`  http-check connect sni haproxy.1wt.eu
+`, 2},
+  {`  http-check connect alpn h2,http/1.1
+`, 2},
+  {`  http-check connect proto h2
+`, 2},
+  {`  http-check connect linger
+`, 2},
+  {`  http-check connect comment testcomment
+`, 2},
+  {`  http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
+`, 2},
+  {`  http-check disable-on-404
+`, 2},
+  {`  http-check expect status 200
+`, 2},
+  {`  http-check expect min-recv 50 status 200
+`, 2},
+  {`  http-check expect comment testcomment status 200
+`, 2},
+  {`  http-check expect ok-status L7OK status 200
+`, 2},
+  {`  http-check expect error-status L7RSP status 200
+`, 2},
+  {`  http-check expect tout-status L7TOUT status 200
+`, 2},
+  {`  http-check expect on-success \"my-log-format\" status 200
+`, 2},
+  {`  http-check expect on-error \"my-log-format\" status 200
+`, 2},
+  {`  http-check expect status-code \"500\" status 200
+`, 2},
+  {`  http-check expect ! string SQL\\ Error
+`, 2},
+  {`  http-check expect ! rstatus ^5
+`, 2},
+  {`  http-check expect rstring <!--tag:[0-9a-f]*--></html>
+`, 2},
+  {`  http-check send meth GET
+`, 2},
+  {`  http-check send uri /health
+`, 2},
+  {`  http-check send ver \"HTTP/1.1\"
+`, 2},
+  {`  http-check send comment testcomment
+`, 2},
+  {`  http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
+`, 2},
+  {`  http-check send uri-lf my-log-format body-lf 'my-log-format'
+`, 2},
+  {`  http-check send-state
 `, 2},
   {`  tcp-request content accept
 `, 2},

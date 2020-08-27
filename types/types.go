@@ -245,13 +245,15 @@ type HTTPReuse struct {
 //sections:defaults,backend
 //name:http-check
 //is-multiple:true
-//test:ok:http-check disable-on-404
-//test:ok:http-check send-state
-//test:ok:http-check expect status 200
-//test:ok:http-check expect ! string SQL\\ Error
-//test:ok:http-check expect ! rstatus ^5
-//test:ok:http-check expect rstring <!--tag:[0-9a-f]*--></html>
+//test:skip:http-check disable-on-404
+//test:skip:http-check send-state
+//test:skip:http-check expect status 200
+//test:skip:http-check expect ! string SQL\\ Error
+//test:skip:http-check expect ! rstatus ^5
+//test:skip:http-check expect rstring <!--tag:[0-9a-f]*--></html>
+//test:ok:http-check expect string testing
 //test:fail:http-check
+// DEPRECATED: use parsers/http/actions.Check* types instead
 type HTTPCheck struct {
 	Type            string
 	ExclamationMark bool
