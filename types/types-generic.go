@@ -80,6 +80,10 @@ type Int64C struct {
 //test:fail:stats timeout
 //test:fail:stats
 //test:fail:timeout
+//gen:LogSendHostName
+//name:log-send-hostname
+//test:ok:log-send-hostname
+//test:ok:log-send-hostname something
 type StringC struct {
 	Value   string
 	Comment string
