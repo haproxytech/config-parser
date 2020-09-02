@@ -74,7 +74,6 @@ func getDefaultParser() *Parsers {
 		&simple.String{Name: "log-format"},
 		&simple.String{Name: "log-format-sd"},
 		&parsers.Cookie{},
-		// &parsers.HTTPCheck{},
 		&http.Checks{Mode: "defaults"},
 		&parsers.BindProcess{},
 
@@ -229,7 +228,6 @@ func getBackendParser() *Parsers {
 		&parsers.HashType{},
 		&parsers.Balance{},
 		&parsers.ACL{},
-		// &parsers.HTTPCheck{},
 		&http.Checks{Mode: "backend"},
 		&parsers.BindProcess{},
 
