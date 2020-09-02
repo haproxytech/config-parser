@@ -242,26 +242,6 @@ type HTTPReuse struct {
 	Comment   string
 }
 
-//sections:defaults,backend
-//name:http-check
-//is-multiple:true
-//test:skip:http-check disable-on-404
-//test:skip:http-check send-state
-//test:skip:http-check expect status 200
-//test:skip:http-check expect ! string SQL\\ Error
-//test:skip:http-check expect ! rstatus ^5
-//test:skip:http-check expect rstring <!--tag:[0-9a-f]*--></html>
-//test:ok:http-check expect string testing
-//test:fail:http-check
-// DEPRECATED: use parsers/http/actions.Check* types instead
-type HTTPCheck struct {
-	Type            string
-	ExclamationMark bool
-	Match           string
-	Pattern         string
-	Comment         string
-}
-
 //sections:defaults,frontend,backend
 //name:log
 //is-multiple:true
