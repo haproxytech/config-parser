@@ -25,7 +25,8 @@ import (
 )
 
 type OptionForwardFor struct {
-	data *types.OptionForwardFor
+	data        *types.OptionForwardFor
+	preComments []string // comments that appear before the the actual line
 }
 
 /*

@@ -27,7 +27,8 @@ import (
 )
 
 type Bind struct {
-	data []types.Bind
+	data        []types.Bind
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Bind) parse(line string, parts []string, comment string) (*types.Bind, error) {

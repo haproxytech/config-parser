@@ -24,8 +24,9 @@ import (
 )
 
 type Redirect struct {
-	Name string
-	data []types.HTTPAction
+	Name        string
+	data        []types.HTTPAction
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Redirect) Init() {

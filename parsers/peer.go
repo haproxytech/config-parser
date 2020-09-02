@@ -26,7 +26,8 @@ import (
 )
 
 type Peer struct {
-	data []types.Peer
+	data        []types.Peer
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *Peer) parse(line string, parts []string, comment string) (*types.Peer, error) {

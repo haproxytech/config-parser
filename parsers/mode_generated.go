@@ -24,6 +24,7 @@ import (
 
 func (p *Mode) Init() {
     p.data = nil
+    p.preComments = []string{}
 }
 
 func (p *Mode) GetParserName() string {
@@ -74,4 +75,17 @@ func (p *Mode) Set(data common.ParserData, index int) error {
 		return errors.ErrInvalidData
 	}
 	return nil
+}
+
+func (p *Mode) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
+func (p *Mode) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

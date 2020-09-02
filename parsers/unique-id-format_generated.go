@@ -24,6 +24,7 @@ import (
 
 func (p *UniqueIDFormat) Init() {
     p.data = nil
+    p.preComments = []string{}
 }
 
 func (p *UniqueIDFormat) GetParserName() string {
@@ -74,4 +75,17 @@ func (p *UniqueIDFormat) Set(data common.ParserData, index int) error {
 		return errors.ErrInvalidData
 	}
 	return nil
+}
+
+func (p *UniqueIDFormat) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
+func (p *UniqueIDFormat) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

@@ -26,7 +26,8 @@ import (
 )
 
 type UniqueIDFormat struct {
-	data *types.UniqueIDFormat
+	data        *types.UniqueIDFormat
+	preComments []string // comments that appear before the the actual line
 }
 
 func (p *UniqueIDFormat) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

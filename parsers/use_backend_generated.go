@@ -24,6 +24,7 @@ import (
 
 func (p *UseBackend) Init() {
 	p.data = []types.UseBackend{}
+    p.preComments = []string{}
 }
 
 func (p *UseBackend) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *UseBackend) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *UseBackend) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *UseBackend) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "use_backend" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *UseBackend) Parse(line string, parts, previousParts []string, comment s
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "UseBackend", Line: line}
+}
+
+func (p *UseBackend) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

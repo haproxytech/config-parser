@@ -25,7 +25,8 @@ import (
 )
 
 type OptionSmtpchk struct {
-	data *types.OptionSmtpchk
+	data        *types.OptionSmtpchk
+	preComments []string // comments that appear before the the actual line
 }
 
 /*

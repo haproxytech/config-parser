@@ -26,8 +26,9 @@ import (
 )
 
 type String struct {
-	Name string
-	data *types.StringC
+	Name        string
+	data        *types.StringC
+	preComments []string // comments that appear before the the actual line
 }
 
 func (s *String) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

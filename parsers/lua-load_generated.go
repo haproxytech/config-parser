@@ -24,6 +24,7 @@ import (
 
 func (p *LuaLoad) Init() {
 	p.data = []types.LuaLoad{}
+    p.preComments = []string{}
 }
 
 func (p *LuaLoad) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *LuaLoad) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *LuaLoad) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *LuaLoad) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "lua-load" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *LuaLoad) Parse(line string, parts, previousParts []string, comment stri
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "LuaLoad", Line: line}
+}
+
+func (p *LuaLoad) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

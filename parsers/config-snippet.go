@@ -25,8 +25,9 @@ import (
 )
 
 type ConfigSnippet struct {
-	data   *types.StringSliceC
-	active bool
+	data        *types.StringSliceC
+	active      bool
+	preComments []string // comments that appear before the the actual line
 }
 
 func (p *ConfigSnippet) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

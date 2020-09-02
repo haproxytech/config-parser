@@ -24,6 +24,7 @@ import (
 
 func (p *User) Init() {
 	p.data = []types.User{}
+    p.preComments = []string{}
 }
 
 func (p *User) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *User) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *User) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *User) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "user" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *User) Parse(line string, parts, previousParts []string, comment string)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "User", Line: line}
+}
+
+func (p *User) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

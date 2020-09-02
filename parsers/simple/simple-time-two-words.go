@@ -26,14 +26,16 @@ import (
 )
 
 type TimeTwoWords struct {
-	Keywords []string
-	Name     string
-	data     *types.StringC
+	Keywords    []string
+	Name        string
+	data        *types.StringC
+	preComments []string // comments that appear before the the actual line
 }
 
 func (s *TimeTwoWords) Init() {
 	s.data = nil
 	s.Name = strings.Join(s.Keywords, " ")
+	s.preComments = nil
 }
 
 func (s *TimeTwoWords) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

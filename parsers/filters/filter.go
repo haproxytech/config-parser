@@ -23,8 +23,9 @@ import (
 )
 
 type Filters struct {
-	Name string
-	data []types.Filter
+	Name        string
+	data        []types.Filter
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Filters) Init() {

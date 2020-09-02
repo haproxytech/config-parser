@@ -24,6 +24,7 @@ import (
 
 func (p *OptionSmtpchk) Init() {
     p.data = nil
+    p.preComments = []string{}
 }
 
 func (p *OptionSmtpchk) GetParserName() string {
@@ -74,4 +75,17 @@ func (p *OptionSmtpchk) Set(data common.ParserData, index int) error {
 		return errors.ErrInvalidData
 	}
 	return nil
+}
+
+func (p *OptionSmtpchk) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
+func (p *OptionSmtpchk) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

@@ -25,7 +25,8 @@ import (
 )
 
 type StickTable struct {
-	data *types.StickTable
+	data        *types.StickTable
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *StickTable) parse(line string, parts []string, comment string) (*types.StickTable, error) {

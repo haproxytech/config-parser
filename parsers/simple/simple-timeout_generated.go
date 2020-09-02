@@ -71,3 +71,16 @@ func (p *Timeout) Set(data common.ParserData, index int) error {
 	}
 	return nil
 }
+
+func (p *Timeout) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
+func (p *Timeout) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
+}

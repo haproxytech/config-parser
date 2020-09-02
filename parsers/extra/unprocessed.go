@@ -25,8 +25,9 @@ import (
 )
 
 type UnProcessed struct {
-	Name string
-	data []types.UnProcessed
+	Name        string
+	data        []types.UnProcessed
+	preComments []string // comments that appear before the the actual line
 }
 
 func (u *UnProcessed) Init() {

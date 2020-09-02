@@ -39,11 +39,13 @@ var errorFileAllowedCode = map[string]struct{}{
 }
 
 type ErrorFile struct {
-	data []types.ErrorFile
+	data        []types.ErrorFile
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *ErrorFile) Init() {
 	l.data = []types.ErrorFile{}
+	l.preComments = []string{}
 }
 
 func (l *ErrorFile) parse(line string, parts []string, comment string) (*types.ErrorFile, error) {

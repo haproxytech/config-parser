@@ -24,6 +24,7 @@ import (
 
 func (p *Nameserver) Init() {
 	p.data = []types.Nameserver{}
+    p.preComments = []string{}
 }
 
 func (p *Nameserver) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *Nameserver) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *Nameserver) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *Nameserver) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "nameserver" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *Nameserver) Parse(line string, parts, previousParts []string, comment s
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Nameserver", Line: line}
+}
+
+func (p *Nameserver) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

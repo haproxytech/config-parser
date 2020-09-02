@@ -25,7 +25,8 @@ import (
 )
 
 type LogSendHostName struct {
-	data *types.StringC
+	data        *types.StringC
+	preComments []string // comments that appear before the the actual line
 }
 
 func (p *LogSendHostName) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

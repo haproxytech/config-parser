@@ -26,7 +26,8 @@ import (
 )
 
 type Group struct {
-	data []types.Group
+	data        []types.Group
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *Group) parse(line string, parts []string, comment string) (*types.Group, error) {

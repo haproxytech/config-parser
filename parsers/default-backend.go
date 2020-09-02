@@ -25,7 +25,8 @@ import (
 )
 
 type DefaultBackend struct {
-	data *types.StringC
+	data        *types.StringC
+	preComments []string // comments that appear before the the actual line
 }
 
 func (s *DefaultBackend) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

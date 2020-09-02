@@ -26,9 +26,10 @@ import (
 )
 
 type Option struct {
-	Name string
-	name string
-	data *types.SimpleOption
+	Name        string
+	name        string
+	data        *types.SimpleOption
+	preComments []string // comments that appear before the the actual line
 }
 
 func (o *Option) Init() {
@@ -37,6 +38,7 @@ func (o *Option) Init() {
 		o.Name = fmt.Sprintf("option %s", o.Name)
 	}
 	o.data = nil
+	o.preComments = nil
 }
 
 func (o *Option) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

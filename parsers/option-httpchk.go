@@ -25,7 +25,8 @@ import (
 )
 
 type OptionHttpchk struct {
-	data *types.OptionHttpchk
+	data        *types.OptionHttpchk
+	preComments []string // comments that appear before the the actual line
 }
 
 /*

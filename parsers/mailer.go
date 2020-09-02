@@ -26,7 +26,8 @@ import (
 )
 
 type Mailer struct {
-	data []types.Mailer
+	data        []types.Mailer
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *Mailer) parse(line string, parts []string, comment string) (*types.Mailer, error) {

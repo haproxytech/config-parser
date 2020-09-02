@@ -26,7 +26,8 @@ import (
 )
 
 type Cookie struct {
-	data *types.Cookie
+	data        *types.Cookie
+	preComments []string // comments that appear before the the actual line
 }
 
 func (p *Cookie) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

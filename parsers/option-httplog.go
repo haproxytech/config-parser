@@ -25,7 +25,8 @@ import (
 )
 
 type OptionHTTPLog struct {
-	data *types.OptionHTTPLog
+	data        *types.OptionHTTPLog
+	preComments []string // comments that appear before the the actual line
 }
 
 func (o *OptionHTTPLog) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

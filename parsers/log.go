@@ -46,11 +46,13 @@ var logAllowedLevels = map[string]struct{}{
 }
 
 type Log struct {
-	data []types.Log
+	data        []types.Log
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *Log) Init() {
 	l.data = []types.Log{}
+	l.preComments = []string{}
 }
 
 func (l *Log) parse(line string, parts []string, comment string) (*types.Log, error) {

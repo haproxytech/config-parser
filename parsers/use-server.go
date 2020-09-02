@@ -26,7 +26,8 @@ import (
 )
 
 type UseServer struct {
-	data []types.UseServer
+	data        []types.UseServer
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *UseServer) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

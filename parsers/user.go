@@ -26,7 +26,8 @@ import (
 )
 
 type User struct {
-	data []types.User
+	data        []types.User
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *User) parse(line string, parts []string, comment string) (*types.User, error) {

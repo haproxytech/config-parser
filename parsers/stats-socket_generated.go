@@ -24,6 +24,7 @@ import (
 
 func (p *Socket) Init() {
 	p.data = []types.Socket{}
+    p.preComments = []string{}
 }
 
 func (p *Socket) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *Socket) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *Socket) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *Socket) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "stats"  && parts[1] == "socket" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *Socket) Parse(line string, parts, previousParts []string, comment strin
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Socket", Line: line}
+}
+
+func (p *Socket) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

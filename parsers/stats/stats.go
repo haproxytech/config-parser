@@ -24,9 +24,10 @@ import (
 )
 
 type Stats struct {
-	Name string
-	Mode string
-	data []types.StatsSettings
+	Name        string
+	Mode        string
+	data        []types.StatsSettings
+	preComments []string // comments that appear before the the actual line
 }
 
 func (s *Stats) Init() {

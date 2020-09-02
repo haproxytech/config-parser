@@ -26,7 +26,8 @@ import (
 )
 
 type OptionRedispatch struct {
-	data *types.OptionRedispatch
+	data        *types.OptionRedispatch
+	preComments []string // comments that appear before the the actual line
 }
 
 /*

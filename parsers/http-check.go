@@ -25,7 +25,8 @@ import (
 )
 
 type HTTPCheck struct {
-	data []types.HTTPCheck
+	data        []types.HTTPCheck
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *HTTPCheck) parse(line string, parts []string, comment string) (*types.HTTPCheck, error) {

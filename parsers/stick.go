@@ -25,7 +25,8 @@ import (
 )
 
 type Stick struct {
-	data []types.Stick
+	data        []types.Stick
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Stick) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

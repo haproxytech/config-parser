@@ -26,7 +26,8 @@ import (
 )
 
 type CPUMap struct {
-	data []types.CPUMap
+	data        []types.CPUMap
+	preComments []string // comments that appear before the the actual line
 }
 
 func (c *CPUMap) parse(line string, parts []string, comment string) (*types.CPUMap, error) {

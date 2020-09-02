@@ -23,8 +23,9 @@ import (
 )
 
 type Comments struct {
-	Name string
-	data []types.Comments
+	Name        string
+	data        []types.Comments
+	preComments []string
 }
 
 func (p *Comments) Init() {

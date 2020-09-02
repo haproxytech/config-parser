@@ -25,7 +25,8 @@ import (
 )
 
 type LuaLoad struct {
-	data []types.LuaLoad
+	data        []types.LuaLoad
+	preComments []string // comments that appear before the the actual line
 }
 
 func (l *LuaLoad) parse(line string, parts []string, comment string) (*types.LuaLoad, error) {

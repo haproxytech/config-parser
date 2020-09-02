@@ -24,7 +24,8 @@ import (
 )
 
 type HashType struct {
-	data *types.HashType
+	data        *types.HashType
+	preComments []string // comments that appear before the the actual line
 }
 
 func (p *HashType) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

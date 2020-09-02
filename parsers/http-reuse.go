@@ -25,7 +25,8 @@ import (
 )
 
 type HTTPReuse struct {
-	data *types.HTTPReuse
+	data        *types.HTTPReuse
+	preComments []string // comments that appear before the the actual line
 }
 
 func (p *HTTPReuse) Parse(line string, parts, previousPats []string, comment string) (changeState string, err error) {

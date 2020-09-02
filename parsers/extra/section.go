@@ -25,8 +25,9 @@ import (
 )
 
 type Section struct {
-	Name string
-	data *types.Section
+	Name        string
+	data        *types.Section
+	preComments []string // comments that appear before the the actual line
 }
 
 func (s *Section) Init() {

@@ -27,8 +27,9 @@ import (
 )
 
 type ConfigVersion struct {
-	Name string
-	data *types.ConfigVersion
+	Name        string
+	data        *types.ConfigVersion
+	preComments []string // comments that appear before the the actual line
 }
 
 func (p *ConfigVersion) Init() {

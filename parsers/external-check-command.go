@@ -25,7 +25,8 @@ import (
 )
 
 type ExternalCheckCommand struct {
-	data *types.ExternalCheckCommand
+	data        *types.ExternalCheckCommand
+	preComments []string // comments that appear before the the actual line
 }
 
 /*

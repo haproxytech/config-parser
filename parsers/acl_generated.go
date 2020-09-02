@@ -24,6 +24,7 @@ import (
 
 func (p *ACL) Init() {
 	p.data = []types.ACL{}
+    p.preComments = []string{}
 }
 
 func (p *ACL) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *ACL) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *ACL) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *ACL) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "acl" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *ACL) Parse(line string, parts, previousParts []string, comment string) 
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "ACL", Line: line}
+}
+
+func (p *ACL) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

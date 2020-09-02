@@ -25,7 +25,8 @@ import (
 )
 
 type ACL struct {
-	data []types.ACL
+	data        []types.ACL
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *ACL) parse(line string, parts []string, comment string) (*types.ACL, error) {

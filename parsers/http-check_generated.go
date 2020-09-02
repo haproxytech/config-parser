@@ -24,6 +24,7 @@ import (
 
 func (p *HTTPCheck) Init() {
 	p.data = []types.HTTPCheck{}
+    p.preComments = []string{}
 }
 
 func (p *HTTPCheck) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *HTTPCheck) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *HTTPCheck) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *HTTPCheck) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "http-check" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *HTTPCheck) Parse(line string, parts, previousParts []string, comment st
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "HTTPCheck", Line: line}
+}
+
+func (p *HTTPCheck) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

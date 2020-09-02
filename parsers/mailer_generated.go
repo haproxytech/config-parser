@@ -24,6 +24,7 @@ import (
 
 func (p *Mailer) Init() {
 	p.data = []types.Mailer{}
+    p.preComments = []string{}
 }
 
 func (p *Mailer) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *Mailer) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *Mailer) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *Mailer) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "mailer" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *Mailer) Parse(line string, parts, previousParts []string, comment strin
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Mailer", Line: line}
+}
+
+func (p *Mailer) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

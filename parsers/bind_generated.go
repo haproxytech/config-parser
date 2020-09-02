@@ -24,6 +24,7 @@ import (
 
 func (p *Bind) Init() {
 	p.data = []types.Bind{}
+    p.preComments = []string{}
 }
 
 func (p *Bind) GetParserName() string {
@@ -119,6 +120,14 @@ func (p *Bind) Set(data common.ParserData, index int) error {
 	return nil
 }
 
+func (p *Bind) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, previousParts, comment)
+	if err == nil && preComments != nil {
+		p.preComments = append(p.preComments, preComments...)
+	}
+	return changeState, err
+}
+
 func (p *Bind) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == "bind" {
 		data, err := p.parse(line, parts, comment)
@@ -129,4 +138,9 @@ func (p *Bind) Parse(line string, parts, previousParts []string, comment string)
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "Bind", Line: line}
+}
+
+func (p *Bind) ResultAll() ([]common.ReturnResultLine, []string, error) {
+	res, err := p.Result()
+	return res, p.preComments, err
 }

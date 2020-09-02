@@ -26,9 +26,10 @@ import (
 )
 
 type Timeout struct {
-	Name string
-	name string
-	data *types.SimpleTimeout
+	Name        string
+	name        string
+	data        *types.SimpleTimeout
+	preComments []string // comments that appear before the the actual line
 }
 
 func (t *Timeout) Init() {
@@ -37,6 +38,7 @@ func (t *Timeout) Init() {
 		t.Name = fmt.Sprintf("timeout %s", t.Name)
 	}
 	t.data = nil
+	t.preComments = []string{}
 }
 
 func (t *Timeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

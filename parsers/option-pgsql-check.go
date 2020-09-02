@@ -25,7 +25,8 @@ import (
 )
 
 type OptionPgsqlCheck struct {
-	data *types.OptionPgsqlCheck
+	data        *types.OptionPgsqlCheck
+	preComments []string // comments that appear before the the actual line
 }
 
 /*

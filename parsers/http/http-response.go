@@ -26,9 +26,10 @@ import (
 )
 
 type Responses struct {
-	Name string
-	Mode string
-	data []types.HTTPAction
+	Name        string
+	Mode        string
+	data        []types.HTTPAction
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Responses) Init() {

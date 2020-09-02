@@ -23,7 +23,8 @@ import (
 )
 
 type NoSplice struct {
-	data *types.Enabled
+	data        *types.Enabled
+	preComments []string // comments that appear before the the actual line
 }
 
 func (m *NoSplice) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {

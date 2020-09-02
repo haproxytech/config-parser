@@ -25,7 +25,8 @@ import (
 )
 
 type OptionMysqlCheck struct {
-	data *types.OptionMysqlCheck
+	data        *types.OptionMysqlCheck
+	preComments []string // comments that appear before the the actual line
 }
 
 /*

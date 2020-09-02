@@ -24,9 +24,10 @@ import (
 )
 
 type Requests struct {
-	Name string
-	Mode string //frontent, backend, listen
-	data []types.TCPType
+	Name        string
+	Mode        string //frontent, backend, listen
+	data        []types.TCPType
+	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Requests) Init() {

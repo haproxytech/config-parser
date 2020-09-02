@@ -26,7 +26,8 @@ import (
 )
 
 type NbThread struct {
-	data *types.Int64C
+	data        *types.Int64C
+	preComments []string // comments that appear before the the actual line
 }
 
 func (n *NbThread) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
