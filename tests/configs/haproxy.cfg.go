@@ -19,6 +19,7 @@ const configFull = `# _version=10
 # HAProxy Technologies
 # https://www.haproxy.com/
 
+# some random global comment
 global 
   daemon
   master-worker
@@ -37,9 +38,14 @@ global
   ssl-default-bind-options no-sslv3 no-tls-tickets
   ssl-default-bind-ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK
   log 127.0.0.1:514 local0 notice
-  server-state-file global
-  server-state-base /var/state/haproxy/
+  # random comment before snippet
+  ###_config-snippet_### BEGIN
+  tune.ssl.default-dh-param 2048
+  tune.bufsize 32768
+  ###_config-snippet_### END
+  # random comment after snippet
 
+# some random defaults comment
 defaults 
   maxconn 2000
   log global
@@ -59,6 +65,7 @@ defaults
   timeout http-keep-alive 1m
   load-server-state-from-file global
 
+# some random userlist L1
 userlist L1 
   group G1 users tiger,scott
   group G2 users xdb,scott
@@ -67,9 +74,12 @@ userlist L1
   user scott insecure-password elgato
   user xdb insecure-password hello
 
+# some random userlist L2
 userlist L2 
   group G1
   group G2
+  # some random user comment #1
+  # some random user comment #2
   user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
   user scott insecure-password elgato groups G1,G2
   user xdb insecure-password hello groups G2
@@ -220,7 +230,7 @@ backend default_backend2
   server SRV_VqMNT 127.0.0.1:5852 maxconn 1000 weight 1 check # alctl: server SRV_VqMNT configuration.
   server SRV_LkIZ9 127.0.0.1:5853 maxconn 1000 weight 1 check # alctl: server SRV_LkIZ9 configuration.
   server THE_NEW_GUY 127.0.0.5:9345 # Newly added
-  #server SRV_LkIZw 127.0.0.1:5853 maxconn 1000 weight 1 check disabled #alctl: server SRV_LkIZ9 configuration.
+  # server SRV_LkIZw 127.0.0.1:5853 maxconn 1000 weight 1 check disabled #alctl: server SRV_LkIZ9 configuration.
 
 backend test 
   mode http

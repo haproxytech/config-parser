@@ -193,7 +193,7 @@ func (p *Parser) SectionsCreate(scope string, sectionType parser.Section, sectio
 
 	parsers := parser.ConfiguredParsers{
 		State:    "",
-		Active:   *p.Parsers[scope][parser.Comments][parser.CommentsSectionName],
+		Active:   p.Parsers[scope][parser.Comments][parser.CommentsSectionName],
 		Comments: p.Parsers[scope][parser.Comments][parser.CommentsSectionName],
 	}
 
@@ -303,7 +303,7 @@ func (p *Parser) writeParsers(sectionName string, parsers []parser.ParserInterfa
 		sectionNameWritten = true
 	}
 	for _, parser := range parsers {
-		lines, err := parser.Result()
+		lines, _, err := parser.ResultAll()
 		if err != nil {
 			continue
 		}
@@ -404,7 +404,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 				//log.Printf("change state from %s to %s\n", state, newState)
 				config.State = newState
 				if config.State == "" {
-					config.Active = *config.Comments
+					config.Active = config.Comments
 				}
 				if config.State == string(parser.SPOEAgent) {
 					parserSectionName := prsr.(*parsers.SPOESection)
@@ -412,7 +412,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.SPOESection)
 					config.SPOEAgent = getSPOEAgentParser()
 					p.Parsers[scope][parser.SPOEAgent][data.Name] = config.SPOEAgent
-					config.Active = *config.SPOEAgent
+					config.Active = config.SPOEAgent
 				}
 				if config.State == string(parser.SPOEGroup) {
 					parserSectionName := prsr.(*parsers.SPOESection)
@@ -420,7 +420,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.SPOESection)
 					config.SPOEGroup = getSPOEGroupParser()
 					p.Parsers[scope][parser.SPOEGroup][data.Name] = config.SPOEGroup
-					config.Active = *config.SPOEGroup
+					config.Active = config.SPOEGroup
 				}
 				if config.State == string(parser.SPOEMessage) {
 					parserSectionName := prsr.(*parsers.SPOESection)
@@ -428,7 +428,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.SPOESection)
 					config.SPOEMessage = getSPOEMessageParser()
 					p.Parsers[scope][parser.SPOEMessage][data.Name] = config.SPOEMessage
-					config.Active = *config.SPOEMessage
+					config.Active = config.SPOEMessage
 				}
 			}
 			break
@@ -461,7 +461,7 @@ func (p *Parser) ParseData(dat string) error {
 
 	parsers := parser.ConfiguredParsers{
 		State:    "",
-		Active:   *par[parser.Comments][parser.CommentsSectionName],
+		Active:   par[parser.Comments][parser.CommentsSectionName],
 		Comments: par[parser.Comments][parser.CommentsSectionName],
 	}
 

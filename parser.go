@@ -157,7 +157,7 @@ func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 
 	parsers := ConfiguredParsers{
 		State:    "",
-		Active:   *p.Parsers[Comments][CommentsSectionName],
+		Active:   p.Parsers[Comments][CommentsSectionName],
 		Comments: p.Parsers[Comments][CommentsSectionName],
 		Defaults: p.Parsers[Defaults][DefaultSectionName],
 		Global:   p.Parsers[Global][GlobalSectionName],
@@ -247,7 +247,19 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, result *strings.Builder, useIndentation bool) {
+func (p *Parser) writeSection(sectionName string, comments []string, result *strings.Builder) {
+	result.WriteString("\n")
+	for _, line := range comments {
+		result.WriteString("# ")
+		result.WriteString(line)
+		result.WriteString("\n")
+	}
+	result.WriteString(sectionName)
+	result.WriteString(" \n")
+}
+
+func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result *strings.Builder, useIndentation bool) {
+	parsers := parsersData.Parsers
 	sectionNameWritten := false
 	switch sectionName {
 	case "":
@@ -255,21 +267,25 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, res
 	case "global", "defaults":
 		break
 	default:
-		result.WriteString("\n")
-		result.WriteString(sectionName)
-		result.WriteString(" \n")
+		p.writeSection(sectionName, parsersData.PreComments, result)
 		sectionNameWritten = true
 	}
 	for _, parser := range parsers {
-		lines, err := parser.Result()
+		lines, comments, err := parser.ResultAll()
 		if err != nil {
 			continue
 		}
 		if !sectionNameWritten {
-			result.WriteString("\n")
-			result.WriteString(sectionName)
-			result.WriteString(" \n")
+			p.writeSection(sectionName, parsersData.PreComments, result)
 			sectionNameWritten = true
+		}
+		for _, line := range comments {
+			if useIndentation {
+				result.WriteString("  ")
+			}
+			result.WriteString("# ")
+			result.WriteString(line)
+			result.WriteString("\n")
 		}
 		for _, line := range lines {
 			if useIndentation {
@@ -282,6 +298,14 @@ func (p *Parser) writeParsers(sectionName string, parsers []ParserInterface, res
 			}
 			result.WriteString("\n")
 		}
+	}
+	for _, line := range parsersData.PostComments {
+		if useIndentation {
+			result.WriteString("  ")
+		}
+		result.WriteString("# ")
+		result.WriteString(line)
+		result.WriteString("\n")
 	}
 }
 
@@ -302,16 +326,16 @@ func (p *Parser) String() string {
 	defer p.unLock()
 	var result strings.Builder
 
-	p.writeParsers("", p.Parsers[Comments][CommentsSectionName].Parsers, &result, false)
-	p.writeParsers("global", p.Parsers[Global][GlobalSectionName].Parsers, &result, true)
-	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName].Parsers, &result, true)
+	p.writeParsers("", p.Parsers[Comments][CommentsSectionName], &result, false)
+	p.writeParsers("global", p.Parsers[Global][GlobalSectionName], &result, true)
+	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName], &result, true)
 
 	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Ring, HTTPErrors, Frontends, Backends, Listen, Program}
 
 	for _, section := range sections {
 		sortedSections := p.getSortedList(p.Parsers[section])
 		for _, sectionName := range sortedSections {
-			p.writeParsers(fmt.Sprintf("%s %s", section, sectionName), p.Parsers[section][sectionName].Parsers, &result, true)
+			p.writeParsers(fmt.Sprintf("%s %s", section, sectionName), p.Parsers[section][sectionName], &result, true)
 		}
 	}
 	return result.String()
@@ -328,20 +352,32 @@ func (p *Parser) Save(filename string) error {
 
 //ProcessLine parses line plus determines if we need to change state
 func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers {
+	if config.State != "" {
+		if parts[0] == "" && comment != "" && comment != "##_config-snippet_### BEGIN" && comment != "##_config-snippet_### END" {
+			if line[0] == ' ' {
+				config.ActiveComments = append(config.ActiveComments, comment)
+			} else {
+				config.ActiveSectionComments = append(config.ActiveSectionComments, comment)
+			}
+			return config
+		}
+	}
 	for _, parser := range config.Active.Parsers {
-		if newState, err := parser.Parse(line, parts, previousParts, comment); err == nil {
-			//should we have an option to remove it when found?
+		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
 				//log.Printf("change state from %s to %s\n", state, newState)
+				if config.ActiveComments != nil {
+					config.Active.PostComments = config.ActiveComments
+				}
 				config.State = newState
 				if config.State == "" {
-					config.Active = *config.Comments
+					config.Active = config.Comments
 				}
 				if config.State == "defaults" {
-					config.Active = *config.Defaults
+					config.Active = config.Defaults
 				}
 				if config.State == "global" {
-					config.Active = *config.Global
+					config.Active = config.Global
 				}
 				if config.State == "frontend" {
 					parserSectionName := parser.(*extra.Section)
@@ -349,7 +385,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Frontend = getFrontendParser()
 					p.Parsers[Frontends][data.Name] = config.Frontend
-					config.Active = *config.Frontend
+					config.Active = config.Frontend
 				}
 				if config.State == "backend" {
 					parserSectionName := parser.(*extra.Section)
@@ -357,7 +393,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Backend = getBackendParser()
 					p.Parsers[Backends][data.Name] = config.Backend
-					config.Active = *config.Backend
+					config.Active = config.Backend
 				}
 				if config.State == "listen" {
 					parserSectionName := parser.(*extra.Section)
@@ -365,7 +401,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Listen = getListenParser()
 					p.Parsers[Listen][data.Name] = config.Listen
-					config.Active = *config.Listen
+					config.Active = config.Listen
 				}
 				if config.State == "resolvers" {
 					parserSectionName := parser.(*extra.Section)
@@ -373,7 +409,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Resolver = getResolverParser()
 					p.Parsers[Resolvers][data.Name] = config.Resolver
-					config.Active = *config.Resolver
+					config.Active = config.Resolver
 				}
 				if config.State == "userlist" {
 					parserSectionName := parser.(*extra.Section)
@@ -381,7 +417,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Userlist = getUserlistParser()
 					p.Parsers[UserList][data.Name] = config.Userlist
-					config.Active = *config.Userlist
+					config.Active = config.Userlist
 				}
 				if config.State == "peers" {
 					parserSectionName := parser.(*extra.Section)
@@ -389,7 +425,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Peers = getPeersParser()
 					p.Parsers[Peers][data.Name] = config.Peers
-					config.Active = *config.Peers
+					config.Active = config.Peers
 				}
 				if config.State == "mailers" {
 					parserSectionName := parser.(*extra.Section)
@@ -397,7 +433,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Mailers = getMailersParser()
 					p.Parsers[Mailers][data.Name] = config.Mailers
-					config.Active = *config.Mailers
+					config.Active = config.Mailers
 				}
 				if config.State == "cache" {
 					parserSectionName := parser.(*extra.Section)
@@ -405,7 +441,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Cache = getCacheParser()
 					p.Parsers[Cache][data.Name] = config.Cache
-					config.Active = *config.Cache
+					config.Active = config.Cache
 				}
 				if config.State == "program" {
 					parserSectionName := parser.(*extra.Section)
@@ -413,7 +449,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Program = getProgramParser()
 					p.Parsers[Program][data.Name] = config.Program
-					config.Active = *config.Program
+					config.Active = config.Program
 				}
 				if config.State == "http-errors" {
 					parserSectionName := parser.(*extra.Section)
@@ -421,7 +457,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.HTTPErrors = getHTTPErrorsParser()
 					p.Parsers[HTTPErrors][data.Name] = config.HTTPErrors
-					config.Active = *config.HTTPErrors
+					config.Active = config.HTTPErrors
 				}
 				if config.State == "ring" {
 					parserSectionName := parser.(*extra.Section)
@@ -429,16 +465,21 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					data := rawData.(*types.Section)
 					config.Ring = getRingParser()
 					p.Parsers[Ring][data.Name] = config.Ring
-					config.Active = *config.Ring
+					config.Active = config.Ring
 				}
 				if config.State == "snippet_beg" {
 					config.Previous = config.Active
-					config.Active = Parsers{Parsers: []ParserInterface{parser}}
+					config.Active = &Parsers{Parsers: []ParserInterface{parser}}
 				}
 				if config.State == "snippet_end" {
 					config.Active = config.Previous
 				}
+				if config.ActiveSectionComments != nil {
+					config.Active.PreComments = config.ActiveSectionComments
+					config.ActiveSectionComments = nil
+				}
 			}
+			config.ActiveComments = nil
 			break
 		}
 	}
@@ -479,11 +520,12 @@ func (p *Parser) Process(reader io.Reader) error {
 	p.Parsers[Ring] = map[string]*Parsers{}
 
 	parsers := ConfiguredParsers{
-		State:    "",
-		Active:   *p.Parsers[Comments][CommentsSectionName],
-		Comments: p.Parsers[Comments][CommentsSectionName],
-		Defaults: p.Parsers[Defaults][DefaultSectionName],
-		Global:   p.Parsers[Global][GlobalSectionName],
+		State:          "",
+		ActiveComments: nil,
+		Active:         p.Parsers[Comments][CommentsSectionName],
+		Comments:       p.Parsers[Comments][CommentsSectionName],
+		Defaults:       p.Parsers[Defaults][DefaultSectionName],
+		Global:         p.Parsers[Global][GlobalSectionName],
 	}
 
 	bufferedReader := bufio.NewReader(reader)
@@ -497,10 +539,12 @@ func (p *Parser) Process(reader io.Reader) error {
 		if err != nil {
 			break
 		}
-		line = strings.Trim(line, " \n")
+		line = strings.Trim(line, "\n")
 
-		//for _, line := range lines {
 		if line == "" {
+			if parsers.State == "" {
+				parsers.State = "#"
+			}
 			continue
 		}
 		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
@@ -512,6 +556,12 @@ func (p *Parser) Process(reader io.Reader) error {
 		}
 		parsers = p.ProcessLine(line, parts, previousLine, comment, parsers)
 		previousLine = parts
+	}
+	if parsers.ActiveComments != nil {
+		parsers.Active.PostComments = parsers.ActiveComments
+	}
+	if parsers.ActiveSectionComments != nil {
+		parsers.Active.PostComments = append(parsers.Active.PostComments, parsers.ActiveSectionComments...)
 	}
 	return nil
 }
@@ -542,17 +592,22 @@ func (p *Parser) ParseData(dat string) error {
 	p.Parsers[Ring] = map[string]*Parsers{}
 
 	parsers := ConfiguredParsers{
-		State:    "",
-		Active:   *p.Parsers[Comments][CommentsSectionName],
-		Comments: p.Parsers[Comments][CommentsSectionName],
-		Defaults: p.Parsers[Defaults][DefaultSectionName],
-		Global:   p.Parsers[Global][GlobalSectionName],
+		State:          "",
+		ActiveComments: nil,
+		Active:         p.Parsers[Comments][CommentsSectionName],
+		Comments:       p.Parsers[Comments][CommentsSectionName],
+		Defaults:       p.Parsers[Defaults][DefaultSectionName],
+		Global:         p.Parsers[Global][GlobalSectionName],
 	}
 
-	lines := common.StringSplitIgnoreEmpty(dat, '\n')
+	//lines := common.StringSplitIgnoreEmpty(dat, '\n')
+	lines := strings.Split(dat, "\n")
 	previousLine := []string{}
 	for _, line := range lines {
 		if line == "" {
+			if parsers.State == "" {
+				parsers.State = "#"
+			}
 			continue
 		}
 		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
@@ -564,6 +619,12 @@ func (p *Parser) ParseData(dat string) error {
 		}
 		parsers = p.ProcessLine(line, parts, previousLine, comment, parsers)
 		previousLine = parts
+	}
+	if parsers.ActiveComments != nil {
+		parsers.Active.PostComments = parsers.ActiveComments
+	}
+	if parsers.ActiveSectionComments != nil {
+		parsers.Active.PostComments = append(parsers.Active.PostComments, parsers.ActiveSectionComments...)
 	}
 	return nil
 }

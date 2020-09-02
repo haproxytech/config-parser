@@ -19,7 +19,7 @@ package configs
 const generatedConfig = `# _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
-#sections are in alphabetical order (except global & default) for code generation
+# sections are in alphabetical order (except global & default) for code generation
 
 global test
   cpu-map 1-4 0-3

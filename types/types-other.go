@@ -105,6 +105,15 @@ type SimpleString struct{}
 //parser-type:StringC
 type SimpleTime struct{}
 
+//name:simple-time-two-words
+//no-sections:true
+//struct-name:TimeTwoWords
+//dir:simple
+//no-init:true
+//parser-type:StringC
+//test:skip
+type TimeTwoWords struct{}
+
 type Filter interface {
 	Parse(parts []string, comment string) error
 	Result() common.ReturnResultLine

@@ -17,10 +17,12 @@ limitations under the License.
 package parser
 
 type ConfiguredParsers struct {
-	_        [0]int
-	State    string
-	Active   Parsers
-	Previous Parsers
+	_                     [0]int
+	State                 string
+	ActiveComments        []string
+	ActiveSectionComments []string
+	Active                *Parsers
+	Previous              *Parsers
 
 	Comments   *Parsers
 	Defaults   *Parsers

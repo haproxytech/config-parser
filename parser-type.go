@@ -25,17 +25,20 @@ import (
 type ParserInterface interface {
 	Init()
 	Parse(line string, parts, previousParts []string, comment string) (changeState string, err error)
+	PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error)
 	GetParserName() string
 	Get(createIfNotExist bool) (common.ParserData, error)
 	GetOne(index int) (common.ParserData, error)
 	Delete(index int) error
 	Insert(data common.ParserData, index int) error
 	Set(data common.ParserData, index int) error
-	Result() ([]common.ReturnResultLine, error)
+	ResultAll() ([]common.ReturnResultLine, []string, error)
 }
 
 type Parsers struct {
-	Parsers []ParserInterface
+	Parsers      []ParserInterface
+	PreComments  []string
+	PostComments []string
 }
 
 func (p *Parsers) Get(attribute string, createIfNotExist ...bool) (common.ParserData, error) {
