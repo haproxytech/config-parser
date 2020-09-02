@@ -36,7 +36,7 @@ type ParserInterface interface {
 }
 
 type Parsers struct {
-	Parsers      []ParserInterface
+	Parsers      map[string]ParserInterface
 	PreComments  []string
 	PostComments []string
 }
@@ -46,10 +46,8 @@ func (p *Parsers) Get(attribute string, createIfNotExist ...bool) (common.Parser
 	if len(createIfNotExist) > 0 && createIfNotExist[0] {
 		createNew = true
 	}
-	for _, parser := range p.Parsers {
-		if parser.GetParserName() == attribute {
-			return parser.Get(createNew)
-		}
+	if parser, ok := p.Parsers[attribute]; ok {
+		return parser.Get(createNew)
 	}
 	return nil, errors.ErrParserMissing
 }
@@ -59,22 +57,16 @@ func (p *Parsers) GetOne(attribute string, index ...int) (common.ParserData, err
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
 	}
-	for _, parser := range p.Parsers {
-		if parser.GetParserName() == attribute {
-			return parser.GetOne(setIndex)
-		}
+	if parser, ok := p.Parsers[attribute]; ok {
+		return parser.GetOne(setIndex)
 	}
 	return nil, errors.ErrParserMissing
 }
 
 //HasParser checks if we have a parser for attribute
 func (p *Parsers) HasParser(attribute string) bool {
-	for _, parser := range p.Parsers {
-		if parser.GetParserName() == attribute {
-			return true
-		}
-	}
-	return false
+	_, hasParser := p.Parsers[attribute]
+	return hasParser
 }
 
 //Set sets data in parser, if you can have multiple items, index is a must
@@ -83,10 +75,8 @@ func (p *Parsers) Set(attribute string, data common.ParserData, index ...int) er
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
 	}
-	for i, parser := range p.Parsers {
-		if parser.GetParserName() == attribute {
-			return p.Parsers[i].Set(data, setIndex)
-		}
+	if parser, ok := p.Parsers[attribute]; ok {
+		return parser.Set(data, setIndex)
 	}
 	return errors.ErrAttributeNotFound
 }
@@ -96,10 +86,8 @@ func (p *Parsers) Insert(attribute string, data common.ParserData, index ...int)
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
 	}
-	for i, parser := range p.Parsers {
-		if parser.GetParserName() == attribute {
-			return p.Parsers[i].Insert(data, setIndex)
-		}
+	if parser, ok := p.Parsers[attribute]; ok {
+		return parser.Insert(data, setIndex)
 	}
 	return errors.ErrAttributeNotFound
 }
@@ -109,10 +97,8 @@ func (p *Parsers) Delete(attribute string, index ...int) error {
 	if len(index) > 0 && index[0] > -1 {
 		setIndex = index[0]
 	}
-	for i, parser := range p.Parsers {
-		if parser.GetParserName() == attribute {
-			return p.Parsers[i].Delete(setIndex)
-		}
+	if parser, ok := p.Parsers[attribute]; ok {
+		return parser.Delete(setIndex)
 	}
 	return errors.ErrAttributeNotFound
 }

@@ -9,21 +9,26 @@ import (
 )
 
 func getStartParser() *parser.Parsers {
-	return createParsers([]parser.ParserInterface{
-		&extra.ConfigVersion{},
-		&extra.Comments{},
+	return createParsers(map[string]parser.ParserInterface{
+		"configversion": &extra.ConfigVersion{},
+		"comments":      &extra.Comments{},
 	})
 }
 
-func createParsers(psrs []parser.ParserInterface) *parser.Parsers {
-	p := parser.Parsers{
-		Parsers: append(psrs, []parser.ParserInterface{
-			&parsers.SPOESection{Name: "spoe-agent"},
-			&parsers.SPOESection{Name: "spoe-group"},
-			&parsers.SPOESection{Name: "spoe-message"},
-			&extra.UnProcessed{},
-		}...),
+func createParsers(psrs map[string]parser.ParserInterface) *parser.Parsers {
+	m := make(map[string]parser.ParserInterface)
+	for k, v := range psrs {
+		m[k] = v
 	}
+
+	m["spoe-agent"] = &parsers.SPOESection{Name: "spoe-agent"}
+	m["spoe-group"] = &parsers.SPOESection{Name: "spoe-group"}
+	m["spoe-message"] = &parsers.SPOESection{Name: "spoe-message"}
+
+	p := parser.Parsers{
+		Parsers: m,
+	}
+
 	for _, psr := range p.Parsers {
 		psr.Init()
 	}
@@ -31,40 +36,40 @@ func createParsers(psrs []parser.ParserInterface) *parser.Parsers {
 }
 
 func getSPOEAgentParser() *parser.Parsers {
-	return createParsers([]parser.ParserInterface{
-		&simple.String{Name: "groups"},
-		&configparser.Log{},
-		&simple.Number{Name: "maxconnrate"},
-		&simple.Number{Name: "maxerrrate"},
-		&simple.Number{Name: "max-frame-size"},
-		&simple.Number{Name: "max-waiting-frames"},
-		&simple.String{Name: "messages"},
-		&simple.Option{Name: "async"},
-		&simple.Option{Name: "continue-on-error"},
-		&simple.Option{Name: "dontlog-normal"},
-		&simple.Option{Name: "force-set-var"},
-		&simple.Option{Name: "pipelining"},
-		&simple.Option{Name: "send-frag-payload"},
-		&simple.TimeTwoWords{Keywords: []string{"option", "set-on-error"}},
-		&simple.TimeTwoWords{Keywords: []string{"option", "set-process-time"}},
-		&simple.TimeTwoWords{Keywords: []string{"option", "set-total-time"}},
-		&simple.TimeTwoWords{Keywords: []string{"option", "var-prefix"}},
-		&simple.String{Name: "register-var-names"},
-		&simple.TimeTwoWords{Keywords: []string{"timeout", "hello"}},
-		&simple.TimeTwoWords{Keywords: []string{"timeout", "idle"}},
-		&simple.TimeTwoWords{Keywords: []string{"timeout", "processing"}},
-		&simple.Word{Name: "use-backend"},
+	return createParsers(map[string]parser.ParserInterface{
+		"groups":                  &simple.String{Name: "groups"},
+		"log":                     &configparser.Log{},
+		"maxconnrate":             &simple.Number{Name: "maxconnrate"},
+		"maxerrrate":              &simple.Number{Name: "maxerrrate"},
+		"max-frame-size":          &simple.Number{Name: "max-frame-size"},
+		"max-waiting-frames":      &simple.Number{Name: "max-waiting-frames"},
+		"messages":                &simple.String{Name: "messages"},
+		"async":                   &simple.Option{Name: "async"},
+		"continue-on-error":       &simple.Option{Name: "continue-on-error"},
+		"dontlog-normal":          &simple.Option{Name: "dontlog-normal"},
+		"force-set-var":           &simple.Option{Name: "force-set-var"},
+		"pipelining":              &simple.Option{Name: "pipelining"},
+		"send-frag-payload":       &simple.Option{Name: "send-frag-payload"},
+		"option-set-on-error":     &simple.TimeTwoWords{Keywords: []string{"option", "set-on-error"}},
+		"option-set-process-time": &simple.TimeTwoWords{Keywords: []string{"option", "set-process-time"}},
+		"option-set-total-time":   &simple.TimeTwoWords{Keywords: []string{"option", "set-total-time"}},
+		"option-var-prefix":       &simple.TimeTwoWords{Keywords: []string{"option", "var-prefix"}},
+		"register-var-names":      &simple.String{Name: "register-var-names"},
+		"timeout-hello":           &simple.TimeTwoWords{Keywords: []string{"timeout", "hello"}},
+		"timeout-idle":            &simple.TimeTwoWords{Keywords: []string{"timeout", "idle"}},
+		"timeout-processing":      &simple.TimeTwoWords{Keywords: []string{"timeout", "processing"}},
+		"use-backend":             &simple.Word{Name: "use-backend"},
 	})
 }
 func getSPOEGroupParser() *parser.Parsers {
-	return createParsers([]parser.ParserInterface{
-		&simple.String{Name: "messages"},
+	return createParsers(map[string]parser.ParserInterface{
+		"messages": &simple.String{Name: "messages"},
 	})
 }
 func getSPOEMessageParser() *parser.Parsers {
-	return createParsers([]parser.ParserInterface{
-		&configparser.ACL{},
-		&simple.String{Name: "args"},
-		&parsers.Event{},
+	return createParsers(map[string]parser.ParserInterface{
+		"acl":   &configparser.ACL{},
+		"args":  &simple.String{Name: "args"},
+		"event": &parsers.Event{},
 	})
 }

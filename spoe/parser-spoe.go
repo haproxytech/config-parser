@@ -297,7 +297,7 @@ func (p *Parser) HasParser(scope string, sectionType parser.Section, attribute s
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) writeParsers(sectionName string, parsers []parser.ParserInterface, result *strings.Builder, useIndentation bool) {
+func (p *Parser) writeParsers(sectionName string, parsers map[string]parser.ParserInterface, result *strings.Builder, useIndentation bool) {
 	sectionNameWritten := false
 	if sectionName == "" {
 		sectionNameWritten = true

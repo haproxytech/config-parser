@@ -22,6 +22,7 @@ type ConfiguredParsers struct {
 	ActiveComments        []string
 	ActiveSectionComments []string
 	Active                *Parsers
+	ActiveSection         []Section
 	Previous              *Parsers
 
 	Comments   *Parsers

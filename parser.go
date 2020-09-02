@@ -270,7 +270,7 @@ func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result *
 		p.writeSection(sectionName, parsersData.PreComments, result)
 		sectionNameWritten = true
 	}
-	for _, parser := range parsers {
+	for _, parser := range getParsersSequenceForSection(sectionName, parsers) {
 		lines, comments, err := parser.ResultAll()
 		if err != nil {
 			continue
@@ -362,22 +362,29 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 			return config
 		}
 	}
-	for _, parser := range config.Active.Parsers {
+	for _, section := range config.ActiveSection {
+		parser := config.Active.Parsers[string(section)]
+		if parser == nil {
+			continue
+		}
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
-				//log.Printf("change state from %s to %s\n", state, newState)
+				// log.Printf("change state from %s to %s\n", config.State, newState)
 				if config.ActiveComments != nil {
 					config.Active.PostComments = config.ActiveComments
 				}
 				config.State = newState
 				if config.State == "" {
 					config.Active = config.Comments
+					config.ActiveSection = parserSequenceStart
 				}
 				if config.State == "defaults" {
 					config.Active = config.Defaults
+					config.ActiveSection = parserSequenceDefault
 				}
 				if config.State == "global" {
 					config.Active = config.Global
+					config.ActiveSection = parserSequenceGlobal
 				}
 				if config.State == "frontend" {
 					parserSectionName := parser.(*extra.Section)
@@ -386,6 +393,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Frontend = getFrontendParser()
 					p.Parsers[Frontends][data.Name] = config.Frontend
 					config.Active = config.Frontend
+					config.ActiveSection = parserSequenceFrontend
 				}
 				if config.State == "backend" {
 					parserSectionName := parser.(*extra.Section)
@@ -394,6 +402,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Backend = getBackendParser()
 					p.Parsers[Backends][data.Name] = config.Backend
 					config.Active = config.Backend
+					config.ActiveSection = parserSequenceBackend
 				}
 				if config.State == "listen" {
 					parserSectionName := parser.(*extra.Section)
@@ -402,6 +411,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Listen = getListenParser()
 					p.Parsers[Listen][data.Name] = config.Listen
 					config.Active = config.Listen
+					config.ActiveSection = parserSequenceSections
 				}
 				if config.State == "resolvers" {
 					parserSectionName := parser.(*extra.Section)
@@ -410,6 +420,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Resolver = getResolverParser()
 					p.Parsers[Resolvers][data.Name] = config.Resolver
 					config.Active = config.Resolver
+					config.ActiveSection = parserSequenceResolver
 				}
 				if config.State == "userlist" {
 					parserSectionName := parser.(*extra.Section)
@@ -418,6 +429,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Userlist = getUserlistParser()
 					p.Parsers[UserList][data.Name] = config.Userlist
 					config.Active = config.Userlist
+					config.ActiveSection = parserSequenceUserlist
 				}
 				if config.State == "peers" {
 					parserSectionName := parser.(*extra.Section)
@@ -426,6 +438,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Peers = getPeersParser()
 					p.Parsers[Peers][data.Name] = config.Peers
 					config.Active = config.Peers
+					config.ActiveSection = parserSequencePeers
 				}
 				if config.State == "mailers" {
 					parserSectionName := parser.(*extra.Section)
@@ -434,6 +447,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Mailers = getMailersParser()
 					p.Parsers[Mailers][data.Name] = config.Mailers
 					config.Active = config.Mailers
+					config.ActiveSection = parserSequenceMailers
 				}
 				if config.State == "cache" {
 					parserSectionName := parser.(*extra.Section)
@@ -442,6 +456,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Cache = getCacheParser()
 					p.Parsers[Cache][data.Name] = config.Cache
 					config.Active = config.Cache
+					config.ActiveSection = parserSequenceCache
 				}
 				if config.State == "program" {
 					parserSectionName := parser.(*extra.Section)
@@ -450,6 +465,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Program = getProgramParser()
 					p.Parsers[Program][data.Name] = config.Program
 					config.Active = config.Program
+					config.ActiveSection = parserSequenceProgram
 				}
 				if config.State == "http-errors" {
 					parserSectionName := parser.(*extra.Section)
@@ -469,7 +485,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 				}
 				if config.State == "snippet_beg" {
 					config.Previous = config.Active
-					config.Active = &Parsers{Parsers: []ParserInterface{parser}}
+					config.Active = &Parsers{Parsers: map[string]ParserInterface{"configsnippet": parser}}
 				}
 				if config.State == "snippet_end" {
 					config.Active = config.Previous
@@ -533,7 +549,7 @@ func (p *Parser) Process(reader io.Reader) error {
 	var line string
 	var err error
 	previousLine := []string{}
-
+	parsers.ActiveSection = parserSequenceStart
 	for {
 		line, err = bufferedReader.ReadString('\n')
 		if err != nil {
@@ -595,6 +611,7 @@ func (p *Parser) ParseData(dat string) error {
 		State:          "",
 		ActiveComments: nil,
 		Active:         p.Parsers[Comments][CommentsSectionName],
+		ActiveSection:  []Section{CommentsSectionName},
 		Comments:       p.Parsers[Comments][CommentsSectionName],
 		Defaults:       p.Parsers[Defaults][DefaultSectionName],
 		Global:         p.Parsers[Global][GlobalSectionName],
