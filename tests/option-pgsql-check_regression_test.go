@@ -21,7 +21,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/parsers"
+	"github.com/haproxytech/config-parser/v3/parsers"
 )
 
 func TestOptionPgsqlCheckRegression(t *testing.T) {

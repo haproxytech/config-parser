@@ -21,7 +21,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/parsers/http"
+	"github.com/haproxytech/config-parser/v3/parsers/http"
 )
 
 func TestHTTPRequestSetPath(t *testing.T) {

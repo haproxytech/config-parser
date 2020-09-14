@@ -16,7 +16,7 @@ limitations under the License.
 
 package types
 
-import "github.com/haproxytech/config-parser/v2/common"
+import "github.com/haproxytech/config-parser/v3/common"
 
 //name:section
 //no-sections:true

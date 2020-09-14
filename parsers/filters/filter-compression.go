@@ -19,7 +19,7 @@ package filters
 import (
 	"strings"
 
-	"github.com/haproxytech/config-parser/v2/common"
+	"github.com/haproxytech/config-parser/v3/common"
 )
 
 type Compression struct {

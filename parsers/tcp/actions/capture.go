@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/haproxytech/config-parser/v2/common"
+	"github.com/haproxytech/config-parser/v3/common"
 )
 
 type Capture struct {

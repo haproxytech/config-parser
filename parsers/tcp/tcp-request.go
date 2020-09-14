@@ -17,10 +17,10 @@ limitations under the License.
 package tcp
 
 import (
-	"github.com/haproxytech/config-parser/v2/common"
-	"github.com/haproxytech/config-parser/v2/errors"
-	tcptypes "github.com/haproxytech/config-parser/v2/parsers/tcp/types"
-	"github.com/haproxytech/config-parser/v2/types"
+	"github.com/haproxytech/config-parser/v3/common"
+	"github.com/haproxytech/config-parser/v3/errors"
+	tcptypes "github.com/haproxytech/config-parser/v3/parsers/tcp/types"
+	"github.com/haproxytech/config-parser/v3/types"
 )
 
 type Requests struct {

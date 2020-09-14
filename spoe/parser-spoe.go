@@ -24,11 +24,11 @@ import (
 	"sync"
 
 	"github.com/google/renameio"
-	parser "github.com/haproxytech/config-parser/v2"
-	"github.com/haproxytech/config-parser/v2/common"
-	"github.com/haproxytech/config-parser/v2/errors"
-	"github.com/haproxytech/config-parser/v2/spoe/parsers"
-	"github.com/haproxytech/config-parser/v2/spoe/types"
+	parser "github.com/haproxytech/config-parser/v3"
+	"github.com/haproxytech/config-parser/v3/common"
+	"github.com/haproxytech/config-parser/v3/errors"
+	"github.com/haproxytech/config-parser/v3/spoe/parsers"
+	"github.com/haproxytech/config-parser/v3/spoe/types"
 )
 
 /*type parser.Section string

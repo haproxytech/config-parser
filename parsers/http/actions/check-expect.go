@@ -21,7 +21,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v2/errors"
+	"github.com/haproxytech/config-parser/v3/errors"
 )
 
 // http-check expect [min-recv <int>] [comment <msg>]

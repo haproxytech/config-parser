@@ -17,10 +17,10 @@ limitations under the License.
 package stats
 
 import (
-	"github.com/haproxytech/config-parser/v2/common"
-	"github.com/haproxytech/config-parser/v2/errors"
-	stats "github.com/haproxytech/config-parser/v2/parsers/stats/settings"
-	"github.com/haproxytech/config-parser/v2/types"
+	"github.com/haproxytech/config-parser/v3/common"
+	"github.com/haproxytech/config-parser/v3/errors"
+	stats "github.com/haproxytech/config-parser/v3/parsers/stats/settings"
+	"github.com/haproxytech/config-parser/v3/types"
 )
 
 type Stats struct {

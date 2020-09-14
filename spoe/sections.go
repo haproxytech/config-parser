@@ -1,11 +1,11 @@
 package spoe
 
 import (
-	parser "github.com/haproxytech/config-parser/v2"
-	configparser "github.com/haproxytech/config-parser/v2/parsers"
-	"github.com/haproxytech/config-parser/v2/parsers/extra"
-	"github.com/haproxytech/config-parser/v2/parsers/simple"
-	"github.com/haproxytech/config-parser/v2/spoe/parsers"
+	parser "github.com/haproxytech/config-parser/v3"
+	configparser "github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v3/parsers/extra"
+	"github.com/haproxytech/config-parser/v3/parsers/simple"
+	"github.com/haproxytech/config-parser/v3/spoe/parsers"
 )
 
 func getStartParser() *parser.Parsers {

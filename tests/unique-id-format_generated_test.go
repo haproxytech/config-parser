@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/parsers"
+	"github.com/haproxytech/config-parser/v3/parsers"
 )
 
 func TestUniqueIDFormat(t *testing.T) {

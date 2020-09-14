@@ -19,7 +19,7 @@ Please use `golangci-lint run` from [github.com/golangci/golangci-lint](https://
 package main
 
 import (
-    "github.com/haproxytech/config-parser/v2"
+    "github.com/haproxytech/config-parser/v3"
     // ...
 )
 // ...

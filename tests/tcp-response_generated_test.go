@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/parsers/tcp"
+	"github.com/haproxytech/config-parser/v3/parsers/tcp"
 )
 
 func TestResponsestcp(t *testing.T) {

@@ -16,7 +16,7 @@ limitations under the License.
 
 package types
 
-import "github.com/haproxytech/config-parser/v2/params"
+import "github.com/haproxytech/config-parser/v3/params"
 
 //sections:frontend,backend
 //name:acl

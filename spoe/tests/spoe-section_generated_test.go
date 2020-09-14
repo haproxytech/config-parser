@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v2/spoe/parsers"
+	"github.com/haproxytech/config-parser/v3/spoe/parsers"
 )
 
 func TestSPOESection(t *testing.T) {

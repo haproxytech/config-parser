@@ -26,10 +26,10 @@ import (
 	"sync"
 
 	"github.com/google/renameio"
-	"github.com/haproxytech/config-parser/v2/common"
-	"github.com/haproxytech/config-parser/v2/errors"
-	"github.com/haproxytech/config-parser/v2/parsers/extra"
-	"github.com/haproxytech/config-parser/v2/types"
+	"github.com/haproxytech/config-parser/v3/common"
+	"github.com/haproxytech/config-parser/v3/errors"
+	"github.com/haproxytech/config-parser/v3/parsers/extra"
+	"github.com/haproxytech/config-parser/v3/types"
 )
 
 type Section string
