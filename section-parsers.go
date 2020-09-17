@@ -74,7 +74,6 @@ func getDefaultParser() *Parsers {
 		&simple.String{Name: "log-format"},
 		&simple.String{Name: "log-format-sd"},
 		&parsers.Cookie{},
-		&parsers.HTTPCheck{},
 		&parsers.BindProcess{},
 
 		&simple.Option{Name: "tcplog"},
@@ -97,7 +96,6 @@ func getDefaultParser() *Parsers {
 		&parsers.OptionPgsqlCheck{},
 		&simple.Option{Name: "tcp-check"},
 		&simple.Option{Name: "redis-check"},
-		&parsers.OptionHttpchk{},
 		&simple.Option{Name: "splice-auto"},
 		&simple.Option{Name: "splice-request"},
 		&simple.Option{Name: "splice-response"},
@@ -106,6 +104,11 @@ func getDefaultParser() *Parsers {
 		&simple.Option{Name: "allbackups"},
 		&simple.Option{Name: "external-check"},
 		&parsers.OptionForwardFor{},
+
+		&parsers.OptionHttpchk{},
+		&parsers.HTTPCheck{},
+		&parsers.ExternalCheckPath{},
+		&parsers.ExternalCheckCommand{},
 
 		&parsers.HTTPReuse{},
 		&simple.Timeout{Name: "http-request"},
@@ -121,8 +124,6 @@ func getDefaultParser() *Parsers {
 
 		&simple.Number{Name: "retries"},
 
-		&parsers.ExternalCheckPath{},
-		&parsers.ExternalCheckCommand{},
 		&parsers.DefaultServer{},
 		&parsers.ErrorFile{},
 		&parsers.DefaultBackend{},
@@ -228,7 +229,6 @@ func getBackendParser() *Parsers {
 		&parsers.HashType{},
 		&parsers.Balance{},
 		&parsers.ACL{},
-		&parsers.HTTPCheck{},
 		&parsers.BindProcess{},
 
 		&simple.Option{Name: "httpclose"},
@@ -257,6 +257,7 @@ func getBackendParser() *Parsers {
 		&simple.Option{Name: "allbackups"},
 
 		&parsers.OptionHttpchk{},
+		&parsers.HTTPCheck{},
 		&parsers.ExternalCheckPath{},
 		&parsers.ExternalCheckCommand{},
 
