@@ -1,18 +1,31 @@
----
+stages:
+  - lint
+  - test
 golangci_lint:
+  stage: lint
   image:
     name: golangci/golangci-lint:v1.21.0
     entrypoint: [""]
   tags:
-    - docker
+    - go
   script:
     - golangci-lint run -v
 test:
+  stage: test
   image:
-    name: golang:1.14
+    name: golang:1.15
     entrypoint: [""]
   tags:
-    - docker
+    - go
   script:
     - go build -v .
     - go test -v ./...
+lint-commit-msg:
+  stage: lint
+  image:
+    name: haproxytech/check-commit:latest
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+      - go run /check.go
