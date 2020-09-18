@@ -148,7 +148,17 @@ func getGlobalParser() *Parsers {
 		&parsers.NbThread{},
 		&parsers.CPUMap{},
 		&parsers.Mode{},
+
 		&parsers.MaxConn{},
+		&simple.Number{Name: "maxconnrate"},
+		&simple.Number{Name: "maxcomprate"},
+		&simple.Number{Name: "maxcompcpuusage"},
+		&simple.Number{Name: "maxpipes"},
+		&simple.Number{Name: "maxsessrate"},
+		&simple.Number{Name: "maxsslconn"},
+		&simple.Number{Name: "maxsslrate"},
+		&simple.Number{Name: "maxzlibmem"},
+
 		&simple.String{Name: "pidfile"},
 		&parsers.Socket{},
 		&parsers.StatsTimeout{},
