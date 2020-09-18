@@ -172,6 +172,7 @@ func getGlobalParser() *Parsers {
 		&simple.Word{Name: "ssl-default-server-ciphers"},
 		&simple.Word{Name: "ssl-default-server-ciphersuites"},
 		&simple.Word{Name: "ssl-server-verify"},
+		&simple.Time{Name: "hard-stop-after"},
 		&parsers.Log{},
 		&parsers.LogSendHostName{},
 		&parsers.LuaLoad{},
