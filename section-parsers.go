@@ -135,6 +135,13 @@ func getDefaultParser() *Parsers {
 
 func getGlobalParser() *Parsers {
 	return createParsers([]ParserInterface{
+		// environment directives are placed before the rest,
+		// because HAProxy can use the environment vars in subsequent config
+		&simple.StringKeyValue{Name: "presetenv"},
+		&simple.StringSlice{Name: "resetenv"},
+		&simple.StringKeyValue{Name: "setenv"},
+		&simple.StringSlice{Name: "unsetenv"},
+
 		&parsers.Daemon{},
 		&simple.String{Name: "localpeer"},
 		&simple.Word{Name: "chroot"},

@@ -98,6 +98,20 @@ type SimpleNumber struct{}
 //parser-type:StringC
 type SimpleString struct{}
 
+//name:simple-string-slice
+//no-sections:true
+//struct-name:StringSlice
+//dir:simple
+//parser-type:StringSliceC
+type SimpleStringSlice struct{}
+
+//name:simple-string-kv
+//no-sections:true
+//struct-name:StringKeyValue
+//dir:simple
+//parser-type:StringKeyValueC
+type SimpleStringKeyValue struct{}
+
 //name:simple-time
 //no-sections:true
 //struct-name:Time

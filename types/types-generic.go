@@ -99,5 +99,12 @@ type StringSliceC struct {
 	Comment string
 }
 
+// StringKeyValueC is a simple key value, for example environment variables.
+type StringKeyValueC struct {
+	Key     string
+	Value   string
+	Comment string
+}
+
 //Filters are not here, see parsers/filters
 //==============================================================================
