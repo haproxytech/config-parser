@@ -183,6 +183,7 @@ func getGlobalParser() *Parsers {
 		&parsers.Log{},
 		&parsers.LogSendHostName{},
 		&parsers.LuaLoad{},
+		&simple.Word{Name: "server-state-file"},
 		&parsers.ConfigSnippet{},
 	})
 }
