@@ -27,6 +27,7 @@ global test
   cpu-map auto:1-4 0-3
   cpu-map auto:1-4 0-1 2-3
   lua-load /etc/haproxy/lua/foo.lua
+  ssl-engine rdrand
 
 defaults test
   balance roundrobin
@@ -947,6 +948,16 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  use-server www if { req_ssl_sni -i www.example.com } # comment
 `, 1},
   {`  lua-load /etc/haproxy/lua/foo.lua
+`, 1},
+  {`  ssl-engine rdrand
+`, 1},
+  {`  ssl-mode-async
+`, 1},
+  {`  ssl-engine rdrand
+`, 1},
+  {`  ssl-mode-async
+`, 1},
+  {`  ssl-engine rdrand
 `, 1},
   {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 2},
