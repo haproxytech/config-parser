@@ -259,7 +259,6 @@ func (p *Parser) writeSection(sectionName string, comments []string, result *str
 }
 
 func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result *strings.Builder, useIndentation bool) {
-	parsers := parsersData.Parsers
 	sectionNameWritten := false
 	switch sectionName {
 	case "":
@@ -270,7 +269,8 @@ func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result *
 		p.writeSection(sectionName, parsersData.PreComments, result)
 		sectionNameWritten = true
 	}
-	for _, parser := range parsers {
+	for _, parserName := range parsersData.ParserSequence {
+		parser := parsersData.Parsers[string(parserName)]
 		lines, comments, err := parser.ResultAll()
 		if err != nil {
 			continue
@@ -362,7 +362,8 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 			return config
 		}
 	}
-	for _, parser := range config.Active.Parsers {
+	for _, section := range config.Active.ParserSequence {
+		parser := config.Active.Parsers[string(section)]
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
 				//log.Printf("change state from %s to %s\n", state, newState)
@@ -469,7 +470,10 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 				}
 				if config.State == "snippet_beg" {
 					config.Previous = config.Active
-					config.Active = &Parsers{Parsers: []ParserInterface{parser}}
+					config.Active = &Parsers{
+						Parsers:        map[string]ParserInterface{"config-snippet": parser},
+						ParserSequence: []Section{"config-snippet"},
+					}
 				}
 				if config.State == "snippet_end" {
 					config.Active = config.Previous
@@ -533,7 +537,6 @@ func (p *Parser) Process(reader io.Reader) error {
 	var line string
 	var err error
 	previousLine := []string{}
-
 	for {
 		line, err = bufferedReader.ReadString('\n')
 		if err != nil {

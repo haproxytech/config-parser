@@ -26,365 +26,353 @@ import (
 	"github.com/haproxytech/config-parser/v3/parsers/tcp"
 )
 
-func createParsers(parser []ParserInterface) *Parsers {
-	p := Parsers{
-		Parsers: append(parser, []ParserInterface{
-			&extra.Section{Name: "defaults"},
-			&extra.Section{Name: "global"},
-			&extra.Section{Name: "frontend"},
-			&extra.Section{Name: "backend"},
-			&extra.Section{Name: "listen"},
-			&extra.Section{Name: "resolvers"},
-			&extra.Section{Name: "userlist"},
-			&extra.Section{Name: "peers"},
-			&extra.Section{Name: "mailers"},
-			&extra.Section{Name: "cache"},
-			&extra.Section{Name: "program"},
-			&extra.Section{Name: "http-errors"},
-			&extra.Section{Name: "ring"},
-			&extra.UnProcessed{},
-		}...),
-	}
-	for _, parser := range p.Parsers {
+func addParser(parser map[string]ParserInterface, sequence *[]Section, p ParserInterface) {
+	p.Init()
+	parser[p.GetParserName()] = p
+	*sequence = append(*sequence, Section(p.GetParserName()))
+}
+
+func createParsers(parser map[string]ParserInterface, sequence []Section) *Parsers {
+	addParser(parser, &sequence, &extra.Section{Name: "defaults"})
+	addParser(parser, &sequence, &extra.Section{Name: "global"})
+	addParser(parser, &sequence, &extra.Section{Name: "frontend"})
+	addParser(parser, &sequence, &extra.Section{Name: "backend"})
+	addParser(parser, &sequence, &extra.Section{Name: "listen"})
+	addParser(parser, &sequence, &extra.Section{Name: "resolvers"})
+	addParser(parser, &sequence, &extra.Section{Name: "userlist"})
+	addParser(parser, &sequence, &extra.Section{Name: "peers"})
+	addParser(parser, &sequence, &extra.Section{Name: "mailers"})
+	addParser(parser, &sequence, &extra.Section{Name: "cache"})
+	addParser(parser, &sequence, &extra.Section{Name: "program"})
+	addParser(parser, &sequence, &extra.Section{Name: "http-errors"})
+	addParser(parser, &sequence, &extra.Section{Name: "ring"})
+	addParser(parser, &sequence, &extra.UnProcessed{})
+
+	for _, parser := range parser {
 		parser.Init()
 	}
-	return &p
+
+	return &Parsers{Parsers: parser, ParserSequence: sequence}
 }
 
 func getStartParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&extra.ConfigVersion{},
-		&extra.Comments{},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &extra.ConfigVersion{})
+	addParser(parser, &sequence, &extra.Comments{})
+	return createParsers(parser, sequence)
 }
 
 func getDefaultParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&parsers.Mode{},
-		&parsers.MonitorURI{},
-		&parsers.HashType{},
-		&parsers.Balance{},
-
-		&parsers.MaxConn{},
-		&parsers.Log{},
-		&parsers.OptionHTTPLog{},
-		&stats.Stats{Mode: "defaults"},
-
-		&simple.Word{Name: "log-tag"},
-
-		&simple.String{Name: "log-format"},
-		&simple.String{Name: "log-format-sd"},
-		&parsers.Cookie{},
-		&parsers.BindProcess{},
-
-		&simple.Option{Name: "tcplog"},
-		&simple.Option{Name: "httpclose"},
-		&simple.Option{Name: "http-use-htx"},
-		&parsers.OptionRedispatch{},
-		&simple.Option{Name: "dontlognull"},
-		&simple.Option{Name: "log-separate-errors"},
-		&simple.Option{Name: "http-buffer-request"},
-		&simple.Option{Name: "http-server-close"},
-		&simple.Option{Name: "http-keep-alive"},
-		&simple.Option{Name: "http-pretend-keepalive"},
-		&simple.Option{Name: "clitcpka"},
-		&simple.Option{Name: "contstats"},
-		&simple.Option{Name: "ssl-hello-chk"},
-		&parsers.OptionSmtpchk{},
-		&simple.Option{Name: "ldap-check"},
-		&parsers.OptionMysqlCheck{},
-		&simple.Option{Name: "abortonclose"},
-		&parsers.OptionPgsqlCheck{},
-		&simple.Option{Name: "tcp-check"},
-		&simple.Option{Name: "redis-check"},
-		&simple.Option{Name: "splice-auto"},
-		&simple.Option{Name: "splice-request"},
-		&simple.Option{Name: "splice-response"},
-		&simple.Option{Name: "logasap"},
-		&simple.Option{Name: "log-health-checks"},
-		&simple.Option{Name: "allbackups"},
-		&simple.Option{Name: "external-check"},
-		&parsers.OptionForwardFor{},
-
-		&parsers.OptionHttpchk{},
-		&http.Checks{Mode: "defaults"},
-		&parsers.ExternalCheckPath{},
-		&parsers.ExternalCheckCommand{},
-
-		&parsers.HTTPReuse{},
-		&simple.Timeout{Name: "http-request"},
-		&simple.Timeout{Name: "check"},
-		&simple.Timeout{Name: "connect"},
-		&simple.Timeout{Name: "client"},
-		&simple.Timeout{Name: "client-fin"},
-		&simple.Timeout{Name: "queue"},
-		&simple.Timeout{Name: "server"},
-		&simple.Timeout{Name: "server-fin"},
-		&simple.Timeout{Name: "tunnel"},
-		&simple.Timeout{Name: "http-keep-alive"},
-
-		&simple.Number{Name: "retries"},
-
-		&parsers.DefaultServer{},
-		&parsers.ErrorFile{},
-		&parsers.DefaultBackend{},
-		&parsers.UniqueIDFormat{},
-		&parsers.UniqueIDHeader{},
-		&parsers.ConfigSnippet{},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.Mode{})
+	addParser(parser, &sequence, &parsers.MonitorURI{})
+	addParser(parser, &sequence, &parsers.HashType{})
+	addParser(parser, &sequence, &parsers.Balance{})
+	addParser(parser, &sequence, &parsers.MaxConn{})
+	addParser(parser, &sequence, &parsers.Log{})
+	addParser(parser, &sequence, &parsers.OptionHTTPLog{})
+	addParser(parser, &sequence, &stats.Stats{Mode: "defaults"})
+	addParser(parser, &sequence, &simple.Word{Name: "log-tag"})
+	addParser(parser, &sequence, &simple.String{Name: "log-format"})
+	addParser(parser, &sequence, &simple.String{Name: "log-format-sd"})
+	addParser(parser, &sequence, &parsers.Cookie{})
+	addParser(parser, &sequence, &parsers.BindProcess{})
+	addParser(parser, &sequence, &simple.Option{Name: "tcplog"})
+	addParser(parser, &sequence, &simple.Option{Name: "httpclose"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-use-htx"})
+	addParser(parser, &sequence, &parsers.OptionRedispatch{})
+	addParser(parser, &sequence, &simple.Option{Name: "dontlognull"})
+	addParser(parser, &sequence, &simple.Option{Name: "log-separate-errors"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-buffer-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-server-close"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-keep-alive"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-pretend-keepalive"})
+	addParser(parser, &sequence, &simple.Option{Name: "clitcpka"})
+	addParser(parser, &sequence, &simple.Option{Name: "contstats"})
+	addParser(parser, &sequence, &simple.Option{Name: "ssl-hello-chk"})
+	addParser(parser, &sequence, &parsers.OptionSmtpchk{})
+	addParser(parser, &sequence, &simple.Option{Name: "ldap-check"})
+	addParser(parser, &sequence, &parsers.OptionMysqlCheck{})
+	addParser(parser, &sequence, &simple.Option{Name: "abortonclose"})
+	addParser(parser, &sequence, &parsers.OptionPgsqlCheck{})
+	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
+	addParser(parser, &sequence, &simple.Option{Name: "redis-check"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-auto"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "logasap"})
+	addParser(parser, &sequence, &simple.Option{Name: "log-health-checks"})
+	addParser(parser, &sequence, &simple.Option{Name: "allbackups"})
+	addParser(parser, &sequence, &simple.Option{Name: "external-check"})
+	addParser(parser, &sequence, &parsers.OptionForwardFor{})
+	addParser(parser, &sequence, &parsers.OptionHttpchk{})
+	addParser(parser, &sequence, &http.Checks{Mode: "defaults"})
+	addParser(parser, &sequence, &parsers.ExternalCheckPath{})
+	addParser(parser, &sequence, &parsers.ExternalCheckCommand{})
+	addParser(parser, &sequence, &parsers.HTTPReuse{})
+	addParser(parser, &sequence, &simple.Timeout{Name: "http-request"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "check"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "connect"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "client"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "client-fin"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "queue"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "server"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "server-fin"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "tunnel"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "http-keep-alive"})
+	addParser(parser, &sequence, &simple.Number{Name: "retries"})
+	addParser(parser, &sequence, &parsers.DefaultServer{})
+	addParser(parser, &sequence, &parsers.ErrorFile{})
+	addParser(parser, &sequence, &parsers.DefaultBackend{})
+	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
+	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
+	addParser(parser, &sequence, &parsers.ConfigSnippet{})
+	return createParsers(parser, sequence)
 }
 
 func getGlobalParser() *Parsers {
-	return createParsers([]ParserInterface{
-		// environment directives are placed before the rest,
-		// because HAProxy can use the environment vars in subsequent config
-		&simple.StringKeyValue{Name: "presetenv"},
-		&simple.StringSlice{Name: "resetenv"},
-		&simple.StringKeyValue{Name: "setenv"},
-		&simple.StringSlice{Name: "unsetenv"},
-
-		&parsers.Daemon{},
-		&simple.String{Name: "localpeer"},
-		&simple.Word{Name: "chroot"},
-		&simple.Word{Name: "user"},
-		&simple.Word{Name: "group"},
-		//&simple.SimpleFlag{Name: "master-worker"},
-		&parsers.MasterWorker{},
-		&parsers.ExternalCheck{},
-		&parsers.NoSplice{},
-		&parsers.NbProc{},
-		&parsers.NbThread{},
-		&parsers.CPUMap{},
-		&parsers.Mode{},
-
-		&parsers.MaxConn{},
-		&simple.Number{Name: "maxconnrate"},
-		&simple.Number{Name: "maxcomprate"},
-		&simple.Number{Name: "maxcompcpuusage"},
-		&simple.Number{Name: "maxpipes"},
-		&simple.Number{Name: "maxsessrate"},
-		&simple.Number{Name: "maxsslconn"},
-		&simple.Number{Name: "maxsslrate"},
-		&simple.Number{Name: "maxzlibmem"},
-
-		&simple.String{Name: "pidfile"},
-		&parsers.Socket{},
-		&parsers.StatsTimeout{},
-		&simple.Number{Name: "tune.bufsize"},
-		&simple.Number{Name: "tune.maxrewrite"},
-		&simple.Number{Name: "tune.ssl.default-dh-param"},
-		&simple.String{Name: "ssl-default-bind-options"},
-		&simple.Word{Name: "ssl-default-bind-ciphers"},
-		&simple.Word{Name: "ssl-default-bind-ciphersuites"},
-		&simple.String{Name: "ssl-default-server-options"},
-		&simple.Word{Name: "ssl-default-server-ciphers"},
-		&simple.Word{Name: "ssl-default-server-ciphersuites"},
-		&simple.Word{Name: "ssl-dh-param-file"},
-		&simple.Word{Name: "ssl-server-verify"},
-		&simple.Time{Name: "hard-stop-after"},
-		&parsers.Log{},
-		&parsers.LogSendHostName{},
-		&parsers.LuaLoad{},
-		&simple.Word{Name: "server-state-file"},
-		&simple.Word{Name: "server-state-base"},
-		&parsers.SslEngine{},
-		&parsers.SslModeAsync{},
-		&parsers.LoadServerStateFromFile{},
-		// the ConfigSnippet must be at the end to parsers load order to ensure
-		// the overloading of any option has been declared previously
-		&parsers.ConfigSnippet{},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	// environment directives are placed before the rest,
+	// because HAProxy can use the environment vars in subsequent config
+	addParser(parser, &sequence, &simple.StringKeyValue{Name: "presetenv"})
+	addParser(parser, &sequence, &simple.StringSlice{Name: "resetenv"})
+	addParser(parser, &sequence, &simple.StringKeyValue{Name: "setenv"})
+	addParser(parser, &sequence, &simple.StringSlice{Name: "unsetenv"})
+	addParser(parser, &sequence, &parsers.Daemon{})
+	addParser(parser, &sequence, &simple.String{Name: "localpeer"})
+	addParser(parser, &sequence, &simple.Word{Name: "chroot"})
+	addParser(parser, &sequence, &simple.Word{Name: "user"})
+	addParser(parser, &sequence, &simple.Word{Name: "group"})
+	addParser(parser, &sequence, &parsers.MasterWorker{})
+	addParser(parser, &sequence, &parsers.ExternalCheck{})
+	addParser(parser, &sequence, &parsers.NoSplice{})
+	addParser(parser, &sequence, &parsers.NbProc{})
+	addParser(parser, &sequence, &parsers.NbThread{})
+	addParser(parser, &sequence, &parsers.CPUMap{})
+	addParser(parser, &sequence, &parsers.Mode{})
+	addParser(parser, &sequence, &parsers.MaxConn{})
+	addParser(parser, &sequence, &simple.Number{Name: "maxconnrate"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxcomprate"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxcompcpuusage"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxpipes"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxsessrate"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxsslconn"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxsslrate"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxzlibmem"})
+	addParser(parser, &sequence, &simple.String{Name: "pidfile"})
+	addParser(parser, &sequence, &parsers.Socket{})
+	addParser(parser, &sequence, &parsers.StatsTimeout{})
+	addParser(parser, &sequence, &simple.Number{Name: "tune.bufsize"})
+	addParser(parser, &sequence, &simple.Number{Name: "tune.maxrewrite"})
+	addParser(parser, &sequence, &simple.Number{Name: "tune.ssl.default-dh-param"})
+	addParser(parser, &sequence, &simple.String{Name: "ssl-default-bind-options"})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-bind-ciphers"})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-bind-ciphersuites"})
+	addParser(parser, &sequence, &simple.String{Name: "ssl-default-server-options"})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphers"})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphersuites"})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-dh-param-file"})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-server-verify"})
+	addParser(parser, &sequence, &simple.Time{Name: "hard-stop-after"})
+	addParser(parser, &sequence, &parsers.Log{})
+	addParser(parser, &sequence, &parsers.LogSendHostName{})
+	addParser(parser, &sequence, &parsers.LuaLoad{})
+	addParser(parser, &sequence, &simple.Word{Name: "server-state-file"})
+	addParser(parser, &sequence, &simple.Word{Name: "server-state-base"})
+	addParser(parser, &sequence, &parsers.SslEngine{})
+	addParser(parser, &sequence, &parsers.SslModeAsync{})
+	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
+	// the ConfigSnippet must be at the end to parsers load order to ensure
+	// the overloading of any option has been declared previously
+	addParser(parser, &sequence, &parsers.ConfigSnippet{})
+	return createParsers(parser, sequence)
 }
 
 func getFrontendParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&parsers.Mode{},
-		&parsers.MonitorURI{},
-		&parsers.MonitorFail{},
-		&parsers.MaxConn{},
-		&parsers.Bind{},
-		&parsers.ACL{},
-		&parsers.BindProcess{},
-		&simple.Word{Name: "log-tag"},
-		&simple.String{Name: "log-format"},
-		&simple.String{Name: "log-format-sd"},
-
-		&parsers.Log{},
-
-		&simple.Option{Name: "httpclose"},
-		&simple.Option{Name: "forceclose"},
-		&simple.Option{Name: "http-buffer-request"},
-		&simple.Option{Name: "http-server-close"},
-		&simple.Option{Name: "http-keep-alive"},
-		&simple.Option{Name: "http-use-htx"},
-		&parsers.OptionForwardFor{},
-		&simple.Option{Name: "tcplog"},
-		&simple.Option{Name: "dontlognull"},
-		&simple.Option{Name: "contstats"},
-		&simple.Option{Name: "log-separate-errors"},
-		&simple.Option{Name: "clitcpka"},
-		&simple.Option{Name: "splice-auto"},
-		&simple.Option{Name: "splice-request"},
-		&simple.Option{Name: "splice-response"},
-		&simple.Option{Name: "logasap"},
-		&parsers.OptionHTTPLog{},
-
-		&simple.Timeout{Name: "http-request"},
-		&simple.Timeout{Name: "client"},
-		&simple.Timeout{Name: "client-fin"},
-		&simple.Timeout{Name: "http-keep-alive"},
-
-		&filters.Filters{},
-		&tcp.Requests{},
-		&stats.Stats{Mode: "frontend"},
-		&http.Requests{Mode: "frontend"},
-		&http.Redirect{},
-
-		&simple.Word{Name: "monitor-uri"},
-
-		&parsers.ConfigSnippet{},
-		&parsers.UseBackend{},
-		&parsers.DefaultBackend{},
-		&parsers.StickTable{},
-		&http.Responses{Mode: "frontend"},
-		&parsers.UniqueIDFormat{},
-		&parsers.UniqueIDHeader{},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.Mode{})
+	addParser(parser, &sequence, &parsers.MonitorURI{})
+	addParser(parser, &sequence, &parsers.MonitorFail{})
+	addParser(parser, &sequence, &parsers.MaxConn{})
+	addParser(parser, &sequence, &parsers.Bind{})
+	addParser(parser, &sequence, &parsers.ACL{})
+	addParser(parser, &sequence, &parsers.BindProcess{})
+	addParser(parser, &sequence, &simple.Word{Name: "log-tag"})
+	addParser(parser, &sequence, &simple.String{Name: "log-format"})
+	addParser(parser, &sequence, &simple.String{Name: "log-format-sd"})
+	addParser(parser, &sequence, &parsers.Log{})
+	addParser(parser, &sequence, &simple.Option{Name: "httpclose"})
+	addParser(parser, &sequence, &simple.Option{Name: "forceclose"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-buffer-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-server-close"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-keep-alive"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-use-htx"})
+	addParser(parser, &sequence, &parsers.OptionForwardFor{})
+	addParser(parser, &sequence, &simple.Option{Name: "tcplog"})
+	addParser(parser, &sequence, &simple.Option{Name: "dontlognull"})
+	addParser(parser, &sequence, &simple.Option{Name: "contstats"})
+	addParser(parser, &sequence, &simple.Option{Name: "log-separate-errors"})
+	addParser(parser, &sequence, &simple.Option{Name: "clitcpka"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-auto"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "logasap"})
+	addParser(parser, &sequence, &parsers.OptionHTTPLog{})
+	addParser(parser, &sequence, &simple.Timeout{Name: "http-request"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "client"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "client-fin"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "http-keep-alive"})
+	addParser(parser, &sequence, &filters.Filters{})
+	addParser(parser, &sequence, &tcp.Requests{})
+	addParser(parser, &sequence, &stats.Stats{Mode: "frontend"})
+	addParser(parser, &sequence, &http.Requests{Mode: "frontend"})
+	addParser(parser, &sequence, &http.Redirect{})
+	addParser(parser, &sequence, &parsers.ConfigSnippet{})
+	addParser(parser, &sequence, &parsers.UseBackend{})
+	addParser(parser, &sequence, &parsers.DefaultBackend{})
+	addParser(parser, &sequence, &parsers.StickTable{})
+	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
+	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
+	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
+	return createParsers(parser, sequence)
 }
 
 func getBackendParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&parsers.Mode{},
-		&parsers.HashType{},
-		&parsers.Balance{},
-		&parsers.ACL{},
-		&parsers.BindProcess{},
-
-		&simple.Option{Name: "httpclose"},
-		&simple.Option{Name: "forceclose"},
-		&simple.Option{Name: "http-buffer-request"},
-		&simple.Option{Name: "http-server-close"},
-		&simple.Option{Name: "http-keep-alive"},
-		&simple.Option{Name: "http-pretend-keepalive"},
-		&simple.Option{Name: "http-use-htx"},
-		&parsers.OptionForwardFor{},
-		&simple.Option{Name: "ssl-hello-chk"},
-		&parsers.OptionSmtpchk{},
-		&simple.Option{Name: "ldap-check"},
-		&parsers.OptionMysqlCheck{},
-		&simple.Option{Name: "abortonclose"},
-		&parsers.OptionPgsqlCheck{},
-		&simple.Option{Name: "tcp-check"},
-		&simple.Option{Name: "redis-check"},
-		&parsers.OptionRedispatch{},
-		&simple.Option{Name: "external-check"},
-		&simple.Option{Name: "splice-auto"},
-		&simple.Option{Name: "splice-request"},
-		&simple.Option{Name: "splice-response"},
-		&simple.Option{Name: "log-health-checks"},
-		&simple.String{Name: "log-tag"},
-		&simple.Option{Name: "allbackups"},
-
-		&parsers.OptionHttpchk{},
-		&http.Checks{Mode: "backend"},
-		&parsers.ExternalCheckPath{},
-		&parsers.ExternalCheckCommand{},
-
-		&parsers.Log{},
-
-		&simple.Timeout{Name: "http-request"},
-		&simple.Timeout{Name: "queue"},
-		&simple.Timeout{Name: "http-keep-alive"},
-		&simple.Timeout{Name: "check"},
-		&simple.Timeout{Name: "tunnel"},
-		&simple.Timeout{Name: "server"},
-		&simple.Timeout{Name: "server-fin"},
-		&simple.Timeout{Name: "connect"},
-
-		&parsers.DefaultServer{},
-		&parsers.Stick{},
-		&filters.Filters{},
-		&tcp.Requests{},
-		&stats.Stats{Mode: "backend"},
-		&parsers.HTTPReuse{},
-		&http.Requests{Mode: "backend"},
-		&http.Redirect{},
-		&parsers.Cookie{},
-		&parsers.UseServer{},
-		&parsers.StickTable{},
-		&parsers.ConfigSnippet{},
-		&parsers.Server{},
-		&simple.Number{Name: "retries"},
-		&tcp.Responses{},
-		&http.Responses{Mode: "backend"},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.Mode{})
+	addParser(parser, &sequence, &parsers.HashType{})
+	addParser(parser, &sequence, &parsers.Balance{})
+	addParser(parser, &sequence, &parsers.ACL{})
+	addParser(parser, &sequence, &parsers.BindProcess{})
+	addParser(parser, &sequence, &simple.Option{Name: "httpclose"})
+	addParser(parser, &sequence, &simple.Option{Name: "forceclose"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-buffer-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-server-close"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-keep-alive"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-pretend-keepalive"})
+	addParser(parser, &sequence, &simple.Option{Name: "http-use-htx"})
+	addParser(parser, &sequence, &parsers.OptionForwardFor{})
+	addParser(parser, &sequence, &simple.Option{Name: "ssl-hello-chk"})
+	addParser(parser, &sequence, &parsers.OptionSmtpchk{})
+	addParser(parser, &sequence, &simple.Option{Name: "ldap-check"})
+	addParser(parser, &sequence, &parsers.OptionMysqlCheck{})
+	addParser(parser, &sequence, &simple.Option{Name: "abortonclose"})
+	addParser(parser, &sequence, &parsers.OptionPgsqlCheck{})
+	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
+	addParser(parser, &sequence, &simple.Option{Name: "redis-check"})
+	addParser(parser, &sequence, &parsers.OptionRedispatch{})
+	addParser(parser, &sequence, &simple.Option{Name: "external-check"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-auto"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "splice-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "log-health-checks"})
+	addParser(parser, &sequence, &simple.String{Name: "log-tag"})
+	addParser(parser, &sequence, &simple.Option{Name: "allbackups"})
+	addParser(parser, &sequence, &parsers.OptionHttpchk{})
+	addParser(parser, &sequence, &http.Checks{Mode: "backend"})
+	addParser(parser, &sequence, &parsers.ExternalCheckPath{})
+	addParser(parser, &sequence, &parsers.ExternalCheckCommand{})
+	addParser(parser, &sequence, &parsers.Log{})
+	addParser(parser, &sequence, &simple.Timeout{Name: "http-request"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "queue"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "http-keep-alive"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "check"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "tunnel"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "server"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "server-fin"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "connect"})
+	addParser(parser, &sequence, &parsers.DefaultServer{})
+	addParser(parser, &sequence, &parsers.Stick{})
+	addParser(parser, &sequence, &filters.Filters{})
+	addParser(parser, &sequence, &tcp.Requests{})
+	addParser(parser, &sequence, &stats.Stats{Mode: "backend"})
+	addParser(parser, &sequence, &parsers.HTTPReuse{})
+	addParser(parser, &sequence, &http.Requests{Mode: "backend"})
+	addParser(parser, &sequence, &http.Redirect{})
+	addParser(parser, &sequence, &parsers.Cookie{})
+	addParser(parser, &sequence, &parsers.UseServer{})
+	addParser(parser, &sequence, &parsers.StickTable{})
+	addParser(parser, &sequence, &parsers.ConfigSnippet{})
+	addParser(parser, &sequence, &parsers.Server{})
+	addParser(parser, &sequence, &simple.Number{Name: "retries"})
+	addParser(parser, &sequence, &tcp.Responses{})
+	addParser(parser, &sequence, &http.Responses{Mode: "backend"})
+	return createParsers(parser, sequence)
 }
 
 func getListenParser() *Parsers {
-	return createParsers([]ParserInterface{})
+	return createParsers(map[string]ParserInterface{}, []Section{})
 }
 
 func getResolverParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&parsers.Nameserver{},
-
-		&simple.TimeTwoWords{Keywords: []string{"hold", "nx"}},
-		&simple.TimeTwoWords{Keywords: []string{"hold", "obsolete"}},
-		&simple.TimeTwoWords{Keywords: []string{"hold", "other"}},
-		&simple.TimeTwoWords{Keywords: []string{"hold", "refused"}},
-		&simple.TimeTwoWords{Keywords: []string{"hold", "timeout"}},
-		&simple.TimeTwoWords{Keywords: []string{"hold", "valid"}},
-
-		&simple.Timeout{Name: "resolve"},
-		&simple.Timeout{Name: "retry"},
-
-		&simple.Word{Name: "accepted_payload_size"},
-		&simple.Word{Name: "parse-resolv-conf"},
-		&simple.Word{Name: "resolve_retries"},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.Nameserver{})
+	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"hold", "nx"}})
+	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"hold", "obsolete"}})
+	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"hold", "other"}})
+	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"hold", "refused"}})
+	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"hold", "timeout"}})
+	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"hold", "valid"}})
+	addParser(parser, &sequence, &simple.Timeout{Name: "resolve"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "retry"})
+	addParser(parser, &sequence, &simple.Word{Name: "accepted_payload_size"})
+	addParser(parser, &sequence, &simple.Word{Name: "parse-resolv-conf"})
+	addParser(parser, &sequence, &simple.Word{Name: "resolve_retries"})
+	return createParsers(parser, sequence)
 }
 
 func getUserlistParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&parsers.Group{},
-		&parsers.User{},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.Group{})
+	addParser(parser, &sequence, &parsers.User{})
+	return createParsers(parser, sequence)
 }
 
 func getPeersParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&parsers.Peer{},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.Peer{})
+	return createParsers(parser, sequence)
 }
 
 func getMailersParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&simple.TimeTwoWords{Keywords: []string{"timeout", "mail"}},
-		&parsers.Mailer{},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"timeout", "mail"}})
+	addParser(parser, &sequence, &parsers.Mailer{})
+	return createParsers(parser, sequence)
 }
 
 func getCacheParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&simple.Number{Name: "total-max-size"},
-		&simple.Number{Name: "max-object-size"},
-		&simple.Number{Name: "max-age"},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &simple.Number{Name: "total-max-size"})
+	addParser(parser, &sequence, &simple.Number{Name: "max-object-size"})
+	addParser(parser, &sequence, &simple.Number{Name: "max-age"})
+	return createParsers(parser, sequence)
 }
 
 func getProgramParser() *Parsers {
-	return createParsers([]ParserInterface{
-		&simple.String{Name: "command"},
-		&simple.String{Name: "user"},
-		&simple.String{Name: "group"},
-		&simple.Option{Name: "start-on-reload"},
-	})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &simple.String{Name: "command"})
+	addParser(parser, &sequence, &simple.String{Name: "user"})
+	addParser(parser, &sequence, &simple.String{Name: "group"})
+	addParser(parser, &sequence, &simple.Option{Name: "start-on-reload"})
+	return createParsers(parser, sequence)
 }
 
 func getHTTPErrorsParser() *Parsers {
-	return createParsers([]ParserInterface{})
+	return createParsers(map[string]ParserInterface{}, []Section{})
 }
 
 func getRingParser() *Parsers {
-	return createParsers([]ParserInterface{})
+	return createParsers(map[string]ParserInterface{}, []Section{})
 }

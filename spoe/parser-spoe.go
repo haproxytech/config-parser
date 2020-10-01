@@ -297,12 +297,13 @@ func (p *Parser) HasParser(scope string, sectionType parser.Section, attribute s
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) writeParsers(sectionName string, parsers []parser.ParserInterface, result *strings.Builder, useIndentation bool) {
+func (p *Parser) writeParsers(sectionName string, parsersData *parser.Parsers, result *strings.Builder, useIndentation bool) {
 	sectionNameWritten := false
 	if sectionName == "" {
 		sectionNameWritten = true
 	}
-	for _, parser := range parsers {
+	for _, parserName := range parsersData.ParserSequence {
+		parser := parsersData.Parsers[string(parserName)]
 		lines, _, err := parser.ResultAll()
 		if err != nil {
 			continue
@@ -356,14 +357,14 @@ func (p *Parser) String() string {
 			//result.WriteString("\n")
 		}
 
-		p.writeParsers("", data[parser.Comments][parser.CommentsSectionName].Parsers, &result, false)
+		p.writeParsers("", data[parser.Comments][parser.CommentsSectionName], &result, false)
 
 		sections := []parser.Section{parser.SPOEAgent, parser.SPOEGroup, parser.SPOEMessage}
 
 		for _, section := range sections {
 			sortedSections := p.getSortedList(data[section])
 			for _, sectionName := range sortedSections {
-				p.writeParsers(fmt.Sprintf("%s %s", section, sectionName), data[section][sectionName].Parsers, &result, true)
+				p.writeParsers(fmt.Sprintf("%s %s", section, sectionName), data[section][sectionName], &result, true)
 			}
 		}
 	}
