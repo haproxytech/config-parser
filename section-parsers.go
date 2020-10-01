@@ -178,6 +178,7 @@ func getGlobalParser() *Parsers {
 		&simple.String{Name: "ssl-default-server-options"},
 		&simple.Word{Name: "ssl-default-server-ciphers"},
 		&simple.Word{Name: "ssl-default-server-ciphersuites"},
+		&simple.Word{Name: "ssl-dh-param-file"},
 		&simple.Word{Name: "ssl-server-verify"},
 		&simple.Time{Name: "hard-stop-after"},
 		&parsers.Log{},
