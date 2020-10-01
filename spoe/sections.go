@@ -10,8 +10,8 @@ import (
 
 func getStartParser() *parser.Parsers {
 	return createParsers(map[string]parser.ParserInterface{
-		"configversion": &extra.ConfigVersion{},
-		"comments":      &extra.Comments{},
+		"# _version": &extra.ConfigVersion{},
+		"comments":   &extra.Comments{},
 	})
 }
 
@@ -50,14 +50,14 @@ func getSPOEAgentParser() *parser.Parsers {
 		"force-set-var":           &simple.Option{Name: "force-set-var"},
 		"pipelining":              &simple.Option{Name: "pipelining"},
 		"send-frag-payload":       &simple.Option{Name: "send-frag-payload"},
-		"option-set-on-error":     &simple.TimeTwoWords{Keywords: []string{"option", "set-on-error"}},
-		"option-set-process-time": &simple.TimeTwoWords{Keywords: []string{"option", "set-process-time"}},
-		"option-set-total-time":   &simple.TimeTwoWords{Keywords: []string{"option", "set-total-time"}},
-		"option-var-prefix":       &simple.TimeTwoWords{Keywords: []string{"option", "var-prefix"}},
+		"option set-on-error":     &simple.TimeTwoWords{Keywords: []string{"option", "set-on-error"}},
+		"option set-process-time": &simple.TimeTwoWords{Keywords: []string{"option", "set-process-time"}},
+		"option set-total-time":   &simple.TimeTwoWords{Keywords: []string{"option", "set-total-time"}},
+		"option var-prefix":       &simple.TimeTwoWords{Keywords: []string{"option", "var-prefix"}},
 		"register-var-names":      &simple.String{Name: "register-var-names"},
-		"timeout-hello":           &simple.TimeTwoWords{Keywords: []string{"timeout", "hello"}},
-		"timeout-idle":            &simple.TimeTwoWords{Keywords: []string{"timeout", "idle"}},
-		"timeout-processing":      &simple.TimeTwoWords{Keywords: []string{"timeout", "processing"}},
+		"timeout hello":           &simple.TimeTwoWords{Keywords: []string{"timeout", "hello"}},
+		"timeout idle":            &simple.TimeTwoWords{Keywords: []string{"timeout", "idle"}},
+		"timeout processing":      &simple.TimeTwoWords{Keywords: []string{"timeout", "processing"}},
 		"use-backend":             &simple.Word{Name: "use-backend"},
 	})
 }
