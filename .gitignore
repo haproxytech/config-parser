@@ -4,3 +4,4 @@ test/test
 test/main.go
 .vscode/
 test/*
+.idea/
