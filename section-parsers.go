@@ -186,6 +186,7 @@ func getGlobalParser() *Parsers {
 		&parsers.LuaLoad{},
 		&simple.Word{Name: "server-state-file"},
 		&simple.Word{Name: "server-state-base"},
+		&parsers.SslEngine{},
 		&parsers.ConfigSnippet{},
 	})
 }
