@@ -570,3 +570,34 @@ type LuaLoad struct {
 	File    string
 	Comment string
 }
+
+//sections:global
+//name:ssl-engine
+//test:ok:ssl-engine rdrand
+//test:ok:ssl-engine rdrand ALL
+//test:ok:ssl-engine rdrand RSA,DSA
+//test:fail:ssl-engine
+type SslEngine struct {
+	Name       string
+	Algorithms []string
+}
+
+//sections:global
+//name:ssl-mode-async
+//test:ok:ssl-mode-async
+//test:fail:ssl-mode-async true
+//test:fail:ssl-mode-async false
+type SslModeAsync struct {
+}
+
+//sections:global,listen,backend
+//name:load-server-state-from-file
+//test:ok:load-server-state-from-file global
+//test:ok:load-server-state-from-file local
+//test:ok:load-server-state-from-file none
+//test:fail:load-server-state-from-file
+//test:fail:load-server-state-from-file foo
+//test:fail:load-server-state-from-file bar
+type LoadServerStateFromFile struct {
+	Argument string
+}

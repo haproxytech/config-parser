@@ -29,6 +29,7 @@ global test
   lua-load /etc/haproxy/lua/foo.lua
   ssl-engine rdrand
   ssl-mode-async
+  load-server-state-from-file global
 
 defaults test
   balance roundrobin
@@ -163,6 +164,7 @@ backend test
   stick store-request src table pop if !localhost
   use-server www if { req_ssl_sni -i www.example.com }
   use-server www if { req_ssl_sni -i www.example.com } # comment
+  load-server-state-from-file global
   http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
@@ -761,6 +763,9 @@ frontend test
   stats http-request deny unless something
   stats http-request allow
 
+listen test
+  load-server-state-from-file global
+
 mailers test
   mailer smtp1 192.168.0.1:587
   mailer smtp1 192.168.0.1:587 # just some comment
@@ -954,14 +959,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  ssl-mode-async
 `, 1},
-  {`  ssl-engine rdrand
-`, 1},
-  {`  ssl-mode-async
-`, 1},
-  {`  ssl-engine rdrand
-`, 1},
-  {`  ssl-mode-async
-`, 1},
+  {`  load-server-state-from-file global
+`, 3},
   {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 2},
   {`  http-request deny deny_status 0 unless { src 127.0.0.1 }

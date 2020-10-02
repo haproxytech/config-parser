@@ -188,6 +188,7 @@ func getGlobalParser() *Parsers {
 		&simple.Word{Name: "server-state-base"},
 		&parsers.SslEngine{},
 		&parsers.SslModeAsync{},
+		&parsers.LoadServerStateFromFile{},
 		&parsers.ConfigSnippet{},
 	})
 }
