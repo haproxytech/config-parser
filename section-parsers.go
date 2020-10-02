@@ -189,6 +189,8 @@ func getGlobalParser() *Parsers {
 		&parsers.SslEngine{},
 		&parsers.SslModeAsync{},
 		&parsers.LoadServerStateFromFile{},
+		// the ConfigSnippet must be at the end to parsers load order to ensure
+		// the overloading of any option has been declared previously
 		&parsers.ConfigSnippet{},
 	})
 }
