@@ -601,3 +601,11 @@ type SslModeAsync struct {
 type LoadServerStateFromFile struct {
 	Argument string
 }
+
+//sections:defaults,frontend,listen
+//name:monitor-uri
+//test:ok:monitor-uri /haproxy_test
+//test:fail:monitor-uri
+type MonitorURI struct {
+	URI string
+}

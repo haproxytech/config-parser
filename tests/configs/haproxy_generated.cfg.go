@@ -52,6 +52,7 @@ defaults test
   option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
   unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
   unique-id-header X-Unique-ID
+  monitor-uri /haproxy_test
   http-check comment testcomment
   http-check connect
   http-check connect default
@@ -504,6 +505,7 @@ frontend test
   use_backend test # deny
   unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
   unique-id-header X-Unique-ID
+  monitor-uri /haproxy_test
   http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
@@ -765,6 +767,7 @@ frontend test
 
 listen test
   load-server-state-from-file global
+  monitor-uri /haproxy_test
 
 mailers test
   mailer smtp1 192.168.0.1:587
@@ -960,6 +963,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  ssl-mode-async
 `, 1},
   {`  load-server-state-from-file global
+`, 3},
+  {`  monitor-uri /haproxy_test
 `, 3},
   {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 2},

@@ -118,8 +118,8 @@ cache foobar
 
 frontend healthz 
   mode http
-  no log
   monitor-uri /healthz
+  no log
 
 frontend http 
   mode http
