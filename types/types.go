@@ -609,3 +609,17 @@ type LoadServerStateFromFile struct {
 type MonitorURI struct {
 	URI string
 }
+
+//sections:frontend,listen
+//name:monitor fail
+//test:ok:monitor fail if no_db01 no_db02
+//test:ok:monitor fail if ready_01 ready_02 ready_03
+//test:ok:monitor fail unless backend_ready
+//test:ok:monitor fail unless ready_01 ready_02 ready_03
+//test:fail:monitor fail
+//test:fail:monitor fail if
+//test:fail:monitor unless
+type MonitorFail struct {
+	Operator string
+	ACLList  []string
+}

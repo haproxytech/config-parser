@@ -200,6 +200,7 @@ func getFrontendParser() *Parsers {
 	return createParsers([]ParserInterface{
 		&parsers.Mode{},
 		&parsers.MonitorURI{},
+		&parsers.MonitorFail{},
 		&parsers.MaxConn{},
 		&parsers.Bind{},
 		&parsers.ACL{},
