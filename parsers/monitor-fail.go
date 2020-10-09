@@ -33,8 +33,8 @@ func (p *MonitorFail) Parse(line string, parts, previousParts []string, comment 
 	if len(parts) > 3 && parts[0] == "monitor" && parts[1] == "fail" {
 		if op := parts[2]; op == "if" || op == "unless" {
 			p.data = &types.MonitorFail{
-				Operator: op,
-				ACLList:  parts[3:],
+				Condition: op,
+				ACLList:   parts[3:],
 			}
 			return "", nil
 		}
@@ -49,7 +49,7 @@ func (p *MonitorFail) Result() ([]common.ReturnResultLine, error) {
 	}
 	return []common.ReturnResultLine{
 		{
-			Data: fmt.Sprintf("monitor fail %s %s", p.data.Operator, strings.Join(p.data.ACLList, " ")),
+			Data: fmt.Sprintf("monitor fail %s %s", p.data.Condition, strings.Join(p.data.ACLList, " ")),
 		},
 	}, nil
 }

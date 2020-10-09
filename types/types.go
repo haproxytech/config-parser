@@ -620,6 +620,6 @@ type MonitorURI struct {
 //test:fail:monitor fail if
 //test:fail:monitor unless
 type MonitorFail struct {
-	Operator string
-	ACLList  []string
+	Condition string
+	ACLList   []string
 }
