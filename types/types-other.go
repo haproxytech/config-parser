@@ -443,7 +443,7 @@ type HTTPResponses struct{}
 //test:fail:http-check expect
 //test:fail:http-check expect status
 //test:fail:http-check expect comment testcomment
-type HTTPCheckNew struct{}
+type HTTPCheck struct{}
 
 type TCPType interface {
 	Parse(parts []string, comment string) error

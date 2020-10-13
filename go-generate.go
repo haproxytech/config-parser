@@ -54,6 +54,7 @@ type Data struct {
 	TestFail           []string
 	TestSkip           bool
 	DataDir            string
+	Deprecated         bool
 }
 
 type ConfigFile struct {
@@ -88,7 +89,9 @@ func (c *ConfigFile) AddParserData(parser Data) error {
 		if parser.NoSections {
 			return nil
 		} else {
-			log.Fatalf("parser %s does not have any tests defined", parser.ParserName)
+			if !parser.Deprecated {
+				log.Fatalf("parser %s does not have any tests defined", parser.ParserName)
+			}
 		}
 	}
 	if !parser.NoSections {
@@ -421,6 +424,9 @@ func generateTypes(dir string, dataDir string) {
 
 	for _, line := range lines {
 		parserData.DataDir = dataDir
+		if strings.HasPrefix(line, "//deprecated:") {
+			parserData.Deprecated = true
+		}
 		if strings.HasPrefix(line, "//sections:") {
 			s := strings.Split(line, ":")
 			parserData.ParserSections = strings.Split(s[1], ",")
@@ -446,11 +452,11 @@ func generateTypes(dir string, dataDir string) {
 		if strings.HasPrefix(line, "//no-parse:true") {
 			parserData.NoParse = true
 		}
-		if strings.HasPrefix(line, "//test:ok") {
+		if strings.HasPrefix(line, "//test:ok") && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
 		}
-		if strings.HasPrefix(line, "//test:fail") {
+		if strings.HasPrefix(line, "//test:fail") && !parserData.Deprecated  {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
 		}

@@ -108,7 +108,11 @@ func (p *Parser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "external-check"})
 	addParser(parser, &sequence, &parsers.OptionForwardFor{})
 	addParser(parser, &sequence, &parsers.OptionHttpchk{})
-	addParser(parser, &sequence, &http.Checks{Mode: "defaults"})
+	if p.Options.UseV2HTTPCheck {
+		addParser(parser, &sequence, &parsers.HTTPCheckV2{})
+	} else {
+		addParser(parser, &sequence, &http.Checks{Mode: "defaults"})
+	}
 	addParser(parser, &sequence, &parsers.ExternalCheckPath{})
 	addParser(parser, &sequence, &parsers.ExternalCheckCommand{})
 	addParser(parser, &sequence, &parsers.HTTPReuse{})

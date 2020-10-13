@@ -242,6 +242,25 @@ type HTTPReuse struct {
 	Comment   string
 }
 
+//deprecated:true
+//sections:defaults,backend
+//name:http-check
+//is-multiple:true
+//test:ok:http-check disable-on-404
+//test:ok:http-check send-state
+//test:ok:http-check expect status 200
+//test:ok:http-check expect ! string SQL\\ Error
+//test:ok:http-check expect ! rstatus ^5
+//test:ok:http-check expect rstring <!--tag:[0-9a-f]*--></html>
+//test:fail:http-check
+type HTTPCheckV2 struct {
+	Type            string
+	ExclamationMark bool
+	Match           string
+	Pattern         string
+	Comment         string
+}
+
 //sections:defaults,frontend,backend
 //name:log
 //is-multiple:true

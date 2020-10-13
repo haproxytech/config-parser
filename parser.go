@@ -61,9 +61,14 @@ const (
 	DefaultSectionName  = "data"
 )
 
+type Options struct {
+	UseV2HTTPCheck bool
+}
+
 //Parser reads and writes configuration on given file
 type Parser struct {
 	Parsers map[Section]map[string]*Parsers
+	Options Options
 	mutex   *sync.Mutex
 }
 
