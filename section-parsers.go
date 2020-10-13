@@ -195,11 +195,11 @@ func getFrontendParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Mode{})
-	addParser(parser, &sequence, &parsers.MonitorURI{})
-	addParser(parser, &sequence, &parsers.MonitorFail{})
 	addParser(parser, &sequence, &parsers.MaxConn{})
 	addParser(parser, &sequence, &parsers.Bind{})
 	addParser(parser, &sequence, &parsers.ACL{})
+	addParser(parser, &sequence, &parsers.MonitorURI{})
+	addParser(parser, &sequence, &parsers.MonitorFail{})
 	addParser(parser, &sequence, &parsers.BindProcess{})
 	addParser(parser, &sequence, &simple.Word{Name: "log-tag"})
 	addParser(parser, &sequence, &simple.String{Name: "log-format"})
