@@ -55,7 +55,7 @@ func createParsers(parser map[string]ParserInterface, sequence []Section) *Parse
 	return &Parsers{Parsers: parser, ParserSequence: sequence}
 }
 
-func getStartParser() *Parsers {
+func (p *Parser) getStartParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &extra.ConfigVersion{})
@@ -63,7 +63,7 @@ func getStartParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getDefaultParser() *Parsers {
+func (p *Parser) getDefaultParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Mode{})
@@ -132,7 +132,7 @@ func getDefaultParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getGlobalParser() *Parsers {
+func (p *Parser) getGlobalParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	// environment directives are placed before the rest,
@@ -191,7 +191,7 @@ func getGlobalParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getFrontendParser() *Parsers {
+func (p *Parser) getFrontendParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Mode{})
@@ -241,7 +241,7 @@ func getFrontendParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getBackendParser() *Parsers {
+func (p *Parser) getBackendParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Mode{})
@@ -305,11 +305,11 @@ func getBackendParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getListenParser() *Parsers {
+func (p *Parser) getListenParser() *Parsers {
 	return createParsers(map[string]ParserInterface{}, []Section{})
 }
 
-func getResolverParser() *Parsers {
+func (p *Parser) getResolverParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Nameserver{})
@@ -327,7 +327,7 @@ func getResolverParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getUserlistParser() *Parsers {
+func (p *Parser) getUserlistParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Group{})
@@ -335,14 +335,14 @@ func getUserlistParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getPeersParser() *Parsers {
+func (p *Parser) getPeersParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Peer{})
 	return createParsers(parser, sequence)
 }
 
-func getMailersParser() *Parsers {
+func (p *Parser) getMailersParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"timeout", "mail"}})
@@ -350,7 +350,7 @@ func getMailersParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getCacheParser() *Parsers {
+func (p *Parser) getCacheParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &simple.Number{Name: "total-max-size"})
@@ -359,7 +359,7 @@ func getCacheParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getProgramParser() *Parsers {
+func (p *Parser) getProgramParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &simple.String{Name: "command"})
@@ -369,10 +369,10 @@ func getProgramParser() *Parsers {
 	return createParsers(parser, sequence)
 }
 
-func getHTTPErrorsParser() *Parsers {
+func (p *Parser) getHTTPErrorsParser() *Parsers {
 	return createParsers(map[string]ParserInterface{}, []Section{})
 }
 
-func getRingParser() *Parsers {
+func (p *Parser) getRingParser() *Parsers {
 	return createParsers(map[string]ParserInterface{}, []Section{})
 }

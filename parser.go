@@ -384,7 +384,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Frontend = getFrontendParser()
+					config.Frontend = p.getFrontendParser()
 					p.Parsers[Frontends][data.Name] = config.Frontend
 					config.Active = config.Frontend
 				}
@@ -392,7 +392,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Backend = getBackendParser()
+					config.Backend = p.getBackendParser()
 					p.Parsers[Backends][data.Name] = config.Backend
 					config.Active = config.Backend
 				}
@@ -400,7 +400,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Listen = getListenParser()
+					config.Listen = p.getListenParser()
 					p.Parsers[Listen][data.Name] = config.Listen
 					config.Active = config.Listen
 				}
@@ -408,7 +408,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Resolver = getResolverParser()
+					config.Resolver = p.getResolverParser()
 					p.Parsers[Resolvers][data.Name] = config.Resolver
 					config.Active = config.Resolver
 				}
@@ -416,7 +416,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Userlist = getUserlistParser()
+					config.Userlist = p.getUserlistParser()
 					p.Parsers[UserList][data.Name] = config.Userlist
 					config.Active = config.Userlist
 				}
@@ -424,7 +424,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Peers = getPeersParser()
+					config.Peers = p.getPeersParser()
 					p.Parsers[Peers][data.Name] = config.Peers
 					config.Active = config.Peers
 				}
@@ -432,7 +432,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Mailers = getMailersParser()
+					config.Mailers = p.getMailersParser()
 					p.Parsers[Mailers][data.Name] = config.Mailers
 					config.Active = config.Mailers
 				}
@@ -440,7 +440,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Cache = getCacheParser()
+					config.Cache = p.getCacheParser()
 					p.Parsers[Cache][data.Name] = config.Cache
 					config.Active = config.Cache
 				}
@@ -448,7 +448,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Program = getProgramParser()
+					config.Program = p.getProgramParser()
 					p.Parsers[Program][data.Name] = config.Program
 					config.Active = config.Program
 				}
@@ -456,7 +456,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.HTTPErrors = getHTTPErrorsParser()
+					config.HTTPErrors = p.getHTTPErrorsParser()
 					p.Parsers[HTTPErrors][data.Name] = config.HTTPErrors
 					config.Active = config.HTTPErrors
 				}
@@ -464,7 +464,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
-					config.Ring = getRingParser()
+					config.Ring = p.getRingParser()
 					p.Parsers[Ring][data.Name] = config.Ring
 					config.Active = config.Ring
 				}
@@ -503,13 +503,13 @@ func (p *Parser) Process(reader io.Reader) error {
 
 	p.Parsers = map[Section]map[string]*Parsers{}
 	p.Parsers[Comments] = map[string]*Parsers{
-		CommentsSectionName: getStartParser(),
+		CommentsSectionName: p.getStartParser(),
 	}
 	p.Parsers[Defaults] = map[string]*Parsers{
-		DefaultSectionName: getDefaultParser(),
+		DefaultSectionName: p.getDefaultParser(),
 	}
 	p.Parsers[Global] = map[string]*Parsers{
-		GlobalSectionName: getGlobalParser(),
+		GlobalSectionName: p.getGlobalParser(),
 	}
 	p.Parsers[Frontends] = map[string]*Parsers{}
 	p.Parsers[Backends] = map[string]*Parsers{}
