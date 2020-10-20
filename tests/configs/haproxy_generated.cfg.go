@@ -158,7 +158,143 @@ backend test
   external-check command /bin/true
   server name 127.0.0.1:8080
   server name 127.0.0.1
+  server addr 127.0.0.1
+  server addr ::1
+  server name 127.0.0.1 agent-check
+  server name 127.0.0.1 agent-send name
+  server name 127.0.0.1 agent-inter 1000ms
+  server name 127.0.0.1 agent-addr 127.0.0.1
+  server name 127.0.0.1 agent-addr site.com
+  server name 127.0.0.1 agent-port 1
+  server name 127.0.0.1 agent-port 65535
+  server name 127.0.0.1 allow-0rtt
+  server name 127.0.0.1 alpn h2
+  server name 127.0.0.1 alpn http/1.1
+  server name 127.0.0.1 alpn h2,http/1.1
   server name 127.0.0.1 backup
+  server name 127.0.0.1 ca-file cert.crt
+  server name 127.0.0.1 check
+  server name 127.0.0.1 check-send-proxy
+  server name 127.0.0.1 check-alpn http/1.0
+  server name 127.0.0.1 check-alpn http/1.1,http/1.0
+  server name 127.0.0.1 check-proto h2
+  server name 127.0.0.1 check-ssl
+  server name 127.0.0.1 check-via-socks4
+  server name 127.0.0.1 ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  server name 127.0.0.1 ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  server name 127.0.0.1 cookie value
+  server name 127.0.0.1 crl-file file.pem
+  server name 127.0.0.1 crt cert.pem
+  server name 127.0.0.1 disabled
+  server name 127.0.0.1 enabled
+  server name 127.0.0.1 error-limit 50
+  server name 127.0.0.1 fall 30
+  server name 127.0.0.1 force-sslv3
+  server name 127.0.0.1 force-tlsv10
+  server name 127.0.0.1 force-tlsv11
+  server name 127.0.0.1 force-tlsv12
+  server name 127.0.0.1 force-tlsv13
+  server name 127.0.0.1 init-addr last,libc,none
+  server name 127.0.0.1 init-addr last,libc,none,127.0.0.1
+  server name 127.0.0.1 inter 1500ms
+  server name 127.0.0.1 fastinter 2500ms
+  server name 127.0.0.1 fastinter unknown
+  server name 127.0.0.1 downinter 3500ms
+  server name 127.0.0.1 log-proto legacy
+  server name 127.0.0.1 log-proto octet-count
+  server name 127.0.0.1 maxconn 1
+  server name 127.0.0.1 maxconn 50
+  server name 127.0.0.1 maxqueue 0
+  server name 127.0.0.1 maxqueue 1000
+  server name 127.0.0.1 max-reuse -1
+  server name 127.0.0.1 max-reuse 0
+  server name 127.0.0.1 max-reuse 1
+  server name 127.0.0.1 minconn 1
+  server name 127.0.0.1 minconn 50
+  server name 127.0.0.1 namespace test
+  server name 127.0.0.1 no-agent-check
+  server name 127.0.0.1 no-backup
+  server name 127.0.0.1 no-check
+  server name 127.0.0.1 no-check-ssl
+  server name 127.0.0.1 no-send-proxy-v2
+  server name 127.0.0.1 no-send-proxy-v2-ssl
+  server name 127.0.0.1 no-send-proxy-v2-ssl-cn
+  server name 127.0.0.1 no-ssl
+  server name 127.0.0.1 no-ssl-reuse
+  server name 127.0.0.1 no-sslv3
+  server name 127.0.0.1 no-tls-tickets
+  server name 127.0.0.1 no-tlsv10
+  server name 127.0.0.1 no-tlsv11
+  server name 127.0.0.1 no-tlsv12
+  server name 127.0.0.1 no-tlsv13
+  server name 127.0.0.1 no-verifyhost
+  server name 127.0.0.1 no-tfo
+  server name 127.0.0.1 non-stick
+  server name 127.0.0.1 npn http/1.1,http/1.0
+  server name 127.0.0.1 observe layer4
+  server name 127.0.0.1 observe layer7
+  server name 127.0.0.1 on-error fastinter
+  server name 127.0.0.1 on-error fail-check
+  server name 127.0.0.1 on-error sudden-death
+  server name 127.0.0.1 on-error mark-down
+  server name 127.0.0.1 on-marked-down shutdown-sessions
+  server name 127.0.0.1 on-marked-up shutdown-backup-session
+  server name 127.0.0.1 pool-max-conn -1
+  server name 127.0.0.1 pool-max-conn 0
+  server name 127.0.0.1 pool-max-conn 100
+  server name 127.0.0.1 pool-purge-delay 0
+  server name 127.0.0.1 pool-purge-delay 5
+  server name 127.0.0.1 pool-purge-delay 500
+  server name 127.0.0.1 port 27015
+  server name 127.0.0.1 port 27016
+  server name 127.0.0.1 proto h2
+  server name 127.0.0.1 redir http://image1.mydomain.com
+  server name 127.0.0.1 redir https://image1.mydomain.com
+  server name 127.0.0.1 rise 2
+  server name 127.0.0.1 rise 200
+  server name 127.0.0.1 resolve-opts allow-dup-ip
+  server name 127.0.0.1 resolve-opts ignore-weight
+  server name 127.0.0.1 resolve-opts allow-dup-ip,ignore-weight
+  server name 127.0.0.1 resolve-opts prevent-dup-ip,ignore-weight
+  server name 127.0.0.1 resolve-prefer ipv4
+  server name 127.0.0.1 resolve-prefer ipv6
+  server name 127.0.0.1 resolve-net 10.0.0.0/8
+  server name 127.0.0.1 resolve-net 10.0.0.0/8,10.0.0.0/16
+  server name 127.0.0.1 resolvers mydns
+  server name 127.0.0.1 send-proxy
+  server name 127.0.0.1 send-proxy-v2
+  server name 127.0.0.1 proxy-v2-options ssl
+  server name 127.0.0.1 proxy-v2-options ssl,cert-cn
+  server name 127.0.0.1 proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+  server name 127.0.0.1 send-proxy-v2-ssl
+  server name 127.0.0.1 send-proxy-v2-ssl-cn
+  server name 127.0.0.1 slowstart 2000ms
+  server name 127.0.0.1 sni TODO
+  server name 127.0.0.1 source TODO
+  server name 127.0.0.1 ssl
+  server name 127.0.0.1 ssl-max-ver SSLv3
+  server name 127.0.0.1 ssl-max-ver TLSv1.0
+  server name 127.0.0.1 ssl-max-ver TLSv1.1
+  server name 127.0.0.1 ssl-max-ver TLSv1.2
+  server name 127.0.0.1 ssl-max-ver TLSv1.3
+  server name 127.0.0.1 ssl-min-ver SSLv3
+  server name 127.0.0.1 ssl-min-ver TLSv1.0
+  server name 127.0.0.1 ssl-min-ver TLSv1.1
+  server name 127.0.0.1 ssl-min-ver TLSv1.2
+  server name 127.0.0.1 ssl-min-ver TLSv1.3
+  server name 127.0.0.1 ssl-reuse
+  server name 127.0.0.1 stick
+  server name 127.0.0.1 socks4 127.0.0.1:81
+  server name 127.0.0.1 tcp-ut 20ms
+  server name 127.0.0.1 tfo
+  server name 127.0.0.1 track TODO
+  server name 127.0.0.1 tls-tickets
+  server name 127.0.0.1 verify none
+  server name 127.0.0.1 verify required
+  server name 127.0.0.1 verifyhost site.com
+  server name 127.0.0.1 weight 1
+  server name 127.0.0.1 weight 128
+  server name 127.0.0.1 weight 256
   stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
   stick on src table pop if !localhost
   stick match src table pop if !localhost
@@ -1181,7 +1317,279 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  server name 127.0.0.1
 `, 1},
+  {`  server addr 127.0.0.1
+`, 1},
+  {`  server addr ::1
+`, 1},
+  {`  server name 127.0.0.1 agent-check
+`, 1},
+  {`  server name 127.0.0.1 agent-send name
+`, 1},
+  {`  server name 127.0.0.1 agent-inter 1000ms
+`, 1},
+  {`  server name 127.0.0.1 agent-addr 127.0.0.1
+`, 1},
+  {`  server name 127.0.0.1 agent-addr site.com
+`, 1},
+  {`  server name 127.0.0.1 agent-port 1
+`, 1},
+  {`  server name 127.0.0.1 agent-port 65535
+`, 1},
+  {`  server name 127.0.0.1 allow-0rtt
+`, 1},
+  {`  server name 127.0.0.1 alpn h2
+`, 1},
+  {`  server name 127.0.0.1 alpn http/1.1
+`, 1},
+  {`  server name 127.0.0.1 alpn h2,http/1.1
+`, 1},
   {`  server name 127.0.0.1 backup
+`, 1},
+  {`  server name 127.0.0.1 ca-file cert.crt
+`, 1},
+  {`  server name 127.0.0.1 check
+`, 1},
+  {`  server name 127.0.0.1 check-send-proxy
+`, 1},
+  {`  server name 127.0.0.1 check-alpn http/1.0
+`, 1},
+  {`  server name 127.0.0.1 check-alpn http/1.1,http/1.0
+`, 1},
+  {`  server name 127.0.0.1 check-proto h2
+`, 1},
+  {`  server name 127.0.0.1 check-ssl
+`, 1},
+  {`  server name 127.0.0.1 check-via-socks4
+`, 1},
+  {`  server name 127.0.0.1 ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+`, 1},
+  {`  server name 127.0.0.1 ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+`, 1},
+  {`  server name 127.0.0.1 cookie value
+`, 1},
+  {`  server name 127.0.0.1 crl-file file.pem
+`, 1},
+  {`  server name 127.0.0.1 crt cert.pem
+`, 1},
+  {`  server name 127.0.0.1 disabled
+`, 1},
+  {`  server name 127.0.0.1 enabled
+`, 1},
+  {`  server name 127.0.0.1 error-limit 50
+`, 1},
+  {`  server name 127.0.0.1 fall 30
+`, 1},
+  {`  server name 127.0.0.1 force-sslv3
+`, 1},
+  {`  server name 127.0.0.1 force-tlsv10
+`, 1},
+  {`  server name 127.0.0.1 force-tlsv11
+`, 1},
+  {`  server name 127.0.0.1 force-tlsv12
+`, 1},
+  {`  server name 127.0.0.1 force-tlsv13
+`, 1},
+  {`  server name 127.0.0.1 init-addr last,libc,none
+`, 1},
+  {`  server name 127.0.0.1 init-addr last,libc,none,127.0.0.1
+`, 1},
+  {`  server name 127.0.0.1 inter 1500ms
+`, 1},
+  {`  server name 127.0.0.1 fastinter 2500ms
+`, 1},
+  {`  server name 127.0.0.1 fastinter unknown
+`, 1},
+  {`  server name 127.0.0.1 downinter 3500ms
+`, 1},
+  {`  server name 127.0.0.1 log-proto legacy
+`, 1},
+  {`  server name 127.0.0.1 log-proto octet-count
+`, 1},
+  {`  server name 127.0.0.1 maxconn 1
+`, 1},
+  {`  server name 127.0.0.1 maxconn 50
+`, 1},
+  {`  server name 127.0.0.1 maxqueue 0
+`, 1},
+  {`  server name 127.0.0.1 maxqueue 1000
+`, 1},
+  {`  server name 127.0.0.1 max-reuse -1
+`, 1},
+  {`  server name 127.0.0.1 max-reuse 0
+`, 1},
+  {`  server name 127.0.0.1 max-reuse 1
+`, 1},
+  {`  server name 127.0.0.1 minconn 1
+`, 1},
+  {`  server name 127.0.0.1 minconn 50
+`, 1},
+  {`  server name 127.0.0.1 namespace test
+`, 1},
+  {`  server name 127.0.0.1 no-agent-check
+`, 1},
+  {`  server name 127.0.0.1 no-backup
+`, 1},
+  {`  server name 127.0.0.1 no-check
+`, 1},
+  {`  server name 127.0.0.1 no-check-ssl
+`, 1},
+  {`  server name 127.0.0.1 no-send-proxy-v2
+`, 1},
+  {`  server name 127.0.0.1 no-send-proxy-v2-ssl
+`, 1},
+  {`  server name 127.0.0.1 no-send-proxy-v2-ssl-cn
+`, 1},
+  {`  server name 127.0.0.1 no-ssl
+`, 1},
+  {`  server name 127.0.0.1 no-ssl-reuse
+`, 1},
+  {`  server name 127.0.0.1 no-sslv3
+`, 1},
+  {`  server name 127.0.0.1 no-tls-tickets
+`, 1},
+  {`  server name 127.0.0.1 no-tlsv10
+`, 1},
+  {`  server name 127.0.0.1 no-tlsv11
+`, 1},
+  {`  server name 127.0.0.1 no-tlsv12
+`, 1},
+  {`  server name 127.0.0.1 no-tlsv13
+`, 1},
+  {`  server name 127.0.0.1 no-verifyhost
+`, 1},
+  {`  server name 127.0.0.1 no-tfo
+`, 1},
+  {`  server name 127.0.0.1 non-stick
+`, 1},
+  {`  server name 127.0.0.1 npn http/1.1,http/1.0
+`, 1},
+  {`  server name 127.0.0.1 observe layer4
+`, 1},
+  {`  server name 127.0.0.1 observe layer7
+`, 1},
+  {`  server name 127.0.0.1 on-error fastinter
+`, 1},
+  {`  server name 127.0.0.1 on-error fail-check
+`, 1},
+  {`  server name 127.0.0.1 on-error sudden-death
+`, 1},
+  {`  server name 127.0.0.1 on-error mark-down
+`, 1},
+  {`  server name 127.0.0.1 on-marked-down shutdown-sessions
+`, 1},
+  {`  server name 127.0.0.1 on-marked-up shutdown-backup-session
+`, 1},
+  {`  server name 127.0.0.1 pool-max-conn -1
+`, 1},
+  {`  server name 127.0.0.1 pool-max-conn 0
+`, 1},
+  {`  server name 127.0.0.1 pool-max-conn 100
+`, 1},
+  {`  server name 127.0.0.1 pool-purge-delay 0
+`, 1},
+  {`  server name 127.0.0.1 pool-purge-delay 5
+`, 1},
+  {`  server name 127.0.0.1 pool-purge-delay 500
+`, 1},
+  {`  server name 127.0.0.1 port 27015
+`, 1},
+  {`  server name 127.0.0.1 port 27016
+`, 1},
+  {`  server name 127.0.0.1 proto h2
+`, 1},
+  {`  server name 127.0.0.1 redir http://image1.mydomain.com
+`, 1},
+  {`  server name 127.0.0.1 redir https://image1.mydomain.com
+`, 1},
+  {`  server name 127.0.0.1 rise 2
+`, 1},
+  {`  server name 127.0.0.1 rise 200
+`, 1},
+  {`  server name 127.0.0.1 resolve-opts allow-dup-ip
+`, 1},
+  {`  server name 127.0.0.1 resolve-opts ignore-weight
+`, 1},
+  {`  server name 127.0.0.1 resolve-opts allow-dup-ip,ignore-weight
+`, 1},
+  {`  server name 127.0.0.1 resolve-opts prevent-dup-ip,ignore-weight
+`, 1},
+  {`  server name 127.0.0.1 resolve-prefer ipv4
+`, 1},
+  {`  server name 127.0.0.1 resolve-prefer ipv6
+`, 1},
+  {`  server name 127.0.0.1 resolve-net 10.0.0.0/8
+`, 1},
+  {`  server name 127.0.0.1 resolve-net 10.0.0.0/8,10.0.0.0/16
+`, 1},
+  {`  server name 127.0.0.1 resolvers mydns
+`, 1},
+  {`  server name 127.0.0.1 send-proxy
+`, 1},
+  {`  server name 127.0.0.1 send-proxy-v2
+`, 1},
+  {`  server name 127.0.0.1 proxy-v2-options ssl
+`, 1},
+  {`  server name 127.0.0.1 proxy-v2-options ssl,cert-cn
+`, 1},
+  {`  server name 127.0.0.1 proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+`, 1},
+  {`  server name 127.0.0.1 send-proxy-v2-ssl
+`, 1},
+  {`  server name 127.0.0.1 send-proxy-v2-ssl-cn
+`, 1},
+  {`  server name 127.0.0.1 slowstart 2000ms
+`, 1},
+  {`  server name 127.0.0.1 sni TODO
+`, 1},
+  {`  server name 127.0.0.1 source TODO
+`, 1},
+  {`  server name 127.0.0.1 ssl
+`, 1},
+  {`  server name 127.0.0.1 ssl-max-ver SSLv3
+`, 1},
+  {`  server name 127.0.0.1 ssl-max-ver TLSv1.0
+`, 1},
+  {`  server name 127.0.0.1 ssl-max-ver TLSv1.1
+`, 1},
+  {`  server name 127.0.0.1 ssl-max-ver TLSv1.2
+`, 1},
+  {`  server name 127.0.0.1 ssl-max-ver TLSv1.3
+`, 1},
+  {`  server name 127.0.0.1 ssl-min-ver SSLv3
+`, 1},
+  {`  server name 127.0.0.1 ssl-min-ver TLSv1.0
+`, 1},
+  {`  server name 127.0.0.1 ssl-min-ver TLSv1.1
+`, 1},
+  {`  server name 127.0.0.1 ssl-min-ver TLSv1.2
+`, 1},
+  {`  server name 127.0.0.1 ssl-min-ver TLSv1.3
+`, 1},
+  {`  server name 127.0.0.1 ssl-reuse
+`, 1},
+  {`  server name 127.0.0.1 stick
+`, 1},
+  {`  server name 127.0.0.1 socks4 127.0.0.1:81
+`, 1},
+  {`  server name 127.0.0.1 tcp-ut 20ms
+`, 1},
+  {`  server name 127.0.0.1 tfo
+`, 1},
+  {`  server name 127.0.0.1 track TODO
+`, 1},
+  {`  server name 127.0.0.1 tls-tickets
+`, 1},
+  {`  server name 127.0.0.1 verify none
+`, 1},
+  {`  server name 127.0.0.1 verify required
+`, 1},
+  {`  server name 127.0.0.1 verifyhost site.com
+`, 1},
+  {`  server name 127.0.0.1 weight 1
+`, 1},
+  {`  server name 127.0.0.1 weight 128
+`, 1},
+  {`  server name 127.0.0.1 weight 256
 `, 1},
   {`  stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
 `, 2},

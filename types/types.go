@@ -532,7 +532,144 @@ type Peer struct {
 //is-multiple:true
 //test:ok:server name 127.0.0.1:8080
 //test:ok:server name 127.0.0.1
+//test:ok:server addr 127.0.0.1
+//test:ok:server addr ::1
+//test:fail:server addr
+//test:ok:server name 127.0.0.1 agent-check
+//test:ok:server name 127.0.0.1 agent-send name
+//test:ok:server name 127.0.0.1 agent-inter 1000ms
+//test:ok:server name 127.0.0.1 agent-addr 127.0.0.1
+//test:ok:server name 127.0.0.1 agent-addr site.com
+//test:ok:server name 127.0.0.1 agent-port 1
+//test:ok:server name 127.0.0.1 agent-port 65535
+//test:ok:server name 127.0.0.1 allow-0rtt
+//test:ok:server name 127.0.0.1 alpn h2
+//test:ok:server name 127.0.0.1 alpn http/1.1
+//test:ok:server name 127.0.0.1 alpn h2,http/1.1
 //test:ok:server name 127.0.0.1 backup
+//test:ok:server name 127.0.0.1 ca-file cert.crt
+//test:ok:server name 127.0.0.1 check
+//test:ok:server name 127.0.0.1 check-send-proxy
+//test:ok:server name 127.0.0.1 check-alpn http/1.0
+//test:ok:server name 127.0.0.1 check-alpn http/1.1,http/1.0
+//test:ok:server name 127.0.0.1 check-proto h2
+//test:ok:server name 127.0.0.1 check-ssl
+//test:ok:server name 127.0.0.1 check-via-socks4
+//test:ok:server name 127.0.0.1 ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+//test:ok:server name 127.0.0.1 ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+//test:ok:server name 127.0.0.1 cookie value
+//test:ok:server name 127.0.0.1 crl-file file.pem
+//test:ok:server name 127.0.0.1 crt cert.pem
+//test:ok:server name 127.0.0.1 disabled
+//test:ok:server name 127.0.0.1 enabled
+//test:ok:server name 127.0.0.1 error-limit 50
+//test:ok:server name 127.0.0.1 fall 30
+//test:ok:server name 127.0.0.1 force-sslv3
+//test:ok:server name 127.0.0.1 force-tlsv10
+//test:ok:server name 127.0.0.1 force-tlsv11
+//test:ok:server name 127.0.0.1 force-tlsv12
+//test:ok:server name 127.0.0.1 force-tlsv13
+//test:ok:server name 127.0.0.1 init-addr last,libc,none
+//test:ok:server name 127.0.0.1 init-addr last,libc,none,127.0.0.1
+//test:ok:server name 127.0.0.1 inter 1500ms
+//test:ok:server name 127.0.0.1 fastinter 2500ms
+//test:ok:server name 127.0.0.1 fastinter unknown
+//test:ok:server name 127.0.0.1 downinter 3500ms
+//test:ok:server name 127.0.0.1 log-proto legacy
+//test:ok:server name 127.0.0.1 log-proto octet-count
+//test:ok:server name 127.0.0.1 maxconn 1
+//test:ok:server name 127.0.0.1 maxconn 50
+//test:ok:server name 127.0.0.1 maxqueue 0
+//test:ok:server name 127.0.0.1 maxqueue 1000
+//test:ok:server name 127.0.0.1 max-reuse -1
+//test:ok:server name 127.0.0.1 max-reuse 0
+//test:ok:server name 127.0.0.1 max-reuse 1
+//test:ok:server name 127.0.0.1 minconn 1
+//test:ok:server name 127.0.0.1 minconn 50
+//test:ok:server name 127.0.0.1 namespace test
+//test:ok:server name 127.0.0.1 no-agent-check
+//test:ok:server name 127.0.0.1 no-backup
+//test:ok:server name 127.0.0.1 no-check
+//test:ok:server name 127.0.0.1 no-check-ssl
+//test:ok:server name 127.0.0.1 no-send-proxy-v2
+//test:ok:server name 127.0.0.1 no-send-proxy-v2-ssl
+//test:ok:server name 127.0.0.1 no-send-proxy-v2-ssl-cn
+//test:ok:server name 127.0.0.1 no-ssl
+//test:ok:server name 127.0.0.1 no-ssl-reuse
+//test:ok:server name 127.0.0.1 no-sslv3
+//test:ok:server name 127.0.0.1 no-tls-tickets
+//test:ok:server name 127.0.0.1 no-tlsv10
+//test:ok:server name 127.0.0.1 no-tlsv11
+//test:ok:server name 127.0.0.1 no-tlsv12
+//test:ok:server name 127.0.0.1 no-tlsv13
+//test:ok:server name 127.0.0.1 no-verifyhost
+//test:ok:server name 127.0.0.1 no-tfo
+//test:ok:server name 127.0.0.1 non-stick
+//test:ok:server name 127.0.0.1 npn http/1.1,http/1.0
+//test:ok:server name 127.0.0.1 observe layer4
+//test:ok:server name 127.0.0.1 observe layer7
+//test:ok:server name 127.0.0.1 on-error fastinter
+//test:ok:server name 127.0.0.1 on-error fail-check
+//test:ok:server name 127.0.0.1 on-error sudden-death
+//test:ok:server name 127.0.0.1 on-error mark-down
+//test:ok:server name 127.0.0.1 on-marked-down shutdown-sessions
+//test:ok:server name 127.0.0.1 on-marked-up shutdown-backup-session
+//test:ok:server name 127.0.0.1 pool-max-conn -1
+//test:ok:server name 127.0.0.1 pool-max-conn 0
+//test:ok:server name 127.0.0.1 pool-max-conn 100
+//test:ok:server name 127.0.0.1 pool-purge-delay 0
+//test:ok:server name 127.0.0.1 pool-purge-delay 5
+//test:ok:server name 127.0.0.1 pool-purge-delay 500
+//test:ok:server name 127.0.0.1 port 27015
+//test:ok:server name 127.0.0.1 port 27016
+//test:ok:server name 127.0.0.1 proto h2
+//test:ok:server name 127.0.0.1 redir http://image1.mydomain.com
+//test:ok:server name 127.0.0.1 redir https://image1.mydomain.com
+//test:ok:server name 127.0.0.1 rise 2
+//test:ok:server name 127.0.0.1 rise 200
+//test:ok:server name 127.0.0.1 resolve-opts allow-dup-ip
+//test:ok:server name 127.0.0.1 resolve-opts ignore-weight
+//test:ok:server name 127.0.0.1 resolve-opts allow-dup-ip,ignore-weight
+//test:ok:server name 127.0.0.1 resolve-opts prevent-dup-ip,ignore-weight
+//test:ok:server name 127.0.0.1 resolve-prefer ipv4
+//test:ok:server name 127.0.0.1 resolve-prefer ipv6
+//test:ok:server name 127.0.0.1 resolve-net 10.0.0.0/8
+//test:ok:server name 127.0.0.1 resolve-net 10.0.0.0/8,10.0.0.0/16
+//test:ok:server name 127.0.0.1 resolvers mydns
+//test:ok:server name 127.0.0.1 send-proxy
+//test:ok:server name 127.0.0.1 send-proxy-v2
+//test:ok:server name 127.0.0.1 proxy-v2-options ssl
+//test:ok:server name 127.0.0.1 proxy-v2-options ssl,cert-cn
+//test:ok:server name 127.0.0.1 proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+//test:ok:server name 127.0.0.1 send-proxy-v2-ssl
+//test:ok:server name 127.0.0.1 send-proxy-v2-ssl-cn
+//test:ok:server name 127.0.0.1 slowstart 2000ms
+//test:ok:server name 127.0.0.1 sni TODO
+//test:ok:server name 127.0.0.1 source TODO
+//test:ok:server name 127.0.0.1 ssl
+//test:ok:server name 127.0.0.1 ssl-max-ver SSLv3
+//test:ok:server name 127.0.0.1 ssl-max-ver TLSv1.0
+//test:ok:server name 127.0.0.1 ssl-max-ver TLSv1.1
+//test:ok:server name 127.0.0.1 ssl-max-ver TLSv1.2
+//test:ok:server name 127.0.0.1 ssl-max-ver TLSv1.3
+//test:ok:server name 127.0.0.1 ssl-min-ver SSLv3
+//test:ok:server name 127.0.0.1 ssl-min-ver TLSv1.0
+//test:ok:server name 127.0.0.1 ssl-min-ver TLSv1.1
+//test:ok:server name 127.0.0.1 ssl-min-ver TLSv1.2
+//test:ok:server name 127.0.0.1 ssl-min-ver TLSv1.3
+//test:ok:server name 127.0.0.1 ssl-reuse
+//test:ok:server name 127.0.0.1 stick
+//test:ok:server name 127.0.0.1 socks4 127.0.0.1:81
+//test:ok:server name 127.0.0.1 tcp-ut 20ms
+//test:ok:server name 127.0.0.1 tfo
+//test:ok:server name 127.0.0.1 track TODO
+//test:ok:server name 127.0.0.1 tls-tickets
+//test:ok:server name 127.0.0.1 verify none
+//test:ok:server name 127.0.0.1 verify required
+//test:ok:server name 127.0.0.1 verifyhost site.com
+//test:ok:server name 127.0.0.1 weight 1
+//test:ok:server name 127.0.0.1 weight 128
+//test:ok:server name 127.0.0.1 weight 256
 //test:fail:server
 type Server struct {
 	Name    string
