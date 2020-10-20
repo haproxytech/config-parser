@@ -186,7 +186,7 @@ type ErrorFile struct {
 	Comment string
 }
 
-//sections:userlists
+//sections:userlist
 //name:group
 //is-multiple:true
 //test:ok:group G1 users tiger,scott
@@ -473,7 +473,7 @@ type StickTable struct {
 	Comment string
 }
 
-//sections:backend
+//sections:global
 //name:stats socket
 //is-multiple:true
 //test:ok:stats socket 127.0.0.1:8080
@@ -531,7 +531,7 @@ type UseBackend struct {
 	Comment  string
 }
 
-//sections:userlists
+//sections:userlist
 //name:user
 //is-multiple:true
 //test:ok:user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
@@ -621,7 +621,7 @@ type LoadServerStateFromFile struct {
 	Argument string
 }
 
-//sections:defaults,frontend,listen
+//sections:defaults,frontend
 //name:monitor-uri
 //test:ok:monitor-uri /haproxy_test
 //test:fail:monitor-uri
@@ -629,7 +629,7 @@ type MonitorURI struct {
 	URI string
 }
 
-//sections:frontend,listen
+//sections:frontend
 //name:monitor fail
 //test:ok:monitor fail if no_db01 no_db02
 //test:ok:monitor fail if ready_01 ready_02 ready_03

@@ -26,6 +26,10 @@ global test
   cpu-map 1/all 0-3
   cpu-map auto:1-4 0-3
   cpu-map auto:1-4 0-1 2-3
+  stats socket 127.0.0.1:8080
+  stats socket 127.0.0.1:8080 mode admin
+  stats socket /some/path/to/socket
+  stats socket /some/path/to/socket mode admin
   lua-load /etc/haproxy/lua/foo.lua
   ssl-engine rdrand
   ssl-mode-async
@@ -156,10 +160,6 @@ backend test
   server name 127.0.0.1
   server name 127.0.0.1 backup
   stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
-  stats socket 127.0.0.1:8080
-  stats socket 127.0.0.1:8080 mode admin
-  stats socket /some/path/to/socket
-  stats socket /some/path/to/socket mode admin
   stick on src table pop if !localhost
   stick match src table pop if !localhost
   stick store-request src table pop if !localhost
@@ -768,8 +768,6 @@ frontend test
 
 listen test
   load-server-state-from-file global
-  monitor-uri /haproxy_test
-  monitor fail if no_db01 no_db02
 
 mailers test
   mailer smtp1 192.168.0.1:587
@@ -782,7 +780,7 @@ resolvers test
   nameserver dns1 10.0.0.1:53
   nameserver dns1 10.0.0.1:53 # comment
 
-userlists test
+userlist test
   group G1 users tiger,scott
   group G1
   user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
@@ -967,9 +965,9 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  load-server-state-from-file global
 `, 3},
   {`  monitor-uri /haproxy_test
-`, 3},
-  {`  monitor fail if no_db01 no_db02
 `, 2},
+  {`  monitor fail if no_db01 no_db02
+`, 1},
   {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 2},
   {`  http-request deny deny_status 0 unless { src 127.0.0.1 }
