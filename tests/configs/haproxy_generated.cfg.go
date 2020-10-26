@@ -485,6 +485,95 @@ frontend test
   bind ipv6@:80
   bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem
   bind unix@ssl-frontend.sock user root mode 600 accept-proxy
+  bind :443 accept-netscaler-cip 1234
+  bind :443 accept-proxy
+  bind :443 allow-0rtt
+  bind :443 alpn h2
+  bind :443 alpn http/1.1
+  bind :443 alpn h2,http/1.1
+  bind :443 backlog test
+  bind :443 curves ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+  bind :443 ecdhe ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+  bind :443 ca-file file.pem
+  bind :443 ca-ignore-err all
+  bind :443 ca-ignore-err 1234
+  bind :443 ca-sign-file file.test
+  bind :443 ca-sign-pass passphrase
+  bind :443 ca-verify-file file.test
+  bind :443 ciphers ECDHE+aRSA+AES256+GCM+SHA384:ECDHE+aRSA+AES128+GCM+SHA256:ECDHE+aRSA+AES256+SHA384:ECDHE+aRSA+AES128+SHA256:ECDHE+aRSA+RC4+SHA:ECDHE+aRSA+AES256+SHA:ECDHE+aRSA+AES128+SHA:AES256+GCM+SHA384:AES128+GCM+SHA256:AES128+SHA256:AES256+SHA256:DHE+aRSA+AES128+SHA:RC4+SHA:HIGH:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
+  bind :443 ciphersuites TODO
+  bind :443 crl-file file.test
+  bind :443 crt example.pem
+  bind :443 crt-ignore-err all
+  bind :443 crt-ignore-err 404,410
+  bind :443 crt-list cert1.pem
+  bind :443 defer-accept
+  bind :443 expose-fd listeners
+  bind :443 force-sslv3
+  bind :443 force-tlsv10
+  bind :443 force-tlsv11
+  bind :443 force-tlsv12
+  bind :443 force-tlsv13
+  bind :443 generate-certificates
+  bind :443 gid users
+  bind :443 group group
+  bind :443 id 1
+  bind :443 interface eth0
+  bind :443 interface eth1
+  bind :443 interface pppoe-wan
+  bind :443 level user
+  bind :443 level opeerator
+  bind :443 level admin
+  bind :443 severity-output none
+  bind :443 severity-output number
+  bind :443 severity-output string
+  bind :443 maxconn 1024
+  bind :443 mode TODO
+  bind :443 mss 1460
+  bind :443 mss -1460
+  bind :443 name sockets
+  bind :443 namespace example
+  bind :443 nice 0
+  bind :443 nice 1024
+  bind :443 nice -1024
+  bind :443 no-ca-names
+  bind :443 no-sslv3
+  bind :443 no-tlsv10
+  bind :443 no-tlsv11
+  bind :443 no-tlsv12
+  bind :443 no-tlsv13
+  bind :443 npn http/1.0
+  bind :443 npn http/1.1
+  bind :443 npn http/1.0,http/1.1
+  bind :443 prefer-client-ciphers
+  bind :443 process all
+  bind :443 process odd
+  bind :443 process even
+  bind :443 process 1-4
+  bind :443 proto h2
+  bind :443 ssl
+  bind :443 ssl-max-ver SSLv3
+  bind :443 ssl-max-ver TLSv1.0
+  bind :443 ssl-max-ver TLSv1.1
+  bind :443 ssl-max-ver TLSv1.2
+  bind :443 ssl-max-ver TLSv1.3
+  bind :443 ssl-min-ver SSLv3
+  bind :443 ssl-min-ver TLSv1.0
+  bind :443 ssl-min-ver TLSv1.1
+  bind :443 ssl-min-ver TLSv1.2
+  bind :443 ssl-min-ver TLSv1.3
+  bind :443 strict-sni
+  bind :443 tcp-ut 30s
+  bind :443 tfo
+  bind :443 tls-ticket-keys /tmp/tls_ticket_keys
+  bind :443 transparent
+  bind :443 v4v6
+  bind :443 v6only
+  bind :443 uid 65534
+  bind :443 user web1
+  bind :443 verify none
+  bind :443 verify optional
+  bind :443 verify required
   bind-process all
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
@@ -837,6 +926,184 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem
 `, 1},
   {`  bind unix@ssl-frontend.sock user root mode 600 accept-proxy
+`, 1},
+  {`  bind :443 accept-netscaler-cip 1234
+`, 1},
+  {`  bind :443 accept-proxy
+`, 1},
+  {`  bind :443 allow-0rtt
+`, 1},
+  {`  bind :443 alpn h2
+`, 1},
+  {`  bind :443 alpn http/1.1
+`, 1},
+  {`  bind :443 alpn h2,http/1.1
+`, 1},
+  {`  bind :443 backlog test
+`, 1},
+  {`  bind :443 curves ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+`, 1},
+  {`  bind :443 ecdhe ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+`, 1},
+  {`  bind :443 ca-file file.pem
+`, 1},
+  {`  bind :443 ca-ignore-err all
+`, 1},
+  {`  bind :443 ca-ignore-err 1234
+`, 1},
+  {`  bind :443 ca-sign-file file.test
+`, 1},
+  {`  bind :443 ca-sign-pass passphrase
+`, 1},
+  {`  bind :443 ca-verify-file file.test
+`, 1},
+  {`  bind :443 ciphers ECDHE+aRSA+AES256+GCM+SHA384:ECDHE+aRSA+AES128+GCM+SHA256:ECDHE+aRSA+AES256+SHA384:ECDHE+aRSA+AES128+SHA256:ECDHE+aRSA+RC4+SHA:ECDHE+aRSA+AES256+SHA:ECDHE+aRSA+AES128+SHA:AES256+GCM+SHA384:AES128+GCM+SHA256:AES128+SHA256:AES256+SHA256:DHE+aRSA+AES128+SHA:RC4+SHA:HIGH:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
+`, 1},
+  {`  bind :443 ciphersuites TODO
+`, 1},
+  {`  bind :443 crl-file file.test
+`, 1},
+  {`  bind :443 crt example.pem
+`, 1},
+  {`  bind :443 crt-ignore-err all
+`, 1},
+  {`  bind :443 crt-ignore-err 404,410
+`, 1},
+  {`  bind :443 crt-list cert1.pem
+`, 1},
+  {`  bind :443 defer-accept
+`, 1},
+  {`  bind :443 expose-fd listeners
+`, 1},
+  {`  bind :443 force-sslv3
+`, 1},
+  {`  bind :443 force-tlsv10
+`, 1},
+  {`  bind :443 force-tlsv11
+`, 1},
+  {`  bind :443 force-tlsv12
+`, 1},
+  {`  bind :443 force-tlsv13
+`, 1},
+  {`  bind :443 generate-certificates
+`, 1},
+  {`  bind :443 gid users
+`, 1},
+  {`  bind :443 group group
+`, 1},
+  {`  bind :443 id 1
+`, 1},
+  {`  bind :443 interface eth0
+`, 1},
+  {`  bind :443 interface eth1
+`, 1},
+  {`  bind :443 interface pppoe-wan
+`, 1},
+  {`  bind :443 level user
+`, 1},
+  {`  bind :443 level opeerator
+`, 1},
+  {`  bind :443 level admin
+`, 1},
+  {`  bind :443 severity-output none
+`, 1},
+  {`  bind :443 severity-output number
+`, 1},
+  {`  bind :443 severity-output string
+`, 1},
+  {`  bind :443 maxconn 1024
+`, 1},
+  {`  bind :443 mode TODO
+`, 1},
+  {`  bind :443 mss 1460
+`, 1},
+  {`  bind :443 mss -1460
+`, 1},
+  {`  bind :443 name sockets
+`, 1},
+  {`  bind :443 namespace example
+`, 1},
+  {`  bind :443 nice 0
+`, 1},
+  {`  bind :443 nice 1024
+`, 1},
+  {`  bind :443 nice -1024
+`, 1},
+  {`  bind :443 no-ca-names
+`, 1},
+  {`  bind :443 no-sslv3
+`, 1},
+  {`  bind :443 no-tlsv10
+`, 1},
+  {`  bind :443 no-tlsv11
+`, 1},
+  {`  bind :443 no-tlsv12
+`, 1},
+  {`  bind :443 no-tlsv13
+`, 1},
+  {`  bind :443 npn http/1.0
+`, 1},
+  {`  bind :443 npn http/1.1
+`, 1},
+  {`  bind :443 npn http/1.0,http/1.1
+`, 1},
+  {`  bind :443 prefer-client-ciphers
+`, 1},
+  {`  bind :443 process all
+`, 1},
+  {`  bind :443 process odd
+`, 1},
+  {`  bind :443 process even
+`, 1},
+  {`  bind :443 process 1-4
+`, 1},
+  {`  bind :443 proto h2
+`, 1},
+  {`  bind :443 ssl
+`, 1},
+  {`  bind :443 ssl-max-ver SSLv3
+`, 1},
+  {`  bind :443 ssl-max-ver TLSv1.0
+`, 1},
+  {`  bind :443 ssl-max-ver TLSv1.1
+`, 1},
+  {`  bind :443 ssl-max-ver TLSv1.2
+`, 1},
+  {`  bind :443 ssl-max-ver TLSv1.3
+`, 1},
+  {`  bind :443 ssl-min-ver SSLv3
+`, 1},
+  {`  bind :443 ssl-min-ver TLSv1.0
+`, 1},
+  {`  bind :443 ssl-min-ver TLSv1.1
+`, 1},
+  {`  bind :443 ssl-min-ver TLSv1.2
+`, 1},
+  {`  bind :443 ssl-min-ver TLSv1.3
+`, 1},
+  {`  bind :443 strict-sni
+`, 1},
+  {`  bind :443 tcp-ut 30s
+`, 1},
+  {`  bind :443 tfo
+`, 1},
+  {`  bind :443 tls-ticket-keys /tmp/tls_ticket_keys
+`, 1},
+  {`  bind :443 transparent
+`, 1},
+  {`  bind :443 v4v6
+`, 1},
+  {`  bind :443 v6only
+`, 1},
+  {`  bind :443 uid 65534
+`, 1},
+  {`  bind :443 user web1
+`, 1},
+  {`  bind :443 verify none
+`, 1},
+  {`  bind :443 verify optional
+`, 1},
+  {`  bind :443 verify required
 `, 1},
   {`  bind-process all
 `, 1},

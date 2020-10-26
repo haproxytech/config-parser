@@ -48,6 +48,7 @@ type ACL struct {
 //sections:frontend
 //name:bind
 //is-multiple:true
+//test:fail:bind
 //test:ok:bind :80,:443
 //test:ok:bind 10.0.0.1:10080,10.0.0.1:10443
 //test:ok:bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
@@ -58,7 +59,95 @@ type ACL struct {
 //test:ok:bind ipv6@:80
 //test:ok:bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem
 //test:ok:bind unix@ssl-frontend.sock user root mode 600 accept-proxy
-//test:fail:bind
+//test:ok:bind :443 accept-netscaler-cip 1234
+//test:ok:bind :443 accept-proxy
+//test:ok:bind :443 allow-0rtt
+//test:ok:bind :443 alpn h2
+//test:ok:bind :443 alpn http/1.1
+//test:ok:bind :443 alpn h2,http/1.1
+//test:ok:bind :443 backlog test
+//test:ok:bind :443 curves ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+//test:ok:bind :443 ecdhe ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+//test:ok:bind :443 ca-file file.pem
+//test:ok:bind :443 ca-ignore-err all
+//test:ok:bind :443 ca-ignore-err 1234
+//test:ok:bind :443 ca-sign-file file.test
+//test:ok:bind :443 ca-sign-pass passphrase
+//test:ok:bind :443 ca-verify-file file.test
+//test:ok:bind :443 ciphers ECDHE+aRSA+AES256+GCM+SHA384:ECDHE+aRSA+AES128+GCM+SHA256:ECDHE+aRSA+AES256+SHA384:ECDHE+aRSA+AES128+SHA256:ECDHE+aRSA+RC4+SHA:ECDHE+aRSA+AES256+SHA:ECDHE+aRSA+AES128+SHA:AES256+GCM+SHA384:AES128+GCM+SHA256:AES128+SHA256:AES256+SHA256:DHE+aRSA+AES128+SHA:RC4+SHA:HIGH:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
+//test:ok:bind :443 ciphersuites TODO
+//test:ok:bind :443 crl-file file.test
+//test:ok:bind :443 crt example.pem
+//test:ok:bind :443 crt-ignore-err all
+//test:ok:bind :443 crt-ignore-err 404,410
+//test:ok:bind :443 crt-list cert1.pem
+//test:ok:bind :443 defer-accept
+//test:ok:bind :443 expose-fd listeners
+//test:ok:bind :443 force-sslv3
+//test:ok:bind :443 force-tlsv10
+//test:ok:bind :443 force-tlsv11
+//test:ok:bind :443 force-tlsv12
+//test:ok:bind :443 force-tlsv13
+//test:ok:bind :443 generate-certificates
+//test:ok:bind :443 gid users
+//test:ok:bind :443 group group
+//test:ok:bind :443 id 1
+//test:ok:bind :443 interface eth0
+//test:ok:bind :443 interface eth1
+//test:ok:bind :443 interface pppoe-wan
+//test:ok:bind :443 level user
+//test:ok:bind :443 level opeerator
+//test:ok:bind :443 level admin
+//test:ok:bind :443 severity-output none
+//test:ok:bind :443 severity-output number
+//test:ok:bind :443 severity-output string
+//test:ok:bind :443 maxconn 1024
+//test:ok:bind :443 mode TODO
+//test:ok:bind :443 mss 1460
+//test:ok:bind :443 mss -1460
+//test:ok:bind :443 name sockets
+//test:ok:bind :443 namespace example
+//test:ok:bind :443 nice 0
+//test:ok:bind :443 nice 1024
+//test:ok:bind :443 nice -1024
+//test:ok:bind :443 no-ca-names
+//test:ok:bind :443 no-sslv3
+//test:ok:bind :443 no-tlsv10
+//test:ok:bind :443 no-tlsv11
+//test:ok:bind :443 no-tlsv12
+//test:ok:bind :443 no-tlsv13
+//test:ok:bind :443 npn http/1.0
+//test:ok:bind :443 npn http/1.1
+//test:ok:bind :443 npn http/1.0,http/1.1
+//test:ok:bind :443 prefer-client-ciphers
+//test:ok:bind :443 process all
+//test:ok:bind :443 process odd
+//test:ok:bind :443 process even
+//test:ok:bind :443 process 1-4
+//test:ok:bind :443 proto h2
+//test:ok:bind :443 ssl
+//test:ok:bind :443 ssl-max-ver SSLv3
+//test:ok:bind :443 ssl-max-ver TLSv1.0
+//test:ok:bind :443 ssl-max-ver TLSv1.1
+//test:ok:bind :443 ssl-max-ver TLSv1.2
+//test:ok:bind :443 ssl-max-ver TLSv1.3
+//test:ok:bind :443 ssl-min-ver SSLv3
+//test:ok:bind :443 ssl-min-ver TLSv1.0
+//test:ok:bind :443 ssl-min-ver TLSv1.1
+//test:ok:bind :443 ssl-min-ver TLSv1.2
+//test:ok:bind :443 ssl-min-ver TLSv1.3
+//test:ok:bind :443 strict-sni
+//test:ok:bind :443 tcp-ut 30s
+//test:ok:bind :443 tfo
+//test:ok:bind :443 tls-ticket-keys /tmp/tls_ticket_keys
+//test:ok:bind :443 transparent
+//test:ok:bind :443 v4v6
+//test:ok:bind :443 v6only
+//test:ok:bind :443 uid 65534
+//test:ok:bind :443 user web1
+//test:ok:bind :443 verify none
+//test:ok:bind :443 verify optional
+//test:ok:bind :443 verify required
 type Bind struct {
 	Path    string //can be address:port or socket path
 	Params  []params.BindOption
