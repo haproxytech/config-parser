@@ -280,7 +280,11 @@ func (p *Parser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &simple.String{Name: "log-tag"})
 	addParser(parser, &sequence, &simple.Option{Name: "allbackups"})
 	addParser(parser, &sequence, &parsers.OptionHttpchk{})
-	addParser(parser, &sequence, &http.Checks{Mode: "backend"})
+	if p.Options.UseV2HTTPCheck {
+		addParser(parser, &sequence, &parsers.HTTPCheckV2{})
+	} else {
+		addParser(parser, &sequence, &http.Checks{Mode: "backend"})
+	}
 	addParser(parser, &sequence, &parsers.ExternalCheckPath{})
 	addParser(parser, &sequence, &parsers.ExternalCheckCommand{})
 	addParser(parser, &sequence, &parsers.Log{})
