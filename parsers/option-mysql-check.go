@@ -47,10 +47,10 @@ func (s *OptionMysqlCheck) Parse(line string, parts, previousParts []string, com
 				}
 				data.User = parts[3]
 				if len(parts) == 5 {
-					if parts[4] != "post-41" {
+					if parts[4] != "post-41" && parts[4] != "pre-41" {
 						return "", errors.ErrInvalidData
 					}
-					data.Post41 = true
+					data.ClientVersion = parts[4]
 				}
 			} else {
 				return "", errors.ErrInvalidData
@@ -72,8 +72,9 @@ func (s *OptionMysqlCheck) Result() ([]common.ReturnResultLine, error) {
 		sb.WriteString(" user ")
 		sb.WriteString(s.data.User)
 	}
-	if s.data.Post41 {
-		sb.WriteString(" post-41")
+	if s.data.ClientVersion != "" {
+		sb.WriteString(" ")
+		sb.WriteString(s.data.ClientVersion)
 	}
 	return []common.ReturnResultLine{
 		common.ReturnResultLine{

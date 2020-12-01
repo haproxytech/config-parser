@@ -441,14 +441,16 @@ type OptionHTTPLog struct {
 //test:ok:option mysql-check
 //test:ok:option mysql-check user john
 //test:ok:option mysql-check user john post-41
+//test:ok:option mysql-check user john pre-41
 //test:ok:option mysql-check # comment
 //test:fail:option mysql-check user
+//test:fail:option mysql-check user john 41
 //test:fail:option mysql-check user # comment
 type OptionMysqlCheck struct {
-	NoOption bool
-	User     string
-	Post41   bool
-	Comment  string
+	NoOption      bool
+	User          string
+	ClientVersion string
+	Comment       string
 }
 
 //sections:backend
