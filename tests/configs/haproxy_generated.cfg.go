@@ -151,7 +151,7 @@ backend test
   option forwardfor
   option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
   option mysql-check
-  option pgsql-check
+  option pgsql-check user john
   option redispatch
   option smtpchk
   external-check path /usr/bin:/bin
@@ -1305,7 +1305,7 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  option mysql-check
 `, 1},
-  {`  option pgsql-check
+  {`  option pgsql-check user john
 `, 1},
   {`  option redispatch
 `, 1},

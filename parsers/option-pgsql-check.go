@@ -33,23 +33,19 @@ type OptionPgsqlCheck struct {
 option pgsql-check [ user <username> ]
 */
 func (s *OptionPgsqlCheck) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) > 1 && parts[0] == "option" && parts[1] == "pgsql-check" {
+	if len(parts) != 4 {
+		return "", errors.ErrInvalidData
+	}
+	if parts[0] == "option" && parts[1] == "pgsql-check" {
 		data := &types.OptionPgsqlCheck{
 			Comment: comment,
 		}
-		if len(parts) > 2 {
-			if len(parts) < 5 {
-				if parts[2] != "user" {
-					return "", errors.ErrInvalidData
-				}
-				if len(parts) < 4 {
-					return "", errors.ErrInvalidData
-				}
-				data.User = parts[3]
-			} else {
-				return "", errors.ErrInvalidData
-			}
+
+		if parts[2] != "user" {
+			return "", errors.ErrInvalidData
 		}
+		data.User = parts[3]
+
 		s.data = data
 		return "", nil
 	}

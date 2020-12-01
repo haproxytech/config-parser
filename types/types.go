@@ -454,9 +454,10 @@ type OptionMysqlCheck struct {
 //sections:backend
 //name:option pgsql-check
 //no-parse:true
-//test:ok:option pgsql-check
 //test:ok:option pgsql-check user john
-//test:ok:option pgsql-check # comment
+//test:ok:option pgsql-check user john # comment
+//test:fail:option pgsql-check
+//test:fail:option pgsql-check # comment
 //test:fail:option pgsql-check user
 //test:fail:option pgsql-check user # comment
 type OptionPgsqlCheck struct {

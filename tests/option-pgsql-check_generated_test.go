@@ -27,9 +27,10 @@ import (
 
 func TestOptionPgsqlCheck(t *testing.T) {
 	tests := map[string]bool{
-		"option pgsql-check": true,
 		"option pgsql-check user john": true,
-		"option pgsql-check # comment": true,
+		"option pgsql-check user john # comment": true,
+		"option pgsql-check": false,
+		"option pgsql-check # comment": false,
 		"option pgsql-check user": false,
 		"option pgsql-check user # comment": false,
 		"---": false,
