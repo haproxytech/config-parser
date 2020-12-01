@@ -51,6 +51,7 @@ type Data struct {
 	Dir                string
 	ModeOther          bool
 	TestOK             []string
+	TestOKEscaped      []string
 	TestFail           []string
 	TestSkip           bool
 	DataDir            string
@@ -65,10 +66,12 @@ type ConfigFile struct {
 func (c *ConfigFile) AddParserData(parser Data) error {
 	sections := parser.ParserSections
 	testOK := parser.TestOK
+	TestOKEscaped := parser.TestOKEscaped
 	if len(sections) == 0 && !parser.NoSections {
 		log.Fatalf("parser %s does not have any section defined", parser.ParserName)
 	}
 	var lines []string
+	var lines2 []string
 	for _, s := range sections {
 		_, ok := c.Section[s]
 		if !ok {
@@ -84,8 +87,19 @@ func (c *ConfigFile) AddParserData(parser Data) error {
 			lines = []string{testOK[0]}
 			c.Section[s] = append(c.Section[s], testOK[0])
 		}
+		if parser.ParserMultiple {
+			lines2 = TestOKEscaped
+			for _, line := range TestOKEscaped {
+				c.Section[s] = append(c.Section[s], line)
+			}
+		} else {
+			if len(TestOKEscaped) > 0 {
+				lines2 = []string{TestOKEscaped[0]}
+				c.Section[s] = append(c.Section[s], TestOKEscaped[0])
+			}
+		}
 	}
-	if len(lines) == 0 {
+	if len(lines) == 0 && len(lines2) == 0 {
 		if parser.NoSections {
 			return nil
 		} else {
@@ -241,6 +255,10 @@ func generateTypesOther(dir string) {
 		if strings.HasPrefix(line, "//no-get:true") {
 			parserData.NoGet = true
 		}
+		if strings.HasPrefix(line, `//test:"ok"`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
+		}
 		if strings.HasPrefix(line, "//test:ok") {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
@@ -352,6 +370,10 @@ func generateTypesGeneric(dir string) {
 		if strings.HasPrefix(line, "//no-parse:true") {
 			parserData.NoParse = true
 		}
+		if strings.HasPrefix(line, `//test:"ok"`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
+		}
 		if strings.HasPrefix(line, "//test:ok") {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
@@ -452,11 +474,15 @@ func generateTypes(dir string, dataDir string) {
 		if strings.HasPrefix(line, "//no-parse:true") {
 			parserData.NoParse = true
 		}
+		if strings.HasPrefix(line, `//test:"ok"`) && !parserData.Deprecated {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
+		}
 		if strings.HasPrefix(line, "//test:ok") && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
 		}
-		if strings.HasPrefix(line, "//test:fail") && !parserData.Deprecated  {
+		if strings.HasPrefix(line, "//test:fail") && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
 		}
@@ -863,6 +889,9 @@ func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {
 	tests := map[string]bool{
 	{{- range $index, $val := .TestOK}}
 		"{{- $val -}}": true,
+	{{- end }}
+	{{- range $index, $val := .TestOKEscaped}}
+		` + "`" + `{{- $val -}}` + "`" + `: true,
 	{{- end }}
 	{{- range $index, $val := .TestFail}}
 		"{{- $val -}}": false,

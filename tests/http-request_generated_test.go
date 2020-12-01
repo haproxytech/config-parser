@@ -112,6 +112,8 @@ func TestRequestshttp(t *testing.T) {
 		"http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }": true,
 		"http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }": true,
 		"http-request set-dst-port int(4000)": true,
+		`http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz`: true,
+		`http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"`: true,
 		"http-request": false,
 		"http-request capture req.cook_cnt(FirstVisit),bool strlen 10": false,
 		"http-request set-map(map.lst) %[src]": false,

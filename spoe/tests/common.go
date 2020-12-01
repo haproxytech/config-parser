@@ -22,7 +22,7 @@ import (
 )
 
 func ProcessLine(line string, parser configparser.ParserInterface) error {
-	parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
+	parts, comment := common.StringSplitWithCommentIgnoreEmpty(line)
 	parser.Init()
 	_, err := parser.Parse("  "+line, parts, []string{}, comment)
 	return err

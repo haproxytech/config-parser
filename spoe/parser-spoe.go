@@ -288,6 +288,7 @@ func (p *Parser) HasParser(scope string, sectionType parser.Section, attribute s
 	sectionName := ""
 	for name := range st {
 		sectionName = name
+
 		break
 	}
 	section, ok := st[sectionName]
@@ -472,7 +473,7 @@ func (p *Parser) ParseData(dat string) error {
 		if line == "" {
 			continue
 		}
-		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
+		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line)
 		if len(parts) == 0 && comment != "" {
 			parts = []string{""}
 		}

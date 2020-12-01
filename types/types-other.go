@@ -168,6 +168,8 @@ type HTTPAction interface {
 //test:ok:http-request add-acl(map.lst) [src]
 //test:fail:http-request add-acl(map.lst)
 //test:ok:http-request add-header X-value value
+//test:"ok":http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
+//test:"ok":http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
 //test:fail:http-request add-header X-value
 //test:ok:http-request cache-use cache-name
 //test:ok:http-request cache-use cache-name if FALSE

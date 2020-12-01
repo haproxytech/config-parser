@@ -243,6 +243,7 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	sectionName := ""
 	for name := range st {
 		sectionName = name
+
 		break
 	}
 	section, ok := st[sectionName]
@@ -507,15 +508,19 @@ func (p *Parser) Process(reader io.Reader) error {
 	p.mutex = &sync.Mutex{}
 
 	p.Parsers = map[Section]map[string]*Parsers{}
+
 	p.Parsers[Comments] = map[string]*Parsers{
 		CommentsSectionName: p.getStartParser(),
 	}
+
 	p.Parsers[Defaults] = map[string]*Parsers{
 		DefaultSectionName: p.getDefaultParser(),
 	}
+
 	p.Parsers[Global] = map[string]*Parsers{
 		GlobalSectionName: p.getGlobalParser(),
 	}
+
 	p.Parsers[Frontends] = map[string]*Parsers{}
 	p.Parsers[Backends] = map[string]*Parsers{}
 	p.Parsers[Listen] = map[string]*Parsers{}
@@ -555,7 +560,7 @@ func (p *Parser) Process(reader io.Reader) error {
 			}
 			continue
 		}
-		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line, ' ', '\t')
+		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line)
 		if len(parts) == 0 && comment != "" {
 			parts = []string{""}
 		}

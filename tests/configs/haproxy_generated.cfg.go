@@ -387,6 +387,8 @@ backend test
   http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
   http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
   http-request set-dst-port int(4000)
+  http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
+  http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
   http-response capture res.hdr(Server) id 0
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
@@ -817,6 +819,8 @@ frontend test
   http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
   http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
   http-request set-dst-port int(4000)
+  http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
+  http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
   http-response capture res.hdr(Server) id 0
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]

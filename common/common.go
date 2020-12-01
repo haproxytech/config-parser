@@ -16,7 +16,9 @@ limitations under the License.
 
 package common
 
-import "strings"
+import (
+	"strings"
+)
 
 //StringSplitIgnoreEmpty while spliting, removes empty items
 func StringSplitIgnoreEmpty(s string, separators ...rune) []string {
@@ -34,23 +36,62 @@ func StringSplitIgnoreEmpty(s string, separators ...rune) []string {
 }
 
 //StringSplitWithCommentIgnoreEmpty while spliting, removes empty items, if we have comment, separate it
-func StringSplitWithCommentIgnoreEmpty(s string, separators ...rune) (data []string, comment string) {
-	tmp := strings.SplitN(s, "#", 2)
-	comment = ""
-	if len(tmp) > 1 {
-		comment = strings.TrimSpace(tmp[1])
-	}
-	f := func(c rune) bool {
-		willSplit := false
-		for _, sep := range separators {
-			if c == sep {
-				willSplit = true
-				break
+func StringSplitWithCommentIgnoreEmpty(s string) (data []string, comment string) {
+	data = []string{}
+
+	singleQuoteActive := false
+	doubleQuoteActive := false
+	var buff strings.Builder
+	for index, c := range s {
+		if !singleQuoteActive && !doubleQuoteActive {
+			if (c == '#' && index == 0) || (c == '#' && s[index-1] != '\\') {
+				if buff.Len() > 0 {
+					data = append(data, buff.String())
+					buff.Reset()
+				}
+				index++
+				for ; index < len(s); index++ {
+					if s[index] != ' ' {
+						break
+					}
+				}
+				comment = s[index:]
+				return data, comment
+			}
+			if (c == ' ' && index == 0) || (c == ' ' && s[index-1] != '\\') || c == '\t' {
+				if buff.Len() > 0 {
+					data = append(data, buff.String())
+					buff.Reset()
+				}
+				continue
 			}
 		}
-		return willSplit
+		buff.WriteRune(c)
+		if c == '"' {
+			if doubleQuoteActive {
+				if index == 0 || s[index-1] != '\\' {
+					doubleQuoteActive = false
+				}
+			} else if !singleQuoteActive {
+				if index == 0 || s[index-1] != '\\' {
+					doubleQuoteActive = true
+				}
+			}
+		}
+		if c == '\'' {
+			if singleQuoteActive {
+				singleQuoteActive = false
+			} else if !doubleQuoteActive {
+				if index == 0 || s[index-1] != '\\' {
+					singleQuoteActive = true
+				}
+			}
+		}
 	}
-	return strings.FieldsFunc(tmp[0], f), comment
+	if buff.Len() > 0 {
+		data = append(data, buff.String())
+	}
+	return data, comment
 }
 
 //StringExtractComment checks if comment is added
