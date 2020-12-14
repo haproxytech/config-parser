@@ -57,6 +57,7 @@ type Data struct { //nolint:maligned
 	TestOK             []string
 	TestOKEscaped      []string
 	TestFail           []string
+	TestFailEscaped    []string
 	TestAliasOK        []AliasTestData
 	TestAliasFail      []AliasTestData
 	TestSkip           bool
@@ -277,6 +278,10 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
 		}
+		if strings.HasPrefix(line, `//test:"fail"`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestFailEscaped = append(parserData.TestFailEscaped, data[2])
+		}
 		if strings.HasPrefix(line, "//test:fail") {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
@@ -413,6 +418,10 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
 		}
+		if strings.HasPrefix(line, `//test:"fail"`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestFailEscaped = append(parserData.TestFailEscaped, data[2])
+		}
 		if strings.HasPrefix(line, "//test:fail") {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
@@ -537,6 +546,10 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit
 		if strings.HasPrefix(line, "//test:ok") && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
+		}
+		if strings.HasPrefix(line, `//test:"fail"`) && !parserData.Deprecated {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestFailEscaped = append(parserData.TestFailEscaped, data[2])
 		}
 		if strings.HasPrefix(line, "//test:fail") && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
@@ -980,6 +993,9 @@ func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {
 	{{- end }}
 	{{- range $index, $val := .TestFail}}
 		"{{- $val -}}": false,
+	{{- end }}
+	{{- range $index, $val := .TestFailEscaped}}
+		` + "`" + `{{- $val -}}` + "`" + `: true,
 	{{- end }}
 	}
 	parser := {{- if .ModeOther}} &{{ .Dir }}{{- else }} &parsers{{- end }}.{{ $StructName }}{}
