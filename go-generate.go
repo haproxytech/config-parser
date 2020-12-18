@@ -44,6 +44,7 @@ type Data struct {
 	ParserType         string
 	ParserTypeOverride string
 	NoInit             bool
+	NoName             bool
 	NoParse            bool
 	NoGet              bool
 	NoSections         bool
@@ -242,6 +243,9 @@ func generateTypesOther(dir string) {
 		if strings.HasPrefix(line, "//no-init:true") {
 			parserData.NoInit = true
 		}
+		if strings.HasPrefix(line, "//no-name:true") {
+			parserData.NoName = true
+		}
 		if strings.HasPrefix(line, "//no-parse:true") {
 			parserData.NoParse = true
 		}
@@ -367,6 +371,9 @@ func generateTypesGeneric(dir string) {
 		if strings.HasPrefix(line, "//no-init:true") {
 			parserData.NoInit = true
 		}
+		if strings.HasPrefix(line, "//no-name:true") {
+			parserData.NoName = true
+		}
 		if strings.HasPrefix(line, "//no-parse:true") {
 			parserData.NoParse = true
 		}
@@ -470,6 +477,9 @@ func generateTypes(dir string, dataDir string) {
 		}
 		if strings.HasPrefix(line, "//no-init:true") {
 			parserData.NoInit = true
+		}
+		if strings.HasPrefix(line, "//no-name:true") {
+			parserData.NoName = true
 		}
 		if strings.HasPrefix(line, "//no-parse:true") {
 			parserData.NoParse = true
@@ -669,6 +679,8 @@ func (p *{{ .StructName }}) Init() {
 }
 {{- end }}
 
+{{- if not .NoName }}
+
 func (p *{{ .StructName }}) GetParserName() string {
 {{- if .ModeOther}}
     return p.Name
@@ -680,6 +692,7 @@ func (p *{{ .StructName }}) GetParserName() string {
 {{- end }}
 {{- end }}
 }
+{{- end }}
 
 {{- if not .NoGet }}
 
