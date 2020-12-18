@@ -34,6 +34,11 @@ func (s *SPOESection) Init() {
 	s.data = &types.SPOESection{}
 }
 
+// GetParserName return name of the section
+func (s *SPOESection) GetParserName() string {
+	return s.Name
+}
+
 //Parse see if we have section name
 func (s *SPOESection) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {

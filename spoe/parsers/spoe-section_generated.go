@@ -22,10 +22,6 @@ import (
 	"github.com/haproxytech/config-parser/v3/spoe/types"
 )
 
-func (p *SPOESection) GetParserName() string {
-	return "spoe-section"
-}
-
 func (p *SPOESection) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {

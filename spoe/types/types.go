@@ -19,6 +19,7 @@ package types
 //name:spoe-section
 //no-sections:true
 //no-init:true
+//no-name:true
 type SPOESection struct {
 	Name    string
 	Comment string
