@@ -312,7 +312,7 @@ func (p *Parser) writeParsers(sectionName string, parsersData *parser.Parsers, r
 		if !sectionNameWritten {
 			result.WriteString("\n")
 			result.WriteString(sectionName)
-			result.WriteString(" \n")
+			result.WriteString("\n")
 			sectionNameWritten = true
 		}
 		for _, line := range lines {
@@ -346,8 +346,15 @@ func (p *Parser) String() string {
 	defer p.unLock()
 	var result strings.Builder
 
+	scopes := []string{}
+	for scope := range p.Parsers {
+		scopes = append(scopes, scope)
+	}
+	sort.Strings(scopes)
 	firstScope := true
-	for scope, data := range p.Parsers {
+	//for scope, data := range p.Parsers {
+	for _, scope := range scopes {
+		data := p.Parsers[scope]
 		if scope != "" {
 			if !firstScope {
 				result.WriteString("\n")
@@ -399,7 +406,8 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 		_ = p.ScopeCreate(scope)
 		return config, scope
 	}
-	for _, prsr := range config.Active.Parsers {
+	for _, section := range config.Active.ParserSequence {
+		prsr := config.Active.Parsers[string(section)]
 		if newState, err := prsr.Parse(line, parts, previousParts, comment); err == nil {
 			//should we have an option to remove it when found?
 			if newState != "" {

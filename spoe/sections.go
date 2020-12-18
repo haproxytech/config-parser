@@ -9,10 +9,9 @@ import (
 )
 
 func addParser(psrs map[string]parser.ParserInterface, sequence *[]parser.Section, p parser.ParserInterface) {
-	name := p.GetParserName()
 	p.Init()
-	psrs[name] = p
-	*sequence = append(*sequence, parser.Section(name))
+	psrs[p.GetParserName()] = p
+	*sequence = append(*sequence, parser.Section(p.GetParserName()))
 }
 
 func createParsers(ps map[string]parser.ParserInterface, sequence []parser.Section) *parser.Parsers {
