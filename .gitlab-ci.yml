@@ -4,28 +4,28 @@ stages:
 golangci_lint:
   stage: lint
   image:
-    name: golangci/golangci-lint:v1.21.0
+    name: $CI_REGISTRY_GO/lint:latest
     entrypoint: [""]
   tags:
     - go
   script:
-    - golangci-lint run -v
+    - golangci-lint run --enable-all
+lint-commit-msg:
+  stage: lint
+  image:
+    name: $CI_REGISTRY_GO/check-commit:latest
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+      - go run /check.go
 test:
   stage: test
   image:
-    name: golang:1.15
+    name: $CI_REGISTRY_GO/golang:1.15
     entrypoint: [""]
   tags:
     - go
   script:
     - go build -v .
     - go test -v ./...
-lint-commit-msg:
-  stage: lint
-  image:
-    name: haproxytech/check-commit:latest
-    entrypoint: [""]
-  tags:
-    - go
-  script:
-      - go run /check.go
