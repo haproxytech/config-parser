@@ -49,7 +49,7 @@ const (
 	Program    Section = "program"
 	HTTPErrors Section = "http-errors"
 	Ring       Section = "ring"
-	//spoe sections
+	// spoe sections
 	SPOEAgent   Section = "spoe-agent"
 	SPOEGroup   Section = "spoe-group"
 	SPOEMessage Section = "spoe-message"
@@ -65,7 +65,7 @@ type Options struct {
 	UseV2HTTPCheck bool
 }
 
-//Parser reads and writes configuration on given file
+// Parser reads and writes configuration on given file
 type Parser struct {
 	Parsers map[Section]map[string]*Parsers
 	Options Options
@@ -80,7 +80,7 @@ func (p *Parser) unLock() {
 	p.mutex.Unlock()
 }
 
-//Get get attribute from defaults section
+// Get get attribute from defaults section
 func (p *Parser) Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
 	p.lock()
 	defer p.unLock()
@@ -99,7 +99,7 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string, 
 	return section.Get(attribute, createNew)
 }
 
-//GetOne get attribute from defaults section
+// GetOne get attribute from defaults section
 func (p *Parser) GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error) {
 	p.lock()
 	defer p.unLock()
@@ -118,7 +118,7 @@ func (p *Parser) GetOne(sectionType Section, sectionName string, attribute strin
 	return section.GetOne(attribute, setIndex)
 }
 
-//SectionsGet lists all sections of certain type
+// SectionsGet lists all sections of certain type
 func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
 	p.lock()
 	defer p.unLock()
@@ -135,7 +135,7 @@ func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
 	return result, nil
 }
 
-//SectionsDelete deletes one section of sectionType
+// SectionsDelete deletes one section of sectionType
 func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
 	p.lock()
 	defer p.unLock()
@@ -147,7 +147,7 @@ func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
 	return nil
 }
 
-//SectionsCreate creates one section of sectionType
+// SectionsCreate creates one section of sectionType
 func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 	p.lock()
 	defer p.unLock()
@@ -175,7 +175,7 @@ func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 	return nil
 }
 
-//Set sets attribute from defaults section, can be nil to disable/remove
+// Set sets attribute from defaults section, can be nil to disable/remove
 func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
 	defer p.unLock()
@@ -194,7 +194,7 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 	return section.Set(attribute, data, setIndex)
 }
 
-//Delete remove attribute on defined index, in case of single attributes, index is ignored
+// Delete remove attribute on defined index, in case of single attributes, index is ignored
 func (p *Parser) Delete(sectionType Section, sectionName string, attribute string, index ...int) error {
 	p.lock()
 	defer p.unLock()
@@ -213,7 +213,7 @@ func (p *Parser) Delete(sectionType Section, sectionName string, attribute strin
 	return section.Delete(attribute, setIndex)
 }
 
-//Insert put attribute on defined index, in case of single attributes, index is ignored
+// Insert put attribute on defined index, in case of single attributes, index is ignored
 func (p *Parser) Insert(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
 	defer p.unLock()
@@ -232,7 +232,7 @@ func (p *Parser) Insert(sectionType Section, sectionName string, attribute strin
 	return section.Insert(attribute, data, setIndex)
 }
 
-//HasParser checks if we have a parser for attribute
+// HasParser checks if we have a parser for attribute
 func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	p.lock()
 	defer p.unLock()
@@ -253,18 +253,18 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) writeSection(sectionName string, comments []string, result *strings.Builder) {
-	result.WriteString("\n")
+func (p *Parser) writeSection(sectionName string, comments []string, result io.StringWriter) {
+	_, _ = result.WriteString("\n")
 	for _, line := range comments {
-		result.WriteString("# ")
-		result.WriteString(line)
-		result.WriteString("\n")
+		_, _ = result.WriteString("# ")
+		_, _ = result.WriteString(line)
+		_, _ = result.WriteString("\n")
 	}
-	result.WriteString(sectionName)
-	result.WriteString(" \n")
+	_, _ = result.WriteString(sectionName)
+	_, _ = result.WriteString(" \n")
 }
 
-func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result *strings.Builder, useIndentation bool) {
+func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result io.StringWriter, useIndentation bool) {
 	sectionNameWritten := false
 	switch sectionName {
 	case "":
@@ -287,31 +287,31 @@ func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result *
 		}
 		for _, line := range comments {
 			if useIndentation {
-				result.WriteString("  ")
+				_, _ = result.WriteString("  ")
 			}
-			result.WriteString("# ")
-			result.WriteString(line)
-			result.WriteString("\n")
+			_, _ = result.WriteString("# ")
+			_, _ = result.WriteString(line)
+			_, _ = result.WriteString("\n")
 		}
 		for _, line := range lines {
 			if useIndentation {
-				result.WriteString("  ")
+				_, _ = result.WriteString("  ")
 			}
-			result.WriteString(line.Data)
+			_, _ = result.WriteString(line.Data)
 			if line.Comment != "" {
-				result.WriteString(" # ")
-				result.WriteString(line.Comment)
+				_, _ = result.WriteString(" # ")
+				_, _ = result.WriteString(line.Comment)
 			}
-			result.WriteString("\n")
+			_, _ = result.WriteString("\n")
 		}
 	}
 	for _, line := range parsersData.PostComments {
 		if useIndentation {
-			result.WriteString("  ")
+			_, _ = result.WriteString("  ")
 		}
-		result.WriteString("# ")
-		result.WriteString(line)
-		result.WriteString("\n")
+		_, _ = result.WriteString("# ")
+		_, _ = result.WriteString(line)
+		_, _ = result.WriteString("\n")
 	}
 }
 
@@ -326,7 +326,7 @@ func (p *Parser) getSortedList(data map[string]*Parsers) []string {
 	return result
 }
 
-//String returns configuration in writable form
+// String returns configuration in writable form
 func (p *Parser) String() string {
 	p.lock()
 	defer p.unLock()
@@ -356,8 +356,8 @@ func (p *Parser) Save(filename string) error {
 	return nil
 }
 
-//ProcessLine parses line plus determines if we need to change state
-func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers {
+// ProcessLine parses line plus determines if we need to change state
+func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo
 	if config.State != "" {
 		if parts[0] == "" && comment != "" && comment != "##_config-snippet_### BEGIN" && comment != "##_config-snippet_### END" {
 			if line[0] == ' ' {
@@ -372,7 +372,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 		parser := config.Active.Parsers[string(section)]
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
-				//log.Printf("change state from %s to %s\n", state, newState)
+				// log.Printf("change state from %s to %s\n", state, newState)
 				if config.ActiveComments != nil {
 					config.Active.PostComments = config.ActiveComments
 				}

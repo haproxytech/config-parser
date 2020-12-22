@@ -25,17 +25,17 @@ import (
 )
 
 var errorFileAllowedCode = map[string]struct{}{
-	"200": struct{}{},
-	"400": struct{}{},
-	"403": struct{}{},
-	"405": struct{}{},
-	"408": struct{}{},
-	"425": struct{}{},
-	"429": struct{}{},
-	"500": struct{}{},
-	"502": struct{}{},
-	"503": struct{}{},
-	"504": struct{}{},
+	"200": {},
+	"400": {},
+	"403": {},
+	"405": {},
+	"408": {},
+	"425": {},
+	"429": {},
+	"500": {},
+	"502": {},
+	"503": {},
+	"504": {},
 }
 
 type ErrorFile struct {

@@ -63,7 +63,7 @@ func (s *OptionPgsqlCheck) Result() ([]common.ReturnResultLine, error) {
 		sb.WriteString(s.data.User)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: s.data.Comment,
 		},

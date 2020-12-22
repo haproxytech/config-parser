@@ -32,7 +32,6 @@ type SetPath struct {
 
 // Parse parses http-request set-path <fmt> [ { if | unless } <condition> ]
 func (f *SetPath) Parse(parts []string, comment string) error {
-
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -52,7 +51,6 @@ func (f *SetPath) Parse(parts []string, comment string) error {
 }
 
 func (f *SetPath) String() string {
-
 	condition := ""
 
 	if f.Cond != "" {

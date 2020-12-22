@@ -34,9 +34,7 @@ type Content struct {
 }
 
 func (f *Content) ParseAction(action types.TCPAction, parts []string) error {
-
 	err := action.Parse(parts)
-
 	if err != nil {
 		return &errors.ParseError{Parser: "TCPRequestContent", Line: ""}
 	}
@@ -47,7 +45,6 @@ func (f *Content) ParseAction(action types.TCPAction, parts []string) error {
 }
 
 func (f *Content) Parse(parts []string, comment string) error {
-
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -127,7 +124,6 @@ func (f *Content) Parse(parts []string, comment string) error {
 }
 
 func (f *Content) String() string {
-
 	var result strings.Builder
 
 	result.WriteString("content")

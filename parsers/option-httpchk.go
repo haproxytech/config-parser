@@ -91,7 +91,7 @@ func (s *OptionHttpchk) Result() ([]common.ReturnResultLine, error) {
 		sb.WriteString(s.data.Version)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: s.data.Comment,
 		},

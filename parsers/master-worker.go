@@ -42,7 +42,7 @@ func (m *MasterWorker) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    "master-worker",
 			Comment: m.data.Comment,
 		},

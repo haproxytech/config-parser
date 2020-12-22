@@ -18,6 +18,7 @@ package actions
 
 import (
 	"fmt"
+	"io"
 	"strconv"
 	"strings"
 
@@ -135,14 +136,14 @@ func (c *CheckExpect) GetComment() string {
 	return c.Comment
 }
 
-func checkWritePair(sb *strings.Builder, key string, value string) {
+func checkWritePair(sb io.StringWriter, key string, value string) {
 	if value != "" {
-		sb.WriteString(" ")
+		_, _ = sb.WriteString(" ")
 		if key != "" {
-			sb.WriteString(key)
-			sb.WriteString(" ")
+			_, _ = sb.WriteString(key)
+			_, _ = sb.WriteString(" ")
 		}
-		sb.WriteString(value)
+		_, _ = sb.WriteString(value)
 	}
 }
 

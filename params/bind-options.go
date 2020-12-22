@@ -21,19 +21,19 @@ import (
 	"strings"
 )
 
-//BindOption ...
+// BindOption ...
 type BindOption interface {
 	Parse(options []string, currentIndex int) (int, error)
 	Valid() bool
 	String() string
 }
 
-//BindOptionWord ...
+// BindOptionWord ...
 type BindOptionWord struct {
 	Name string
 }
 
-//Parse ...
+// Parse ...
 func (b *BindOptionWord) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex < len(options) {
 		if options[currentIndex] == b.Name {
@@ -44,23 +44,23 @@ func (b *BindOptionWord) Parse(options []string, currentIndex int) (int, error) 
 	return 0, &ErrNotEnoughParams{}
 }
 
-//Valid ...
+// Valid ...
 func (b *BindOptionWord) Valid() bool {
 	return b.Name != ""
 }
 
-//String ...
+// String ...
 func (b *BindOptionWord) String() string {
 	return b.Name
 }
 
-//BindOptionDoubleWord ...
+// BindOptionDoubleWord ...
 type BindOptionDoubleWord struct {
 	Name  string
 	Value string
 }
 
-//Parse ...
+// Parse ...
 func (b *BindOptionDoubleWord) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex+1 < len(options) {
 		if options[currentIndex] == b.Name && b.Value == options[currentIndex+1] {
@@ -74,12 +74,12 @@ func (b *BindOptionDoubleWord) Parse(options []string, currentIndex int) (int, e
 	return 0, &ErrNotEnoughParams{}
 }
 
-//Valid ...
+// Valid ...
 func (b *BindOptionDoubleWord) Valid() bool {
 	return b.Name != "" && b.Value != ""
 }
 
-//String ...
+// String ...
 func (b *BindOptionDoubleWord) String() string {
 	if b.Name == "" || b.Value == "" {
 		return ""
@@ -87,13 +87,13 @@ func (b *BindOptionDoubleWord) String() string {
 	return fmt.Sprintf("%s %s", b.Name, b.Value)
 }
 
-//BindOptionValue ...
+// BindOptionValue ...
 type BindOptionValue struct {
 	Name  string
 	Value string
 }
 
-//Parse ...
+// Parse ...
 func (b *BindOptionValue) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex+1 < len(options) {
 		if options[currentIndex] == b.Name {
@@ -105,12 +105,12 @@ func (b *BindOptionValue) Parse(options []string, currentIndex int) (int, error)
 	return 0, &ErrNotEnoughParams{}
 }
 
-//Valid ...
+// Valid ...
 func (b *BindOptionValue) Valid() bool {
 	return b.Value != ""
 }
 
-//String ...
+// String ...
 func (b *BindOptionValue) String() string {
 	if b.Name == "" || b.Value == "" {
 		return ""
@@ -186,9 +186,8 @@ func getBindOptions() []BindOption {
 	}
 }
 
-//Parse ...
+// Parse ...
 func ParseBindOptions(options []string) []BindOption {
-
 	result := []BindOption{}
 	currentIndex := 0
 	for currentIndex < len(options) {
@@ -223,7 +222,7 @@ func BindOptionsString(options []BindOption) string {
 	return sb.String()
 }
 
-//CreateBindOptionWord creates valid one word value
+// CreateBindOptionWord creates valid one word value
 func CreateBindOptionWord(name string) (BindOptionWord, ErrParseBindOption) {
 	b := BindOptionWord{
 		Name: name,
@@ -232,7 +231,7 @@ func CreateBindOptionWord(name string) (BindOptionWord, ErrParseBindOption) {
 	return b, err
 }
 
-//CreateBindOptionDoubleWord creates valid two word value
+// CreateBindOptionDoubleWord creates valid two word value
 func CreateBindOptionDoubleWord(name1 string, name2 string) (BindOptionDoubleWord, ErrParseBindOption) {
 	b := BindOptionDoubleWord{
 		Name:  name1,
@@ -242,7 +241,7 @@ func CreateBindOptionDoubleWord(name1 string, name2 string) (BindOptionDoubleWor
 	return b, err
 }
 
-//CreateBindOptionValue creates valid option with value
+// CreateBindOptionValue creates valid option with value
 func CreateBindOptionValue(name string, value string) (BindOptionValue, ErrParseBindOption) {
 	b := BindOptionValue{
 		Name:  name,

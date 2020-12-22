@@ -30,7 +30,7 @@ type Allow struct {
 }
 
 func (f *Allow) Parse(parts []string, comment string) error {
-	//we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
+	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment
 	}

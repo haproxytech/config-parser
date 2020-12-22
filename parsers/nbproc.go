@@ -53,7 +53,7 @@ func (n *NbProc) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("nbproc %d", n.data.Value),
 			Comment: n.data.Comment,
 		},

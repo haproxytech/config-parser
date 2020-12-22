@@ -74,7 +74,7 @@ func (p *HashType) Result() ([]common.ReturnResultLine, error) {
 		sb.WriteString(p.data.Modifier)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: p.data.Comment,
 		},

@@ -26,7 +26,6 @@ type ScIncGpc1 struct {
 }
 
 func (f *ScIncGpc1) Parse(parts []string) error {
-
 	if len(parts) == 1 {
 
 		data := strings.TrimPrefix(parts[0], "sc-inc-gpc1(")

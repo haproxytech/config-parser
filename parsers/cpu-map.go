@@ -31,7 +31,6 @@ type CPUMap struct {
 }
 
 func (c *CPUMap) parse(line string, parts []string, comment string) (*types.CPUMap, error) {
-
 	if len(parts) < 3 {
 		return nil, &errors.ParseError{Parser: "CPUMap", Line: line, Message: "Parse error"}
 	}

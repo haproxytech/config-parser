@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -32,7 +33,7 @@ type AddACL struct {
 }
 
 func (f *AddACL) Parse(parts []string, comment string) error {
-	//we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
+	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment
 	}

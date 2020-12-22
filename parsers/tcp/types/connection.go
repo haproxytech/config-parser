@@ -34,9 +34,7 @@ type Connection struct {
 }
 
 func (f *Connection) ParseAction(action types.TCPAction, parts []string) error {
-
 	err := action.Parse(parts)
-
 	if err != nil {
 		return &errors.ParseError{Parser: "TCPRequestConnection", Line: ""}
 	}
@@ -47,7 +45,6 @@ func (f *Connection) ParseAction(action types.TCPAction, parts []string) error {
 }
 
 func (f *Connection) Parse(parts []string, comment string) error {
-
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -114,7 +111,6 @@ func (f *Connection) Parse(parts []string, comment string) error {
 }
 
 func (f *Connection) String() string {
-
 	var result strings.Builder
 
 	result.WriteString("connection")

@@ -23,7 +23,7 @@ import (
 	"github.com/haproxytech/config-parser/v3/errors"
 )
 
-type Spoe struct { //filter spoe [engine <name>] config <file>
+type Spoe struct { // filter spoe [engine <name>] config <file>
 	Engine  string
 	Config  string
 	Comment string

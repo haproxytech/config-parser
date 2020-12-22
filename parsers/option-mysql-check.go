@@ -32,7 +32,7 @@ type OptionMysqlCheck struct {
 /*
 option mysql-check [ user <username> [ post-41 ] ]
 */
-func (s *OptionMysqlCheck) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *OptionMysqlCheck) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) { //nolint:gocognit
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == "mysql-check" {
 		data := &types.OptionMysqlCheck{
 			Comment: comment,
@@ -77,7 +77,7 @@ func (s *OptionMysqlCheck) Result() ([]common.ReturnResultLine, error) {
 		sb.WriteString(s.data.ClientVersion)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: s.data.Comment,
 		},

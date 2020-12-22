@@ -30,7 +30,6 @@ type SetVar struct {
 }
 
 func (f *SetVar) Parse(parts []string) error {
-
 	if len(parts) < 2 {
 		return fmt.Errorf("not enough params")
 	}

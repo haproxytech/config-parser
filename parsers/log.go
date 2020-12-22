@@ -28,24 +28,24 @@ import (
 
 // nolint:gochecknoglobals
 var logAllowedFacitlites = map[string]struct{}{
-	"kern": struct{}{}, "user": struct{}{}, "mail": struct{}{}, "daemon": struct{}{},
-	"auth": struct{}{}, "syslog": struct{}{}, "lpr": struct{}{}, "news": struct{}{},
-	"uucp": struct{}{}, "cron": struct{}{}, "auth2": struct{}{}, "ftp": struct{}{},
-	"ntp": struct{}{}, "audit": struct{}{}, "alert": struct{}{}, "cron2": struct{}{},
-	"local0": struct{}{}, "local1": struct{}{}, "local2": struct{}{}, "local3": struct{}{},
-	"local4": struct{}{}, "local5": struct{}{}, "local6": struct{}{}, "local7": struct{}{},
+	"kern": {}, "user": {}, "mail": {}, "daemon": {},
+	"auth": {}, "syslog": {}, "lpr": {}, "news": {},
+	"uucp": {}, "cron": {}, "auth2": {}, "ftp": {},
+	"ntp": {}, "audit": {}, "alert": {}, "cron2": {},
+	"local0": {}, "local1": {}, "local2": {}, "local3": {},
+	"local4": {}, "local5": {}, "local6": {}, "local7": {},
 }
 
 // nolint:gochecknoglobals
 var logAllowedLevels = map[string]struct{}{
-	"emerg":   struct{}{},
-	"alert":   struct{}{},
-	"crit":    struct{}{},
-	"err":     struct{}{},
-	"warning": struct{}{},
-	"notice":  struct{}{},
-	"info":    struct{}{},
-	"debug":   struct{}{},
+	"emerg":   {},
+	"alert":   {},
+	"crit":    {},
+	"err":     {},
+	"warning": {},
+	"notice":  {},
+	"info":    {},
+	"debug":   {},
 }
 
 type Log struct {
@@ -72,7 +72,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 		Address: parts[1],
 		Comment: comment,
 	}
-	//see if we have length
+	// see if we have length
 	currIndex := 2
 	if currIndex >= len(parts) {
 		return log, &errors.ParseError{Parser: "Log", Line: line}
@@ -95,7 +95,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 		log.Format = parts[currIndex]
 		currIndex++
 	}
-	//we must have facility
+	// we must have facility
 	if currIndex >= len(parts) {
 		return log, &errors.ParseError{Parser: "Log", Line: line}
 	}
@@ -105,7 +105,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 	}
 	log.Facility = facility
 	currIndex++
-	//level is optional
+	// level is optional
 	if currIndex >= len(parts) {
 		return log, nil
 	}
@@ -115,7 +115,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 	}
 	log.Level = level
 	currIndex++
-	//min level is optional
+	// min level is optional
 	if currIndex >= len(parts) {
 		return log, nil
 	}

@@ -51,7 +51,7 @@ func (p *Mode) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("mode %s", p.data.Value),
 			Comment: p.data.Comment,
 		},

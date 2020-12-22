@@ -34,9 +34,7 @@ type Session struct {
 }
 
 func (f *Session) ParseAction(action types.TCPAction, parts []string) error {
-
 	err := action.Parse(parts)
-
 	if err != nil {
 		return &errors.ParseError{Parser: "TCPRequestSession", Line: ""}
 	}
@@ -47,7 +45,6 @@ func (f *Session) ParseAction(action types.TCPAction, parts []string) error {
 }
 
 func (f *Session) Parse(parts []string, comment string) error {
-
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -109,7 +106,6 @@ func (f *Session) Parse(parts []string, comment string) error {
 }
 
 func (f *Session) String() string {
-
 	var result strings.Builder
 
 	result.WriteString("session")

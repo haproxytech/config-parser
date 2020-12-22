@@ -67,7 +67,7 @@ func (o *Option) Result() ([]common.ReturnResultLine, error) {
 		noOption = "no "
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("%soption %s", noOption, o.name),
 			Comment: o.data.Comment,
 		},

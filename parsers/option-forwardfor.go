@@ -71,7 +71,7 @@ func (s *OptionForwardFor) Result() ([]common.ReturnResultLine, error) {
 	}
 	var sb strings.Builder
 	sb.WriteString("option forwardfor")
-	//option forwardfor [ except <network> ] [ header <name> ] [ if-none ]
+	// option forwardfor [ except <network> ] [ header <name> ] [ if-none ]
 	if s.data.Except != "" {
 		sb.WriteString(" except ")
 		sb.WriteString(s.data.Except)
@@ -84,7 +84,7 @@ func (s *OptionForwardFor) Result() ([]common.ReturnResultLine, error) {
 		sb.WriteString(" if-none")
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: s.data.Comment,
 		},

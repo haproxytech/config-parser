@@ -36,7 +36,7 @@ func (l *User) parse(line string, parts []string, comment string) (*types.User, 
 			Name:    parts[1],
 			Comment: comment,
 		}
-		//see if we have password
+		// see if we have password
 		index := 3
 		if len(parts) > index {
 			if parts[2] == "password" {

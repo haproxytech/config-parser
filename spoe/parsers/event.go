@@ -60,7 +60,7 @@ func (e *Event) Result() ([]common.ReturnResultLine, error) {
 	}
 
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: e.data.Comment,
 		},

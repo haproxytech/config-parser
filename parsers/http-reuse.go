@@ -47,7 +47,7 @@ func (p *HTTPReuse) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("http-reuse %s", p.data.ShareType),
 			Comment: p.data.Comment,
 		},

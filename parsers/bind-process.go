@@ -78,7 +78,7 @@ func (p *BindProcess) Result() ([]common.ReturnResultLine, error) {
 	}
 
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("bind-process %s", p.data.Process),
 			Comment: p.data.Comment,
 		},

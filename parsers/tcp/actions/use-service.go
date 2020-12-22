@@ -25,7 +25,6 @@ type UseService struct {
 }
 
 func (f *UseService) Parse(parts []string) error {
-
 	if len(parts) == 2 {
 
 		f.ServiceName = parts[1]

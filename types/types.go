@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:godot,gocritic
 package types
 
 import "github.com/haproxytech/config-parser/v3/params"
@@ -149,7 +150,7 @@ type ACL struct {
 //test:ok:bind :443 verify optional
 //test:ok:bind :443 verify required
 type Bind struct {
-	Path    string //can be address:port or socket path
+	Path    string // can be address:port or socket path
 	Params  []params.BindOption
 	Comment string
 }
@@ -221,18 +222,18 @@ type Balance struct {
 type Cookie struct {
 	Domain   []string
 	Attr     []string
+	Name     string
+	Type     string
+	Comment  string
+	Maxidle  int64
+	Maxlife  int64
 	Dynamic  bool
 	Httponly bool
 	Indirect bool
-	Maxidle  int64
-	Maxlife  int64
-	Name     string
 	Nocache  bool
 	Postonly bool
 	Preserve bool
-	Type     string
 	Secure   bool
-	Comment  string
 }
 
 //sections:global
@@ -713,7 +714,7 @@ type StickTable struct {
 //atest:fail:stats socket /some/path/to/socket mode
 //test:fail:stats socket
 type Socket struct {
-	Path    string //can be address:port
+	Path    string // can be address:port
 	Params  []params.BindOption
 	Comment string
 }

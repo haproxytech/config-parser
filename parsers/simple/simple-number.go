@@ -55,7 +55,7 @@ func (s *Number) Result() ([]common.ReturnResultLine, error) {
 	}
 
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("%s %d", s.Name, s.data.Value),
 			Comment: s.data.Comment,
 		},

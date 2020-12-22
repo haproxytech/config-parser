@@ -27,7 +27,6 @@ type ScSetGpt0 struct {
 }
 
 func (f *ScSetGpt0) Parse(parts []string) error {
-
 	if len(parts) != 2 {
 		return fmt.Errorf("not enough params")
 	}

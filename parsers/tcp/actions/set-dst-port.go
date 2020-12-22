@@ -27,11 +27,9 @@ type SetDstPort struct {
 }
 
 func (f *SetDstPort) Parse(parts []string) error {
-
 	expr := common.Expression{}
 
 	err := expr.Parse([]string{parts[1]})
-
 	if err != nil {
 		return fmt.Errorf("invalid expression")
 	}

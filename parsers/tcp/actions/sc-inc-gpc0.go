@@ -26,18 +26,12 @@ type ScIncGpc0 struct {
 }
 
 func (f *ScIncGpc0) Parse(parts []string) error {
-
 	if len(parts) == 1 {
-
 		data := strings.TrimPrefix(parts[0], "sc-inc-gpc0(")
-
 		data = strings.TrimRight(data, ")")
-
 		f.ScID = data
-
 		return nil
 	}
-
 	return fmt.Errorf("not enough params")
 }
 

@@ -21,7 +21,7 @@ import (
 	"fmt"
 )
 
-//ParseError struct for creating parse errors
+// ParseError struct for creating parse errors
 type ParseError struct {
 	Parser  string
 	Line    string

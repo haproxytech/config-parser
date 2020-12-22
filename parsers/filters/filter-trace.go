@@ -22,7 +22,7 @@ import (
 	"github.com/haproxytech/config-parser/v3/common"
 )
 
-type Trace struct { //filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
+type Trace struct { // filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	Name             string
 	RandomParsing    bool
 	RandomForwarding bool
@@ -31,7 +31,7 @@ type Trace struct { //filter trace [name <name>] [random-parsing] [random-forwar
 }
 
 func (f *Trace) Parse(parts []string, comment string) error {
-	//we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
+	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment
 	}

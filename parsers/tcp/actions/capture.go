@@ -29,11 +29,9 @@ type Capture struct {
 }
 
 func (f *Capture) Parse(parts []string) error {
-
 	expr := common.Expression{}
 
 	err := expr.Parse([]string{parts[1]})
-
 	if err != nil {
 		return fmt.Errorf("invalid expression")
 	}

@@ -18,7 +18,7 @@ package common
 
 import "strings"
 
-//Expression is standard HAProxy expression formed by a sample-fetch followed by some converters.
+// Expression is standard HAProxy expression formed by a sample-fetch followed by some converters.
 type Expression struct {
 	Expr []string
 }

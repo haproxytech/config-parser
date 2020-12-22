@@ -59,7 +59,7 @@ func (p *ConfigSnippet) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    "###_config-snippet_### BEGIN\n  " + strings.Join(p.data.Value, "\n  ") + "\n  ###_config-snippet_### END",
 			Comment: p.data.Comment,
 		},

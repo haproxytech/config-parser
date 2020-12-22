@@ -52,7 +52,7 @@ func (s *ExternalCheckPath) Result() ([]common.ReturnResultLine, error) {
 		data = fmt.Sprintf("external-check path %s", s.data.Path)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    data,
 			Comment: s.data.Comment,
 		},

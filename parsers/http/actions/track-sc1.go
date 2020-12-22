@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -32,7 +33,6 @@ type TrackSc1 struct {
 }
 
 func (f *TrackSc1) Parse(parts []string, comment string) error {
-
 	if len(parts) < 3 {
 		return fmt.Errorf("not enough params")
 	}
@@ -68,6 +68,7 @@ func (f *TrackSc1) String() string {
 	}
 	return result.String()
 }
+
 func (f *TrackSc1) GetComment() string {
 	return f.Comment
 }

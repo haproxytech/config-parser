@@ -19,10 +19,9 @@ package parsers
 import (
 	"strings"
 
-	"github.com/haproxytech/config-parser/v3/params"
-
 	"github.com/haproxytech/config-parser/v3/common"
 	"github.com/haproxytech/config-parser/v3/errors"
+	"github.com/haproxytech/config-parser/v3/params"
 	"github.com/haproxytech/config-parser/v3/types"
 )
 
@@ -40,7 +39,7 @@ func (l *Socket) parse(line string, parts []string, comment string) (*types.Sock
 		Params:  params.ParseBindOptions(parts[3:]),
 		Comment: comment,
 	}
-	//s.value = elements[1:]
+	// s.value = elements[1:]
 	return socket, nil
 }
 

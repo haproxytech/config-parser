@@ -48,7 +48,7 @@ func (s *DefaultBackend) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("default_backend %s", s.data.Value),
 			Comment: s.data.Comment,
 		},

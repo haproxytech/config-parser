@@ -38,7 +38,6 @@ func (s *StatsTimeout) Parse(line string, parts, previousParts []string, comment
 			Value:   parts[2],
 			Comment: comment,
 		}
-		//todo add validation with simple timeouts
 		return "", nil
 	}
 	return "", &errors.ParseError{Parser: "StatsTimeout", Line: line}
@@ -49,7 +48,7 @@ func (s *StatsTimeout) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("stats timeout %s", s.data.Value),
 			Comment: s.data.Comment,
 		},

@@ -57,7 +57,7 @@ func (t *Timeout) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("timeout %s %s", t.name, t.data.Value),
 			Comment: t.data.Comment,
 		},

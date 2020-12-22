@@ -46,7 +46,7 @@ func (h *Requests) ParseHTTPRequest(request types.HTTPAction, parts []string, co
 	return nil
 }
 
-func (h *Requests) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *Requests) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) { //nolint:gocyclo
 	if len(parts) >= 2 && parts[0] == "http-request" {
 		var err error
 		switch parts[1] {

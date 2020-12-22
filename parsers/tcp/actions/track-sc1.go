@@ -26,7 +26,6 @@ type TrackSc1 struct {
 }
 
 func (f *TrackSc1) Parse(parts []string) error {
-
 	if len(parts) <= 1 {
 		return fmt.Errorf("not enough params")
 	}

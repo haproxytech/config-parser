@@ -25,13 +25,15 @@ import (
 	"github.com/haproxytech/config-parser/v3/types"
 )
 
+const CookieKeyword = "cookie"
+
 type Cookie struct {
 	data        *types.Cookie
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *Cookie) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if parts[0] == "cookie" {
+func (p *Cookie) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) { //nolint:gocognit
+	if parts[0] == CookieKeyword {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Cookie", Line: line, Message: "Parse error"}
 		}
@@ -103,7 +105,7 @@ func (p *Cookie) Result() ([]common.ReturnResultLine, error) {
 	}
 
 	var result strings.Builder
-	result.WriteString("cookie")
+	result.WriteString(CookieKeyword)
 
 	if p.data.Name != "" {
 		result.WriteString(" ")

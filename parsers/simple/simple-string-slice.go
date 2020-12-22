@@ -44,7 +44,6 @@ func (s *StringSlice) Parse(line string, parts, previousParts []string, comment 
 		Comment: comment,
 	}
 	return "", nil
-
 }
 
 func (s *StringSlice) Result() ([]common.ReturnResultLine, error) {

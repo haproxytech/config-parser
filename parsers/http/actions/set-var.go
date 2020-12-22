@@ -33,7 +33,7 @@ type SetVar struct {
 }
 
 func (f *SetVar) Parse(parts []string, comment string) error {
-	//we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
+	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -43,7 +43,7 @@ func (f *SetVar) Parse(parts []string, comment string) error {
 	f.VarScope = d[0]
 	f.VarName = d[1]
 	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:]) // 2 not 3 !
+		command, condition := common.SplitRequest(parts[2:]) //  2 not 3 !
 		if len(command) > 0 {
 			expr := common.Expression{}
 			err := expr.Parse(command)

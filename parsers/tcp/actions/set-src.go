@@ -27,11 +27,9 @@ type SetSrc struct {
 }
 
 func (f *SetSrc) Parse(parts []string) error {
-
 	expr := common.Expression{}
 
 	err := expr.Parse([]string{parts[1]})
-
 	if err != nil {
 		return fmt.Errorf("not enough params")
 	}

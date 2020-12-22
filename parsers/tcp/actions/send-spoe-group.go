@@ -26,7 +26,6 @@ type SendSpoeGroup struct {
 }
 
 func (f *SendSpoeGroup) Parse(parts []string) error {
-
 	if len(parts) >= 3 {
 
 		f.Engine = parts[1]

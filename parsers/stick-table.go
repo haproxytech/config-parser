@@ -29,7 +29,7 @@ type StickTable struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (h *StickTable) parse(line string, parts []string, comment string) (*types.StickTable, error) {
+func (h *StickTable) parse(line string, parts []string, comment string) (*types.StickTable, error) { //nolint:gocognit
 	if len(parts) >= 3 && parts[0] == "stick-table" && parts[1] == "type" {
 		index := 2
 		data := &types.StickTable{

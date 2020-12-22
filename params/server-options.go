@@ -21,19 +21,19 @@ import (
 	"strings"
 )
 
-//ServerOption ...
+// ServerOption ...
 type ServerOption interface {
 	Parse(options []string, currentIndex int) (int, error)
 	Valid() bool
 	String() string
 }
 
-//ServerOptionWord ...
+// ServerOptionWord ...
 type ServerOptionWord struct {
 	Name string
 }
 
-//Parse ...
+// Parse ...
 func (b *ServerOptionWord) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex < len(options) {
 		if options[currentIndex] == b.Name {
@@ -44,23 +44,23 @@ func (b *ServerOptionWord) Parse(options []string, currentIndex int) (int, error
 	return 0, &ErrNotEnoughParams{}
 }
 
-//Valid ...
+// Valid ...
 func (b *ServerOptionWord) Valid() bool {
 	return b.Name != ""
 }
 
-//String ...
+// String ...
 func (b *ServerOptionWord) String() string {
 	return b.Name
 }
 
-//ServerOptionDoubleWord ...
+// ServerOptionDoubleWord ...
 type ServerOptionDoubleWord struct {
 	Name  string
 	Value string
 }
 
-//Parse ...
+// Parse ...
 func (b *ServerOptionDoubleWord) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex+1 < len(options) {
 		if options[currentIndex] == b.Name && b.Value == options[currentIndex+1] {
@@ -74,12 +74,12 @@ func (b *ServerOptionDoubleWord) Parse(options []string, currentIndex int) (int,
 	return 0, &ErrNotEnoughParams{}
 }
 
-//Valid ...
+// Valid ...
 func (b *ServerOptionDoubleWord) Valid() bool {
 	return b.Name != "" && b.Value != ""
 }
 
-//String ...
+// String ...
 func (b *ServerOptionDoubleWord) String() string {
 	if b.Name == "" || b.Value == "" {
 		return ""
@@ -87,13 +87,13 @@ func (b *ServerOptionDoubleWord) String() string {
 	return fmt.Sprintf("%s %s", b.Name, b.Value)
 }
 
-//ServerOptionValue ...
+// ServerOptionValue ...
 type ServerOptionValue struct {
 	Name  string
 	Value string
 }
 
-//Parse ...
+// Parse ...
 func (b *ServerOptionValue) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex+1 < len(options) {
 		if options[currentIndex] == b.Name {
@@ -105,12 +105,12 @@ func (b *ServerOptionValue) Parse(options []string, currentIndex int) (int, erro
 	return 0, &ErrNotEnoughParams{}
 }
 
-//Valid ...
+// Valid ...
 func (b *ServerOptionValue) Valid() bool {
 	return b.Value != ""
 }
 
-//String ...
+// String ...
 func (b *ServerOptionValue) String() string {
 	if b.Name == "" || b.Value == "" {
 		return ""
@@ -163,7 +163,7 @@ func getServerOptions() []ServerOption {
 		&ServerOptionWord{Name: "tfo"},
 		&ServerOptionWord{Name: "tls-tickets"},
 
-		//&ServerOptionDoubleWord{Name: "expose-fd", Value: "listeners"},
+		// &ServerOptionDoubleWord{Name: "expose-fd", Value: "listeners"},
 
 		&ServerOptionValue{Name: "addr"},
 		&ServerOptionValue{Name: "agent-send"},
@@ -225,9 +225,8 @@ func getServerOptions() []ServerOption {
 	}
 }
 
-//Parse ...
+// Parse ...
 func ParseServerOptions(options []string) []ServerOption {
-
 	result := []ServerOption{}
 	currentIndex := 0
 	for currentIndex < len(options) {
@@ -262,7 +261,7 @@ func ServerOptionsString(options []ServerOption) string {
 	return sb.String()
 }
 
-//CreateServerOptionWord creates valid one word value
+// CreateServerOptionWord creates valid one word value
 func CreateServerOptionWord(name string) (ServerOptionWord, ErrParseServerOption) {
 	b := ServerOptionWord{
 		Name: name,
@@ -271,7 +270,7 @@ func CreateServerOptionWord(name string) (ServerOptionWord, ErrParseServerOption
 	return b, err
 }
 
-//CreateServerOptionDoubleWord creates valid two word value
+// CreateServerOptionDoubleWord creates valid two word value
 func CreateServerOptionDoubleWord(name1 string, name2 string) (ServerOptionDoubleWord, ErrParseServerOption) {
 	b := ServerOptionDoubleWord{
 		Name:  name1,
@@ -281,7 +280,7 @@ func CreateServerOptionDoubleWord(name1 string, name2 string) (ServerOptionDoubl
 	return b, err
 }
 
-//CreateServerOptionValue creates valid option with value
+// CreateServerOptionValue creates valid option with value
 func CreateServerOptionValue(name string, value string) (ServerOptionValue, ErrParseServerOption) {
 	b := ServerOptionValue{
 		Name:  name,

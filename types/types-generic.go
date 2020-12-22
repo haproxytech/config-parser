@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:godot,gocritic
 package types
 
 //Enabled is used by parsers Daemon, MasterWorker, ExternalCheck, NoSplice
@@ -106,5 +107,5 @@ type StringKeyValueC struct {
 	Comment string
 }
 
-//Filters are not here, see parsers/filters
-//==============================================================================
+// Filters are not here, see parsers/filters
+// ==============================================================================

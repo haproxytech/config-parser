@@ -51,7 +51,7 @@ func (p *LogSendHostName) Result() ([]common.ReturnResultLine, error) {
 		data = fmt.Sprintf("log-send-hostname %s", p.data.Value)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    data,
 			Comment: p.data.Comment,
 		},

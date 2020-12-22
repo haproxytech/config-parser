@@ -39,7 +39,7 @@ func (s *OptionRedispatch) Parse(line string, parts, previousParts []string, com
 			Comment: comment,
 		}
 		if len(parts) > 2 {
-			//see the interval
+			// see the interval
 			if interval, err := strconv.ParseInt(parts[2], 10, 64); err == nil {
 				data.Interval = &interval
 			} else {
@@ -76,7 +76,7 @@ func (s *OptionRedispatch) Result() ([]common.ReturnResultLine, error) {
 		}
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: s.data.Comment,
 		},

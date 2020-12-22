@@ -42,7 +42,7 @@ func (d *Daemon) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    "daemon",
 			Comment: d.data.Comment,
 		},

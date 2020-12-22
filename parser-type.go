@@ -68,7 +68,7 @@ func (p *Parsers) GetOne(attribute string, index ...int) (common.ParserData, err
 	return nil, errors.ErrParserMissing
 }
 
-//HasParser checks if we have a parser for attribute
+// HasParser checks if we have a parser for attribute
 func (p *Parsers) HasParser(attribute string) bool {
 	for _, parser := range p.Parsers {
 		if parser.GetParserName() == attribute {
@@ -78,7 +78,7 @@ func (p *Parsers) HasParser(attribute string) bool {
 	return false
 }
 
-//Set sets data in parser, if you can have multiple items, index is a must
+// Set sets data in parser, if you can have multiple items, index is a must
 func (p *Parsers) Set(attribute string, data common.ParserData, index ...int) error {
 	setIndex := -1
 	if len(index) > 0 && index[0] > -1 {

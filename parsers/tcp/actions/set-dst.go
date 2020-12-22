@@ -27,11 +27,9 @@ type SetDst struct {
 }
 
 func (f *SetDst) Parse(parts []string) error {
-
 	expr := common.Expression{}
 
 	err := expr.Parse([]string{parts[1]})
-
 	if err != nil {
 		return fmt.Errorf("invalid expression")
 	}

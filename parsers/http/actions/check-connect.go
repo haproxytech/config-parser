@@ -25,18 +25,18 @@ import (
 //                    [via-socks4] [ssl] [sni <sni>] [alpn <alpn>] [linger]
 //                    [proto <name>] [comment <msg>]
 type CheckConnect struct {
-	Default      bool
-	Port         string // TODO: int64?
+	Port         string
 	Addr         string
-	SendProxy    bool
-	ViaSOCKS4    bool
-	SSL          bool
 	SNI          string
 	ALPN         string
-	Linger       bool
 	Proto        string
 	CheckComment string
 	Comment      string
+	Default      bool
+	SendProxy    bool
+	ViaSOCKS4    bool
+	SSL          bool
+	Linger       bool
 }
 
 func (c *CheckConnect) Parse(parts []string, comment string) error {

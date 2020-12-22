@@ -18,6 +18,7 @@ package spoe
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"sort"
 	"strings"
@@ -46,7 +47,7 @@ const (
 	DefaultSectionName  = "data"
 )*/
 
-//Parser reads and writes configuration on given file
+// Parser reads and writes configuration on given file
 type Parser struct {
 	Parsers map[string]map[parser.Section]map[string]*parser.Parsers
 	mutex   *sync.Mutex
@@ -60,7 +61,7 @@ func (p *Parser) unLock() {
 	p.mutex.Unlock()
 }
 
-//Get get attribute from defaults section
+// Get get attribute from defaults section
 func (p *Parser) Get(scope string, sectionType parser.Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
 	p.lock()
 	defer p.unLock()
@@ -83,7 +84,7 @@ func (p *Parser) Get(scope string, sectionType parser.Section, sectionName strin
 	return section.Get(attribute, createNew)
 }
 
-//GetOne get attribute from defaults section
+// GetOne get attribute from defaults section
 func (p *Parser) GetOne(scope string, sectionType parser.Section, sectionName string, attribute string, index ...int) (common.ParserData, error) {
 	p.lock()
 	defer p.unLock()
@@ -106,7 +107,7 @@ func (p *Parser) GetOne(scope string, sectionType parser.Section, sectionName st
 	return section.GetOne(attribute, setIndex)
 }
 
-//SectionsGet lists all sections of certain type
+// SectionsGet lists all sections of certain type
 func (p *Parser) SectionsGet(scope string, sectionType parser.Section) ([]string, error) {
 	p.lock()
 	defer p.unLock()
@@ -127,7 +128,7 @@ func (p *Parser) SectionsGet(scope string, sectionType parser.Section) ([]string
 	return result, nil
 }
 
-//ScopeDelete deletes one section of sectionType
+// ScopeDelete deletes one section of sectionType
 func (p *Parser) ScopeDelete(scope string) error {
 	p.lock()
 	defer p.unLock()
@@ -139,7 +140,7 @@ func (p *Parser) ScopeDelete(scope string) error {
 	return nil
 }
 
-//SectionsDelete deletes one section of sectionType
+// SectionsDelete deletes one section of sectionType
 func (p *Parser) SectionsDelete(scope string, sectionType parser.Section, sectionName string) error {
 	p.lock()
 	defer p.unLock()
@@ -155,7 +156,7 @@ func (p *Parser) SectionsDelete(scope string, sectionType parser.Section, sectio
 	return nil
 }
 
-//ScopeCreate creates one section of sectionType
+// ScopeCreate creates one section of sectionType
 func (p *Parser) ScopeCreate(scope string) error {
 	p.lock()
 	defer p.unLock()
@@ -204,7 +205,7 @@ func (p *Parser) SectionsCreate(scope string, sectionType parser.Section, sectio
 	return nil
 }
 
-//Set sets attribute from defaults section, can be nil to disable/remove
+// Set sets attribute from defaults section, can be nil to disable/remove
 func (p *Parser) Set(scope string, sectionType parser.Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
 	defer p.unLock()
@@ -227,7 +228,7 @@ func (p *Parser) Set(scope string, sectionType parser.Section, sectionName strin
 	return section.Set(attribute, data, setIndex)
 }
 
-//Delete remove attribute on defined index, in case of single attributes, index is ignored
+// Delete remove attribute on defined index, in case of single attributes, index is ignored
 func (p *Parser) Delete(scope string, sectionType parser.Section, sectionName string, attribute string, index ...int) error {
 	p.lock()
 	defer p.unLock()
@@ -250,7 +251,7 @@ func (p *Parser) Delete(scope string, sectionType parser.Section, sectionName st
 	return section.Delete(attribute, setIndex)
 }
 
-//Insert put attribute on defined index, in case of single attributes, index is ignored
+// Insert put attribute on defined index, in case of single attributes, index is ignored
 func (p *Parser) Insert(scope string, sectionType parser.Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
 	defer p.unLock()
@@ -273,7 +274,7 @@ func (p *Parser) Insert(scope string, sectionType parser.Section, sectionName st
 	return section.Insert(attribute, data, setIndex)
 }
 
-//HasParser checks if we have a parser for attribute
+// HasParser checks if we have a parser for attribute
 func (p *Parser) HasParser(scope string, sectionType parser.Section, attribute string) bool {
 	p.lock()
 	defer p.unLock()
@@ -298,7 +299,7 @@ func (p *Parser) HasParser(scope string, sectionType parser.Section, attribute s
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) writeParsers(sectionName string, parsersData *parser.Parsers, result *strings.Builder, useIndentation bool) {
+func (p *Parser) writeParsers(sectionName string, parsersData *parser.Parsers, result io.StringWriter, useIndentation bool) {
 	sectionNameWritten := false
 	if sectionName == "" {
 		sectionNameWritten = true
@@ -310,21 +311,21 @@ func (p *Parser) writeParsers(sectionName string, parsersData *parser.Parsers, r
 			continue
 		}
 		if !sectionNameWritten {
-			result.WriteString("\n")
-			result.WriteString(sectionName)
-			result.WriteString("\n")
+			_, _ = result.WriteString("\n")
+			_, _ = result.WriteString(sectionName)
+			_, _ = result.WriteString("\n")
 			sectionNameWritten = true
 		}
 		for _, line := range lines {
 			if useIndentation {
-				result.WriteString("  ")
+				_, _ = result.WriteString("  ")
 			}
-			result.WriteString(line.Data)
+			_, _ = result.WriteString(line.Data)
 			if line.Comment != "" {
-				result.WriteString(" # ")
-				result.WriteString(line.Comment)
+				_, _ = result.WriteString(" # ")
+				_, _ = result.WriteString(line.Comment)
 			}
-			result.WriteString("\n")
+			_, _ = result.WriteString("\n")
 		}
 	}
 }
@@ -340,7 +341,7 @@ func (p *Parser) getSortedList(data map[string]*parser.Parsers) []string {
 	return result
 }
 
-//String returns configuration in writable form
+// String returns configuration in writable form
 func (p *Parser) String() string {
 	p.lock()
 	defer p.unLock()
@@ -352,7 +353,7 @@ func (p *Parser) String() string {
 	}
 	sort.Strings(scopes)
 	firstScope := true
-	//for scope, data := range p.Parsers {
+	// for scope, data := range p.Parsers {
 	for _, scope := range scopes {
 		data := p.Parsers[scope]
 		if scope != "" {
@@ -362,7 +363,7 @@ func (p *Parser) String() string {
 				firstScope = false
 			}
 			result.WriteString(scope)
-			//result.WriteString("\n")
+			// result.WriteString("\n")
 		}
 
 		p.writeParsers("", data[parser.Comments][parser.CommentsSectionName], &result, false)
@@ -398,7 +399,7 @@ func (p *Parser) IsScope(line string) bool {
 	return false
 }
 
-//ProcessLine parses line plus determines if we need to change state
+// ProcessLine parses line plus determines if we need to change state
 func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config parser.ConfiguredParsers) (psrs parser.ConfiguredParsers, scope string) {
 	scope = previousParts[0]
 	if p.IsScope(line) {
@@ -409,9 +410,9 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 	for _, section := range config.Active.ParserSequence {
 		prsr := config.Active.Parsers[string(section)]
 		if newState, err := prsr.Parse(line, parts, previousParts, comment); err == nil {
-			//should we have an option to remove it when found?
+			// should we have an option to remove it when found?
 			if newState != "" {
-				//log.Printf("change state from %s to %s\n", state, newState)
+				// log.Printf("change state from %s to %s\n", state, newState)
 				config.State = newState
 				if config.State == "" {
 					config.Active = config.Comments
@@ -488,7 +489,7 @@ func (p *Parser) ParseData(dat string) error {
 		if len(parts) == 0 {
 			continue
 		}
-		//this is the difference, no previous line is sent to parsers
+		// this is the difference, no previous line is sent to parsers
 		parsers, scope = p.ProcessLine(line, parts, []string{scope}, comment, parsers)
 	}
 	return nil

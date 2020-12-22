@@ -49,7 +49,7 @@ func (p *UniqueIDFormat) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("unique-id-format %s", p.data.LogFormat),
 			Comment: p.data.Comment,
 		},

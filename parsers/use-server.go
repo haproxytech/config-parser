@@ -53,7 +53,7 @@ func (l *UseServer) Result() ([]common.ReturnResultLine, error) {
 	if len(l.data) == 0 {
 		return nil, errors.ErrFetch
 	}
-	//use-server
+	// use-server
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, data := range l.data {
 		result[index] = common.ReturnResultLine{

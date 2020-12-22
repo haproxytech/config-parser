@@ -38,7 +38,7 @@ type ConfiguredParsers struct {
 	Program    *Parsers
 	HTTPErrors *Parsers
 	Ring       *Parsers
-	//spoe parsers
+	// spoe parsers
 	SPOEAgent   *Parsers
 	SPOEGroup   *Parsers
 	SPOEMessage *Parsers

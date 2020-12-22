@@ -49,7 +49,7 @@ func (s *Word) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("%s %s", s.Name, s.data.Value),
 			Comment: s.data.Comment,
 		},

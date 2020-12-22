@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -32,14 +33,14 @@ type DelACL struct {
 }
 
 func (f *DelACL) Parse(parts []string, comment string) error {
-	//we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
+	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment
 	}
 	f.FileName = strings.TrimPrefix(parts[1], "del-acl(")
 	f.FileName = strings.TrimRight(f.FileName, ")")
 	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:]) // 2 not 3 !
+		command, condition := common.SplitRequest(parts[2:]) //  2 not 3 !
 		if len(command) > 0 {
 			f.KeyFmt = command[0]
 		}

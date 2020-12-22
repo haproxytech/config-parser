@@ -34,7 +34,6 @@ type DoResolve struct {
 }
 
 func (f *DoResolve) Parse(parts []string, comment string) error {
-
 	if len(parts) < 3 {
 		return fmt.Errorf("not enough params")
 	}
@@ -73,7 +72,6 @@ func (f *DoResolve) Parse(parts []string, comment string) error {
 }
 
 func (f *DoResolve) String() string {
-
 	var stmt string
 	if len(f.Protocol) > 0 {
 		stmt = fmt.Sprintf("%s,%s,%s", f.Var, f.Resolvers, f.Protocol)

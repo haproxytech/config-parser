@@ -34,7 +34,7 @@ func (s *Section) Init() {
 	s.data = &types.Section{}
 }
 
-//Parse see if we have section name
+// Parse see if we have section name
 func (s *Section) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) > 1 {

@@ -39,7 +39,7 @@ func (s *SPOESection) GetParserName() string {
 	return s.Name
 }
 
-//Parse see if we have section name
+// Parse see if we have section name
 func (s *SPOESection) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) > 1 {

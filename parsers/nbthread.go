@@ -53,7 +53,7 @@ func (n *NbThread) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("nbthread %d", n.data.Value),
 			Comment: n.data.Comment,
 		},

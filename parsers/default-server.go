@@ -19,10 +19,9 @@ package parsers
 import (
 	"fmt"
 
-	"github.com/haproxytech/config-parser/v3/params"
-
 	"github.com/haproxytech/config-parser/v3/common"
 	"github.com/haproxytech/config-parser/v3/errors"
+	"github.com/haproxytech/config-parser/v3/params"
 	"github.com/haproxytech/config-parser/v3/types"
 )
 

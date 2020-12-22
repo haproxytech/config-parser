@@ -42,7 +42,7 @@ func (m *NoSplice) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    "nosplice",
 			Comment: m.data.Comment,
 		},

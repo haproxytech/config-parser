@@ -27,7 +27,6 @@ type InspectDelay struct {
 }
 
 func (f *InspectDelay) Parse(parts []string, comment string) error {
-
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -45,7 +44,6 @@ func (f *InspectDelay) Parse(parts []string, comment string) error {
 }
 
 func (f *InspectDelay) String() string {
-
 	var result strings.Builder
 
 	result.WriteString("inspect-delay")

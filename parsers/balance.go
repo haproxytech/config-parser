@@ -47,7 +47,6 @@ func (p *Balance) parseBalanceParams(pb params.BalanceParams, line string, parts
 }
 
 func (p *Balance) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-
 	if parts[0] == "balance" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Balance", Line: line}
@@ -110,7 +109,7 @@ func (p *Balance) Result() ([]common.ReturnResultLine, error) {
 	}
 
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("balance %s%s", p.data.Algorithm, params),
 			Comment: p.data.Comment,
 		},

@@ -20,7 +20,7 @@ import (
 	"strings"
 )
 
-//StringSplitIgnoreEmpty while spliting, removes empty items
+// StringSplitIgnoreEmpty while spliting, removes empty items
 func StringSplitIgnoreEmpty(s string, separators ...rune) []string {
 	f := func(c rune) bool {
 		willSplit := false
@@ -35,8 +35,8 @@ func StringSplitIgnoreEmpty(s string, separators ...rune) []string {
 	return strings.FieldsFunc(s, f)
 }
 
-//StringSplitWithCommentIgnoreEmpty while spliting, removes empty items, if we have comment, separate it
-func StringSplitWithCommentIgnoreEmpty(s string) (data []string, comment string) {
+// StringSplitWithCommentIgnoreEmpty while spliting, removes empty items, if we have comment, separate it
+func StringSplitWithCommentIgnoreEmpty(s string) (data []string, comment string) { //nolint:gocognit
 	data = []string{}
 
 	singleQuoteActive := false
@@ -94,7 +94,7 @@ func StringSplitWithCommentIgnoreEmpty(s string) (data []string, comment string)
 	return data, comment
 }
 
-//StringExtractComment checks if comment is added
+// StringExtractComment checks if comment is added
 func StringExtractComment(s string) string {
 	p := StringSplitIgnoreEmpty(s, '#')
 	if len(p) > 1 {
@@ -103,7 +103,7 @@ func StringExtractComment(s string) string {
 	return ""
 }
 
-//searches for "if" or "unless" and returns result
+// SplitRequest searches for "if" or "unless" and returns result
 func SplitRequest(parts []string) (command, condition []string) {
 	if len(parts) == 0 {
 		return []string{}, []string{}

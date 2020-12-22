@@ -77,7 +77,7 @@ func (s *OptionSmtpchk) Result() ([]common.ReturnResultLine, error) {
 		sb.WriteString(s.data.Domain)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    sb.String(),
 			Comment: s.data.Comment,
 		},

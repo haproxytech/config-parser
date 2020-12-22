@@ -27,7 +27,6 @@ type UnsetVar struct {
 }
 
 func (f *UnsetVar) Parse(parts []string) error {
-
 	if len(parts) < 1 {
 		return fmt.Errorf("not enough params")
 	}

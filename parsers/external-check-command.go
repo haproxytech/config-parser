@@ -24,14 +24,14 @@ import (
 	"github.com/haproxytech/config-parser/v3/types"
 )
 
+const ExternalCheckKeyword = "external-check"
+
 type ExternalCheckCommand struct {
 	data        *types.ExternalCheckCommand
 	preComments []string // comments that appear before the the actual line
 }
 
-/*
-external-check command <command>
-*/
+// external-check command <command>
 func (s *ExternalCheckCommand) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if len(parts) == 3 && parts[0] == "external-check" && parts[1] == "command" {
 		s.data = &types.ExternalCheckCommand{
@@ -52,7 +52,7 @@ func (s *ExternalCheckCommand) Result() ([]common.ReturnResultLine, error) {
 		data = fmt.Sprintf("external-check command %s", s.data.Command)
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    data,
 			Comment: s.data.Comment,
 		},

@@ -29,7 +29,7 @@ type OptionHTTPLog struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (o *OptionHTTPLog) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (o *OptionHTTPLog) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) { //nolint:gocognit
 	if len(parts) > 2 && parts[0] == "option" && parts[1] == "httplog" && parts[2] == "clf" {
 		o.data = &types.OptionHTTPLog{
 			Comment: comment,
@@ -74,7 +74,7 @@ func (o *OptionHTTPLog) Result() ([]common.ReturnResultLine, error) {
 		noOption = "no "
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("%soption httplog%s", noOption, clf),
 			Comment: o.data.Comment,
 		},

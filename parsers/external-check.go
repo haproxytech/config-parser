@@ -42,7 +42,7 @@ func (m *ExternalCheck) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    "external-check",
 			Comment: m.data.Comment,
 		},

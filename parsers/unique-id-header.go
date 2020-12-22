@@ -48,7 +48,7 @@ func (s *UniqueIDHeader) Result() ([]common.ReturnResultLine, error) {
 		return nil, errors.ErrFetch
 	}
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("unique-id-header %s", s.data.Name),
 			Comment: s.data.Comment,
 		},

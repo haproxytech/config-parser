@@ -49,7 +49,7 @@ func (p *ConfigVersion) Get(createIfNotExist bool) (common.ParserData, error) {
 	return nil, fmt.Errorf("no data")
 }
 
-//Parse see if we have version, since it is not haproxy keyword, it's in comments
+// Parse see if we have version, since it is not haproxy keyword, it's in comments
 func (p *ConfigVersion) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
 	if strings.HasPrefix(comment, "_version") {
 		data := common.StringSplitIgnoreEmpty(comment, '=')
@@ -72,7 +72,7 @@ func (p *ConfigVersion) Result() ([]common.ReturnResultLine, error) {
 	}
 
 	return []common.ReturnResultLine{
-		common.ReturnResultLine{
+		{
 			Data:    fmt.Sprintf("# _version=%d", p.data.Value),
 			Comment: "",
 		},

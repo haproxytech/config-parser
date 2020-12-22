@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -31,7 +32,6 @@ type SetDst struct {
 }
 
 func (f *SetDst) Parse(parts []string, comment string) error {
-
 	if comment != "" {
 		f.Comment = comment
 	}
