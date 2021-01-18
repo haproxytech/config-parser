@@ -131,6 +131,8 @@ func (h *Requests) Parse(line string, parts, previousParts []string, comment str
 			err = h.ParseHTTPRequest(&actions.UseService{}, parts, comment)
 		case "wait-for-handshake":
 			err = h.ParseHTTPRequest(&actions.WaitForHandshake{}, parts, comment)
+		case "return":
+			err = h.ParseHTTPRequest(&actions.Return{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):

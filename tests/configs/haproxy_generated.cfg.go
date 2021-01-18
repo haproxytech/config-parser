@@ -387,8 +387,20 @@ backend test
   http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
   http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
   http-request set-dst-port int(4000)
+  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
+  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
+  http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
   http-response capture res.hdr(Server) id 0
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
@@ -819,8 +831,20 @@ frontend test
   http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
   http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
   http-request set-dst-port int(4000)
+  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
+  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
+  http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
   http-response capture res.hdr(Server) id 0
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
@@ -1816,6 +1840,12 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
 `, 2},
   {`  http-request set-dst-port int(4000)
+`, 2},
+  {`  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
+`, 2},
+  {`  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+`, 2},
+  {`  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `, 2},
   {`  http-response capture res.hdr(Server) id 0
 `, 2},

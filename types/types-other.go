@@ -300,6 +300,18 @@ type HTTPAction interface {
 //test:ok:http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
 //test:ok:http-request set-dst-port int(4000)
 //test:fail:http-request set-dst-port
+//test:"ok":http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:"ok":http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+//test:"ok":http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:"ok":http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+//test:"ok":http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+//test:"ok":http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+//test:"ok":http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+//test:"ok":http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+//test:ok:http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
+//test:ok:http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+//test:ok:http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+//test:"ok":http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
 
 type HTTPRequests struct{}
 
