@@ -1,5 +1,3 @@
-// +build ignore
-
 /*
 Copyright 2019 HAProxy Technologies
 
@@ -18,7 +16,7 @@ limitations under the License.
 
 package main
 
-//run this as go run go-generate.go $(pwd)
+// run this as go run go-generate.go $(pwd)
 
 import (
 	"fmt"
@@ -35,7 +33,12 @@ import (
 	"github.com/haproxytech/config-parser/v3/common"
 )
 
-type Data struct {
+type AliasTestData struct {
+	Alias string
+	Test  string
+}
+
+type Data struct { //nolint:maligned
 	ParserMultiple     bool
 	ParserSections     []string
 	ParserName         string
@@ -54,9 +57,12 @@ type Data struct {
 	TestOK             []string
 	TestOKEscaped      []string
 	TestFail           []string
+	TestAliasOK        []AliasTestData
+	TestAliasFail      []AliasTestData
 	TestSkip           bool
 	DataDir            string
 	Deprecated         bool
+	HasAlias           bool
 }
 
 type ConfigFile struct {
@@ -64,7 +70,7 @@ type ConfigFile struct {
 	Tests   strings.Builder
 }
 
-func (c *ConfigFile) AddParserData(parser Data) error {
+func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit
 	sections := parser.ParserSections
 	testOK := parser.TestOK
 	TestOKEscaped := parser.TestOKEscaped
@@ -78,35 +84,35 @@ func (c *ConfigFile) AddParserData(parser Data) error {
 		if !ok {
 			c.Section[s] = []string{}
 		}
-		//line = testOK[0]
+		// line = testOK[0]
 		if parser.ParserMultiple {
 			lines = testOK
+			//nolint:gosimple
 			for _, line := range testOK {
 				c.Section[s] = append(c.Section[s], line)
 			}
+			// c.Section[s] = append(c.Section[s], testOK...)
 		} else {
 			lines = []string{testOK[0]}
 			c.Section[s] = append(c.Section[s], testOK[0])
 		}
 		if parser.ParserMultiple {
 			lines2 = TestOKEscaped
+			//nolint:gosimple
 			for _, line := range TestOKEscaped {
 				c.Section[s] = append(c.Section[s], line)
 			}
-		} else {
-			if len(TestOKEscaped) > 0 {
-				lines2 = []string{TestOKEscaped[0]}
-				c.Section[s] = append(c.Section[s], TestOKEscaped[0])
-			}
+			// c.Section[s] = append(c.Section[s], TestOKEscaped...)
+		} else if len(TestOKEscaped) > 0 {
+			lines2 = []string{TestOKEscaped[0]}
+			c.Section[s] = append(c.Section[s], TestOKEscaped[0])
 		}
 	}
 	if len(lines) == 0 && len(lines2) == 0 {
 		if parser.NoSections {
-			return nil
-		} else {
-			if !parser.Deprecated {
-				log.Fatalf("parser %s does not have any tests defined", parser.ParserName)
-			}
+			return
+		} else if !parser.Deprecated {
+			log.Fatalf("parser %s does not have any tests defined", parser.ParserName)
 		}
 	}
 	if !parser.NoSections {
@@ -114,8 +120,6 @@ func (c *ConfigFile) AddParserData(parser Data) error {
 			c.Tests.WriteString(fmt.Sprintf("  {`  %s\n`, %d},\n", line, len(sections)))
 		}
 	}
-
-	return nil
 }
 
 func (c *ConfigFile) String() string {
@@ -168,13 +172,19 @@ func (c *ConfigFile) String() string {
 	return result.String()
 }
 
+//nolint:gochecknoglobals
 var configFile = ConfigFile{}
 
 func main() {
-
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		log.Fatal(err)
+	}
+	if strings.HasSuffix(dir, "generate") {
+		dir, err = filepath.Abs(filepath.Dir(os.Args[0]) + "/..")
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 	if len(os.Args) > 1 {
 		dir = os.Args[1]
@@ -186,7 +196,7 @@ func main() {
 	generateTypes(dir, "")
 	generateTypesGeneric(dir)
 	generateTypesOther(dir)
-	//spoe
+	// spoe
 	generateTypes(dir, "spoe/")
 
 	filePath := path.Join(dir, "tests", "configs", "haproxy_generated.cfg.go")
@@ -204,7 +214,7 @@ func fileExists(filePath string) bool {
 	return !os.IsNotExist(err)
 }
 
-func generateTypesOther(dir string) {
+func generateTypesOther(dir string) { //nolint:gocognit,gocyclo
 	dat, err := ioutil.ReadFile("types/types-other.go")
 	if err != nil {
 		log.Println(err)
@@ -271,8 +281,26 @@ func generateTypesOther(dir string) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
 		}
+		if strings.HasPrefix(line, "//test:alias") {
+			data := strings.SplitN(line, ":", 5)
+			aliasTestData := AliasTestData{
+				Alias: data[2],
+				Test:  data[4],
+			}
+			switch data[3] {
+			case "ok":
+				parserData.TestAliasOK = append(parserData.TestAliasOK, aliasTestData)
+			case "fail":
+				parserData.TestAliasFail = append(parserData.TestAliasFail, aliasTestData)
+			default:
+				log.Fatalf("not able to process line %s", line)
+			}
+		}
 		if strings.HasPrefix(line, "//test:skip") {
 			parserData.TestSkip = true
+		}
+		if strings.HasPrefix(line, "//has-alias:true") {
+			parserData.HasAlias = true
 		}
 
 		if !strings.HasPrefix(line, "type ") {
@@ -342,7 +370,7 @@ func generateTypesOther(dir string) {
 	}
 }
 
-func generateTypesGeneric(dir string) {
+func generateTypesGeneric(dir string) { //nolint:gocognit
 	dat, err := ioutil.ReadFile("types/types-generic.go")
 	if err != nil {
 		log.Println(err)
@@ -389,11 +417,29 @@ func generateTypesGeneric(dir string) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
 		}
+		if strings.HasPrefix(line, "//test:alias") {
+			data := strings.SplitN(line, ":", 5)
+			aliasTestData := AliasTestData{
+				Alias: data[2],
+				Test:  data[4],
+			}
+			switch data[3] {
+			case "ok":
+				parserData.TestAliasOK = append(parserData.TestAliasOK, aliasTestData)
+			case "fail":
+				parserData.TestAliasFail = append(parserData.TestAliasFail, aliasTestData)
+			default:
+				log.Fatalf("not able to process line %s", line)
+			}
+		}
 		if strings.HasPrefix(line, "//gen:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
 			parserData = &Data{}
 			parserData.StructName = data[1]
 			parsers[data[1]] = parserData
+		}
+		if strings.HasPrefix(line, "//has-alias:true") {
+			parserData.HasAlias = true
 		}
 
 		if !strings.HasPrefix(line, "type ") {
@@ -436,13 +482,13 @@ func generateTypesGeneric(dir string) {
 			err = testTemplate.Execute(f, parserData)
 			CheckErr(err)
 		}
-		//configFile.AddParserData(parserData)
+		// configFile.AddParserData(parserData)
 		parsers = map[string]*Data{}
 		parserData = &Data{}
 	}
 }
 
-func generateTypes(dir string, dataDir string) {
+func generateTypes(dir string, dataDir string) { //nolint:gocognit
 	dat, err := ioutil.ReadFile(dataDir + "types/types.go")
 	if err != nil {
 		log.Println(err)
@@ -496,6 +542,24 @@ func generateTypes(dir string, dataDir string) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
 		}
+		if strings.HasPrefix(line, "//test:alias") {
+			data := strings.SplitN(line, ":", 5)
+			aliasTestData := AliasTestData{
+				Alias: data[2],
+				Test:  data[4],
+			}
+			switch data[3] {
+			case "ok":
+				parserData.TestAliasOK = append(parserData.TestAliasOK, aliasTestData)
+			case "fail":
+				parserData.TestAliasFail = append(parserData.TestAliasFail, aliasTestData)
+			default:
+				log.Fatalf("not able to process line %s", line)
+			}
+		}
+		if strings.HasPrefix(line, "//has-alias:true") {
+			parserData.HasAlias = true
+		}
 
 		if !strings.HasPrefix(line, "type ") {
 			continue
@@ -523,7 +587,7 @@ func generateTypes(dir string, dataDir string) {
 		err = typeTemplate.Execute(f, parserData)
 		CheckErr(err)
 
-		//parserData.TestFail = append(parserData.TestFail, "") parsers should not get empty line!
+		// parserData.TestFail = append(parserData.TestFail, "") parsers should not get empty line!
 		parserData.TestFail = append(parserData.TestFail, "---")
 		parserData.TestFail = append(parserData.TestFail, "--- ---")
 
@@ -542,7 +606,7 @@ func generateTypes(dir string, dataDir string) {
 }
 
 func cleanFileName(filename string) string {
-	return strings.Replace(filename, " ", "-", -1)
+	return strings.ReplaceAll(filename, " ", "-")
 }
 
 func CheckErr(err error) {
@@ -569,6 +633,7 @@ limitations under the License.
 */
 `
 
+//nolint:gochecknoglobals
 var typeOthersAPITemplate = template.Must(template.New("").Parse(license +
 	`{{- if .ModeOther}}
 package {{ .Dir }}
@@ -638,6 +703,7 @@ func parseErrorLines(s string) string {
 }
 `))
 
+//nolint:gochecknoglobals
 var typeTemplate = template.Must(template.New("").Parse(`// Code generated by go generate; DO NOT EDIT.
 /*
 Copyright 2019 HAProxy Technologies
@@ -682,6 +748,11 @@ func (p *{{ .StructName }}) Init() {
 {{- if not .NoName }}
 
 func (p *{{ .StructName }}) GetParserName() string {
+{{- if .HasAlias}}
+    if p.Alias != "" {
+	    return p.Alias
+	}
+{{- end }}
 {{- if .ModeOther}}
     return p.Name
 {{- else }}
@@ -871,6 +942,7 @@ func (p *{{ .StructName }}) ResultAll() ([]common.ReturnResultLine, []string, er
 }
 `))
 
+//nolint:gochecknoglobals
 var testTemplate = template.Must(template.New("").Parse(`// Code generated by go generate; DO NOT EDIT.
 /*
 Copyright 2019 HAProxy Technologies
@@ -958,4 +1030,64 @@ func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {
 		})
 	}
 }
+{{- if .HasAlias}}
+
+func TestAlias{{ $StructName }}{{ .Dir }}(t *testing.T) {
+	tests := map[string]bool{ {{ $AliasName := .StructName }}
+	{{- range $index, $val := .TestAliasOK}} {{ $AliasName = $val.Alias }}
+		"{{- $val.Test -}}": true,
+	{{- end }}
+	{{- range $index, $val := .TestAliasFail}}
+		"{{- $val.Test -}}": false,
+	{{- end }}
+	}
+	parser := {{- if .ModeOther}} &{{ .Dir }}{{- else }} &parsers{{- end }}.{{ $StructName }}{Alias:"{{ $AliasName }}"}
+	for command, shouldPass := range tests {
+		t.Run(command, func(t *testing.T) {
+		line :=strings.TrimSpace(command)
+		lines := strings.SplitN(line,"\n", -1)
+		var err error
+		parser.Init()
+		if len(lines)> 1{
+			for _,line = range(lines){
+			  line = strings.TrimSpace(line)
+				if err=ProcessLine(line, parser);err!=nil{
+					break
+				}
+			}
+		}else{
+			err = ProcessLine(line, parser)
+		}
+			if shouldPass {
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				result, err := parser.Result()
+				if err != nil {
+					t.Errorf(err.Error())
+					return
+				}
+				var returnLine string
+				if result[0].Comment == "" {
+					returnLine = result[0].Data
+				} else {
+					returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
+				}
+				if command != returnLine {
+					t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, command))
+				}
+			} else {
+				if err == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error for line [%s]", line))
+				}
+				_, parseErr := parser.Result()
+				if parseErr == nil {
+					t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
+				}
+			}
+		})
+	}
+}
+{{- end }}
 `))
