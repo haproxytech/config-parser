@@ -38,8 +38,145 @@ global test
 defaults test
   balance roundrobin
   cookie test
-  default-server inter 1000 weight 13
+  default-server addr 127.0.0.1
+  default-server addr ::1
+  default-server agent-check
+  default-server agent-send name
+  default-server agent-inter 1000ms
+  default-server agent-addr 127.0.0.1
+  default-server agent-addr site.com
+  default-server agent-port 1
+  default-server agent-port 65535
+  default-server allow-0rtt
+  default-server alpn h2
+  default-server alpn http/1.1
+  default-server alpn h2,http/1.1
+  default-server backup
+  default-server ca-file cert.crt
+  default-server check
+  default-server check-send-proxy
+  default-server check-alpn http/1.0
+  default-server check-alpn http/1.1,http/1.0
+  default-server check-proto h2
+  default-server check-ssl
+  default-server check-via-socks4
+  default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  default-server cookie value
+  default-server crl-file file.pem
+  default-server crt cert.pem
+  default-server disabled
+  default-server enabled
+  default-server error-limit 50
+  default-server fall 30
   default-server fall 1 rise 2 inter 3s port 4444
+  default-server force-sslv3
+  default-server force-tlsv10
+  default-server force-tlsv11
+  default-server force-tlsv12
+  default-server force-tlsv13
+  default-server init-addr last,libc,none
+  default-server init-addr last,libc,none,127.0.0.1
+  default-server inter 1500ms
+  default-server inter 1000 weight 13
+  default-server fastinter 2500ms
+  default-server fastinter unknown
+  default-server downinter 3500ms
+  default-server log-proto legacy
+  default-server log-proto octet-count
+  default-server maxconn 1
+  default-server maxconn 50
+  default-server maxqueue 0
+  default-server maxqueue 1000
+  default-server max-reuse -1
+  default-server max-reuse 0
+  default-server max-reuse 1
+  default-server minconn 1
+  default-server minconn 50
+  default-server namespace test
+  default-server no-agent-check
+  default-server no-backup
+  default-server no-check
+  default-server no-check-ssl
+  default-server no-send-proxy-v2
+  default-server no-send-proxy-v2-ssl
+  default-server no-send-proxy-v2-ssl-cn
+  default-server no-ssl
+  default-server no-ssl-reuse
+  default-server no-sslv3
+  default-server no-tls-tickets
+  default-server no-tlsv10
+  default-server no-tlsv11
+  default-server no-tlsv12
+  default-server no-tlsv13
+  default-server no-verifyhost
+  default-server no-tfo
+  default-server non-stick
+  default-server npn http/1.1,http/1.0
+  default-server observe layer4
+  default-server observe layer7
+  default-server on-error fastinter
+  default-server on-error fail-check
+  default-server on-error sudden-death
+  default-server on-error mark-down
+  default-server on-marked-down shutdown-sessions
+  default-server on-marked-up shutdown-backup-session
+  default-server pool-max-conn -1
+  default-server pool-max-conn 0
+  default-server pool-max-conn 100
+  default-server pool-purge-delay 0
+  default-server pool-purge-delay 5
+  default-server pool-purge-delay 500
+  default-server port 27015
+  default-server port 27016
+  default-server proto h2
+  default-server redir http://image1.mydomain.com
+  default-server redir https://image1.mydomain.com
+  default-server rise 2
+  default-server rise 200
+  default-server resolve-opts allow-dup-ip
+  default-server resolve-opts ignore-weight
+  default-server resolve-opts allow-dup-ip,ignore-weight
+  default-server resolve-opts prevent-dup-ip,ignore-weight
+  default-server resolve-prefer ipv4
+  default-server resolve-prefer ipv6
+  default-server resolve-net 10.0.0.0/8
+  default-server resolve-net 10.0.0.0/8,10.0.0.0/16
+  default-server resolvers mydns
+  default-server send-proxy
+  default-server send-proxy-v2
+  default-server proxy-v2-options ssl
+  default-server proxy-v2-options ssl,cert-cn
+  default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+  default-server send-proxy-v2-ssl
+  default-server send-proxy-v2-ssl-cn
+  default-server slowstart 2000ms
+  default-server sni TODO
+  default-server source TODO
+  default-server ssl
+  default-server ssl-max-ver SSLv3
+  default-server ssl-max-ver TLSv1.0
+  default-server ssl-max-ver TLSv1.1
+  default-server ssl-max-ver TLSv1.2
+  default-server ssl-max-ver TLSv1.3
+  default-server ssl-min-ver SSLv3
+  default-server ssl-min-ver TLSv1.0
+  default-server ssl-min-ver TLSv1.1
+  default-server ssl-min-ver TLSv1.2
+  default-server ssl-min-ver TLSv1.3
+  default-server ssl-reuse
+  default-server stick
+  default-server socks4 127.0.0.1:81
+  default-server tcp-ut 20ms
+  default-server tfo
+  default-server track TODO
+  default-server tls-tickets
+  default-server verify none
+  default-server verify required
+  default-server verifyhost site.com
+  default-server weight 1
+  default-server weight 128
+  default-server weight 256
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -133,8 +270,145 @@ backend test
   acl cookie_set hdr_sub(cookie) SEEN=1
   balance roundrobin
   cookie test
-  default-server inter 1000 weight 13
+  default-server addr 127.0.0.1
+  default-server addr ::1
+  default-server agent-check
+  default-server agent-send name
+  default-server agent-inter 1000ms
+  default-server agent-addr 127.0.0.1
+  default-server agent-addr site.com
+  default-server agent-port 1
+  default-server agent-port 65535
+  default-server allow-0rtt
+  default-server alpn h2
+  default-server alpn http/1.1
+  default-server alpn h2,http/1.1
+  default-server backup
+  default-server ca-file cert.crt
+  default-server check
+  default-server check-send-proxy
+  default-server check-alpn http/1.0
+  default-server check-alpn http/1.1,http/1.0
+  default-server check-proto h2
+  default-server check-ssl
+  default-server check-via-socks4
+  default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  default-server cookie value
+  default-server crl-file file.pem
+  default-server crt cert.pem
+  default-server disabled
+  default-server enabled
+  default-server error-limit 50
+  default-server fall 30
   default-server fall 1 rise 2 inter 3s port 4444
+  default-server force-sslv3
+  default-server force-tlsv10
+  default-server force-tlsv11
+  default-server force-tlsv12
+  default-server force-tlsv13
+  default-server init-addr last,libc,none
+  default-server init-addr last,libc,none,127.0.0.1
+  default-server inter 1500ms
+  default-server inter 1000 weight 13
+  default-server fastinter 2500ms
+  default-server fastinter unknown
+  default-server downinter 3500ms
+  default-server log-proto legacy
+  default-server log-proto octet-count
+  default-server maxconn 1
+  default-server maxconn 50
+  default-server maxqueue 0
+  default-server maxqueue 1000
+  default-server max-reuse -1
+  default-server max-reuse 0
+  default-server max-reuse 1
+  default-server minconn 1
+  default-server minconn 50
+  default-server namespace test
+  default-server no-agent-check
+  default-server no-backup
+  default-server no-check
+  default-server no-check-ssl
+  default-server no-send-proxy-v2
+  default-server no-send-proxy-v2-ssl
+  default-server no-send-proxy-v2-ssl-cn
+  default-server no-ssl
+  default-server no-ssl-reuse
+  default-server no-sslv3
+  default-server no-tls-tickets
+  default-server no-tlsv10
+  default-server no-tlsv11
+  default-server no-tlsv12
+  default-server no-tlsv13
+  default-server no-verifyhost
+  default-server no-tfo
+  default-server non-stick
+  default-server npn http/1.1,http/1.0
+  default-server observe layer4
+  default-server observe layer7
+  default-server on-error fastinter
+  default-server on-error fail-check
+  default-server on-error sudden-death
+  default-server on-error mark-down
+  default-server on-marked-down shutdown-sessions
+  default-server on-marked-up shutdown-backup-session
+  default-server pool-max-conn -1
+  default-server pool-max-conn 0
+  default-server pool-max-conn 100
+  default-server pool-purge-delay 0
+  default-server pool-purge-delay 5
+  default-server pool-purge-delay 500
+  default-server port 27015
+  default-server port 27016
+  default-server proto h2
+  default-server redir http://image1.mydomain.com
+  default-server redir https://image1.mydomain.com
+  default-server rise 2
+  default-server rise 200
+  default-server resolve-opts allow-dup-ip
+  default-server resolve-opts ignore-weight
+  default-server resolve-opts allow-dup-ip,ignore-weight
+  default-server resolve-opts prevent-dup-ip,ignore-weight
+  default-server resolve-prefer ipv4
+  default-server resolve-prefer ipv6
+  default-server resolve-net 10.0.0.0/8
+  default-server resolve-net 10.0.0.0/8,10.0.0.0/16
+  default-server resolvers mydns
+  default-server send-proxy
+  default-server send-proxy-v2
+  default-server proxy-v2-options ssl
+  default-server proxy-v2-options ssl,cert-cn
+  default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+  default-server send-proxy-v2-ssl
+  default-server send-proxy-v2-ssl-cn
+  default-server slowstart 2000ms
+  default-server sni TODO
+  default-server source TODO
+  default-server ssl
+  default-server ssl-max-ver SSLv3
+  default-server ssl-max-ver TLSv1.0
+  default-server ssl-max-ver TLSv1.1
+  default-server ssl-max-ver TLSv1.2
+  default-server ssl-max-ver TLSv1.3
+  default-server ssl-min-ver SSLv3
+  default-server ssl-min-ver TLSv1.0
+  default-server ssl-min-ver TLSv1.1
+  default-server ssl-min-ver TLSv1.2
+  default-server ssl-min-ver TLSv1.3
+  default-server ssl-reuse
+  default-server stick
+  default-server socks4 127.0.0.1:81
+  default-server tcp-ut 20ms
+  default-server tfo
+  default-server track TODO
+  default-server tls-tickets
+  default-server verify none
+  default-server verify required
+  default-server verifyhost site.com
+  default-server weight 1
+  default-server weight 128
+  default-server weight 256
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -1259,9 +1533,283 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  cpu-map auto:1-4 0-1 2-3
 `, 1},
-  {`  default-server inter 1000 weight 13
+  {`  default-server addr 127.0.0.1
+`, 2},
+  {`  default-server addr ::1
+`, 2},
+  {`  default-server agent-check
+`, 2},
+  {`  default-server agent-send name
+`, 2},
+  {`  default-server agent-inter 1000ms
+`, 2},
+  {`  default-server agent-addr 127.0.0.1
+`, 2},
+  {`  default-server agent-addr site.com
+`, 2},
+  {`  default-server agent-port 1
+`, 2},
+  {`  default-server agent-port 65535
+`, 2},
+  {`  default-server allow-0rtt
+`, 2},
+  {`  default-server alpn h2
+`, 2},
+  {`  default-server alpn http/1.1
+`, 2},
+  {`  default-server alpn h2,http/1.1
+`, 2},
+  {`  default-server backup
+`, 2},
+  {`  default-server ca-file cert.crt
+`, 2},
+  {`  default-server check
+`, 2},
+  {`  default-server check-send-proxy
+`, 2},
+  {`  default-server check-alpn http/1.0
+`, 2},
+  {`  default-server check-alpn http/1.1,http/1.0
+`, 2},
+  {`  default-server check-proto h2
+`, 2},
+  {`  default-server check-ssl
+`, 2},
+  {`  default-server check-via-socks4
+`, 2},
+  {`  default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+`, 2},
+  {`  default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+`, 2},
+  {`  default-server cookie value
+`, 2},
+  {`  default-server crl-file file.pem
+`, 2},
+  {`  default-server crt cert.pem
+`, 2},
+  {`  default-server disabled
+`, 2},
+  {`  default-server enabled
+`, 2},
+  {`  default-server error-limit 50
+`, 2},
+  {`  default-server fall 30
 `, 2},
   {`  default-server fall 1 rise 2 inter 3s port 4444
+`, 2},
+  {`  default-server force-sslv3
+`, 2},
+  {`  default-server force-tlsv10
+`, 2},
+  {`  default-server force-tlsv11
+`, 2},
+  {`  default-server force-tlsv12
+`, 2},
+  {`  default-server force-tlsv13
+`, 2},
+  {`  default-server init-addr last,libc,none
+`, 2},
+  {`  default-server init-addr last,libc,none,127.0.0.1
+`, 2},
+  {`  default-server inter 1500ms
+`, 2},
+  {`  default-server inter 1000 weight 13
+`, 2},
+  {`  default-server fastinter 2500ms
+`, 2},
+  {`  default-server fastinter unknown
+`, 2},
+  {`  default-server downinter 3500ms
+`, 2},
+  {`  default-server log-proto legacy
+`, 2},
+  {`  default-server log-proto octet-count
+`, 2},
+  {`  default-server maxconn 1
+`, 2},
+  {`  default-server maxconn 50
+`, 2},
+  {`  default-server maxqueue 0
+`, 2},
+  {`  default-server maxqueue 1000
+`, 2},
+  {`  default-server max-reuse -1
+`, 2},
+  {`  default-server max-reuse 0
+`, 2},
+  {`  default-server max-reuse 1
+`, 2},
+  {`  default-server minconn 1
+`, 2},
+  {`  default-server minconn 50
+`, 2},
+  {`  default-server namespace test
+`, 2},
+  {`  default-server no-agent-check
+`, 2},
+  {`  default-server no-backup
+`, 2},
+  {`  default-server no-check
+`, 2},
+  {`  default-server no-check-ssl
+`, 2},
+  {`  default-server no-send-proxy-v2
+`, 2},
+  {`  default-server no-send-proxy-v2-ssl
+`, 2},
+  {`  default-server no-send-proxy-v2-ssl-cn
+`, 2},
+  {`  default-server no-ssl
+`, 2},
+  {`  default-server no-ssl-reuse
+`, 2},
+  {`  default-server no-sslv3
+`, 2},
+  {`  default-server no-tls-tickets
+`, 2},
+  {`  default-server no-tlsv10
+`, 2},
+  {`  default-server no-tlsv11
+`, 2},
+  {`  default-server no-tlsv12
+`, 2},
+  {`  default-server no-tlsv13
+`, 2},
+  {`  default-server no-verifyhost
+`, 2},
+  {`  default-server no-tfo
+`, 2},
+  {`  default-server non-stick
+`, 2},
+  {`  default-server npn http/1.1,http/1.0
+`, 2},
+  {`  default-server observe layer4
+`, 2},
+  {`  default-server observe layer7
+`, 2},
+  {`  default-server on-error fastinter
+`, 2},
+  {`  default-server on-error fail-check
+`, 2},
+  {`  default-server on-error sudden-death
+`, 2},
+  {`  default-server on-error mark-down
+`, 2},
+  {`  default-server on-marked-down shutdown-sessions
+`, 2},
+  {`  default-server on-marked-up shutdown-backup-session
+`, 2},
+  {`  default-server pool-max-conn -1
+`, 2},
+  {`  default-server pool-max-conn 0
+`, 2},
+  {`  default-server pool-max-conn 100
+`, 2},
+  {`  default-server pool-purge-delay 0
+`, 2},
+  {`  default-server pool-purge-delay 5
+`, 2},
+  {`  default-server pool-purge-delay 500
+`, 2},
+  {`  default-server port 27015
+`, 2},
+  {`  default-server port 27016
+`, 2},
+  {`  default-server proto h2
+`, 2},
+  {`  default-server redir http://image1.mydomain.com
+`, 2},
+  {`  default-server redir https://image1.mydomain.com
+`, 2},
+  {`  default-server rise 2
+`, 2},
+  {`  default-server rise 200
+`, 2},
+  {`  default-server resolve-opts allow-dup-ip
+`, 2},
+  {`  default-server resolve-opts ignore-weight
+`, 2},
+  {`  default-server resolve-opts allow-dup-ip,ignore-weight
+`, 2},
+  {`  default-server resolve-opts prevent-dup-ip,ignore-weight
+`, 2},
+  {`  default-server resolve-prefer ipv4
+`, 2},
+  {`  default-server resolve-prefer ipv6
+`, 2},
+  {`  default-server resolve-net 10.0.0.0/8
+`, 2},
+  {`  default-server resolve-net 10.0.0.0/8,10.0.0.0/16
+`, 2},
+  {`  default-server resolvers mydns
+`, 2},
+  {`  default-server send-proxy
+`, 2},
+  {`  default-server send-proxy-v2
+`, 2},
+  {`  default-server proxy-v2-options ssl
+`, 2},
+  {`  default-server proxy-v2-options ssl,cert-cn
+`, 2},
+  {`  default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+`, 2},
+  {`  default-server send-proxy-v2-ssl
+`, 2},
+  {`  default-server send-proxy-v2-ssl-cn
+`, 2},
+  {`  default-server slowstart 2000ms
+`, 2},
+  {`  default-server sni TODO
+`, 2},
+  {`  default-server source TODO
+`, 2},
+  {`  default-server ssl
+`, 2},
+  {`  default-server ssl-max-ver SSLv3
+`, 2},
+  {`  default-server ssl-max-ver TLSv1.0
+`, 2},
+  {`  default-server ssl-max-ver TLSv1.1
+`, 2},
+  {`  default-server ssl-max-ver TLSv1.2
+`, 2},
+  {`  default-server ssl-max-ver TLSv1.3
+`, 2},
+  {`  default-server ssl-min-ver SSLv3
+`, 2},
+  {`  default-server ssl-min-ver TLSv1.0
+`, 2},
+  {`  default-server ssl-min-ver TLSv1.1
+`, 2},
+  {`  default-server ssl-min-ver TLSv1.2
+`, 2},
+  {`  default-server ssl-min-ver TLSv1.3
+`, 2},
+  {`  default-server ssl-reuse
+`, 2},
+  {`  default-server stick
+`, 2},
+  {`  default-server socks4 127.0.0.1:81
+`, 2},
+  {`  default-server tcp-ut 20ms
+`, 2},
+  {`  default-server tfo
+`, 2},
+  {`  default-server track TODO
+`, 2},
+  {`  default-server tls-tickets
+`, 2},
+  {`  default-server verify none
+`, 2},
+  {`  default-server verify required
+`, 2},
+  {`  default-server verifyhost site.com
+`, 2},
+  {`  default-server weight 1
+`, 2},
+  {`  default-server weight 128
+`, 2},
+  {`  default-server weight 256
 `, 2},
   {`  errorfile 400 /etc/haproxy/errorfiles/400badreq.http
 `, 3},

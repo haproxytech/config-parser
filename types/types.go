@@ -253,8 +253,145 @@ type CPUMap struct {
 //sections:defaults,backend
 //name:default-server
 //is-multiple:true
-//test:ok:default-server inter 1000 weight 13
+//test:ok:default-server addr 127.0.0.1
+//test:ok:default-server addr ::1
+//test:ok:default-server agent-check
+//test:ok:default-server agent-send name
+//test:ok:default-server agent-inter 1000ms
+//test:ok:default-server agent-addr 127.0.0.1
+//test:ok:default-server agent-addr site.com
+//test:ok:default-server agent-port 1
+//test:ok:default-server agent-port 65535
+//test:ok:default-server allow-0rtt
+//test:ok:default-server alpn h2
+//test:ok:default-server alpn http/1.1
+//test:ok:default-server alpn h2,http/1.1
+//test:ok:default-server backup
+//test:ok:default-server ca-file cert.crt
+//test:ok:default-server check
+//test:ok:default-server check-send-proxy
+//test:ok:default-server check-alpn http/1.0
+//test:ok:default-server check-alpn http/1.1,http/1.0
+//test:ok:default-server check-proto h2
+//test:ok:default-server check-ssl
+//test:ok:default-server check-via-socks4
+//test:ok:default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+//test:ok:default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+//test:ok:default-server cookie value
+//test:ok:default-server crl-file file.pem
+//test:ok:default-server crt cert.pem
+//test:ok:default-server disabled
+//test:ok:default-server enabled
+//test:ok:default-server error-limit 50
+//test:ok:default-server fall 30
 //test:ok:default-server fall 1 rise 2 inter 3s port 4444
+//test:ok:default-server force-sslv3
+//test:ok:default-server force-tlsv10
+//test:ok:default-server force-tlsv11
+//test:ok:default-server force-tlsv12
+//test:ok:default-server force-tlsv13
+//test:ok:default-server init-addr last,libc,none
+//test:ok:default-server init-addr last,libc,none,127.0.0.1
+//test:ok:default-server inter 1500ms
+//test:ok:default-server inter 1000 weight 13
+//test:ok:default-server fastinter 2500ms
+//test:ok:default-server fastinter unknown
+//test:ok:default-server downinter 3500ms
+//test:ok:default-server log-proto legacy
+//test:ok:default-server log-proto octet-count
+//test:ok:default-server maxconn 1
+//test:ok:default-server maxconn 50
+//test:ok:default-server maxqueue 0
+//test:ok:default-server maxqueue 1000
+//test:ok:default-server max-reuse -1
+//test:ok:default-server max-reuse 0
+//test:ok:default-server max-reuse 1
+//test:ok:default-server minconn 1
+//test:ok:default-server minconn 50
+//test:ok:default-server namespace test
+//test:ok:default-server no-agent-check
+//test:ok:default-server no-backup
+//test:ok:default-server no-check
+//test:ok:default-server no-check-ssl
+//test:ok:default-server no-send-proxy-v2
+//test:ok:default-server no-send-proxy-v2-ssl
+//test:ok:default-server no-send-proxy-v2-ssl-cn
+//test:ok:default-server no-ssl
+//test:ok:default-server no-ssl-reuse
+//test:ok:default-server no-sslv3
+//test:ok:default-server no-tls-tickets
+//test:ok:default-server no-tlsv10
+//test:ok:default-server no-tlsv11
+//test:ok:default-server no-tlsv12
+//test:ok:default-server no-tlsv13
+//test:ok:default-server no-verifyhost
+//test:ok:default-server no-tfo
+//test:ok:default-server non-stick
+//test:ok:default-server npn http/1.1,http/1.0
+//test:ok:default-server observe layer4
+//test:ok:default-server observe layer7
+//test:ok:default-server on-error fastinter
+//test:ok:default-server on-error fail-check
+//test:ok:default-server on-error sudden-death
+//test:ok:default-server on-error mark-down
+//test:ok:default-server on-marked-down shutdown-sessions
+//test:ok:default-server on-marked-up shutdown-backup-session
+//test:ok:default-server pool-max-conn -1
+//test:ok:default-server pool-max-conn 0
+//test:ok:default-server pool-max-conn 100
+//test:ok:default-server pool-purge-delay 0
+//test:ok:default-server pool-purge-delay 5
+//test:ok:default-server pool-purge-delay 500
+//test:ok:default-server port 27015
+//test:ok:default-server port 27016
+//test:ok:default-server proto h2
+//test:ok:default-server redir http://image1.mydomain.com
+//test:ok:default-server redir https://image1.mydomain.com
+//test:ok:default-server rise 2
+//test:ok:default-server rise 200
+//test:ok:default-server resolve-opts allow-dup-ip
+//test:ok:default-server resolve-opts ignore-weight
+//test:ok:default-server resolve-opts allow-dup-ip,ignore-weight
+//test:ok:default-server resolve-opts prevent-dup-ip,ignore-weight
+//test:ok:default-server resolve-prefer ipv4
+//test:ok:default-server resolve-prefer ipv6
+//test:ok:default-server resolve-net 10.0.0.0/8
+//test:ok:default-server resolve-net 10.0.0.0/8,10.0.0.0/16
+//test:ok:default-server resolvers mydns
+//test:ok:default-server send-proxy
+//test:ok:default-server send-proxy-v2
+//test:ok:default-server proxy-v2-options ssl
+//test:ok:default-server proxy-v2-options ssl,cert-cn
+//test:ok:default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+//test:ok:default-server send-proxy-v2-ssl
+//test:ok:default-server send-proxy-v2-ssl-cn
+//test:ok:default-server slowstart 2000ms
+//test:ok:default-server sni TODO
+//test:ok:default-server source TODO
+//test:ok:default-server ssl
+//test:ok:default-server ssl-max-ver SSLv3
+//test:ok:default-server ssl-max-ver TLSv1.0
+//test:ok:default-server ssl-max-ver TLSv1.1
+//test:ok:default-server ssl-max-ver TLSv1.2
+//test:ok:default-server ssl-max-ver TLSv1.3
+//test:ok:default-server ssl-min-ver SSLv3
+//test:ok:default-server ssl-min-ver TLSv1.0
+//test:ok:default-server ssl-min-ver TLSv1.1
+//test:ok:default-server ssl-min-ver TLSv1.2
+//test:ok:default-server ssl-min-ver TLSv1.3
+//test:ok:default-server ssl-reuse
+//test:ok:default-server stick
+//test:ok:default-server socks4 127.0.0.1:81
+//test:ok:default-server tcp-ut 20ms
+//test:ok:default-server tfo
+//test:ok:default-server track TODO
+//test:ok:default-server tls-tickets
+//test:ok:default-server verify none
+//test:ok:default-server verify required
+//test:ok:default-server verifyhost site.com
+//test:ok:default-server weight 1
+//test:ok:default-server weight 128
+//test:ok:default-server weight 256
 //test:fail:default-server
 type DefaultServer struct {
 	Params  []params.ServerOption
