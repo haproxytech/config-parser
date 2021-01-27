@@ -41,32 +41,38 @@ type Hdr struct {
 	Fmt  string
 }
 
+//nolint:gochecknoglobals
+var payloadTypes = map[string]struct{}{
+	"string":    {},
+	"lf-string": {},
+	"file":      {},
+	"lf-file":   {},
+}
+
 func IsPayload(in string) bool {
-	_, ok := map[string]struct{}{
-		"string":    {},
-		"lf-string": {},
-		"file":      {},
-		"lf-file":   {},
-	}[in]
+	_, ok := payloadTypes[in]
 	return ok
 }
 
+//nolint:gochecknoglobals
+var allowedErrorCodes = map[int64]struct{}{
+	200: {},
+	400: {},
+	403: {},
+	404: {},
+	405: {},
+	408: {},
+	410: {},
+	413: {},
+	425: {},
+	429: {},
+	500: {},
+	503: {},
+	504: {},
+}
+
 func AllowedErrorCode(code int64) bool {
-	_, ok := map[int64]struct{}{
-		200: {},
-		400: {},
-		403: {},
-		404: {},
-		405: {},
-		408: {},
-		410: {},
-		413: {},
-		425: {},
-		429: {},
-		500: {},
-		503: {},
-		504: {},
-	}[code]
+	_, ok := allowedErrorCodes[code]
 	return ok
 }
 
