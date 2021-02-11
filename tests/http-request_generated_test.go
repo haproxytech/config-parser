@@ -120,6 +120,7 @@ func TestRequestshttp(t *testing.T) {
 		`http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }`: true,
 		`http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }`: true,
 		`http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }`: true,
+		`http-request return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }`: true,
 		`http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }`: true,
 		`http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }`: true,
 		`http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }`: true,

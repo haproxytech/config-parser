@@ -99,19 +99,11 @@ func (f *Return) Parse(parts []string, comment string) error {
 					f.Status = &code
 				case "content-type":
 					i++
-					contentType, err := unQuote(command[i])
-					if err != nil {
-						return fmt.Errorf("failed to unquote content-type %s", command[i])
-					}
-					f.ContentType = contentType
+					f.ContentType = command[i]
 				case "errorfile", "errorfiles", "file", "lf-file", "string", "lf-string":
 					f.ContentFormat = command[i]
 					i++
-					content, err := unQuote(command[i])
-					if err != nil {
-						return fmt.Errorf("failed to unquote content %s", command[i])
-					}
-					f.Content = content
+					f.Content = command[i]
 				case "default-errorfiles":
 					f.ContentFormat = command[i]
 				case "hdr":
@@ -136,16 +128,6 @@ func (f *Return) Parse(parts []string, comment string) error {
 	return fmt.Errorf("not enough params")
 }
 
-func unQuote(in string) (string, error) {
-	if len(in) < 2 {
-		return in, nil
-	}
-	if in[0] != '\'' && in[0] != '`' && in[0] != '"' {
-		return in, nil
-	}
-	return strconv.Unquote(in)
-}
-
 func (f *Return) String() string {
 	var result strings.Builder
 	result.WriteString("return")
@@ -164,7 +146,7 @@ func (f *Return) String() string {
 	}
 	if f.ContentType != "" {
 		result.WriteString(" content-type ")
-		result.WriteString(strconv.Quote(f.ContentType))
+		result.WriteString(f.ContentType)
 	}
 	if f.ContentFormat != "" {
 		result.WriteString(" ")
@@ -172,7 +154,7 @@ func (f *Return) String() string {
 		if f.Content != "" && f.ContentFormat != "default-errorfiles" {
 			result.WriteString(" ")
 			if f.ContentFormat == "string" || f.ContentFormat == "lf-string" {
-				result.WriteString(strconv.Quote(f.Content))
+				result.WriteString(f.Content)
 			} else {
 				result.WriteString(f.Content)
 			}
