@@ -153,11 +153,7 @@ func (f *Return) String() string {
 		result.WriteString(f.ContentFormat)
 		if f.Content != "" && f.ContentFormat != "default-errorfiles" {
 			result.WriteString(" ")
-			if f.ContentFormat == "string" || f.ContentFormat == "lf-string" {
-				result.WriteString(f.Content)
-			} else {
-				result.WriteString(f.Content)
-			}
+			result.WriteString(f.Content)
 		}
 	}
 	if IsPayload(f.ContentFormat) {
