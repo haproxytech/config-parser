@@ -58,6 +58,9 @@ func createParsers(parser map[string]ParserInterface, sequence []Section) *Parse
 func (p *Parser) getStartParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
+	if p.Options.UseMd5Hash {
+		addParser(parser, &sequence, &extra.ConfigHash{})
+	}
 	addParser(parser, &sequence, &extra.ConfigVersion{})
 	addParser(parser, &sequence, &extra.Comments{})
 	return createParsers(parser, sequence)

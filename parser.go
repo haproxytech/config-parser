@@ -18,6 +18,7 @@ package parser
 
 import (
 	"bufio"
+	"crypto/md5"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -63,6 +64,7 @@ const (
 
 type Options struct {
 	UseV2HTTPCheck bool
+	UseMd5Hash     bool
 }
 
 // Parser reads and writes configuration on given file
@@ -348,12 +350,36 @@ func (p *Parser) String() string {
 }
 
 func (p *Parser) Save(filename string) error {
-	d1 := []byte(p.String())
-	err := renameio.WriteFile(filename, d1, 0644)
+	if p.Options.UseMd5Hash {
+		data, err := p.StringWithHash()
+		if err != nil {
+			return err
+		}
+		return p.save([]byte(data), filename)
+	}
+	return p.save([]byte(p.String()), filename)
+}
+
+func (p *Parser) save(data []byte, filename string) error {
+	err := renameio.WriteFile(filename, data, 0644)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (p *Parser) StringWithHash() (string, error) {
+	var result strings.Builder
+	content := p.String()
+	//nolint:gosec
+	hash := md5.Sum([]byte(content))
+	result.WriteString(fmt.Sprintf("# _md5hash=%x\n", hash))
+	result.WriteString(content)
+	if err := p.Set(Comments, CommentsSectionName, "# _md5hash", &types.ConfigHash{Value: fmt.Sprintf("%x", hash)}); err != nil {
+		return "", err
+	}
+
+	return result.String(), nil
 }
 
 // ProcessLine parses line plus determines if we need to change state

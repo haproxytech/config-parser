@@ -37,6 +37,15 @@ type ConfigVersion struct {
 	Value int64
 }
 
+//name:config-hash
+//no-sections:true
+//dir:extra
+//no-init:true
+//no-get:true
+type ConfigHash struct {
+	Value string
+}
+
 //name:comments
 //no-sections:true
 //dir:extra
