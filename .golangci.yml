@@ -35,3 +35,9 @@ linters:
 run:
   skip-dirs:
     - test
+
+issues:
+  exclude-rules:
+    - linters:
+        - gosec
+      text: "G[501]"
