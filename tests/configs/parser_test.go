@@ -73,3 +73,18 @@ func TestGeneratedConfig(t *testing.T) {
 		}
 	}
 }
+
+func TestHashConfig(t *testing.T) {
+	p := parser.Parser{Options: parser.Options{UseMd5Hash: true}}
+	var buffer bytes.Buffer
+	buffer.WriteString(configBasicHash)
+	_ = p.Process(&buffer)
+	result, err := p.StringWithHash()
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	if result != configBasicHash {
+		compare(t, configBasicHash, result)
+		t.Fatalf("configurations does not match")
+	}
+}
