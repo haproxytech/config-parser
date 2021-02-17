@@ -24,6 +24,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/gofrs/flock"
 	"github.com/google/renameio"
 	parser "github.com/haproxytech/config-parser/v3"
 	"github.com/haproxytech/config-parser/v3/common"
@@ -381,10 +382,19 @@ func (p *Parser) String() string {
 }
 
 func (p *Parser) Save(filename string) error {
+	f := flock.New(filename)
+	if err := f.Lock(); err != nil {
+		return err
+	}
 	d1 := []byte(p.String())
 	err := renameio.WriteFile(filename, d1, 0644)
 	if err != nil {
+		f.Unlock() //nolint:errcheck
 		return err
+	}
+	if err := f.Unlock(); err != nil {
+		errMsg := err.Error()
+		return fmt.Errorf("%w %s", parser.UnlockError{}, errMsg)
 	}
 	return nil
 }

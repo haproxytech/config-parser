@@ -26,6 +26,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/gofrs/flock"
 	"github.com/google/renameio"
 	"github.com/haproxytech/config-parser/v3/common"
 	"github.com/haproxytech/config-parser/v3/errors"
@@ -61,6 +62,12 @@ const (
 	GlobalSectionName   = "data"
 	DefaultSectionName  = "data"
 )
+
+type UnlockError struct{}
+
+func (e UnlockError) Error() string {
+	return "failed funclock"
+}
 
 type Options struct {
 	UseV2HTTPCheck bool
@@ -361,9 +368,18 @@ func (p *Parser) Save(filename string) error {
 }
 
 func (p *Parser) save(data []byte, filename string) error {
+	f := flock.New(filename)
+	if err := f.Lock(); err != nil {
+		return err
+	}
 	err := renameio.WriteFile(filename, data, 0644)
 	if err != nil {
+		f.Unlock() //nolint:errcheck
 		return err
+	}
+	if err := f.Unlock(); err != nil {
+		errMsg := err.Error()
+		return fmt.Errorf("%w %s", UnlockError{}, errMsg)
 	}
 	return nil
 }

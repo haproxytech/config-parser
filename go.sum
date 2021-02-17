@@ -1,2 +1,4 @@
+github.com/gofrs/flock v0.8.0 h1:MSdYClljsF3PbENUUEx85nkWfJSGfzYI9yEBZOJz6CY=
+github.com/gofrs/flock v0.8.0/go.mod h1:F1TvTiK9OcQqauNUHlbJvyl9Qa1QvF/gOUDKA14jxHU=
 github.com/google/renameio v0.1.1-0.20200217212219-353f81969824 h1:9q700G0beHecUuiZOuKgNqNsGQixTeDLnzVZ5nsW3lc=
 github.com/google/renameio v0.1.1-0.20200217212219-353f81969824/go.mod h1:t/HQoYBZSsWSNK35C6CO/TpPLDVWvxOHboWUAweKUpk=
