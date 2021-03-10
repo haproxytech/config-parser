@@ -1,6 +1,18 @@
 stages:
+  - diff
   - lint
   - test
+diff:
+  stage: diff
+  image:
+    name: $CI_REGISTRY_GO/golang:1.15
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+    - go run generate/go-generate.go $(pwd)
+    - test -z "$(git diff 2> /dev/null)" || echo 'Files are not generated, issue `go run generate/go-generate.go $(pwd)` and commit the result'
+    - test -z "$(git ls-files --others --exclude-standard 2> /dev/null)" || exit 'Generation created untracked files, cannot proceed'
 golangci_lint:
   stage: lint
   image:
