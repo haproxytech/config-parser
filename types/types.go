@@ -1010,3 +1010,21 @@ type MonitorFail struct {
 	Condition string
 	ACLList   []string
 }
+
+//sections:backend
+//name:server-template
+//test:ok:server-template srv 1-3 google.com:80 check
+//test:ok:server-template srv 3 google.com:80 check
+//test:ok:server-template srv 3 google.com:80
+//test:ok:server-template srv 3 google.com
+//test:fail:server-template
+//test:fail:server-template srv
+//test:fail:server-template srv 3
+//test:fail:server-template srv 1-3
+type ServerTemplate struct {
+	Prefix     string
+	NumOrRange string
+	Fqdn       string
+	Params     []params.ServerOption
+	Comment    string
+}
