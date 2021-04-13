@@ -10,46 +10,48 @@ import (
 )
 
 type ServerTemplate struct {
-	data        *types.ServerTemplate
+	data        []types.ServerTemplate
 	preComments []string // comments that appear before the the actual line
 }
 
-func (h *ServerTemplate) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *ServerTemplate) parse(line string, parts []string, comment string) (*types.ServerTemplate, error) {
 	if len(parts) < 4 {
-		return "", &errors.ParseError{Parser: "ServerTemplate", Line: line}
+		return nil, &errors.ParseError{Parser: "ServerTemplate", Line: line}
 	}
-	h.data = &types.ServerTemplate{
+	data := &types.ServerTemplate{
 		Prefix:     parts[1],
 		NumOrRange: parts[2],
 		Fqdn:       parts[3],
 		Comment:    comment,
 	}
 	if len(parts) >= 4 {
-		h.data.Params = params.ParseServerOptions(parts[4:])
+		data.Params = params.ParseServerOptions(parts[4:])
 	}
-	return "", nil
+	return data, nil
 }
 
 func (h *ServerTemplate) Result() ([]common.ReturnResultLine, error) {
-	if h.data == nil {
+	if len(h.data) == 0 {
 		return nil, errors.ErrFetch
 	}
-	var sb strings.Builder
-	sb.WriteString("server-template ")
-	sb.WriteString(h.data.Prefix)
-	sb.WriteString(" ")
-	sb.WriteString(h.data.NumOrRange)
-	sb.WriteString(" ")
-	sb.WriteString(h.data.Fqdn)
-	params := params.ServerOptionsString(h.data.Params)
-	if params != "" {
+	result := make([]common.ReturnResultLine, len(h.data))
+	for index, req := range h.data {
+		var sb strings.Builder
+		sb.WriteString("server-template ")
+		sb.WriteString(req.Prefix)
 		sb.WriteString(" ")
-		sb.WriteString(params)
-	}
-	return []common.ReturnResultLine{
-		{
+		sb.WriteString(req.NumOrRange)
+		sb.WriteString(" ")
+		sb.WriteString(req.Fqdn)
+		params := params.ServerOptionsString(req.Params)
+		if params != "" {
+			sb.WriteString(" ")
+			sb.WriteString(params)
+		}
+		result[index] = common.ReturnResultLine{
 			Data:    sb.String(),
-			Comment: h.data.Comment,
-		},
-	}, nil
+			Comment: req.Comment,
+		}
+	}
+	return result, nil
 }

@@ -1015,6 +1015,7 @@ type MonitorFail struct {
 
 //sections:backend
 //name:server-template
+//is-multiple:true
 //test:ok:server-template srv 1-3 google.com:80 check
 //test:ok:server-template srv 3 google.com:80 check
 //test:ok:server-template srv 3 google.com:80

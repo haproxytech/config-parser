@@ -23,7 +23,7 @@ import (
 )
 
 func (p *ServerTemplate) Init() {
-    p.data = nil
+	p.data = []types.ServerTemplate{}
     p.preComments = []string{}
 }
 
@@ -32,33 +32,62 @@ func (p *ServerTemplate) GetParserName() string {
 }
 
 func (p *ServerTemplate) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data == nil {
-		if createIfNotExist {
-			p.data = &types.ServerTemplate{}
-			return p.data, nil
-		}
+	if len(p.data) == 0 && !createIfNotExist {
 		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
 func (p *ServerTemplate) GetOne(index int) (common.ParserData, error) {
-	if index > 0 {
+	if index < 0 || index >= len(p.data) {
 		return nil, errors.ErrFetch
 	}
-	if p.data == nil {
-		return nil, errors.ErrFetch
-	}
-	return p.data, nil
+	return p.data[index], nil
 }
 
 func (p *ServerTemplate) Delete(index int) error {
-	p.Init()
+	if index < 0 || index >= len(p.data) {
+		return errors.ErrFetch
+	}
+	copy(p.data[index:], p.data[index+1:])
+	p.data[len(p.data)-1] = types.ServerTemplate{}
+	p.data = p.data[:len(p.data)-1]
 	return nil
 }
 
 func (p *ServerTemplate) Insert(data common.ParserData, index int) error {
-	return p.Set(data, index)
+	if data == nil {
+		return errors.ErrInvalidData
+	}
+	switch newValue := data.(type) {
+	case []types.ServerTemplate:
+		p.data = newValue
+	case *types.ServerTemplate:
+		if index > -1 {
+			if index > len(p.data) {
+				return errors.ErrIndexOutOfRange
+			}
+			p.data = append(p.data, types.ServerTemplate{})
+			copy(p.data[index+1:], p.data[index:])
+			p.data[index] = *newValue
+		} else {
+			p.data = append(p.data, *newValue)
+		}
+	case types.ServerTemplate:
+		if index > -1 {
+			if index > len(p.data) {
+				return errors.ErrIndexOutOfRange
+			}
+			p.data = append(p.data, types.ServerTemplate{})
+			copy(p.data[index+1:], p.data[index:])
+			p.data[index] = newValue
+		} else {
+			p.data = append(p.data, newValue)
+		}
+	default:
+		return errors.ErrInvalidData
+	}
+	return nil
 }
 
 func (p *ServerTemplate) Set(data common.ParserData, index int) error {
@@ -67,10 +96,24 @@ func (p *ServerTemplate) Set(data common.ParserData, index int) error {
 		return nil
 	}
 	switch newValue := data.(type) {
-	case *types.ServerTemplate:
+	case []types.ServerTemplate:
 		p.data = newValue
+	case *types.ServerTemplate:
+		if index > -1 && index < len(p.data) {
+			p.data[index] = *newValue
+		} else if index == -1 {
+			p.data = append(p.data, *newValue)
+		} else {
+			return errors.ErrIndexOutOfRange
+		}
 	case types.ServerTemplate:
-		p.data = &newValue
+		if index > -1 && index < len(p.data) {
+			p.data[index] = newValue
+		} else if index == -1 {
+			p.data = append(p.data, newValue)
+		} else {
+			return errors.ErrIndexOutOfRange
+		}
 	default:
 		return errors.ErrInvalidData
 	}
@@ -83,6 +126,18 @@ func (p *ServerTemplate) PreParse(line string, parts, previousParts []string, pr
 		p.preComments = append(p.preComments, preComments...)
 	}
 	return changeState, err
+}
+
+func (p *ServerTemplate) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+	if parts[0] == "server-template" {
+		data, err := p.parse(line, parts, comment)
+		if err != nil {
+			return "", &errors.ParseError{Parser: "ServerTemplate", Line: line}
+		}
+		p.data = append(p.data, *data)
+		return "", nil
+	}
+	return "", &errors.ParseError{Parser: "ServerTemplate", Line: line}
 }
 
 func (p *ServerTemplate) ResultAll() ([]common.ReturnResultLine, []string, error) {

@@ -580,6 +580,9 @@ backend test
   use-server www if { req_ssl_sni -i www.example.com } # comment
   load-server-state-from-file global
   server-template srv 1-3 google.com:80 check
+  server-template srv 3 google.com:80 check
+  server-template srv 3 google.com:80
+  server-template srv 3 google.com
   http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
@@ -2230,6 +2233,12 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  monitor fail if no_db01 no_db02
 `, 1},
   {`  server-template srv 1-3 google.com:80 check
+`, 1},
+  {`  server-template srv 3 google.com:80 check
+`, 1},
+  {`  server-template srv 3 google.com:80
+`, 1},
+  {`  server-template srv 3 google.com
 `, 1},
   {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 2},

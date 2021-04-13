@@ -316,6 +316,7 @@ func (p *Parser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "retries"})
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "backend"})
+	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	return createParsers(parser, sequence)
 }
 
