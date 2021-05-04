@@ -23,21 +23,21 @@ type ConfiguredParsers struct {
 	ActiveSectionComments []string
 	Active                *Parsers
 	Previous              *Parsers
-
-	Comments   *Parsers
-	Defaults   *Parsers
-	Global     *Parsers
-	Frontend   *Parsers
-	Backend    *Parsers
-	Listen     *Parsers
-	Resolver   *Parsers
-	Userlist   *Parsers
-	Peers      *Parsers
-	Mailers    *Parsers
-	Cache      *Parsers
-	Program    *Parsers
-	HTTPErrors *Parsers
-	Ring       *Parsers
+	HasDefaultParser      bool
+	Comments              *Parsers
+	Defaults              *Parsers
+	Global                *Parsers
+	Frontend              *Parsers
+	Backend               *Parsers
+	Listen                *Parsers
+	Resolver              *Parsers
+	Userlist              *Parsers
+	Peers                 *Parsers
+	Mailers               *Parsers
+	Cache                 *Parsers
+	Program               *Parsers
+	HTTPErrors            *Parsers
+	Ring                  *Parsers
 	// spoe parsers
 	SPOEAgent   *Parsers
 	SPOEGroup   *Parsers

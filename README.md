@@ -26,6 +26,7 @@ import (
 
 func main() {
     p := parser.Parser{}
+    p.Init()
     err := p.LoadData("/path/to/haproxy/file.cfg")
     log.Println(err)
     log.Println(p.String())

@@ -17,6 +17,7 @@ package configs
 
 import (
 	"bytes"
+	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -33,7 +34,7 @@ func TestWholeConfigs(t *testing.T) {
 	}
 	for _, config := range tests {
 		t.Run(config.Name, func(t *testing.T) {
-			p := parser.Parser{}
+			p := parser.NewParser()
 			var buffer bytes.Buffer
 			buffer.WriteString(config.Config)
 			_ = p.Process(&buffer)
@@ -61,11 +62,12 @@ func compare(t *testing.T, configOriginal, configResult string) {
 }
 
 func TestGeneratedConfig(t *testing.T) {
-	p := parser.Parser{}
+	p := parser.NewParser()
 	var buffer bytes.Buffer
 	buffer.WriteString(generatedConfig)
 	_ = p.Process(&buffer)
 	result := p.String()
+	ioutil.WriteFile("TestGeneratedConfig", []byte(result), 0644)
 	for _, configLine := range configTests {
 		count := strings.Count(result, configLine.Line)
 		if count != configLine.Count {
@@ -75,7 +77,7 @@ func TestGeneratedConfig(t *testing.T) {
 }
 
 func TestHashConfig(t *testing.T) {
-	p := parser.Parser{Options: parser.Options{UseMd5Hash: true}}
+	p := parser.NewParserWithOptions(parser.Options{UseMd5Hash: true})
 	var buffer bytes.Buffer
 	buffer.WriteString(configBasicHash)
 	_ = p.Process(&buffer)

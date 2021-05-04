@@ -18,6 +18,7 @@ package parser
 
 import (
 	"bufio"
+	"bytes"
 	"crypto/md5"
 	"fmt"
 	"io"
@@ -410,8 +411,22 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 			return config
 		}
 	}
-	for _, section := range config.Active.ParserSequence {
-		parser := config.Active.Parsers[string(section)]
+	parsers := make([]ParserInterface, 1, 2)
+	parsers[0] = config.Active.Parsers[""]
+
+	if config.HasDefaultParser {
+		// Default parser name is given in position 0 of ParserSequence
+		parsers = append(parsers, config.Active.Parsers[string(config.Active.ParserSequence[0])])
+	}
+	// We add iteratively the different parts to form a potential parser name
+	for i := 1; i <= len(parts) && !config.HasDefaultParser; i++ {
+		if parserFound, ok := config.Active.Parsers[strings.Join(parts[:i], " ")]; ok {
+			parsers = append(parsers, parserFound)
+			break
+		}
+	}
+	for i := len(parsers) - 1; i >= 0; i-- {
+		parser := parsers[i]
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
 				// log.Printf("change state from %s to %s\n", state, newState)
@@ -419,112 +434,100 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active.PostComments = config.ActiveComments
 				}
 				config.State = newState
-				if config.State == "" {
+				switch config.State {
+				case "":
 					config.Active = config.Comments
-				}
-				if config.State == "defaults" {
+				case "defaults":
 					config.Active = config.Defaults
-				}
-				if config.State == "global" {
+				case "global":
 					config.Active = config.Global
-				}
-				if config.State == "frontend" {
+				case "frontend":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Frontend = p.getFrontendParser()
 					p.Parsers[Frontends][data.Name] = config.Frontend
 					config.Active = config.Frontend
-				}
-				if config.State == "backend" {
+				case "backend":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Backend = p.getBackendParser()
 					p.Parsers[Backends][data.Name] = config.Backend
 					config.Active = config.Backend
-				}
-				if config.State == "listen" {
+				case "listen":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Listen = p.getListenParser()
 					p.Parsers[Listen][data.Name] = config.Listen
 					config.Active = config.Listen
-				}
-				if config.State == "resolvers" {
+				case "resolvers":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Resolver = p.getResolverParser()
 					p.Parsers[Resolvers][data.Name] = config.Resolver
 					config.Active = config.Resolver
-				}
-				if config.State == "userlist" {
+				case "userlist":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Userlist = p.getUserlistParser()
 					p.Parsers[UserList][data.Name] = config.Userlist
 					config.Active = config.Userlist
-				}
-				if config.State == "peers" {
+				case "peers":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Peers = p.getPeersParser()
 					p.Parsers[Peers][data.Name] = config.Peers
 					config.Active = config.Peers
-				}
-				if config.State == "mailers" {
+				case "mailers":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Mailers = p.getMailersParser()
 					p.Parsers[Mailers][data.Name] = config.Mailers
 					config.Active = config.Mailers
-				}
-				if config.State == "cache" {
+				case "cache":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Cache = p.getCacheParser()
 					p.Parsers[Cache][data.Name] = config.Cache
 					config.Active = config.Cache
-				}
-				if config.State == "program" {
+				case "program":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Program = p.getProgramParser()
 					p.Parsers[Program][data.Name] = config.Program
 					config.Active = config.Program
-				}
-				if config.State == "http-errors" {
+				case "http-errors":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.HTTPErrors = p.getHTTPErrorsParser()
 					p.Parsers[HTTPErrors][data.Name] = config.HTTPErrors
 					config.Active = config.HTTPErrors
-				}
-				if config.State == "ring" {
+				case "ring":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section)
 					config.Ring = p.getRingParser()
 					p.Parsers[Ring][data.Name] = config.Ring
 					config.Active = config.Ring
-				}
-				if config.State == "snippet_beg" {
+				case "snippet_beg":
 					config.Previous = config.Active
 					config.Active = &Parsers{
 						Parsers:        map[string]ParserInterface{"config-snippet": parser},
 						ParserSequence: []Section{"config-snippet"},
 					}
-				}
-				if config.State == "snippet_end" {
+					config.HasDefaultParser = true
+				case "snippet_end":
 					config.Active = config.Previous
+					config.HasDefaultParser = false
 				}
 				if config.ActiveSectionComments != nil {
 					config.Active.PreComments = config.ActiveSectionComments
@@ -535,6 +538,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 			break
 		}
 	}
+
 	return config
 }
 
@@ -543,10 +547,14 @@ func (p *Parser) LoadData(filename string) error {
 	if err != nil {
 		return err
 	}
-	return p.ParseData(string(dat))
+	return p.Process(bytes.NewReader(dat))
 }
 
-func (p *Parser) Process(reader io.Reader) error {
+func NewParserWithOptions(options Options) *Parser {
+	return initParserMaps(&Parser{Options: options})
+}
+
+func initParserMaps(p *Parser) *Parser {
 	p.mutex = &sync.Mutex{}
 
 	p.Parsers = map[Section]map[string]*Parsers{}
@@ -574,6 +582,25 @@ func (p *Parser) Process(reader io.Reader) error {
 	p.Parsers[Program] = map[string]*Parsers{}
 	p.Parsers[HTTPErrors] = map[string]*Parsers{}
 	p.Parsers[Ring] = map[string]*Parsers{}
+	return p
+}
+
+func NewParser() *Parser {
+	return initParserMaps(&Parser{})
+}
+
+func (p *Parser) Init() {
+	for _, sections := range p.Parsers {
+		for _, parsers := range sections {
+			for _, parser := range parsers.Parsers {
+				parser.Init()
+			}
+		}
+	}
+}
+
+func (p *Parser) Process(reader io.Reader) error {
+	p.Init()
 
 	parsers := ConfiguredParsers{
 		State:          "",
@@ -588,7 +615,7 @@ func (p *Parser) Process(reader io.Reader) error {
 
 	var line string
 	var err error
-	previousLine := []string{}
+	var previousLine []string
 	for {
 		line, err = bufferedReader.ReadString('\n')
 		if err != nil {
@@ -604,7 +631,16 @@ func (p *Parser) Process(reader io.Reader) error {
 		}
 		parts, comment := common.StringSplitWithCommentIgnoreEmpty(line)
 		if len(parts) == 0 && comment != "" {
-			parts = []string{""}
+			switch {
+			case strings.HasPrefix(line, "# _version"):
+				parts = []string{"# _version"}
+			case strings.Contains(line, "config-snippet"):
+				parts = []string{"config-snippet"}
+			case strings.HasPrefix(line, "# _md5hash"):
+				parts = []string{"# _md5hash"}
+			default:
+				parts = []string{""}
+			}
 		}
 		if len(parts) == 0 {
 			continue
@@ -619,8 +655,4 @@ func (p *Parser) Process(reader io.Reader) error {
 		parsers.Active.PostComments = append(parsers.Active.PostComments, parsers.ActiveSectionComments...)
 	}
 	return nil
-}
-
-func (p *Parser) ParseData(dat string) error {
-	return p.Process(strings.NewReader(dat))
 }
