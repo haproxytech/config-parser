@@ -27,7 +27,7 @@ import (
 )
 
 // nolint:gochecknoglobals
-var logAllowedFacitlites = map[string]struct{}{
+var logAllowedFacilities = map[string]struct{}{
 	"kern": {}, "user": {}, "mail": {}, "daemon": {},
 	"auth": {}, "syslog": {}, "lpr": {}, "news": {},
 	"uucp": {}, "cron": {}, "auth2": {}, "ftp": {},
@@ -100,7 +100,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 		return log, &errors.ParseError{Parser: "Log", Line: line}
 	}
 	facility := parts[currIndex]
-	if _, ok := logAllowedFacitlites[facility]; !ok {
+	if _, ok := logAllowedFacilities[facility]; !ok {
 		return log, &errors.ParseError{Parser: "Log", Line: line}
 	}
 	log.Facility = facility
