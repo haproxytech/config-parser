@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/params"
-	"github.com/haproxytech/config-parser/v3/types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/params"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Balance struct {

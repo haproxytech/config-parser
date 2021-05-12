@@ -17,14 +17,14 @@ limitations under the License.
 package parsers
 
 import (
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 func (p *HTTPCheckV2) Init() {
 	p.data = []types.HTTPCheckV2{}
-    p.preComments = []string{}
+	p.preComments = []string{}
 }
 
 func (p *HTTPCheckV2) GetParserName() string {

@@ -22,38 +22,38 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestMonitorFail(t *testing.T) {
 	tests := map[string]bool{
-		"monitor fail if no_db01 no_db02": true,
-		"monitor fail if ready_01 ready_02 ready_03": true,
-		"monitor fail unless backend_ready": true,
+		"monitor fail if no_db01 no_db02":                true,
+		"monitor fail if ready_01 ready_02 ready_03":     true,
+		"monitor fail unless backend_ready":              true,
 		"monitor fail unless ready_01 ready_02 ready_03": true,
-		"monitor fail": false,
+		"monitor fail":    false,
 		"monitor fail if": false,
-		"monitor unless": false,
-		"---": false,
-		"--- ---": false,
+		"monitor unless":  false,
+		"---":             false,
+		"--- ---":         false,
 	}
 	parser := &parsers.MonitorFail{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

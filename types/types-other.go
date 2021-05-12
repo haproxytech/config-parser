@@ -17,7 +17,7 @@ limitations under the License.
 //nolint:godot,gocritic
 package types
 
-import "github.com/haproxytech/config-parser/v3/common"
+import "github.com/haproxytech/config-parser/v4/common"
 
 //name:section
 //no-sections:true

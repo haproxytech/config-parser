@@ -19,7 +19,7 @@ package actions
 import (
 	"fmt"
 
-	"github.com/haproxytech/config-parser/v3/common"
+	"github.com/haproxytech/config-parser/v4/common"
 )
 
 type SetPriorityClass struct {

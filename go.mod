@@ -1,4 +1,4 @@
-module github.com/haproxytech/config-parser/v3
+module github.com/haproxytech/config-parser/v4
 
 go 1.14
 

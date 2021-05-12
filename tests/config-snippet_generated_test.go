@@ -22,33 +22,33 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestConfigSnippet(t *testing.T) {
 	tests := map[string]bool{
 		"###_config-snippet_### BEGIN\n  tune.ssl.default-dh-param 2048\n  tune.bufsize 32768\n  ###_config-snippet_### END": true,
-		"tune.ssl.default-dh-param 2048\ntune.bufsize 32768": false,
-		"---": false,
+		"tune.ssl.default-dh-param 2048\ntune.bufsize 32768":                                                                 false,
+		"---":     false,
 		"--- ---": false,
 	}
 	parser := &parsers.ConfigSnippet{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

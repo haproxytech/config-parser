@@ -19,9 +19,9 @@ package simple
 import (
 	"fmt"
 
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type StringKeyValue struct {
@@ -44,7 +44,6 @@ func (s *StringKeyValue) Parse(line string, parts, previousParts []string, comme
 		Comment: comment,
 	}
 	return "", nil
-
 }
 
 func (s *StringKeyValue) Result() ([]common.ReturnResultLine, error) {

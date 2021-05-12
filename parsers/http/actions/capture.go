@@ -21,8 +21,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
 )
 
 type Capture struct { // http-request capture sample [ len <length> | id <id> ] [ { if | unless } <condition> ]

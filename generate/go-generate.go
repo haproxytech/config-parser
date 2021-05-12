@@ -30,7 +30,7 @@ import (
 	"text/template"
 
 	"github.com/google/renameio"
-	"github.com/haproxytech/config-parser/v3/common"
+	"github.com/haproxytech/config-parser/v4/common"
 )
 
 type AliasTestData struct {
@@ -655,9 +655,9 @@ package parsers
 {{- end }}
 
 import (
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/{{ .DataDir }}types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/{{ .DataDir }}types"
 )
 
 type {{ .StructName }} struct {
@@ -741,9 +741,9 @@ package parsers
 {{- end }}
 
 import (
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/{{ .DataDir }}types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/{{ .DataDir }}types"
 )
 
 {{- if not .NoInit }}
@@ -980,7 +980,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/{{ .DataDir }}parsers{{- if .ModeOther}}/{{ .Dir }}{{- end }}"
+	"github.com/haproxytech/config-parser/v4/{{ .DataDir }}parsers{{- if .ModeOther}}/{{ .Dir }}{{- end }}"
 )
 {{ $StructName := .StructName }}
 func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {

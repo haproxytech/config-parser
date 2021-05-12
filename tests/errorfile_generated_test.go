@@ -22,36 +22,36 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestErrorFile(t *testing.T) {
 	tests := map[string]bool{
-		"errorfile 400 /etc/haproxy/errorfiles/400badreq.http": true,
+		"errorfile 400 /etc/haproxy/errorfiles/400badreq.http":         true,
 		"errorfile 408 /dev/null # work around Chrome pre-connect bug": true,
-		"errorfile 403 /etc/haproxy/errorfiles/403forbid.http": true,
-		"errorfile 503 /etc/haproxy/errorfiles/503sorry.http": true,
+		"errorfile 403 /etc/haproxy/errorfiles/403forbid.http":         true,
+		"errorfile 503 /etc/haproxy/errorfiles/503sorry.http":          true,
 		"errorfile": false,
-		"---": false,
-		"--- ---": false,
+		"---":       false,
+		"--- ---":   false,
 	}
 	parser := &parsers.ErrorFile{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

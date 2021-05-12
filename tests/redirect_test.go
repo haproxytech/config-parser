@@ -20,11 +20,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers/http"
+	"github.com/haproxytech/config-parser/v4/parsers/http"
 )
 
 func TestRedirect(t *testing.T) {
-
 	data := [][2]string{
 		{
 			`http-request redirect code 301 location https://site.d1.randomsite.com/healthcheck.html if { path_beg -m beg -i /health-check.html AND hdr_beg(host) -i www }`,
@@ -48,13 +47,11 @@ func TestRedirect(t *testing.T) {
 
 		parser.Init()
 		err := ProcessLine(line, parser)
-
 		if err != nil {
 			t.Errorf(err.Error())
 		}
 
 		result, err := parser.Result()
-
 		if err != nil {
 			t.Errorf(err.Error())
 		}

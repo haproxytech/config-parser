@@ -22,40 +22,40 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestOptionForwardFor(t *testing.T) {
 	tests := map[string]bool{
-		"option forwardfor": true,
-		"option forwardfor except A": true,
-		"option forwardfor except A header B": true,
+		"option forwardfor":                           true,
+		"option forwardfor except A":                  true,
+		"option forwardfor except A header B":         true,
 		"option forwardfor except A header B if-none": true,
-		"option forwardfor # comment": true,
-		"option forwardfor except A # comment": true,
-		"option forwardfor except": false,
-		"option forwardfor except A header": false,
-		"option forwardfor header": false,
-		"---": false,
-		"--- ---": false,
+		"option forwardfor # comment":                 true,
+		"option forwardfor except A # comment":        true,
+		"option forwardfor except":                    false,
+		"option forwardfor except A header":           false,
+		"option forwardfor header":                    false,
+		"---":                                         false,
+		"--- ---":                                     false,
 	}
 	parser := &parsers.OptionForwardFor{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

@@ -17,7 +17,7 @@ limitations under the License.
 //nolint:godot,gocritic
 package types
 
-import "github.com/haproxytech/config-parser/v3/params"
+import "github.com/haproxytech/config-parser/v4/params"
 
 //sections:frontend,backend
 //name:acl
@@ -976,8 +976,7 @@ type SslEngine struct {
 //test:ok:ssl-mode-async
 //test:fail:ssl-mode-async true
 //test:fail:ssl-mode-async false
-type SslModeAsync struct {
-}
+type SslModeAsync struct{}
 
 //sections:global,listen,backend
 //name:load-server-state-from-file

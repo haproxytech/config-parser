@@ -22,39 +22,39 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestLog(t *testing.T) {
 	tests := map[string]bool{
 		"log global": true,
-		"log stdout format short daemon # send log to systemd": true,
-		"log stdout format raw daemon # send everything to stdout": true,
+		"log stdout format short daemon # send log to systemd":                  true,
+		"log stdout format raw daemon # send everything to stdout":              true,
 		"log stderr format raw daemon notice # send important events to stderr": true,
-		"log 127.0.0.1:514 local0 notice # only send important events": true,
-		"log 127.0.0.1:514 local0 notice notice # same but limit output level": true,
-		"log 127.0.0.1:1515 len 8192 format rfc5424 local2 info": true,
-		"log": false,
-		"---": false,
+		"log 127.0.0.1:514 local0 notice # only send important events":          true,
+		"log 127.0.0.1:514 local0 notice notice # same but limit output level":  true,
+		"log 127.0.0.1:1515 len 8192 format rfc5424 local2 info":                true,
+		"log":     false,
+		"---":     false,
 		"--- ---": false,
 	}
 	parser := &parsers.Log{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

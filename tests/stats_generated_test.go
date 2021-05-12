@@ -22,68 +22,68 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers/stats"
+	"github.com/haproxytech/config-parser/v4/parsers/stats"
 )
 
 func TestStatsstats(t *testing.T) {
 	tests := map[string]bool{
-		"stats admin if LOCALHOST": true,
-		"stats auth admin1:AdMiN123": true,
-		"stats enable": true,
-		"stats hide-version": true,
-		"stats show-legends": true,
-		"stats maxconn 10": true,
+		"stats admin if LOCALHOST":         true,
+		"stats auth admin1:AdMiN123":       true,
+		"stats enable":                     true,
+		"stats hide-version":               true,
+		"stats show-legends":               true,
+		"stats maxconn 10":                 true,
 		"stats realm HAProxy\\ Statistics": true,
-		"stats refresh 10s": true,
-		"stats scope .": true,
+		"stats refresh 10s":                true,
+		"stats scope .":                    true,
 		"stats show-desc Master node for Europe, Asia, Africa": true,
-		"stats show-node": true,
-		"stats show-node Europe-1": true,
-		"stats uri /admin?stats": true,
-		"stats bind-process all": true,
-		"stats bind-process odd": true,
-		"stats bind-process even": true,
-		"stats bind-process 1 2 3 4": true,
-		"stats bind-process 1-4": true,
-		"stats http-request realm HAProxy\\ Statistics": true,
+		"stats show-node":                                            true,
+		"stats show-node Europe-1":                                   true,
+		"stats uri /admin?stats":                                     true,
+		"stats bind-process all":                                     true,
+		"stats bind-process odd":                                     true,
+		"stats bind-process even":                                    true,
+		"stats bind-process 1 2 3 4":                                 true,
+		"stats bind-process 1-4":                                     true,
+		"stats http-request realm HAProxy\\ Statistics":              true,
 		"stats http-request realm HAProxy\\ Statistics if something": true,
-		"stats http-request auth if something": true,
-		"stats http-request deny unless something": true,
-		"stats http-request allow": true,
-		"stats": false,
-		"stats auth admin1:": false,
-		"stats auth": false,
-		"stats NON-EXISTS": false,
-		"stats maxconn WORD": false,
-		"stats refresh": false,
-		"stats scope": false,
-		"stats uri": false,
-		"stats bind-process none": false,
-		"stats bind-process 1+4": false,
-		"stats bind-process none-none": false,
-		"stats bind-process 1-4 1-3": false,
-		"stats http-request": false,
-		"stats http-request none": false,
-		"---": false,
-		"--- ---": false,
+		"stats http-request auth if something":                       true,
+		"stats http-request deny unless something":                   true,
+		"stats http-request allow":                                   true,
+		"stats":                                                      false,
+		"stats auth admin1:":                                         false,
+		"stats auth":                                                 false,
+		"stats NON-EXISTS":                                           false,
+		"stats maxconn WORD":                                         false,
+		"stats refresh":                                              false,
+		"stats scope":                                                false,
+		"stats uri":                                                  false,
+		"stats bind-process none":                                    false,
+		"stats bind-process 1+4":                                     false,
+		"stats bind-process none-none":                               false,
+		"stats bind-process 1-4 1-3":                                 false,
+		"stats http-request":                                         false,
+		"stats http-request none":                                    false,
+		"---":                                                        false,
+		"--- ---":                                                    false,
 	}
 	parser := &stats.Stats{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

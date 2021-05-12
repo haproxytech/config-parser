@@ -26,11 +26,11 @@ import (
 
 	"github.com/gofrs/flock"
 	"github.com/google/renameio"
-	parser "github.com/haproxytech/config-parser/v3"
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/spoe/parsers"
-	"github.com/haproxytech/config-parser/v3/spoe/types"
+	parser "github.com/haproxytech/config-parser/v4"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/spoe/parsers"
+	"github.com/haproxytech/config-parser/v4/spoe/types"
 )
 
 /*type parser.Section string

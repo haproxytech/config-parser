@@ -22,40 +22,40 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestBindProcess(t *testing.T) {
 	tests := map[string]bool{
-		"bind-process all": true,
-		"bind-process odd": true,
-		"bind-process even": true,
-		"bind-process 1 2 3 4": true,
-		"bind-process 1-4": true,
-		"bind-process none": false,
-		"bind-process 1+4": false,
+		"bind-process all":       true,
+		"bind-process odd":       true,
+		"bind-process even":      true,
+		"bind-process 1 2 3 4":   true,
+		"bind-process 1-4":       true,
+		"bind-process none":      false,
+		"bind-process 1+4":       false,
 		"bind-process none-none": false,
-		"bind-process 1-4 1-3": false,
-		"---": false,
-		"--- ---": false,
+		"bind-process 1-4 1-3":   false,
+		"---":                    false,
+		"--- ---":                false,
 	}
 	parser := &parsers.BindProcess{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

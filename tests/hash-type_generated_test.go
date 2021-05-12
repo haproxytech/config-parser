@@ -22,53 +22,53 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestHashType(t *testing.T) {
 	tests := map[string]bool{
-		"hash-type map-based": true,
-		"hash-type map-based avalanche": true,
-		"hash-type consistent": true,
-		"hash-type consistent avalanche": true,
-		"hash-type avalanche": true,
-		"hash-type map-based sdbm": true,
-		"hash-type map-based djb2": true,
-		"hash-type map-based wt6": true,
-		"hash-type map-based crc32": true,
-		"hash-type consistent sdbm": true,
-		"hash-type consistent djb2": true,
-		"hash-type consistent wt6": true,
-		"hash-type consistent crc32": true,
-		"hash-type map-based sdbm avalanche": true,
-		"hash-type map-based djb2 avalanche": true,
-		"hash-type map-based wt6 avalanche": true,
-		"hash-type map-based crc32 avalanche": true,
-		"hash-type consistent sdbm avalanche": true,
-		"hash-type consistent djb2 avalanche": true,
-		"hash-type consistent wt6 avalanche": true,
+		"hash-type map-based":                  true,
+		"hash-type map-based avalanche":        true,
+		"hash-type consistent":                 true,
+		"hash-type consistent avalanche":       true,
+		"hash-type avalanche":                  true,
+		"hash-type map-based sdbm":             true,
+		"hash-type map-based djb2":             true,
+		"hash-type map-based wt6":              true,
+		"hash-type map-based crc32":            true,
+		"hash-type consistent sdbm":            true,
+		"hash-type consistent djb2":            true,
+		"hash-type consistent wt6":             true,
+		"hash-type consistent crc32":           true,
+		"hash-type map-based sdbm avalanche":   true,
+		"hash-type map-based djb2 avalanche":   true,
+		"hash-type map-based wt6 avalanche":    true,
+		"hash-type map-based crc32 avalanche":  true,
+		"hash-type consistent sdbm avalanche":  true,
+		"hash-type consistent djb2 avalanche":  true,
+		"hash-type consistent wt6 avalanche":   true,
 		"hash-type consistent crc32 avalanche": true,
-		"hash-type": false,
-		"---": false,
-		"--- ---": false,
+		"hash-type":                            false,
+		"---":                                  false,
+		"--- ---":                              false,
 	}
 	parser := &parsers.HashType{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

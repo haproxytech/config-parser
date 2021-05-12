@@ -5,9 +5,9 @@ import (
 	"log"
 	"testing"
 
-	parser "github.com/haproxytech/config-parser/v3"
-	"github.com/haproxytech/config-parser/v3/spoe"
-	"github.com/haproxytech/config-parser/v3/types"
+	parser "github.com/haproxytech/config-parser/v4"
+	"github.com/haproxytech/config-parser/v4/spoe"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 func TestVersion(t *testing.T) {

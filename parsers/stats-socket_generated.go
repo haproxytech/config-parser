@@ -17,14 +17,14 @@ limitations under the License.
 package parsers
 
 import (
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 func (p *Socket) Init() {
 	p.data = []types.Socket{}
-    p.preComments = []string{}
+	p.preComments = []string{}
 }
 
 func (p *Socket) GetParserName() string {
@@ -129,7 +129,7 @@ func (p *Socket) PreParse(line string, parts, previousParts []string, preComment
 }
 
 func (p *Socket) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
-	if len(parts) > 1 && parts[0] == "stats"  && parts[1] == "socket" {
+	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "socket" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
 			return "", &errors.ParseError{Parser: "Socket", Line: line}

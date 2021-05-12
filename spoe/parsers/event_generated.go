@@ -17,14 +17,14 @@ limitations under the License.
 package parsers
 
 import (
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/spoe/types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/spoe/types"
 )
 
 func (p *Event) Init() {
-    p.data = nil
-    p.preComments = []string{}
+	p.data = nil
+	p.preComments = []string{}
 }
 
 func (p *Event) GetParserName() string {

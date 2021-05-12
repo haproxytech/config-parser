@@ -22,36 +22,36 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestSocket(t *testing.T) {
 	tests := map[string]bool{
-		"stats socket 127.0.0.1:8080": true,
-		"stats socket 127.0.0.1:8080 mode admin": true,
-		"stats socket /some/path/to/socket": true,
+		"stats socket 127.0.0.1:8080":                  true,
+		"stats socket 127.0.0.1:8080 mode admin":       true,
+		"stats socket /some/path/to/socket":            true,
 		"stats socket /some/path/to/socket mode admin": true,
 		"stats socket": false,
-		"---": false,
-		"--- ---": false,
+		"---":          false,
+		"--- ---":      false,
 	}
 	parser := &parsers.Socket{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

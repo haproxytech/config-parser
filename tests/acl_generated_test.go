@@ -22,48 +22,48 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestACL(t *testing.T) {
 	tests := map[string]bool{
-		"acl url_stats path_beg /stats": true,
+		"acl url_stats path_beg /stats":                                       true,
 		"acl url_static path_beg -i /static /images /javascript /stylesheets": true,
-		"acl url_static path_end -i .jpg .gif .png .css .js": true,
-		"acl be_app_ok nbsrv(be_app) gt 0": true,
-		"acl be_static_ok nbsrv(be_static) gt 0": true,
-		"acl key req.hdr(X-Add-ACL-Key) -m found": true,
-		"acl add path /addacl": true,
-		"acl del path /delacl": true,
-		"acl myhost hdr(Host) -f myhost.lst": true,
-		"acl clear dst_port 80": true,
-		"acl secure dst_port 8080": true,
-		"acl login_page url_beg /login": true,
-		"acl logout url_beg /logout": true,
-		"acl uid_given url_reg /login?userid=[^&]+": true,
-		"acl cookie_set hdr_sub(cookie) SEEN=1": true,
-		"acl cookie": false,
-		"acl": false,
-		"---": false,
-		"--- ---": false,
+		"acl url_static path_end -i .jpg .gif .png .css .js":                  true,
+		"acl be_app_ok nbsrv(be_app) gt 0":                                    true,
+		"acl be_static_ok nbsrv(be_static) gt 0":                              true,
+		"acl key req.hdr(X-Add-ACL-Key) -m found":                             true,
+		"acl add path /addacl":                                                true,
+		"acl del path /delacl":                                                true,
+		"acl myhost hdr(Host) -f myhost.lst":                                  true,
+		"acl clear dst_port 80":                                               true,
+		"acl secure dst_port 8080":                                            true,
+		"acl login_page url_beg /login":                                       true,
+		"acl logout url_beg /logout":                                          true,
+		"acl uid_given url_reg /login?userid=[^&]+":                           true,
+		"acl cookie_set hdr_sub(cookie) SEEN=1":                               true,
+		"acl cookie":                                                          false,
+		"acl":                                                                 false,
+		"---":                                                                 false,
+		"--- ---":                                                             false,
 	}
 	parser := &parsers.ACL{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

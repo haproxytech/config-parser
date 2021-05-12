@@ -21,11 +21,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestOptionPgsqlCheckRegression(t *testing.T) {
-
 	data := [][2]string{
 		{`option pgsql-check user postgresuser`, `option pgsql-check user postgresuser`},
 	}

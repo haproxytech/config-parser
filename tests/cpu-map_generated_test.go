@@ -22,36 +22,36 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestCPUMap(t *testing.T) {
 	tests := map[string]bool{
-		"cpu-map 1-4 0-3": true,
-		"cpu-map 1/all 0-3": true,
-		"cpu-map auto:1-4 0-3": true,
+		"cpu-map 1-4 0-3":          true,
+		"cpu-map 1/all 0-3":        true,
+		"cpu-map auto:1-4 0-3":     true,
 		"cpu-map auto:1-4 0-1 2-3": true,
-		"cpu-map": false,
-		"---": false,
-		"--- ---": false,
+		"cpu-map":                  false,
+		"---":                      false,
+		"--- ---":                  false,
 	}
 	parser := &parsers.CPUMap{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

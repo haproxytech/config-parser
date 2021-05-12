@@ -22,38 +22,38 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestStickTable(t *testing.T) {
 	tests := map[string]bool{
-		"stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)": true,
-		"stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment": true,
-		"stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)": true,
-		"stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)": true,
+		"stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)":                                    true,
+		"stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment":                          true,
+		"stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)":                       true,
+		"stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)":   true,
 		"stick-table type string len 1000 size 1m expire 5m something peers aaaaa store gpc0,conn_rate(30s)": false,
 		"stick-table type": false,
-		"stick-table": false,
-		"---": false,
-		"--- ---": false,
+		"stick-table":      false,
+		"---":              false,
+		"--- ---":          false,
 	}
 	parser := &parsers.StickTable{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

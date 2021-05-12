@@ -21,23 +21,20 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers/http"
+	"github.com/haproxytech/config-parser/v4/parsers/http"
 )
 
 func TestHTTPRequestSetPath(t *testing.T) {
-
 	parser := &http.Requests{}
 
 	line := strings.TrimSpace("http-request set-path /%[hdr(host)]%[path]")
 
 	err := ProcessLine(line, parser)
-
 	if err != nil {
 		t.Errorf(err.Error())
 	}
 
 	result, err := parser.Result()
-
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -56,7 +53,6 @@ func TestHTTPRequestSetPath(t *testing.T) {
 }
 
 func TestHTTPRequestSetPathFail(t *testing.T) {
-
 	parser := &http.Requests{}
 
 	line := strings.TrimSpace("--- ---")
@@ -74,19 +70,16 @@ func TestHTTPRequestSetPathFail(t *testing.T) {
 }
 
 func TestHTTPRequestConnectionTrackSc0(t *testing.T) {
-
 	parser := &http.Requests{}
 
 	line := strings.TrimSpace("http-request track-sc0 src")
 
 	err := ProcessLine(line, parser)
-
 	if err != nil {
 		t.Errorf(err.Error())
 	}
 
 	result, err := parser.Result()
-
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -102,23 +95,19 @@ func TestHTTPRequestConnectionTrackSc0(t *testing.T) {
 	if line != returnLine {
 		t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, line))
 	}
-
 }
 
 func TestHTTPRequestConnectionTrackSc0WithCondition(t *testing.T) {
-
 	parser := &http.Requests{}
 
 	line := strings.TrimSpace("http-request track-sc0 src if some_check")
 
 	err := ProcessLine(line, parser)
-
 	if err != nil {
 		t.Errorf(err.Error())
 	}
 
 	result, err := parser.Result()
-
 	if err != nil {
 		t.Errorf(err.Error())
 	}

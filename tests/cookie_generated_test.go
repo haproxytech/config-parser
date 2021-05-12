@@ -22,43 +22,43 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestCookie(t *testing.T) {
 	tests := map[string]bool{
 		"cookie test": true,
-		"cookie myCookie domain dom1 indirect postonly": true,
+		"cookie myCookie domain dom1 indirect postonly":             true,
 		"cookie myCookie domain dom1 domain dom2 indirect postonly": true,
-		"cookie myCookie indirect maxidle 10 maxlife 5 postonly": true,
-		"cookie myCookie indirect maxidle 10": true,
-		"cookie myCookie indirect maxlife 10": true,
+		"cookie myCookie indirect maxidle 10 maxlife 5 postonly":    true,
+		"cookie myCookie indirect maxidle 10":                       true,
+		"cookie myCookie indirect maxlife 10":                       true,
 		"cookie myCookie domain dom1 domain dom2 httponly indirect maxidle 10 maxlife 5 nocache postonly preserve rewrite secure": true,
-		"cookie myCookie attr \"SameSite=Strict\" attr \"mykey=myvalue\" insert": true,
-		"cookie": false,
-		"cookie myCookie maxidle something": false,
-		"cookie myCookie maxlife something": false,
+		"cookie myCookie attr \"SameSite=Strict\" attr \"mykey=myvalue\" insert":                                                  true,
+		"cookie":                                 false,
+		"cookie myCookie maxidle something":      false,
+		"cookie myCookie maxlife something":      false,
 		"cookie myCookie attr \"SameSite=Lax;\"": false,
-		"---": false,
-		"--- ---": false,
+		"---":                                    false,
+		"--- ---":                                false,
 	}
 	parser := &parsers.Cookie{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

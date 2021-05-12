@@ -22,54 +22,54 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestBalance(t *testing.T) {
 	tests := map[string]bool{
-		"balance roundrobin": true,
-		"balance uri": true,
-		"balance uri whole": true,
-		"balance uri len 12": true,
-		"balance uri depth 8": true,
-		"balance uri depth 8 whole": true,
-		"balance uri depth 8 len 12 whole": true,
-		"balance url_param": true,
-		"balance url_param session_id": true,
-		"balance url_param check_post 10": true,
-		"balance url_param check_post 10 max_wait 20": true,
+		"balance roundrobin":                                     true,
+		"balance uri":                                            true,
+		"balance uri whole":                                      true,
+		"balance uri len 12":                                     true,
+		"balance uri depth 8":                                    true,
+		"balance uri depth 8 whole":                              true,
+		"balance uri depth 8 len 12 whole":                       true,
+		"balance url_param":                                      true,
+		"balance url_param session_id":                           true,
+		"balance url_param check_post 10":                        true,
+		"balance url_param check_post 10 max_wait 20":            true,
 		"balance url_param session_id check_post 10 max_wait 20": true,
-		"balance hdr(hdrName)": true,
-		"balance hdr(hdrName) use_domain_only": true,
-		"balance random": true,
-		"balance random(15)": true,
-		"balance rdp-cookie": true,
-		"balance rdp-cookie(something)": true,
-		"balance something": false,
-		"balance": false,
-		"balance uri len notInteger": false,
-		"balance uri depth notInteger": false,
-		"balance url_param check_post notInteger": false,
-		"---": false,
+		"balance hdr(hdrName)":                                   true,
+		"balance hdr(hdrName) use_domain_only":                   true,
+		"balance random":                                         true,
+		"balance random(15)":                                     true,
+		"balance rdp-cookie":                                     true,
+		"balance rdp-cookie(something)":                          true,
+		"balance something":                                      false,
+		"balance":                                                false,
+		"balance uri len notInteger":                             false,
+		"balance uri depth notInteger":                           false,
+		"balance url_param check_post notInteger":                false,
+		"---":     false,
 		"--- ---": false,
 	}
 	parser := &parsers.Balance{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())

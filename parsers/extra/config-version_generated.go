@@ -17,13 +17,13 @@ limitations under the License.
 package extra
 
 import (
-	"github.com/haproxytech/config-parser/v3/common"
-	"github.com/haproxytech/config-parser/v3/errors"
-	"github.com/haproxytech/config-parser/v3/types"
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 func (p *ConfigVersion) GetParserName() string {
-    return p.Name
+	return p.Name
 }
 
 func (p *ConfigVersion) GetOne(index int) (common.ParserData, error) {

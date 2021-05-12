@@ -22,37 +22,37 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v3/parsers"
+	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
 func TestOptionPgsqlCheck(t *testing.T) {
 	tests := map[string]bool{
-		"option pgsql-check user john": true,
+		"option pgsql-check user john":           true,
 		"option pgsql-check user john # comment": true,
-		"option pgsql-check": false,
-		"option pgsql-check # comment": false,
-		"option pgsql-check user": false,
-		"option pgsql-check user # comment": false,
-		"---": false,
-		"--- ---": false,
+		"option pgsql-check":                     false,
+		"option pgsql-check # comment":           false,
+		"option pgsql-check user":                false,
+		"option pgsql-check user # comment":      false,
+		"---":                                    false,
+		"--- ---":                                false,
 	}
 	parser := &parsers.OptionPgsqlCheck{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
-		line :=strings.TrimSpace(command)
-		lines := strings.SplitN(line,"\n", -1)
-		var err error
-		parser.Init()
-		if len(lines)> 1{
-			for _,line = range(lines){
-			  line = strings.TrimSpace(line)
-				if err=ProcessLine(line, parser);err!=nil{
-					break
+			line := strings.TrimSpace(command)
+			lines := strings.SplitN(line, "\n", -1)
+			var err error
+			parser.Init()
+			if len(lines) > 1 {
+				for _, line = range lines {
+					line = strings.TrimSpace(line)
+					if err = ProcessLine(line, parser); err != nil {
+						break
+					}
 				}
+			} else {
+				err = ProcessLine(line, parser)
 			}
-		}else{
-			err = ProcessLine(line, parser)
-		}
 			if shouldPass {
 				if err != nil {
 					t.Errorf(err.Error())
