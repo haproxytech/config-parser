@@ -23,6 +23,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"sort"
@@ -342,6 +343,7 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo
 			parserData.ModeOther = true
 			err = typeOthersAPITemplate.Execute(f, parserData)
 			CheckErr(err)
+			fmtFile(filePath)
 		}
 
 		// Generated parser file.
@@ -354,6 +356,7 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo
 		parserData.ModeOther = true
 		err = typeTemplate.Execute(f, parserData)
 		CheckErr(err)
+		fmtFile(filePath)
 
 		if !parserData.TestSkip {
 			parserData.TestFail = append(parserData.TestFail, "---")
@@ -368,6 +371,7 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo
 
 			err = testTemplate.Execute(f, parserData)
 			CheckErr(err)
+			fmtFile(filePath)
 		}
 
 		configFile.AddParserData(parserData)
@@ -478,6 +482,7 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 
 			err = typeTemplate.Execute(f, parserData)
 			CheckErr(err)
+			fmtFile(filePath)
 
 			parserData.TestFail = append(parserData.TestFail, "---")
 			parserData.TestFail = append(parserData.TestFail, "--- ---")
@@ -490,6 +495,7 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 
 			err = testTemplate.Execute(f, parserData)
 			CheckErr(err)
+			fmtFile(filePath)
 		}
 		// configFile.AddParserData(parserData)
 		parsers = map[string]*Data{}
@@ -599,6 +605,7 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit
 
 		err = typeTemplate.Execute(f, parserData)
 		CheckErr(err)
+		fmtFile(filePath)
 
 		// parserData.TestFail = append(parserData.TestFail, "") parsers should not get empty line!
 		parserData.TestFail = append(parserData.TestFail, "---")
@@ -612,6 +619,7 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit
 
 		err = testTemplate.Execute(f, parserData)
 		CheckErr(err)
+		fmtFile(filePath)
 
 		configFile.AddParserData(parserData)
 		parserData = Data{}
@@ -625,6 +633,14 @@ func cleanFileName(filename string) string {
 func CheckErr(err error) {
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func fmtFile(filename string) {
+	cmd := exec.Command("gofmt", "-s", "-w", filename)
+	err := cmd.Run()
+	if err != nil {
+		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
 }
 
