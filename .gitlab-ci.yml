@@ -61,7 +61,7 @@ test:
     - go
   script:
     - go build -v .
-    - go test -v ./...
+    - go test ./...
   only:
     - merge_requests
     - branches
