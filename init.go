@@ -16,6 +16,10 @@ limitations under the License.
 
 package parser
 
+import (
+	"sync"
+)
+
 type ConfiguredParsers struct {
 	_                     [0]int
 	State                 string
@@ -42,4 +46,45 @@ type ConfiguredParsers struct {
 	SPOEAgent   *Parsers
 	SPOEGroup   *Parsers
 	SPOEMessage *Parsers
+}
+
+func (p *Parser) Init() {
+	for _, sections := range p.Parsers {
+		for _, parsers := range sections {
+			for _, parser := range parsers.Parsers {
+				parser.Init()
+			}
+		}
+	}
+}
+
+func initParserMaps(p *Parser) *Parser {
+	p.mutex = &sync.Mutex{}
+
+	p.Parsers = map[Section]map[string]*Parsers{}
+
+	p.Parsers[Comments] = map[string]*Parsers{
+		CommentsSectionName: p.getStartParser(),
+	}
+
+	p.Parsers[Defaults] = map[string]*Parsers{
+		DefaultSectionName: p.getDefaultParser(),
+	}
+
+	p.Parsers[Global] = map[string]*Parsers{
+		GlobalSectionName: p.getGlobalParser(),
+	}
+
+	p.Parsers[Frontends] = map[string]*Parsers{}
+	p.Parsers[Backends] = map[string]*Parsers{}
+	p.Parsers[Listen] = map[string]*Parsers{}
+	p.Parsers[Resolvers] = map[string]*Parsers{}
+	p.Parsers[UserList] = map[string]*Parsers{}
+	p.Parsers[Peers] = map[string]*Parsers{}
+	p.Parsers[Mailers] = map[string]*Parsers{}
+	p.Parsers[Cache] = map[string]*Parsers{}
+	p.Parsers[Program] = map[string]*Parsers{}
+	p.Parsers[HTTPErrors] = map[string]*Parsers{}
+	p.Parsers[Ring] = map[string]*Parsers{}
+	return p
 }
