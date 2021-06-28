@@ -17,7 +17,10 @@ limitations under the License.
 package parser
 
 import (
+	"io"
 	"sync"
+
+	"github.com/haproxytech/config-parser/v4/common"
 )
 
 type Section string
@@ -49,6 +52,25 @@ const (
 	DefaultSectionName  = "data"
 )
 
+type Parser interface {
+	LoadData(filename string) error
+	Process(reader io.Reader) error
+	ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers
+	String() string
+	Save(filename string) error
+	StringWithHash() (string, error)
+	Init()
+	Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error)
+	GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error)
+	SectionsGet(sectionType Section) ([]string, error)
+	SectionsDelete(sectionType Section, sectionName string) error
+	SectionsCreate(sectionType Section, sectionName string) error
+	Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error
+	Delete(sectionType Section, sectionName string, attribute string, index ...int) error
+	Insert(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error
+	HasParser(sectionType Section, attribute string) bool
+}
+
 type UnlockError struct{}
 
 func (e UnlockError) Error() string {
@@ -60,17 +82,17 @@ type Options struct {
 	UseMd5Hash     bool
 }
 
-// Parser reads and writes configuration on given file
-type Parser struct {
+// configParser reads and writes configuration on given file
+type configParser struct {
 	Parsers map[Section]map[string]*Parsers
 	Options Options
 	mutex   *sync.Mutex
 }
 
-func NewParserWithOptions(options Options) *Parser {
-	return initParserMaps(&Parser{Options: options})
+func NewParserWithOptions(options Options) Parser {
+	return initParserMaps(&configParser{Options: options})
 }
 
-func NewParser() *Parser {
-	return initParserMaps(&Parser{})
+func NewParser() Parser {
+	return initParserMaps(&configParser{})
 }

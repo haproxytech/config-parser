@@ -28,7 +28,7 @@ import (
 )
 
 // String returns configuration in writable form
-func (p *Parser) String() string {
+func (p *configParser) String() string {
 	p.lock()
 	defer p.unLock()
 	var result strings.Builder
@@ -48,7 +48,7 @@ func (p *Parser) String() string {
 	return result.String()
 }
 
-func (p *Parser) Save(filename string) error {
+func (p *configParser) Save(filename string) error {
 	if p.Options.UseMd5Hash {
 		data, err := p.StringWithHash()
 		if err != nil {
@@ -59,7 +59,7 @@ func (p *Parser) Save(filename string) error {
 	return p.save([]byte(p.String()), filename)
 }
 
-func (p *Parser) save(data []byte, filename string) error {
+func (p *configParser) save(data []byte, filename string) error {
 	f := flock.New(filename)
 	if err := f.Lock(); err != nil {
 		return err
@@ -76,7 +76,7 @@ func (p *Parser) save(data []byte, filename string) error {
 	return nil
 }
 
-func (p *Parser) StringWithHash() (string, error) {
+func (p *configParser) StringWithHash() (string, error) {
 	var result strings.Builder
 	content := p.String()
 	//nolint:gosec
@@ -90,7 +90,7 @@ func (p *Parser) StringWithHash() (string, error) {
 	return result.String(), nil
 }
 
-func (p *Parser) writeSection(sectionName string, comments []string, result io.StringWriter) {
+func (p *configParser) writeSection(sectionName string, comments []string, result io.StringWriter) {
 	_, _ = result.WriteString("\n")
 	for _, line := range comments {
 		_, _ = result.WriteString("# ")
@@ -101,7 +101,7 @@ func (p *Parser) writeSection(sectionName string, comments []string, result io.S
 	_, _ = result.WriteString(" \n")
 }
 
-func (p *Parser) writeParsers(sectionName string, parsersData *Parsers, result io.StringWriter, useIndentation bool) {
+func (p *configParser) writeParsers(sectionName string, parsersData *Parsers, result io.StringWriter, useIndentation bool) {
 	sectionNameWritten := false
 	switch sectionName {
 	case "":

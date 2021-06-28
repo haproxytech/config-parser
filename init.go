@@ -48,7 +48,7 @@ type ConfiguredParsers struct {
 	SPOEMessage *Parsers
 }
 
-func (p *Parser) Init() {
+func (p *configParser) Init() {
 	for _, sections := range p.Parsers {
 		for _, parsers := range sections {
 			for _, parser := range parsers.Parsers {
@@ -58,7 +58,7 @@ func (p *Parser) Init() {
 	}
 }
 
-func initParserMaps(p *Parser) *Parser {
+func initParserMaps(p *configParser) *configParser {
 	p.mutex = &sync.Mutex{}
 
 	p.Parsers = map[Section]map[string]*Parsers{}

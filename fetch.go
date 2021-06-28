@@ -24,16 +24,16 @@ import (
 	"github.com/haproxytech/config-parser/v4/errors"
 )
 
-func (p *Parser) lock() {
+func (p *configParser) lock() {
 	p.mutex.Lock()
 }
 
-func (p *Parser) unLock() {
+func (p *configParser) unLock() {
 	p.mutex.Unlock()
 }
 
 // Get get attribute from defaults section
-func (p *Parser) Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
+func (p *configParser) Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error) {
 	p.lock()
 	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
@@ -52,7 +52,7 @@ func (p *Parser) Get(sectionType Section, sectionName string, attribute string, 
 }
 
 // GetOne get attribute from defaults section
-func (p *Parser) GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error) {
+func (p *configParser) GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error) {
 	p.lock()
 	defer p.unLock()
 	setIndex := -1
@@ -71,7 +71,7 @@ func (p *Parser) GetOne(sectionType Section, sectionName string, attribute strin
 }
 
 // SectionsGet lists all sections of certain type
-func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
+func (p *configParser) SectionsGet(sectionType Section) ([]string, error) {
 	p.lock()
 	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
@@ -88,7 +88,7 @@ func (p *Parser) SectionsGet(sectionType Section) ([]string, error) {
 }
 
 // SectionsDelete deletes one section of sectionType
-func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
+func (p *configParser) SectionsDelete(sectionType Section, sectionName string) error {
 	p.lock()
 	defer p.unLock()
 	_, ok := p.Parsers[sectionType]
@@ -100,7 +100,7 @@ func (p *Parser) SectionsDelete(sectionType Section, sectionName string) error {
 }
 
 // SectionsCreate creates one section of sectionType
-func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
+func (p *configParser) SectionsCreate(sectionType Section, sectionName string) error {
 	p.lock()
 	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
@@ -128,7 +128,7 @@ func (p *Parser) SectionsCreate(sectionType Section, sectionName string) error {
 }
 
 // Set sets attribute from defaults section, can be nil to disable/remove
-func (p *Parser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
+func (p *configParser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
 	defer p.unLock()
 	setIndex := -1
@@ -147,7 +147,7 @@ func (p *Parser) Set(sectionType Section, sectionName string, attribute string, 
 }
 
 // Delete remove attribute on defined index, in case of single attributes, index is ignored
-func (p *Parser) Delete(sectionType Section, sectionName string, attribute string, index ...int) error {
+func (p *configParser) Delete(sectionType Section, sectionName string, attribute string, index ...int) error {
 	p.lock()
 	defer p.unLock()
 	setIndex := -1
@@ -166,7 +166,7 @@ func (p *Parser) Delete(sectionType Section, sectionName string, attribute strin
 }
 
 // Insert put attribute on defined index, in case of single attributes, index is ignored
-func (p *Parser) Insert(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
+func (p *configParser) Insert(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
 	defer p.unLock()
 	setIndex := -1
@@ -185,7 +185,7 @@ func (p *Parser) Insert(sectionType Section, sectionName string, attribute strin
 }
 
 // HasParser checks if we have a parser for attribute
-func (p *Parser) HasParser(sectionType Section, attribute string) bool {
+func (p *configParser) HasParser(sectionType Section, attribute string) bool {
 	p.lock()
 	defer p.unLock()
 	st, ok := p.Parsers[sectionType]
@@ -205,7 +205,7 @@ func (p *Parser) HasParser(sectionType Section, attribute string) bool {
 	return section.HasParser(attribute)
 }
 
-func (p *Parser) getSortedList(data map[string]*Parsers) []string {
+func (p *configParser) getSortedList(data map[string]*Parsers) []string {
 	result := make([]string, len(data))
 	index := 0
 	for parserSectionName := range data {

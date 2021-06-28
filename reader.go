@@ -28,7 +28,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-func (p *Parser) LoadData(filename string) error {
+func (p *configParser) LoadData(filename string) error {
 	dat, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
@@ -36,7 +36,7 @@ func (p *Parser) LoadData(filename string) error {
 	return p.Process(bytes.NewReader(dat))
 }
 
-func (p *Parser) Process(reader io.Reader) error {
+func (p *configParser) Process(reader io.Reader) error {
 	p.Init()
 
 	parsers := ConfiguredParsers{
@@ -95,7 +95,7 @@ func (p *Parser) Process(reader io.Reader) error {
 }
 
 // ProcessLine parses line plus determines if we need to change state
-func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo
+func (p *configParser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo
 	if config.State != "" {
 		if parts[0] == "" && comment != "" && comment != "##_config-snippet_### BEGIN" && comment != "##_config-snippet_### END" {
 			if line[0] == ' ' {
