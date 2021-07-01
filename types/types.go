@@ -951,6 +951,18 @@ type UseServer struct {
 }
 
 //sections:global
+//name:lua-prepend-path
+//is-multiple:true
+//test:ok:lua-prepend-path /usr/share/haproxy-lua/?/init.lua
+//test:ok:lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
+//test:fail:lua-prepend-path
+type LuaPrependPath struct {
+	Path    string
+	Type    string
+	Comment string
+}
+
+//sections:global
 //name:lua-load
 //is-multiple:true
 //test:ok:lua-load /etc/haproxy/lua/foo.lua

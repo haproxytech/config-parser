@@ -12,6 +12,8 @@ global
   stats socket 127.0.0.1:8080 mode admin
   stats socket /some/path/to/socket
   stats socket /some/path/to/socket mode admin
+  lua-prepend-path /usr/share/haproxy-lua/?/init.lua
+  lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
   lua-load /etc/haproxy/lua/foo.lua
   ssl-engine rdrand
   ssl-mode-async

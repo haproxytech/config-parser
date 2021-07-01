@@ -186,6 +186,7 @@ func (p *Parser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Time{Name: "hard-stop-after"})
 	addParser(parser, &sequence, &parsers.Log{})
 	addParser(parser, &sequence, &parsers.LogSendHostName{})
+	addParser(parser, &sequence, &parsers.LuaPrependPath{})
 	addParser(parser, &sequence, &parsers.LuaLoad{})
 	addParser(parser, &sequence, &simple.Word{Name: "server-state-file"})
 	addParser(parser, &sequence, &simple.Word{Name: "server-state-base"})

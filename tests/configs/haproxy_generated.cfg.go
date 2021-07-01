@@ -30,6 +30,8 @@ global test
   stats socket 127.0.0.1:8080 mode admin
   stats socket /some/path/to/socket
   stats socket /some/path/to/socket mode admin
+  lua-prepend-path /usr/share/haproxy-lua/?/init.lua
+  lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
   lua-load /etc/haproxy/lua/foo.lua
   ssl-engine rdrand
   ssl-mode-async
@@ -2219,6 +2221,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  use-server www if { req_ssl_sni -i www.example.com }
 `, 1},
   {`  use-server www if { req_ssl_sni -i www.example.com } # comment
+`, 1},
+  {`  lua-prepend-path /usr/share/haproxy-lua/?/init.lua
+`, 1},
+  {`  lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
 `, 1},
   {`  lua-load /etc/haproxy/lua/foo.lua
 `, 1},
