@@ -17,10 +17,14 @@ limitations under the License.
 package parser
 
 import (
+	"bytes"
+	"errors"
 	"io"
+	"io/ioutil"
 	"sync"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/options"
 )
 
 type Section string
@@ -53,13 +57,10 @@ const (
 )
 
 type Parser interface {
-	LoadData(filename string) error
 	Process(reader io.Reader) error
-	ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers
 	String() string
 	Save(filename string) error
 	StringWithHash() (string, error)
-	Init()
 	Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error)
 	GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error)
 	SectionsGet(sectionType Section) ([]string, error)
@@ -77,22 +78,36 @@ func (e UnlockError) Error() string {
 	return "failed funclock"
 }
 
-type Options struct {
-	UseV2HTTPCheck bool
-	UseMd5Hash     bool
-}
-
 // configParser reads and writes configuration on given file
 type configParser struct {
 	Parsers map[Section]map[string]*Parsers
-	Options Options
+	Options options.Parser
 	mutex   *sync.Mutex
 }
 
-func NewParserWithOptions(options Options) Parser {
-	return initParserMaps(&configParser{Options: options})
-}
+func New(opt ...options.ParserOption) (Parser, error) {
+	p := &configParser{
+		Options: options.Parser{},
+	}
+	var err error
 
-func NewParser() Parser {
-	return initParserMaps(&configParser{})
+	for _, option := range opt {
+		err = option.Set(&p.Options)
+		if err != nil {
+			return nil, err
+		}
+	}
+	p = initParserMaps(p)
+	if p.Options.Path != "" {
+		dat, err := ioutil.ReadFile(p.Options.Path)
+		if err != nil {
+			return nil, err
+		}
+		return p, p.Process(bytes.NewReader(dat))
+	}
+	if p.Options.Reader != nil {
+		return p, p.Process(p.Options.Reader)
+	}
+
+	return nil, errors.New("source not provided")
 }

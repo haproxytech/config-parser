@@ -19,17 +19,21 @@ Please use `golangci-lint run` from [github.com/golangci/golangci-lint](https://
 package main
 
 import (
-    "github.com/haproxytech/config-parser/v3"
+    "github.com/haproxytech/config-parser/v4"
+    "github.com/haproxytech/config-parser/v4/options"
     // ...
 )
 // ...
 
 func main() {
-    p := parser.Parser{}
-    p.Init()
-    err := p.LoadData("/path/to/haproxy/file.cfg")
-    log.Println(err)
-    log.Println(p.String())
+    p, err := parser.New(options.Path("config.cfg"))
+    /* p, err := parser.New(
+        options.UseMd5Hash,
+        options.Path("config.cfg")
+    )*/
+    if err != nil {
+        log.Panic(err)
+    }
 
     {
         data, _ := p.Get(parser.Comments, parser.CommentsSectionName, "# _version", true)

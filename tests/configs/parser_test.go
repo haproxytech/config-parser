@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	parser "github.com/haproxytech/config-parser/v4"
+	"github.com/haproxytech/config-parser/v4/options"
 )
 
 func TestWholeConfigs(t *testing.T) {
@@ -34,10 +35,12 @@ func TestWholeConfigs(t *testing.T) {
 	}
 	for _, config := range tests {
 		t.Run(config.Name, func(t *testing.T) {
-			p := parser.NewParser()
 			var buffer bytes.Buffer
 			buffer.WriteString(config.Config)
-			_ = p.Process(&buffer)
+			p, err := parser.New(options.Reader(&buffer))
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
 			result := p.String()
 			if result != config.Config {
 				compare(t, config.Config, result)
@@ -62,10 +65,12 @@ func compare(t *testing.T, configOriginal, configResult string) {
 }
 
 func TestGeneratedConfig(t *testing.T) {
-	p := parser.NewParser()
 	var buffer bytes.Buffer
 	buffer.WriteString(generatedConfig)
-	_ = p.Process(&buffer)
+	p, err := parser.New(options.Reader(&buffer))
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	result := p.String()
 	ioutil.WriteFile("TestGeneratedConfig", []byte(result), 0644)
 	for _, configLine := range configTests {
@@ -77,10 +82,12 @@ func TestGeneratedConfig(t *testing.T) {
 }
 
 func TestHashConfig(t *testing.T) {
-	p := parser.NewParserWithOptions(parser.Options{UseMd5Hash: true})
 	var buffer bytes.Buffer
 	buffer.WriteString(configBasicHash)
-	_ = p.Process(&buffer)
+	p, err := parser.New(options.UseMd5Hash, options.Reader(&buffer))
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	result, err := p.StringWithHash()
 	if err != nil {
 		t.Fatalf(err.Error())
