@@ -57,6 +57,7 @@ const (
 )
 
 type Parser interface {
+	LoadData(path string) error
 	Process(reader io.Reader) error
 	String() string
 	Save(filename string) error
@@ -97,7 +98,6 @@ func New(opt ...options.ParserOption) (Parser, error) {
 			return nil, err
 		}
 	}
-	p = initParserMaps(p)
 	if p.Options.Path != "" {
 		dat, err := ioutil.ReadFile(p.Options.Path)
 		if err != nil {

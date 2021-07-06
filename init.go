@@ -49,6 +49,7 @@ type ConfiguredParsers struct {
 }
 
 func (p *configParser) Init() {
+	p.initParserMaps()
 	for _, sections := range p.Parsers {
 		for _, parsers := range sections {
 			for _, parser := range parsers.Parsers {
@@ -58,7 +59,7 @@ func (p *configParser) Init() {
 	}
 }
 
-func initParserMaps(p *configParser) *configParser {
+func (p *configParser) initParserMaps() {
 	p.mutex = &sync.Mutex{}
 
 	p.Parsers = map[Section]map[string]*Parsers{}
@@ -86,5 +87,4 @@ func initParserMaps(p *configParser) *configParser {
 	p.Parsers[Program] = map[string]*Parsers{}
 	p.Parsers[HTTPErrors] = map[string]*Parsers{}
 	p.Parsers[Ring] = map[string]*Parsers{}
-	return p
 }

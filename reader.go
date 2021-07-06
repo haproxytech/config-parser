@@ -18,13 +18,24 @@ package parser
 
 import (
 	"bufio"
+	"bytes"
 	"io"
+	"io/ioutil"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/parsers/extra"
 	"github.com/haproxytech/config-parser/v4/types"
 )
+
+func (p *configParser) LoadData(path string) error {
+	p.Options.Path = path
+	dat, err := ioutil.ReadFile(p.Options.Path)
+	if err != nil {
+		return err
+	}
+	return p.Process(bytes.NewReader(dat))
+}
 
 func (p *configParser) Process(reader io.Reader) error {
 	p.Init()
