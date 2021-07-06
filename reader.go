@@ -121,6 +121,19 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 			break
 		}
 	}
+	if len(parsers) == 0 && len(parts) == 1 && parts[0] == "" {
+		if parserFound, ok := config.Active.Parsers["#"]; ok {
+			parsers = append(parsers, parserFound)
+		}
+	}
+	if len(parsers) == 0 && len(parts) > 0 && parts[0] == "no" {
+		for i := 2; i <= len(parts) && !config.HasDefaultParser; i++ {
+			if parserFound, ok := config.Active.Parsers[strings.Join(parts[1:i], " ")]; ok {
+				parsers = append(parsers, parserFound)
+				break
+			}
+		}
+	}
 	for i := len(parsers) - 1; i >= 0; i-- {
 		parser := parsers[i]
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
