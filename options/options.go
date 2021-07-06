@@ -19,10 +19,11 @@ package options
 import "io"
 
 type Parser struct {
-	UseV2HTTPCheck bool
-	UseMd5Hash     bool
-	Path           string
-	Reader         io.Reader
+	UseV2HTTPCheck     bool
+	UseMd5Hash         bool
+	DisableUnProcessed bool
+	Path               string
+	Reader             io.Reader
 }
 
 type ParserOption interface {
@@ -48,6 +49,16 @@ func (u useV2HTTPCheck) Set(p *Parser) error {
 
 // UseV2HTTPCheck sets flag to use deprecated HTTPCheck
 var UseV2HTTPCheck = useV2HTTPCheck{} //nolint:gochecknoglobals
+
+type disableUnProcessed struct{}
+
+func (u disableUnProcessed) Set(p *Parser) error {
+	p.DisableUnProcessed = true
+	return nil
+}
+
+// DisableUnProcessed sets flag to disable catching lines that have no parser and to return error
+var DisableUnProcessed = disableUnProcessed{} //nolint:gochecknoglobals
 
 type filename struct {
 	Path string

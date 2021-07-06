@@ -56,6 +56,9 @@ type Data struct { //nolint:maligned
 	Dir                string
 	ModeOther          bool
 	TestOK             []string
+	TestOKDefaults     []string
+	TestOKFrontend     []string
+	TestOKBackend      []string
 	TestOKEscaped      []string
 	TestFail           []string
 	TestFailEscaped    []string
@@ -72,14 +75,20 @@ type ConfigFile struct {
 	Tests   strings.Builder
 }
 
-func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit
+func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo
 	sections := parser.ParserSections
 	testOK := parser.TestOK
+	testOKDefaults := parser.TestOKDefaults
+	testOKFrontend := parser.TestOKFrontend
+	testOKBackend := parser.TestOKBackend
 	TestOKEscaped := parser.TestOKEscaped
 	if len(sections) == 0 && !parser.NoSections {
 		log.Fatalf("parser %s does not have any section defined", parser.ParserName)
 	}
 	var lines []string
+	var linesDefaults []string
+	var linesFrontend []string
+	var linesBackend []string
 	var lines2 []string
 	for _, s := range sections {
 		_, ok := c.Section[s]
@@ -97,6 +106,42 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit
 		} else {
 			lines = []string{testOK[0]}
 			c.Section[s] = append(c.Section[s], testOK[0])
+		}
+		if s == "defaults" {
+			if parser.ParserMultiple {
+				linesDefaults = testOKDefaults
+				//nolint:gosimple
+				for _, line := range testOKDefaults {
+					c.Section[s] = append(c.Section[s], line)
+				}
+			} else if len(testOKDefaults) > 0 {
+				linesDefaults = []string{testOKDefaults[0]}
+				c.Section[s] = append(c.Section[s], testOKDefaults[0])
+			}
+		}
+		if s == "frontend" {
+			if parser.ParserMultiple {
+				linesFrontend = testOKFrontend
+				//nolint:gosimple
+				for _, line := range testOKFrontend {
+					c.Section[s] = append(c.Section[s], line)
+				}
+			} else if len(testOKFrontend) > 0 {
+				linesFrontend = []string{testOKFrontend[0]}
+				c.Section[s] = append(c.Section[s], testOKFrontend[0])
+			}
+		}
+		if s == "backend" {
+			if parser.ParserMultiple {
+				linesBackend = testOKBackend
+				//nolint:gosimple
+				for _, line := range testOKBackend {
+					c.Section[s] = append(c.Section[s], line)
+				}
+			} else if len(testOKBackend) > 0 {
+				linesBackend = []string{testOKBackend[0]}
+				c.Section[s] = append(c.Section[s], testOKBackend[0])
+			}
 		}
 		if parser.ParserMultiple {
 			lines2 = TestOKEscaped
@@ -120,6 +165,15 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit
 	if !parser.NoSections {
 		for _, line := range lines {
 			c.Tests.WriteString(fmt.Sprintf("  {`  %s\n`, %d},\n", line, len(sections)))
+		}
+		for _, line := range linesDefaults {
+			c.Tests.WriteString(fmt.Sprintf("  {`  %s\n`, 1},\n", line))
+		}
+		for _, line := range linesFrontend {
+			c.Tests.WriteString(fmt.Sprintf("  {`  %s\n`, 1},\n", line))
+		}
+		for _, line := range linesBackend {
+			c.Tests.WriteString(fmt.Sprintf("  {`  %s\n`, 1},\n", line))
 		}
 	}
 }
@@ -275,6 +329,18 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
 		}
+		if strings.HasPrefix(line, `//test:defaults-ok`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKDefaults = append(parserData.TestOKDefaults, data[2])
+		}
+		if strings.HasPrefix(line, `//test:frontend-ok`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKFrontend = append(parserData.TestOKFrontend, data[2])
+		}
+		if strings.HasPrefix(line, `//test:backend-ok`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKBackend = append(parserData.TestOKBackend, data[2])
+		}
 		if strings.HasPrefix(line, "//test:ok") {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
@@ -418,6 +484,18 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
 		}
+		if strings.HasPrefix(line, `//test:defaults-ok`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKDefaults = append(parserData.TestOKDefaults, data[2])
+		}
+		if strings.HasPrefix(line, `//test:frontend-ok`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKFrontend = append(parserData.TestOKFrontend, data[2])
+		}
+		if strings.HasPrefix(line, `//test:backend-ok`) {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKBackend = append(parserData.TestOKBackend, data[2])
+		}
 		if strings.HasPrefix(line, "//test:ok") {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
@@ -503,7 +581,7 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 	}
 }
 
-func generateTypes(dir string, dataDir string) { //nolint:gocognit
+func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo
 	dat, err := ioutil.ReadFile(dataDir + "types/types.go")
 	if err != nil {
 		log.Println(err)
@@ -548,6 +626,18 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit
 		if strings.HasPrefix(line, `//test:"ok"`) && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
+		}
+		if strings.HasPrefix(line, `//test:"defaults-ok"`) && !parserData.Deprecated {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKDefaults = append(parserData.TestOKDefaults, data[2])
+		}
+		if strings.HasPrefix(line, `//test:"frontend-ok"`) && !parserData.Deprecated {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKFrontend = append(parserData.TestOKFrontend, data[2])
+		}
+		if strings.HasPrefix(line, `//test:"backend-ok"`) && !parserData.Deprecated {
+			data := strings.SplitN(line, ":", 3)
+			parserData.TestOKBackend = append(parserData.TestOKBackend, data[2])
 		}
 		if strings.HasPrefix(line, "//test:ok") && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
@@ -1001,6 +1091,15 @@ import (
 {{ $StructName := .StructName }}
 func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {
 	tests := map[string]bool{
+	{{- range $index, $val := .TestOKDefaults}}
+		` + "`" + `{{- $val -}}` + "`" + `: true,
+	{{- end }}
+	{{- range $index, $val := .TestOKFrontend}}
+		` + "`" + `{{- $val -}}` + "`" + `: true,
+	{{- end }}
+	{{- range $index, $val := .TestOKBackend}}
+		` + "`" + `{{- $val -}}` + "`" + `: true,
+	{{- end }}
 	{{- range $index, $val := .TestOK}}
 		"{{- $val -}}": true,
 	{{- end }}

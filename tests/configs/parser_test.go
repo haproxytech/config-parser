@@ -17,7 +17,6 @@ package configs
 
 import (
 	"bytes"
-	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -67,12 +66,11 @@ func compare(t *testing.T, configOriginal, configResult string) {
 func TestGeneratedConfig(t *testing.T) {
 	var buffer bytes.Buffer
 	buffer.WriteString(generatedConfig)
-	p, err := parser.New(options.Reader(&buffer))
+	p, err := parser.New(options.DisableUnProcessed, options.Reader(&buffer))
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 	result := p.String()
-	ioutil.WriteFile("TestGeneratedConfig", []byte(result), 0644)
 	for _, configLine := range configTests {
 		count := strings.Count(result, configLine.Line)
 		if count != configLine.Count {

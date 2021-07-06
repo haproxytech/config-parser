@@ -28,6 +28,7 @@ import (
 func TestLog(t *testing.T) {
 	tests := map[string]bool{
 		"log global": true,
+		"no log":     true,
 		"log stdout format short daemon # send log to systemd":                  true,
 		"log stdout format raw daemon # send everything to stdout":              true,
 		"log stderr format raw daemon notice # send important events to stderr": true,

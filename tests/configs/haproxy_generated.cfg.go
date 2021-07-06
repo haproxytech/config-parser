@@ -187,6 +187,7 @@ defaults test
   hash-type map-based
   http-reuse never
   log global
+  no log
   log stdout format short daemon # send log to systemd
   log stdout format raw daemon # send everything to stdout
   log stderr format raw daemon notice # send important events to stderr
@@ -231,7 +232,6 @@ defaults test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
-  stats admin if LOCALHOST
   stats auth admin1:AdMiN123
   stats enable
   stats hide-version
@@ -249,11 +249,6 @@ defaults test
   stats bind-process even
   stats bind-process 1 2 3 4
   stats bind-process 1-4
-  stats http-request realm HAProxy\\ Statistics
-  stats http-request realm HAProxy\\ Statistics if something
-  stats http-request auth if something
-  stats http-request deny unless something
-  stats http-request allow
 
 backend test
   acl url_stats path_beg /stats
@@ -420,6 +415,7 @@ backend test
   hash-type map-based
   http-reuse never
   log global
+  no log
   log stdout format short daemon # send log to systemd
   log stdout format raw daemon # send everything to stdout
   log stderr format raw daemon notice # send important events to stderr
@@ -585,7 +581,6 @@ backend test
   server-template srv 3 google.com:80 check
   server-template srv 3 google.com:80
   server-template srv 3 google.com
-  http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
@@ -685,7 +680,6 @@ backend test
   http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
-  http-response capture res.hdr(Server) id 0
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
   http-response add-acl(map.lst) [src]
@@ -869,7 +863,6 @@ backend test
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
-  stats admin if LOCALHOST
   stats auth admin1:AdMiN123
   stats enable
   stats hide-version
@@ -1014,6 +1007,7 @@ frontend test
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
   log global
+  no log
   log stdout format short daemon # send log to systemd
   log stdout format raw daemon # send everything to stdout
   log stderr format raw daemon notice # send important events to stderr
@@ -1030,7 +1024,6 @@ frontend test
   unique-id-header X-Unique-ID
   monitor-uri /haproxy_test
   monitor fail if no_db01 no_db02
-  http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
@@ -1118,6 +1111,7 @@ frontend test
   http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
   http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
   http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
@@ -1130,7 +1124,6 @@ frontend test
   http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
-  http-response capture res.hdr(Server) id 0
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
   http-response add-acl(map.lst) [src]
@@ -1181,6 +1174,7 @@ frontend test
   http-response track-sc2 src
   http-response strict-mode on
   http-response strict-mode on if FALSE
+  http-response capture res.hdr(Server) id 0
   tcp-request content accept
   tcp-request content accept if !HTTP
   tcp-request content reject
@@ -1280,7 +1274,6 @@ frontend test
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
-  stats admin if LOCALHOST
   stats auth admin1:AdMiN123
   stats enable
   stats hide-version
@@ -1298,14 +1291,7 @@ frontend test
   stats bind-process even
   stats bind-process 1 2 3 4
   stats bind-process 1-4
-  stats http-request realm HAProxy\\ Statistics
-  stats http-request realm HAProxy\\ Statistics if something
-  stats http-request auth if something
-  stats http-request deny unless something
-  stats http-request allow
-
-listen test
-  load-server-state-from-file global
+  stats admin if LOCALHOST
 
 mailers test
   mailer smtp1 192.168.0.1:587
@@ -1866,6 +1852,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  log global
 `, 3},
+  {`  no log
+`, 3},
   {`  log stdout format short daemon # send log to systemd
 `, 3},
   {`  log stdout format raw daemon # send everything to stdout
@@ -2233,7 +2221,7 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  ssl-mode-async
 `, 1},
   {`  load-server-state-from-file global
-`, 3},
+`, 2},
   {`  monitor-uri /haproxy_test
 `, 2},
   {`  monitor fail if no_db01 no_db02
@@ -2246,8 +2234,6 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  server-template srv 3 google.com
 `, 1},
-  {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
-`, 2},
   {`  http-request deny deny_status 0 unless { src 127.0.0.1 }
 `, 2},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
@@ -2422,8 +2408,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `, 2},
-  {`  http-response capture res.hdr(Server) id 0
-`, 2},
+  {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
+`, 1},
   {`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
 `, 2},
   {`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
@@ -2524,6 +2510,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-response strict-mode on if FALSE
 `, 2},
+  {`  http-response capture res.hdr(Server) id 0
+`, 1},
   {`  http-check comment testcomment
 `, 2},
   {`  http-check connect
@@ -2790,8 +2778,6 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 `, 2},
-  {`  stats admin if LOCALHOST
-`, 3},
   {`  stats auth admin1:AdMiN123
 `, 3},
   {`  stats enable
@@ -2826,14 +2812,16 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 3},
   {`  stats bind-process 1-4
 `, 3},
+  {`  stats admin if LOCALHOST
+`, 1},
   {`  stats http-request realm HAProxy\\ Statistics
-`, 3},
+`, 1},
   {`  stats http-request realm HAProxy\\ Statistics if something
-`, 3},
+`, 1},
   {`  stats http-request auth if something
-`, 3},
+`, 1},
   {`  stats http-request deny unless something
-`, 3},
+`, 1},
   {`  stats http-request allow
-`, 3},
+`, 1},
 }

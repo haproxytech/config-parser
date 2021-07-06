@@ -32,7 +32,7 @@ func addParser(parser map[string]ParserInterface, sequence *[]Section, p ParserI
 	*sequence = append(*sequence, Section(p.GetParserName()))
 }
 
-func createParsers(parser map[string]ParserInterface, sequence []Section) *Parsers {
+func (p *configParser) createParsers(parser map[string]ParserInterface, sequence []Section) *Parsers {
 	addParser(parser, &sequence, &extra.Section{Name: "defaults"})
 	addParser(parser, &sequence, &extra.Section{Name: "global"})
 	addParser(parser, &sequence, &extra.Section{Name: "frontend"})
@@ -46,7 +46,9 @@ func createParsers(parser map[string]ParserInterface, sequence []Section) *Parse
 	addParser(parser, &sequence, &extra.Section{Name: "program"})
 	addParser(parser, &sequence, &extra.Section{Name: "http-errors"})
 	addParser(parser, &sequence, &extra.Section{Name: "ring"})
-	addParser(parser, &sequence, &extra.UnProcessed{})
+	if !p.Options.DisableUnProcessed {
+		addParser(parser, &sequence, &extra.UnProcessed{})
+	}
 
 	for _, parser := range parser {
 		parser.Init()
@@ -63,7 +65,7 @@ func (p *configParser) getStartParser() *Parsers {
 	}
 	addParser(parser, &sequence, &extra.ConfigVersion{})
 	addParser(parser, &sequence, &extra.Comments{})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getDefaultParser() *Parsers {
@@ -136,7 +138,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getGlobalParser() *Parsers {
@@ -196,7 +198,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getFrontendParser() *Parsers {
@@ -248,7 +250,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.StickTable{})
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getBackendParser() *Parsers {
@@ -318,11 +320,12 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "backend"})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
-	return createParsers(parser, sequence)
+	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getListenParser() *Parsers {
-	return createParsers(map[string]ParserInterface{}, []Section{})
+	return p.createParsers(map[string]ParserInterface{}, []Section{})
 }
 
 func (p *configParser) getResolverParser() *Parsers {
@@ -340,7 +343,7 @@ func (p *configParser) getResolverParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "accepted_payload_size"})
 	addParser(parser, &sequence, &simple.Word{Name: "parse-resolv-conf"})
 	addParser(parser, &sequence, &simple.Word{Name: "resolve_retries"})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getUserlistParser() *Parsers {
@@ -348,14 +351,14 @@ func (p *configParser) getUserlistParser() *Parsers {
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Group{})
 	addParser(parser, &sequence, &parsers.User{})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getPeersParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Peer{})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getMailersParser() *Parsers {
@@ -363,7 +366,7 @@ func (p *configParser) getMailersParser() *Parsers {
 	sequence := []Section{}
 	addParser(parser, &sequence, &simple.TimeTwoWords{Keywords: []string{"timeout", "mail"}})
 	addParser(parser, &sequence, &parsers.Mailer{})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getCacheParser() *Parsers {
@@ -372,7 +375,7 @@ func (p *configParser) getCacheParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "total-max-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "max-object-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "max-age"})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getProgramParser() *Parsers {
@@ -382,13 +385,13 @@ func (p *configParser) getProgramParser() *Parsers {
 	addParser(parser, &sequence, &simple.String{Name: "user"})
 	addParser(parser, &sequence, &simple.String{Name: "group"})
 	addParser(parser, &sequence, &simple.Option{Name: "start-on-reload"})
-	return createParsers(parser, sequence)
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getHTTPErrorsParser() *Parsers {
-	return createParsers(map[string]ParserInterface{}, []Section{})
+	return p.createParsers(map[string]ParserInterface{}, []Section{})
 }
 
 func (p *configParser) getRingParser() *Parsers {
-	return createParsers(map[string]ParserInterface{}, []Section{})
+	return p.createParsers(map[string]ParserInterface{}, []Section{})
 }

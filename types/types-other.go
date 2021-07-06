@@ -170,7 +170,7 @@ type HTTPAction interface {
 //no-parse:true
 //test:fail:http-request
 //test:fail:http-request capture req.cook_cnt(FirstVisit),bool strlen 10
-//test:ok:http-request capture req.cook_cnt(FirstVisit),bool len 10
+//test:frontend-ok:http-request capture req.cook_cnt(FirstVisit),bool len 10
 //test:ok:http-request deny deny_status 0 unless { src 127.0.0.1 }
 //test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 //test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
@@ -335,7 +335,7 @@ type HTTPRequests struct{}
 //no-init:true
 //no-parse:true
 //test:fail:http-response
-//test:ok:http-response capture res.hdr(Server) id 0
+//test:frontend-ok:http-response capture res.hdr(Server) id 0
 //test:ok:http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
 //test:ok:http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
 //test:fail:http-response set-map(map.lst) %[src]
@@ -658,7 +658,7 @@ type StatsSettings interface {
 //no-init:true
 //no-parse:true
 //test:fail:stats
-//test:ok:stats admin if LOCALHOST
+//test:frontend-ok:stats admin if LOCALHOST
 //test:ok:stats auth admin1:AdMiN123
 //test:fail:stats auth admin1:
 //test:fail:stats auth
@@ -687,11 +687,11 @@ type StatsSettings interface {
 //test:fail:stats bind-process 1+4
 //test:fail:stats bind-process none-none
 //test:fail:stats bind-process 1-4 1-3
-//test:ok:stats http-request realm HAProxy\\ Statistics
-//test:ok:stats http-request realm HAProxy\\ Statistics if something
-//test:ok:stats http-request auth if something
-//test:ok:stats http-request deny unless something
-//test:ok:stats http-request allow
+//test:backend-ok:stats http-request realm HAProxy\\ Statistics
+//test:backend-ok:stats http-request realm HAProxy\\ Statistics if something
+//test:backend-ok:stats http-request auth if something
+//test:backend-ok:stats http-request deny unless something
+//test:backend-ok:stats http-request allow
 //test:fail:stats http-request
 //test:fail:stats http-request none
 type Stats struct{}

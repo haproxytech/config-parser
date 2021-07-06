@@ -107,8 +107,10 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 			return config
 		}
 	}
-	parsers := make([]ParserInterface, 1, 2)
-	parsers[0] = config.Active.Parsers[""]
+	parsers := make([]ParserInterface, 0, 2)
+	if !p.Options.DisableUnProcessed {
+		parsers = append(parsers, config.Active.Parsers[""])
+	}
 
 	if config.HasDefaultParser {
 		// Default parser name is given in position 0 of ParserSequence
@@ -121,12 +123,12 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 			break
 		}
 	}
-	if len(parsers) == 0 && len(parts) == 1 && parts[0] == "" {
+	if len(parsers) < 2 && len(parts) == 1 && parts[0] == "" {
 		if parserFound, ok := config.Active.Parsers["#"]; ok {
 			parsers = append(parsers, parserFound)
 		}
 	}
-	if len(parsers) == 0 && len(parts) > 0 && parts[0] == "no" {
+	if (len(parsers) < 2) && len(parts) > 0 && parts[0] == "no" {
 		for i := 2; i <= len(parts) && !config.HasDefaultParser; i++ {
 			if parserFound, ok := config.Active.Parsers[strings.Join(parts[1:i], " ")]; ok {
 				parsers = append(parsers, parserFound)

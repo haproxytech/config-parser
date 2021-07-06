@@ -495,6 +495,7 @@ type HTTPCheckV2 struct {
 //no-init:true
 //no-parse:true
 //test:ok:log global
+//test:ok:no log
 //test:ok:log stdout format short daemon # send log to systemd
 //test:ok:log stdout format raw daemon # send everything to stdout
 //test:ok:log stderr format raw daemon notice # send important events to stderr
@@ -990,7 +991,7 @@ type SslEngine struct {
 //test:fail:ssl-mode-async false
 type SslModeAsync struct{}
 
-//sections:global,listen,backend
+//sections:global,backend
 //name:load-server-state-from-file
 //test:ok:load-server-state-from-file global
 //test:ok:load-server-state-from-file local
