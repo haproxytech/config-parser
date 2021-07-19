@@ -14,9 +14,10 @@ type BalanceParams interface {
 }
 
 type BalanceURI struct {
-	Depth int64
-	Len   int64
-	Whole bool
+	Depth    int64
+	Len      int64
+	Whole    bool
+	PathOnly bool
 }
 
 func (b *BalanceURI) String() string {
@@ -32,6 +33,9 @@ func (b *BalanceURI) String() string {
 	if b.Whole {
 		result.WriteString(" whole")
 	}
+	if b.PathOnly {
+		result.WriteString(" path-only")
+	}
 	return result.String()
 }
 
@@ -42,6 +46,8 @@ func (b *BalanceURI) Parse(parts []string) (bp BalanceParams, err error) {
 			arg := parts[i]
 
 			switch arg {
+			case "path-only":
+				b.PathOnly = true
 			case "whole":
 				b.Whole = true
 			case "len":
