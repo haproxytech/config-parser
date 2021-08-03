@@ -1040,6 +1040,7 @@ type ServerTemplate struct {
 	Prefix     string
 	NumOrRange string
 	Fqdn       string
+	Port       int64
 	Params     []params.ServerOption
 	Comment    string
 }
