@@ -76,6 +76,8 @@ func (f *Connection) Parse(parts []string, comment string) error {
 				err = f.ParseAction(&actions.TrackSc2{}, command)
 			case "set-src":
 				err = f.ParseAction(&actions.SetSrc{}, command)
+			case "silent-drop":
+				err = f.ParseAction(&actions.SilentDrop{}, command)
 			default:
 				switch {
 				case strings.HasPrefix(command[0], "lua."):

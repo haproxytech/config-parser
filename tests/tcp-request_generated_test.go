@@ -91,6 +91,8 @@ func TestRequeststcp(t *testing.T) {
 		"tcp-request connection set-src src,ipmask(24) if some_check":          true,
 		"tcp-request connection set-src hdr(x-forwarded-for)":                  true,
 		"tcp-request connection set-src hdr(x-forwarded-for) if some_check":    true,
+		"tcp-request connection silent-drop":                                   true,
+		"tcp-request connection silent-drop if !HTTP":                          true,
 		"tcp-request connection lua.foo":                                       true,
 		"tcp-request connection lua.foo param if !HTTP":                        true,
 		"tcp-request connection lua.foo param param1":                          true,

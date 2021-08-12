@@ -554,6 +554,8 @@ type TCPAction interface {
 //test:ok:tcp-request connection set-src src,ipmask(24) if some_check
 //test:ok:tcp-request connection set-src hdr(x-forwarded-for)
 //test:ok:tcp-request connection set-src hdr(x-forwarded-for) if some_check
+//test:ok:tcp-request connection silent-drop
+//test:ok:tcp-request connection silent-drop if !HTTP
 //test:ok:tcp-request connection lua.foo
 //test:ok:tcp-request connection lua.foo param if !HTTP
 //test:ok:tcp-request connection lua.foo param param1
