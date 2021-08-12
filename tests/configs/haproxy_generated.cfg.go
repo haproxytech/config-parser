@@ -828,6 +828,8 @@ backend test
   tcp-request connection set-src src,ipmask(24) if some_check
   tcp-request connection set-src hdr(x-forwarded-for)
   tcp-request connection set-src hdr(x-forwarded-for) if some_check
+  tcp-request connection silent-drop
+  tcp-request connection silent-drop if !HTTP
   tcp-request connection lua.foo
   tcp-request connection lua.foo param if !HTTP
   tcp-request connection lua.foo param param1
@@ -1239,6 +1241,8 @@ frontend test
   tcp-request connection set-src src,ipmask(24) if some_check
   tcp-request connection set-src hdr(x-forwarded-for)
   tcp-request connection set-src hdr(x-forwarded-for) if some_check
+  tcp-request connection silent-drop
+  tcp-request connection silent-drop if !HTTP
   tcp-request connection lua.foo
   tcp-request connection lua.foo param if !HTTP
   tcp-request connection lua.foo param param1
@@ -2707,6 +2711,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  tcp-request connection set-src hdr(x-forwarded-for)
 `, 2},
   {`  tcp-request connection set-src hdr(x-forwarded-for) if some_check
+`, 2},
+  {`  tcp-request connection silent-drop
+`, 2},
+  {`  tcp-request connection silent-drop if !HTTP
 `, 2},
   {`  tcp-request connection lua.foo
 `, 2},
