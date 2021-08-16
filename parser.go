@@ -18,9 +18,9 @@ package parser
 
 import (
 	"bytes"
-	"errors"
 	"io"
 	"io/ioutil"
+	"strings"
 	"sync"
 
 	"github.com/haproxytech/config-parser/v4/common"
@@ -109,5 +109,5 @@ func New(opt ...options.ParserOption) (Parser, error) {
 		return p, p.Process(p.Options.Reader)
 	}
 
-	return nil, errors.New("source not provided")
+	return p, p.Process(strings.NewReader(""))
 }
