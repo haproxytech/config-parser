@@ -16,7 +16,10 @@ limitations under the License.
 
 package options
 
-import "io"
+import (
+	"io"
+	"strings"
+)
 
 type Parser struct {
 	UseV2HTTPCheck     bool
@@ -89,5 +92,12 @@ func (f reader) Set(p *Parser) error {
 func Reader(ioReader io.Reader) reader { //nolint:golint
 	return reader{
 		Reader: ioReader,
+	}
+}
+
+// String takes string that will be used to parse data
+func String(configuration string) reader { //nolint:golint
+	return reader{
+		Reader: strings.NewReader(configuration),
 	}
 }
