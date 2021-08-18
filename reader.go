@@ -54,6 +54,10 @@ func (p *configParser) Process(reader io.Reader) error {
 	var line string
 	var err error
 	var previousLine []string
+
+	if p.Options.Log {
+		p.Options.Logger.Debug("processing of data started")
+	}
 	for {
 		line, err = bufferedReader.ReadString('\n')
 		if err != nil {
@@ -83,6 +87,9 @@ func (p *configParser) Process(reader io.Reader) error {
 		if len(parts) == 0 {
 			continue
 		}
+		if p.Options.Log {
+			p.Options.Logger.Tracef("processing line: %s", line)
+		}
 		parsers = p.ProcessLine(line, parts, previousLine, comment, parsers)
 		previousLine = parts
 	}
@@ -91,6 +98,9 @@ func (p *configParser) Process(reader io.Reader) error {
 	}
 	if parsers.ActiveSectionComments != nil {
 		parsers.Active.PostComments = append(parsers.Active.PostComments, parsers.ActiveSectionComments...)
+	}
+	if p.Options.Log {
+		p.Options.Logger.Debug("processing of data ended")
 	}
 	return nil
 }
@@ -140,7 +150,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 		parser := parsers[i]
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
-				// log.Printf("change state from %s to %s\n", state, newState)
+				if p.Options.Log {
+					p.Options.Logger.Debugf("change active section to %s\n", newState)
+				}
 				if config.ActiveComments != nil {
 					config.Active.PostComments = config.ActiveComments
 				}

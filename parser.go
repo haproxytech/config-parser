@@ -99,6 +99,9 @@ func New(opt ...options.ParserOption) (Parser, error) {
 		}
 	}
 	if p.Options.Path != "" {
+		if p.Options.Log {
+			p.Options.Logger.Infof("reading configuration from file: %s", p.Options.Path)
+		}
 		dat, err := ioutil.ReadFile(p.Options.Path)
 		if err != nil {
 			return nil, err
@@ -106,8 +109,13 @@ func New(opt ...options.ParserOption) (Parser, error) {
 		return p, p.Process(bytes.NewReader(dat))
 	}
 	if p.Options.Reader != nil {
+		if p.Options.Log {
+			p.Options.Logger.Info("reading configuration from reader")
+		}
 		return p, p.Process(p.Options.Reader)
 	}
-
+	if p.Options.Log {
+		p.Options.Logger.Warning("no configuration source provided")
+	}
 	return p, p.Process(strings.NewReader(""))
 }

@@ -16,22 +16,21 @@ limitations under the License.
 
 package options
 
-import (
-	"io"
+import "github.com/haproxytech/go-logger"
 
-	"github.com/haproxytech/go-logger"
-)
-
-type Parser struct {
-	Path               string
-	Reader             io.Reader
-	Logger             logger.Logger
-	UseV2HTTPCheck     bool
-	UseMd5Hash         bool
-	DisableUnProcessed bool
-	Log                bool
+type logging struct {
+	log logger.Logger
 }
 
-type ParserOption interface {
-	Set(p *Parser) error
+func (u logging) Set(p *Parser) error {
+	p.Logger = u.log
+	p.Log = true
+	return nil
+}
+
+// Logger takes acceptable logger that will be used for logging
+func Logger(log logger.Logger) logging { //nolint:golint
+	return logging{
+		log: log,
+	}
 }
