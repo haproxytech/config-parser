@@ -31,7 +31,7 @@ func (f filename) Set(p *Parser) error {
 }
 
 // Reader takes path where configuration is stored
-func Path(path string) filename { //nolint:golint
+func Path(path string) ParserOption {
 	return filename{
 		Path: path,
 	}
@@ -47,14 +47,14 @@ func (f reader) Set(p *Parser) error {
 }
 
 // Reader takes io.Reader that will be used to parse data
-func Reader(ioReader io.Reader) reader { //nolint:golint
+func Reader(ioReader io.Reader) ParserOption {
 	return reader{
 		Reader: ioReader,
 	}
 }
 
 // String takes string that will be used to parse data
-func String(configuration string) reader { //nolint:golint
+func String(configuration string) ParserOption {
 	return reader{
 		Reader: strings.NewReader(configuration),
 	}

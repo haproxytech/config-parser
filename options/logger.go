@@ -29,7 +29,7 @@ func (u logging) Set(p *Parser) error {
 }
 
 // Logger takes acceptable logger that will be used for logging
-func Logger(log logger.Logger) logging { //nolint:golint
+func Logger(log logger.Logger) ParserOption {
 	return logging{
 		log: log,
 	}
