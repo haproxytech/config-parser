@@ -71,6 +71,7 @@ type Parser interface {
 	Delete(sectionType Section, sectionName string, attribute string, index ...int) error
 	Insert(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error
 	HasParser(sectionType Section, attribute string) bool
+	SetLoggerState(active bool) error
 }
 
 type UnlockError struct{}
