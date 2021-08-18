@@ -16,18 +16,12 @@ limitations under the License.
 
 package options
 
-import (
-	"io"
-)
+type disableUnProcessed struct{}
 
-type Parser struct {
-	UseV2HTTPCheck     bool
-	UseMd5Hash         bool
-	DisableUnProcessed bool
-	Path               string
-	Reader             io.Reader
+func (u disableUnProcessed) Set(p *Parser) error {
+	p.DisableUnProcessed = true
+	return nil
 }
 
-type ParserOption interface {
-	Set(p *Parser) error
-}
+// DisableUnProcessed sets flag to disable catching lines that have no parser and to return error
+var DisableUnProcessed = disableUnProcessed{} //nolint:gochecknoglobals

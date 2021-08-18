@@ -16,18 +16,12 @@ limitations under the License.
 
 package options
 
-import (
-	"io"
-)
+type useMd5Hash struct{}
 
-type Parser struct {
-	UseV2HTTPCheck     bool
-	UseMd5Hash         bool
-	DisableUnProcessed bool
-	Path               string
-	Reader             io.Reader
+func (u useMd5Hash) Set(p *Parser) error {
+	p.UseMd5Hash = true
+	return nil
 }
 
-type ParserOption interface {
-	Set(p *Parser) error
-}
+// UseMd5Hash sets flag to use md5 hash
+var UseMd5Hash = useMd5Hash{} //nolint:gochecknoglobals

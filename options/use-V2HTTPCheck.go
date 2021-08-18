@@ -16,18 +16,12 @@ limitations under the License.
 
 package options
 
-import (
-	"io"
-)
+type useV2HTTPCheck struct{}
 
-type Parser struct {
-	UseV2HTTPCheck     bool
-	UseMd5Hash         bool
-	DisableUnProcessed bool
-	Path               string
-	Reader             io.Reader
+func (u useV2HTTPCheck) Set(p *Parser) error {
+	p.UseV2HTTPCheck = true
+	return nil
 }
 
-type ParserOption interface {
-	Set(p *Parser) error
-}
+// UseV2HTTPCheck sets flag to use deprecated HTTPCheck
+var UseV2HTTPCheck = useV2HTTPCheck{} //nolint:gochecknoglobals
