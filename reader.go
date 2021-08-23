@@ -29,6 +29,9 @@ import (
 )
 
 func (p *configParser) LoadData(path string) error {
+	if p.Options.Log {
+		p.Options.Logger.Debugf("%sreading data from %s", p.Options.LogPrefix, path)
+	}
 	p.Options.Path = path
 	dat, err := ioutil.ReadFile(p.Options.Path)
 	if err != nil {
@@ -56,7 +59,7 @@ func (p *configParser) Process(reader io.Reader) error {
 	var previousLine []string
 
 	if p.Options.Log {
-		p.Options.Logger.Debug("processing of data started")
+		p.Options.Logger.Debugf("%sprocessing of data started", p.Options.LogPrefix)
 	}
 	for {
 		line, err = bufferedReader.ReadString('\n')
@@ -88,7 +91,7 @@ func (p *configParser) Process(reader io.Reader) error {
 			continue
 		}
 		if p.Options.Log {
-			p.Options.Logger.Tracef("processing line: %s", line)
+			p.Options.Logger.Tracef("%sprocessing line: %s", p.Options.LogPrefix, line)
 		}
 		parsers = p.ProcessLine(line, parts, previousLine, comment, parsers)
 		previousLine = parts
@@ -100,7 +103,7 @@ func (p *configParser) Process(reader io.Reader) error {
 		parsers.Active.PostComments = append(parsers.Active.PostComments, parsers.ActiveSectionComments...)
 	}
 	if p.Options.Log {
-		p.Options.Logger.Debug("processing of data ended")
+		p.Options.Logger.Debugf("%sprocessing of data ended", p.Options.LogPrefix)
 	}
 	return nil
 }
@@ -146,12 +149,16 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 			}
 		}
 	}
+
 	for i := len(parsers) - 1; i >= 0; i-- {
 		parser := parsers[i]
+		if p.Options.Log {
+			p.Options.Logger.Tracef("%susing parser [%s]", parser.GetParserName(), p.Options.LogPrefix)
+		}
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
 				if p.Options.Log {
-					p.Options.Logger.Debugf("change active section to %s\n", newState)
+					p.Options.Logger.Debugf("%schange active section to %s\n", p.Options.LogPrefix, newState)
 				}
 				if config.ActiveComments != nil {
 					config.Active.PostComments = config.ActiveComments
@@ -171,6 +178,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Frontend = p.getFrontendParser()
 					p.Parsers[Frontends][data.Name] = config.Frontend
 					config.Active = config.Frontend
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%sfrontend section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "backend":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -178,6 +188,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Backend = p.getBackendParser()
 					p.Parsers[Backends][data.Name] = config.Backend
 					config.Active = config.Backend
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%sbackend section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "listen":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -185,6 +198,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Listen = p.getListenParser()
 					p.Parsers[Listen][data.Name] = config.Listen
 					config.Active = config.Listen
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%slisten section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "resolvers":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -192,6 +208,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Resolver = p.getResolverParser()
 					p.Parsers[Resolvers][data.Name] = config.Resolver
 					config.Active = config.Resolver
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%sresolvers section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "userlist":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -199,6 +218,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Userlist = p.getUserlistParser()
 					p.Parsers[UserList][data.Name] = config.Userlist
 					config.Active = config.Userlist
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%suserlist section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "peers":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -206,6 +228,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Peers = p.getPeersParser()
 					p.Parsers[Peers][data.Name] = config.Peers
 					config.Active = config.Peers
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%spers section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "mailers":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -213,6 +238,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Mailers = p.getMailersParser()
 					p.Parsers[Mailers][data.Name] = config.Mailers
 					config.Active = config.Mailers
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%smailers section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "cache":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -220,6 +248,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Cache = p.getCacheParser()
 					p.Parsers[Cache][data.Name] = config.Cache
 					config.Active = config.Cache
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%scache section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "program":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -227,6 +258,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Program = p.getProgramParser()
 					p.Parsers[Program][data.Name] = config.Program
 					config.Active = config.Program
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%sprogram section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "http-errors":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -234,6 +268,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.HTTPErrors = p.getHTTPErrorsParser()
 					p.Parsers[HTTPErrors][data.Name] = config.HTTPErrors
 					config.Active = config.HTTPErrors
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%shttp-errors section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "ring":
 					parserSectionName := parser.(*extra.Section)
 					rawData, _ := parserSectionName.Get(false)
@@ -241,6 +278,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 					config.Ring = p.getRingParser()
 					p.Parsers[Ring][data.Name] = config.Ring
 					config.Active = config.Ring
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%sring section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "snippet_beg":
 					config.Previous = config.Active
 					config.Active = &Parsers{

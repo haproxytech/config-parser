@@ -29,6 +29,9 @@ import (
 
 // String returns configuration in writable form
 func (p *configParser) String() string {
+	if p.Options.Log {
+		p.Options.Logger.Debugf("%screating string representation", p.Options.LogPrefix)
+	}
 	p.lock()
 	defer p.unLock()
 	var result strings.Builder
@@ -49,6 +52,9 @@ func (p *configParser) String() string {
 }
 
 func (p *configParser) Save(filename string) error {
+	if p.Options.Log {
+		p.Options.Logger.Debugf("%ssaving configuration to file %s", p.Options.LogPrefix, filename)
+	}
 	if p.Options.UseMd5Hash {
 		data, err := p.StringWithHash()
 		if err != nil {
