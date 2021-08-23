@@ -50,7 +50,7 @@ type ConfiguredParsers struct {
 
 func (p *configParser) Init() {
 	if p.Options.Log {
-		p.Options.Logger.Debug("parser init")
+		p.Options.Logger.Debugf("%sinit", p.Options.LogPrefix)
 	}
 	p.initParserMaps()
 	for _, sections := range p.Parsers {

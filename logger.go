@@ -24,7 +24,7 @@ func (p *configParser) SetLoggerState(active bool) error {
 	if p.Options.Logger == nil {
 		return errors.New("logger is not set")
 	}
-	p.Options.Logger.Debugf("logger set to state: %v", active)
+	p.Options.Logger.Debugf("%slogger set to state: %v", p.Options.LogPrefix, active)
 	p.Options.Log = active
 	return nil
 }

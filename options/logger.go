@@ -19,18 +19,26 @@ package options
 import "github.com/haproxytech/go-logger"
 
 type logging struct {
-	log logger.Logger
+	log    logger.Format
+	prefix string
 }
 
 func (u logging) Set(p *Parser) error {
 	p.Logger = u.log
 	p.Log = true
+	p.LogPrefix = u.prefix + " "
 	return nil
 }
 
 // Logger takes acceptable logger that will be used for logging
-func Logger(log logger.Logger) ParserOption {
+func Logger(log logger.Format) ParserOption {
+	return LoggerWithPrefix(log, "")
+}
+
+// Logger takes acceptable logger that will be used for logging, prefix can be defined to distinguish log messages generated in this package
+func LoggerWithPrefix(log logger.Format, prefix string) ParserOption {
 	return logging{
-		log: log,
+		log:    log,
+		prefix: prefix,
 	}
 }

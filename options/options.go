@@ -25,11 +25,12 @@ import (
 type Parser struct {
 	Path               string
 	Reader             io.Reader
-	Logger             logger.Logger
+	Logger             logger.Format // we always will have p.Options.LogPrefix
 	UseV2HTTPCheck     bool
 	UseMd5Hash         bool
 	DisableUnProcessed bool
 	Log                bool
+	LogPrefix          string
 }
 
 type ParserOption interface {
