@@ -153,7 +153,7 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 	for i := len(parsers) - 1; i >= 0; i-- {
 		parser := parsers[i]
 		if p.Options.Log {
-			p.Options.Logger.Tracef("%susing parser [%s]", parser.GetParserName(), p.Options.LogPrefix)
+			p.Options.Logger.Tracef("%susing parser [%s]", p.Options.LogPrefix, parser.GetParserName())
 		}
 		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
 			if newState != "" {

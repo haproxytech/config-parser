@@ -26,7 +26,9 @@ type logging struct {
 func (u logging) Set(p *Parser) error {
 	p.Logger = u.log
 	p.Log = true
-	p.LogPrefix = u.prefix + " "
+	if u.prefix != "" {
+		p.LogPrefix = u.prefix + " "
+	}
 	return nil
 }
 
