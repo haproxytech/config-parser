@@ -21,6 +21,7 @@ package main
 import (
     "github.com/haproxytech/config-parser/v4"
     "github.com/haproxytech/config-parser/v4/options"
+    "github.com/haproxytech/config-parser/v4/parsers/http/actions"
     // ...
 )
 // ...
@@ -46,6 +47,21 @@ func main() {
 
     {
         p.Set(parser.Frontends, "http", "option forwardfor", types.OptionForwardFor{})
+    }
+
+    {
+        // for options that can exists multiple times in config Insert is preffered
+        //
+        // setting http-request & http-response is a bit different
+        // since they accept multiple structs
+        httpRequestActionDeny := &actions.Deny{
+            DenyStatus: "0",
+            Cond:       "unless",
+            CondTest:   "{ src 127.0.0.1 }",
+        }
+        err = p.Insert(parser.Backends, "web_servers", "http-request", httpRequestActionDeny)
+        // you can also choose index where action should be inserted
+        err = p.Insert(parser.Backends, "web_servers", "http-request", httpRequestActionDeny, 2)
     }
 
     {
