@@ -581,6 +581,7 @@ backend test
   server-template srv 3 google.com:80 check
   server-template srv 3 google.com:80
   server-template srv 3 google.com
+  force-persist if jh || tz || sjz
   http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
@@ -2237,6 +2238,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  server-template srv 3 google.com:80
 `, 1},
   {`  server-template srv 3 google.com
+`, 1},
+  {`  force-persist if jh || tz || sjz
 `, 1},
   {`  http-request deny deny_status 0 unless { src 127.0.0.1 }
 `, 2},

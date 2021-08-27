@@ -1044,3 +1044,14 @@ type ServerTemplate struct {
 	Params     []params.ServerOption
 	Comment    string
 }
+
+//sections:backend
+//name:force-persist
+//is-multiple:true
+//test:ok:force-persist if jh || tz || sjz
+type ForcePersist struct {
+	Name      string
+	Criterion string
+	Value     string
+	Comment   string
+}
