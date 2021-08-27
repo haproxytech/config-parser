@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/deyunluo/config-parser/v4/errors"
 )
 
 type Lua struct {

@@ -19,9 +19,9 @@ Please use `golangci-lint run` from [github.com/golangci/golangci-lint](https://
 package main
 
 import (
-    "github.com/haproxytech/config-parser/v4"
-    "github.com/haproxytech/config-parser/v4/options"
-    "github.com/haproxytech/config-parser/v4/parsers/http/actions"
+    "github.com/deyunluo/config-parser/v4"
+    "github.com/deyunluo/config-parser/v4/options"
+    "github.com/deyunluo/config-parser/v4/parsers/http/actions"
     // ...
 )
 // ...

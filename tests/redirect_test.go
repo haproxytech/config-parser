@@ -20,7 +20,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/parsers/http"
+	"github.com/deyunluo/config-parser/v4/parsers/http"
 )
 
 func TestRedirect(t *testing.T) {

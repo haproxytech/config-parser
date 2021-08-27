@@ -19,7 +19,7 @@ import (
 	"strings"
 	"testing"
 
-	parser "github.com/haproxytech/config-parser/v4"
+	parser "github.com/deyunluo/config-parser/v4"
 )
 
 func TestEmpty(t *testing.T) {

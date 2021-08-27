@@ -18,8 +18,8 @@ package configs
 import (
 	"testing"
 
-	parser "github.com/haproxytech/config-parser/v4"
-	"github.com/haproxytech/config-parser/v4/options"
+	parser "github.com/deyunluo/config-parser/v4"
+	"github.com/deyunluo/config-parser/v4/options"
 )
 
 func TestParseString(t *testing.T) {

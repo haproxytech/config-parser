@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/parsers"
+	"github.com/deyunluo/config-parser/v4/parsers"
 )
 
 func TestOptionSmtpchk(t *testing.T) {

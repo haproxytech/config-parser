@@ -23,8 +23,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/options"
+	"github.com/deyunluo/config-parser/v4/common"
+	"github.com/deyunluo/config-parser/v4/options"
 )
 
 type Section string

@@ -17,7 +17,7 @@ limitations under the License.
 //nolint:godot,gocritic
 package types
 
-import "github.com/haproxytech/config-parser/v4/params"
+import "github.com/deyunluo/config-parser/v4/params"
 
 //sections:frontend,backend
 //name:acl

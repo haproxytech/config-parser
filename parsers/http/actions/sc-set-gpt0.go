@@ -21,8 +21,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/deyunluo/config-parser/v4/common"
+	"github.com/deyunluo/config-parser/v4/errors"
 )
 
 type ScSetGpt0 struct {

@@ -24,7 +24,7 @@ import (
 
 	"github.com/gofrs/flock"
 	"github.com/google/renameio"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/deyunluo/config-parser/v4/types"
 )
 
 // String returns configuration in writable form

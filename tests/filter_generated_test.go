@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/parsers/filters"
+	"github.com/deyunluo/config-parser/v4/parsers/filters"
 )
 
 func TestFiltersfilters(t *testing.T) {

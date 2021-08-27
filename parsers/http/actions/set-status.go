@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/deyunluo/config-parser/v4/common"
+	"github.com/deyunluo/config-parser/v4/errors"
 )
 
 type SetStatus struct { // http-request redirect location <loc> [code <code>] [<option>] [<condition>]

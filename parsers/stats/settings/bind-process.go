@@ -19,7 +19,7 @@ package stats
 import (
 	"fmt"
 
-	parsers "github.com/haproxytech/config-parser/v4/parsers"
+	parsers "github.com/deyunluo/config-parser/v4/parsers"
 )
 
 type BindProcess struct {

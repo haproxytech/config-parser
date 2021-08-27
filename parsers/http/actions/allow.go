@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/deyunluo/config-parser/v4/common"
 )
 
 type Allow struct {

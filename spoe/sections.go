@@ -1,11 +1,11 @@
 package spoe
 
 import (
-	parser "github.com/haproxytech/config-parser/v4"
-	configparser "github.com/haproxytech/config-parser/v4/parsers"
-	"github.com/haproxytech/config-parser/v4/parsers/extra"
-	"github.com/haproxytech/config-parser/v4/parsers/simple"
-	"github.com/haproxytech/config-parser/v4/spoe/parsers"
+	parser "github.com/deyunluo/config-parser/v4"
+	configparser "github.com/deyunluo/config-parser/v4/parsers"
+	"github.com/deyunluo/config-parser/v4/parsers/extra"
+	"github.com/deyunluo/config-parser/v4/parsers/simple"
+	"github.com/deyunluo/config-parser/v4/spoe/parsers"
 )
 
 func addParser(psrs map[string]parser.ParserInterface, sequence *[]parser.Section, p parser.ParserInterface) {

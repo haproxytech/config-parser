@@ -19,9 +19,9 @@ package parsers
 import (
 	"fmt"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/deyunluo/config-parser/v4/common"
+	"github.com/deyunluo/config-parser/v4/errors"
+	"github.com/deyunluo/config-parser/v4/types"
 )
 
 type Nameserver struct {

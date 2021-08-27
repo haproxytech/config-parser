@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/parsers/extra"
+	"github.com/deyunluo/config-parser/v4/parsers/extra"
 )
 
 func TestSectionextra(t *testing.T) {

@@ -17,8 +17,8 @@ limitations under the License.
 package tests
 
 import (
-	configparser "github.com/haproxytech/config-parser/v4"
-	"github.com/haproxytech/config-parser/v4/common"
+	configparser "github.com/deyunluo/config-parser/v4"
+	"github.com/deyunluo/config-parser/v4/common"
 )
 
 func ProcessLine(line string, parser configparser.ParserInterface) error {
