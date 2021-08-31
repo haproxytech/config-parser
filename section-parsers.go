@@ -260,6 +260,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.HashType{})
 	addParser(parser, &sequence, &parsers.Balance{})
 	addParser(parser, &sequence, &parsers.ACL{})
+	addParser(parser, &sequence, &parsers.ForcePersist{})
 	addParser(parser, &sequence, &parsers.BindProcess{})
 	addParser(parser, &sequence, &simple.Option{Name: "httpclose"})
 	addParser(parser, &sequence, &simple.Option{Name: "forceclose"})
