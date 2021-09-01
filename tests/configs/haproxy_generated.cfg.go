@@ -232,6 +232,27 @@ defaults test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
+  tcp-check comment testcomment
+  tcp-check connect
+  tcp-check connect port 443 ssl
+  tcp-check connect port 110 linger
+  tcp-check connect port 143
+  tcp-check expect string +OK\ POP3\ ready
+  tcp-check expect string *\ OK\ IMAP4\ ready
+  tcp-check expect string +PONG
+  tcp-check expect string role:master
+  tcp-check expect string +OK
+  tcp-check send PING\r\n
+  tcp-check send PING\r\n comment testcomment
+  tcp-check send QUIT\r\n
+  tcp-check send QUIT\r\n comment testcomment
+  tcp-check send info\ replication\r\n
+  tcp-check send-lf testfmt
+  tcp-check send-lf testfmt comment testcomment
+  tcp-check send-binary testhexstring
+  tcp-check send-binary testhexstring comment testcomment
+  tcp-check send-binary-lf testhexfmt
+  tcp-check send-binary-lf testhexfmt comment testcomment
   stats auth admin1:AdMiN123
   stats enable
   stats hide-version
@@ -764,6 +785,27 @@ backend test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
+  tcp-check comment testcomment
+  tcp-check connect
+  tcp-check connect port 443 ssl
+  tcp-check connect port 110 linger
+  tcp-check connect port 143
+  tcp-check expect string +OK\ POP3\ ready
+  tcp-check expect string *\ OK\ IMAP4\ ready
+  tcp-check expect string +PONG
+  tcp-check expect string role:master
+  tcp-check expect string +OK
+  tcp-check send PING\r\n
+  tcp-check send PING\r\n comment testcomment
+  tcp-check send QUIT\r\n
+  tcp-check send QUIT\r\n comment testcomment
+  tcp-check send info\ replication\r\n
+  tcp-check send-lf testfmt
+  tcp-check send-lf testfmt comment testcomment
+  tcp-check send-binary testhexstring
+  tcp-check send-binary testhexstring comment testcomment
+  tcp-check send-binary-lf testhexfmt
+  tcp-check send-binary-lf testhexfmt comment testcomment
   tcp-request content accept
   tcp-request content accept if !HTTP
   tcp-request content reject

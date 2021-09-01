@@ -477,6 +477,39 @@ type HTTPResponses struct{}
 //test:fail:http-check expect comment testcomment
 type HTTPCheck struct{}
 
+//sections:defaults,backend
+//name:tcp-check
+//struct-name:Checks
+//dir:tcp
+//is-multiple:true
+//parser-type:Action
+//is-interface:true
+//no-init:true
+//no-parse:true
+//test:"ok":tcp-check comment testcomment
+//test:"ok":tcp-check connect
+//test:"ok":tcp-check connect port 443 ssl
+//test:"ok":tcp-check connect port 110 linger
+//test:"ok":tcp-check connect port 143
+//test:"ok":tcp-check expect string +OK\ POP3\ ready
+//test:"ok":tcp-check expect string *\ OK\ IMAP4\ ready
+//test:"ok":tcp-check expect string +PONG
+//test:"ok":tcp-check expect string role:master
+//test:"ok":tcp-check expect string +OK
+//test:"ok":tcp-check send PING\r\n
+//test:"ok":tcp-check send PING\r\n comment testcomment
+//test:"ok":tcp-check send QUIT\r\n
+//test:"ok":tcp-check send QUIT\r\n comment testcomment
+//test:"ok":tcp-check send info\ replication\r\n
+//test:"ok":tcp-check send-lf testfmt
+//test:"ok":tcp-check send-lf testfmt comment testcomment
+//test:"ok":tcp-check send-binary testhexstring
+//test:"ok":tcp-check send-binary testhexstring comment testcomment
+//test:"ok":tcp-check send-binary-lf testhexfmt
+//test:"ok":tcp-check send-binary-lf testhexfmt comment testcomment
+
+type TCPCheck struct{}
+
 type TCPType interface {
 	Parse(parts []string, comment string) error
 	String() string
