@@ -60,8 +60,6 @@ func (f *Content) Parse(parts []string, comment string) error {
 			switch command[0] {
 			case "accept":
 				err = f.ParseAction(&actions.Accept{}, command)
-			case "do-resolve":
-				err = f.ParseAction(&actions.DoResolve{}, command)
 			case "reject":
 				err = f.ParseAction(&actions.Reject{}, command)
 			case "capture":
@@ -100,6 +98,8 @@ func (f *Content) Parse(parts []string, comment string) error {
 					err = f.ParseAction(&actions.SetVar{}, command)
 				case strings.HasPrefix(command[0], "unset-var"):
 					err = f.ParseAction(&actions.UnsetVar{}, command)
+				case strings.HasPrefix(command[0], "do-resolve"):
+					err = f.ParseAction(&actions.DoResolve{}, command)
 				default:
 					return err
 				}

@@ -496,6 +496,8 @@ type TCPAction interface {
 //test:ok:tcp-request content reject if !HTTP
 //test:ok:tcp-request content capture req.payload(0,6) len 6
 //test:ok:tcp-request content capture req.payload(0,6) len 6 if !HTTP
+//test:ok:tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
+//test:ok:tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
 //test:ok:tcp-request content set-priority-class int(1)
 //test:ok:tcp-request content set-priority-class int(1) if some_check
 //test:ok:tcp-request content set-priority-offset int(10)
@@ -590,6 +592,7 @@ type TCPAction interface {
 //test:fail:tcp-request
 //test:fail:tcp-request content
 //test:fail:tcp-request connection
+//test:fail:tcp-request content do-resolve(txn.myip) capture.req.hdr(0),lower
 //test:fail:tcp-request session
 //test:fail:tcp-request content lua.
 //test:fail:tcp-request content lua. param

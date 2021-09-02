@@ -770,6 +770,8 @@ backend test
   tcp-request content reject if !HTTP
   tcp-request content capture req.payload(0,6) len 6
   tcp-request content capture req.payload(0,6) len 6 if !HTTP
+  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
+  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
   tcp-request content set-priority-class int(1)
   tcp-request content set-priority-class int(1) if some_check
   tcp-request content set-priority-offset int(10)
@@ -1183,6 +1185,8 @@ frontend test
   tcp-request content reject if !HTTP
   tcp-request content capture req.payload(0,6) len 6
   tcp-request content capture req.payload(0,6) len 6 if !HTTP
+  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
+  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
   tcp-request content set-priority-class int(1)
   tcp-request content set-priority-class int(1) if some_check
   tcp-request content set-priority-offset int(10)
@@ -2595,6 +2599,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  tcp-request content capture req.payload(0,6) len 6
 `, 2},
   {`  tcp-request content capture req.payload(0,6) len 6 if !HTTP
+`, 2},
+  {`  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
+`, 2},
+  {`  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
 `, 2},
   {`  tcp-request content set-priority-class int(1)
 `, 2},

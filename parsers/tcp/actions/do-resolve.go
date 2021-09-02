@@ -31,28 +31,32 @@ type DoResolve struct {
 }
 
 func (f *DoResolve) Parse(parts []string) error {
-	data := strings.TrimPrefix(parts[1], "do-resolve(")
+	if len(parts) < 2 {
+		return fmt.Errorf("not enough params")
+	}
+	data := strings.TrimPrefix(parts[0], "do-resolve(")
 	data = strings.TrimRight(data, ")")
-	d := strings.SplitN(data, ".", 2)
-
+	d := strings.Split(data, ",")
+	if len(d) < 2 {
+		return fmt.Errorf("not enough params")
+	}
 	f.Var = d[0]
 	f.Resolvers = d[1]
-
-	if len(parts) >= 3 {
-		command, _ := common.SplitRequest(parts[2:]) // 2 not 3 !
-		if len(command) > 0 {
-			expr := common.Expression{}
-			err := expr.Parse(command)
-			if err != nil {
-				return fmt.Errorf("not enough params")
-			}
-			f.Expr = expr
-		}
-		return nil
+	if len(d) > 2 {
+		f.Protocol = d[2]
 	}
-	return fmt.Errorf("not enough params")
+
+	expr := common.Expression{}
+	if expr.Parse(parts[1:]) != nil {
+		return fmt.Errorf("not enough params")
+	}
+	f.Expr = expr
+	return nil
 }
 
 func (f *DoResolve) String() string {
-	return fmt.Sprintf("do-resolve(%s.%s,%s) %s", f.Var, f.Resolvers, f.Protocol, f.Expr.String())
+	if f.Protocol != "" {
+		return fmt.Sprintf("do-resolve(%s,%s,%s) %s", f.Var, f.Resolvers, f.Protocol, f.Expr.String())
+	}
+	return fmt.Sprintf("do-resolve(%s,%s) %s", f.Var, f.Resolvers, f.Expr.String())
 }
