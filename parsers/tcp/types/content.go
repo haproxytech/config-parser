@@ -77,7 +77,7 @@ func (f *Content) Parse(parts []string, comment string) error {
 			case "set-dst":
 				err = f.ParseAction(&actions.SetDst{}, command)
 			case "set-dst-port":
-				err = f.ParseAction(&actions.SetDst{}, command)
+				err = f.ParseAction(&actions.SetDstPort{}, command)
 			case "silent-drop":
 				err = f.ParseAction(&actions.SilentDrop{}, command)
 			case "send-spoe-group":
