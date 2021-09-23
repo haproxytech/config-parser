@@ -21,24 +21,25 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/parsers/http/actions"
+	"github.com/haproxytech/config-parser/v4/parsers/actions"
+	http_actions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Responses struct {
 	Name        string
 	Mode        string
-	data        []types.HTTPAction
+	data        []types.Action
 	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Responses) Init() {
 	h.Name = "http-response"
-	h.data = []types.HTTPAction{}
+	h.data = []types.Action{}
 }
 
-func (h *Responses) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
-	err := response.Parse(parts, comment)
+func (h *Responses) ParseHTTPResponse(response types.Action, parts []string, comment string) error {
+	err := response.Parse(parts, types.HTTP, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPResponseLines", Line: ""}
 	}
@@ -51,56 +52,56 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 		var err error
 		switch parts[1] {
 		case "add-header":
-			err = h.ParseHTTPResponse(&actions.AddHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.AddHeader{}, parts, comment)
 		case "allow":
-			err = h.ParseHTTPResponse(&actions.Allow{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.Allow{}, parts, comment)
 		case "auth":
-			err = h.ParseHTTPResponse(&actions.Auth{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.Auth{}, parts, comment)
 		case "capture":
 			if h.Mode == "backend" {
 				return "", &errors.ParseError{Parser: "HTTPResponse", Line: line}
 			}
-			err = h.ParseHTTPResponse(&actions.Capture{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.Capture{}, parts, comment)
 		case "del-header":
-			err = h.ParseHTTPResponse(&actions.DelHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.DelHeader{}, parts, comment)
 		case "deny":
-			err = h.ParseHTTPResponse(&actions.Deny{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.Deny{}, parts, comment)
 		case "redirect":
-			err = h.ParseHTTPResponse(&actions.Redirect{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.Redirect{}, parts, comment)
 		case "replace-header":
-			err = h.ParseHTTPResponse(&actions.ReplaceHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.ReplaceHeader{}, parts, comment)
 		case "replace-value":
-			err = h.ParseHTTPResponse(&actions.ReplaceValue{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.ReplaceValue{}, parts, comment)
 		case "send-spoe-group":
 			err = h.ParseHTTPResponse(&actions.SendSpoeGroup{}, parts, comment)
 		case "set-header":
-			err = h.ParseHTTPResponse(&actions.SetHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.SetHeader{}, parts, comment)
 		case "set-log-level":
-			err = h.ParseHTTPResponse(&actions.SetLogLevel{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.SetLogLevel{}, parts, comment)
 		case "set-mark":
-			err = h.ParseHTTPResponse(&actions.SetMark{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.SetMark{}, parts, comment)
 		case "set-nice":
-			err = h.ParseHTTPResponse(&actions.SetNice{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.SetNice{}, parts, comment)
 		case "set-status":
-			err = h.ParseHTTPResponse(&actions.SetStatus{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.SetStatus{}, parts, comment)
 		case "set-tos":
-			err = h.ParseHTTPResponse(&actions.SetTos{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.SetTos{}, parts, comment)
 		case "silent-drop":
 			err = h.ParseHTTPResponse(&actions.SilentDrop{}, parts, comment)
 		case "track-sc0":
-			err = h.ParseHTTPResponse(&actions.TrackSc0{}, parts, comment)
+			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "track-sc1":
-			err = h.ParseHTTPResponse(&actions.TrackSc1{}, parts, comment)
+			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "track-sc2":
-			err = h.ParseHTTPResponse(&actions.TrackSc2{}, parts, comment)
+			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "strict-mode":
-			err = h.ParseHTTPResponse(&actions.StrictMode{}, parts, comment)
+			err = h.ParseHTTPResponse(&http_actions.StrictMode{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):
-				err = h.ParseHTTPResponse(&actions.AddACL{}, parts, comment)
+				err = h.ParseHTTPResponse(&http_actions.AddACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-acl("):
-				err = h.ParseHTTPResponse(&actions.DelACL{}, parts, comment)
+				err = h.ParseHTTPResponse(&http_actions.DelACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "lua."):
 				err = h.ParseHTTPResponse(&actions.Lua{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc0("):
@@ -110,9 +111,9 @@ func (h *Responses) Parse(line string, parts, previousParts []string, comment st
 			case strings.HasPrefix(parts[1], "sc-set-gpt0("):
 				err = h.ParseHTTPResponse(&actions.ScSetGpt0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-map("):
-				err = h.ParseHTTPResponse(&actions.SetMap{}, parts, comment)
+				err = h.ParseHTTPResponse(&http_actions.SetMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-map("):
-				err = h.ParseHTTPResponse(&actions.DelMap{}, parts, comment)
+				err = h.ParseHTTPResponse(&http_actions.DelMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 			case strings.HasPrefix(parts[1], "unset-var("):

@@ -19,6 +19,8 @@ package actions
 import (
 	"fmt"
 	"strings"
+
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 // http-check send [meth <method>] [{ uri <uri> | uri-lf <fmt> }>] [ver <version>]
@@ -41,7 +43,7 @@ type CheckSendHeader struct {
 	Format string
 }
 
-func (c *CheckSend) Parse(parts []string, comment string) error {
+func (c *CheckSend) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		c.Comment = comment
 	}

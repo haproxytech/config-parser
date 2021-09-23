@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetMap struct {
@@ -32,7 +33,7 @@ type SetMap struct {
 	Comment  string
 }
 
-func (f *SetMap) Parse(parts []string, comment string) error {
+func (f *SetMap) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Redirect struct { // http-request redirect location <loc> [code <code>] [<option>] [<condition>]
@@ -34,7 +35,7 @@ type Redirect struct { // http-request redirect location <loc> [code <code>] [<o
 	Comment  string
 }
 
-func (f *Redirect) Parse(parts []string, comment string) error {
+func (f *Redirect) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

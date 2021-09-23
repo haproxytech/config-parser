@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -22,44 +23,50 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type Lua struct {
-	Action   string
-	Params   string
+type SetPriorityClass struct {
+	Expr     common.Expression
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *Lua) Parse(parts []string, comment string) error {
+func (f *SetPriorityClass) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 2 {
-		f.Action = strings.TrimPrefix(parts[1], "lua.")
-		if f.Action == "" {
-			return errors.ErrInvalidData
-		}
-		command, condition := common.SplitRequest(parts[2:])
-		f.Params = strings.Join(command, " ")
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
+	if len(parts) < 3 {
+		return fmt.Errorf("not enough params")
 	}
-	return fmt.Errorf("not enough params")
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+	command, condition := common.SplitRequest(command)
+	if len(command) == 0 {
+		return errors.ErrInvalidData
+	}
+	expr := common.Expression{}
+	if expr.Parse(command) != nil {
+		return fmt.Errorf("not enough params")
+	}
+	f.Expr = expr
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
-func (f *Lua) String() string {
+func (f *SetPriorityClass) String() string {
 	var result strings.Builder
-	result.WriteString("lua.")
-	result.WriteString(f.Action)
-	if f.Params != "" {
-		result.WriteString(" ")
-		result.WriteString(f.Params)
-	}
+	result.WriteString("set-priority-class ")
+	result.WriteString(f.Expr.String())
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -69,6 +76,6 @@ func (f *Lua) String() string {
 	return result.String()
 }
 
-func (f *Lua) GetComment() string {
+func (f *SetPriorityClass) GetComment() string {
 	return f.Comment
 }

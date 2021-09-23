@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetVar struct {
@@ -32,33 +33,42 @@ type SetVar struct {
 	Comment  string
 }
 
-func (f *SetVar) Parse(parts []string, comment string) error {
-	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
+func (f *SetVar) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	data := strings.TrimPrefix(parts[1], "set-var(")
+	if len(parts) < 3 {
+		return fmt.Errorf("not enough params")
+	}
+	var data string
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
+	}
+	data = strings.TrimPrefix(data, "set-var(")
 	data = strings.TrimRight(data, ")")
 	d := strings.SplitN(data, ".", 2)
 	f.VarScope = d[0]
 	f.VarName = d[1]
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:]) //  2 not 3 !
-		if len(command) > 0 {
-			expr := common.Expression{}
-			err := expr.Parse(command)
-			if err != nil {
-				return fmt.Errorf("not enough params")
-			}
-			f.Expr = expr
+	command, condition := common.SplitRequest(command)
+	if len(command) > 0 {
+		expr := common.Expression{}
+		err := expr.Parse(command)
+		if err != nil {
+			return fmt.Errorf("not enough params")
 		}
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
+		f.Expr = expr
 	}
-	return fmt.Errorf("not enough params")
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
 func (f *SetVar) String() string {

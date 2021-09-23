@@ -23,6 +23,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type StrictMode struct {
@@ -32,7 +33,7 @@ type StrictMode struct {
 	Comment  string
 }
 
-func (f *StrictMode) Parse(parts []string, comment string) error {
+func (f *StrictMode) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

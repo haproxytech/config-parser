@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type WaitForHandshake struct {
@@ -29,7 +30,7 @@ type WaitForHandshake struct {
 	Comment  string
 }
 
-func (f *WaitForHandshake) Parse(parts []string, comment string) error {
+func (f *WaitForHandshake) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

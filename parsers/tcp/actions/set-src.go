@@ -18,27 +18,56 @@ package actions
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetSrc struct {
-	Expr common.Expression
+	Expr     common.Expression
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
-func (f *SetSrc) Parse(parts []string) error {
+func (f *SetSrc) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if f.Comment != "" {
+		f.Comment = comment
+	}
+	if len(parts) < 4 {
+		return fmt.Errorf("not enough params")
+	}
 	expr := common.Expression{}
 
-	err := expr.Parse([]string{parts[1]})
+	err := expr.Parse([]string{parts[3]})
 	if err != nil {
 		return fmt.Errorf("not enough params")
 	}
 
 	f.Expr = expr
-
+	_, condition := common.SplitRequest(parts[4:])
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
 	return nil
 }
 
 func (f *SetSrc) String() string {
-	return fmt.Sprintf("set-src %s", f.Expr.String())
+	var result strings.Builder
+	result.WriteString("set-src")
+	result.WriteString(" ")
+	result.WriteString(f.Expr.String())
+	if f.Cond != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Cond)
+		result.WriteString(" ")
+		result.WriteString(f.CondTest)
+	}
+	return result.String()
+}
+
+func (f *SetSrc) GetComment() string {
+	return f.Comment
 }

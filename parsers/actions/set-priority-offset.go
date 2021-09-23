@@ -14,67 +14,59 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type ScSetGpt0 struct {
-	ID       string
-	Int      *int64
+type SetPriorityOffset struct {
 	Expr     common.Expression
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *ScSetGpt0) Parse(parts []string, comment string) error {
+func (f *SetPriorityOffset) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	f.ID = strings.TrimPrefix(parts[1], "sc-set-gpt0(")
-	f.ID = strings.TrimRight(f.ID, ")")
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
-		if len(command) < 1 {
-			return errors.ErrInvalidData
-		}
-		i, err := strconv.ParseInt(command[0], 10, 64)
-		if err == nil {
-			f.Int = &i
-		} else {
-			expr := common.Expression{}
-			err := expr.Parse(command)
-			if err != nil {
-				return fmt.Errorf("not enough params")
-			}
-			f.Expr = expr
-		}
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
+	if len(parts) < 3 {
+		return fmt.Errorf("not enough params")
 	}
-	return fmt.Errorf("not enough params")
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+	command, condition := common.SplitRequest(command)
+	if len(command) == 0 {
+		return errors.ErrInvalidData
+	}
+	expr := common.Expression{}
+	if expr.Parse(command) != nil {
+		return fmt.Errorf("not enough params")
+	}
+	f.Expr = expr
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
-func (f *ScSetGpt0) String() string {
+func (f *SetPriorityOffset) String() string {
 	var result strings.Builder
-	result.WriteString("sc-set-gpt0(")
-	result.WriteString(f.ID)
-	result.WriteString(") ")
-	if f.Int != nil {
-		result.WriteString(strconv.FormatInt(*f.Int, 10))
-	} else {
-		result.WriteString(f.Expr.String())
-	}
+	result.WriteString("set-priority-offset ")
+	result.WriteString(f.Expr.String())
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -84,6 +76,6 @@ func (f *ScSetGpt0) String() string {
 	return result.String()
 }
 
-func (f *ScSetGpt0) GetComment() string {
+func (f *SetPriorityOffset) GetComment() string {
 	return f.Comment
 }

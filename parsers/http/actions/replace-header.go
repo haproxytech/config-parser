@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type ReplaceHeader struct {
@@ -33,7 +34,7 @@ type ReplaceHeader struct {
 	Comment    string
 }
 
-func (f *ReplaceHeader) Parse(parts []string, comment string) error {
+func (f *ReplaceHeader) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetQuery struct {
@@ -31,7 +32,7 @@ type SetQuery struct {
 }
 
 // Parse parses http-request set-query <fmt> [ { if | unless } <condition> ]
-func (f *SetQuery) Parse(parts []string, comment string) error {
+func (f *SetQuery) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

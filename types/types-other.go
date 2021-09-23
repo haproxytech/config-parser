@@ -153,8 +153,15 @@ type Filter interface {
 //no-parse:true
 type Filters struct{}
 
-type HTTPAction interface {
-	Parse(parts []string, comment string) error
+type ParserType int
+
+const (
+	HTTP ParserType = iota
+	TCP
+)
+
+type Action interface {
+	Parse(parts []string, parserType ParserType, comment string) error
 	String() string
 	GetComment() string
 }
@@ -164,7 +171,7 @@ type HTTPAction interface {
 //struct-name:Requests
 //dir:http
 //is-multiple:true
-//parser-type:HTTPAction
+//parser-type:Action
 //is-interface:true
 //no-init:true
 //no-parse:true
@@ -330,7 +337,7 @@ type HTTPRequests struct{}
 //struct-name:Responses
 //dir:http
 //is-multiple:true
-//parser-type:HTTPAction
+//parser-type:Action
 //is-interface:true
 //no-init:true
 //no-parse:true
@@ -425,7 +432,7 @@ type HTTPResponses struct{}
 //struct-name:Checks
 //dir:http
 //is-multiple:true
-//parser-type:HTTPAction
+//parser-type:Action
 //is-interface:true
 //no-init:true
 //no-parse:true
@@ -474,11 +481,6 @@ type TCPType interface {
 	Parse(parts []string, comment string) error
 	String() string
 	GetComment() string
-}
-
-type TCPAction interface {
-	Parse(command []string) error
-	String() string
 }
 
 //name:tcp-request
@@ -639,7 +641,7 @@ type TCPResponses struct{}
 //sections:frontend,backend
 //dir:http
 //is-multiple:true
-//parser-type:HTTPAction
+//parser-type:Action
 //is-interface:true
 //no-init:true
 //no-parse:true

@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetDstPort struct {
@@ -31,15 +32,21 @@ type SetDstPort struct {
 	Comment  string
 }
 
-func (f *SetDstPort) Parse(parts []string, comment string) error {
+func (f *SetDstPort) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
 	if len(parts) < 3 {
 		return fmt.Errorf("not enough params")
 	}
-
-	command, condition := common.SplitRequest(parts[2:])
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+	command, condition := common.SplitRequest(command)
 
 	if len(command) > 0 {
 		expr := common.Expression{}

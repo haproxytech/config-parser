@@ -18,6 +18,8 @@ package actions
 
 import (
 	"fmt"
+
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 // http-check send-state
@@ -25,7 +27,7 @@ type CheckSendState struct {
 	Comment string
 }
 
-func (c *CheckSendState) Parse(parts []string, comment string) error {
+func (c *CheckSendState) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		c.Comment = comment
 	}

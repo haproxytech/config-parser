@@ -25,17 +25,17 @@ import (
 
 type Redirect struct {
 	Name        string
-	data        []types.HTTPAction
+	data        []types.Action
 	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Redirect) Init() {
 	h.Name = "redirect"
-	h.data = []types.HTTPAction{}
+	h.data = []types.Action{}
 }
 
-func (h *Redirect) ParseHTTPResponse(response types.HTTPAction, parts []string, comment string) error {
-	err := response.Parse(parts, comment)
+func (h *Redirect) ParseHTTPResponse(response types.Action, parts []string, comment string) error {
+	err := response.Parse(parts, types.HTTP, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "Redirect", Line: ""}
 	}

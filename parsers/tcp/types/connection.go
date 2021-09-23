@@ -20,27 +20,23 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
+	"github.com/haproxytech/config-parser/v4/parsers/actions"
+	tcp_actions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Connection struct {
-	Action   types.TCPAction
-	Cond     string
-	CondTest string
-	Comment  string
+	Action  types.Action
+	Comment string
 }
 
-func (f *Connection) ParseAction(action types.TCPAction, parts []string) error {
-	err := action.Parse(parts)
-	if err != nil {
-		return &errors.ParseError{Parser: "TCPRequestConnection", Line: ""}
+func (f *Connection) ParseAction(action types.Action, parts []string) error {
+	if action.Parse(parts, types.TCP, "") != nil {
+		return &errors.ParseError{Parser: "TCPRequestContent", Line: ""}
 	}
 
 	f.Action = action
-
 	return nil
 }
 
@@ -48,68 +44,44 @@ func (f *Connection) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-
-	if len(parts) >= 3 {
-
-		command, condition := common.SplitRequest(parts[2:])
-
-		var err error
-
-		if len(command) > 0 {
-
-			switch command[0] {
-			case "accept":
-				err = f.ParseAction(&actions.Accept{}, command)
-			case "reject":
-				err = f.ParseAction(&actions.Reject{}, command)
-			case "expect-proxy":
-				err = f.ParseAction(&actions.ExpectProxy{}, command)
-			case "expect-netscaler-cip":
-				err = f.ParseAction(&actions.ExpectNetscalerCip{}, command)
-			case "capture":
-				err = f.ParseAction(&actions.Capture{}, command)
-			case "track-sc0":
-				err = f.ParseAction(&actions.TrackSc0{}, command)
-			case "track-sc1":
-				err = f.ParseAction(&actions.TrackSc1{}, command)
-			case "track-sc2":
-				err = f.ParseAction(&actions.TrackSc2{}, command)
-			case "set-src":
-				err = f.ParseAction(&actions.SetSrc{}, command)
-			case "silent-drop":
-				err = f.ParseAction(&actions.SilentDrop{}, command)
-			default:
-				switch {
-				case strings.HasPrefix(command[0], "lua."):
-					err = f.ParseAction(&actions.Lua{}, command)
-				case strings.HasPrefix(command[0], "sc-inc-gpc0"):
-					err = f.ParseAction(&actions.ScIncGpc0{}, command)
-				case strings.HasPrefix(command[0], "sc-inc-gpc1"):
-					err = f.ParseAction(&actions.ScIncGpc1{}, command)
-				case strings.HasPrefix(command[0], "sc-set-gpt0"):
-					err = f.ParseAction(&actions.ScSetGpt0{}, command)
-				default:
-					return err
-				}
-
-			}
-
-			if err != nil {
-				return err
-			}
-
-		} else {
-			return fmt.Errorf("not enough params")
-		}
-
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-
-		return nil
+	if len(parts) < 3 {
+		return fmt.Errorf("not enough params")
 	}
-	return fmt.Errorf("not enough params")
+	var err error
+	switch parts[2] {
+	case "accept":
+		err = f.ParseAction(&tcp_actions.Accept{}, parts)
+	case "reject":
+		err = f.ParseAction(&actions.Reject{}, parts)
+	case "expect-proxy":
+		err = f.ParseAction(&tcp_actions.ExpectProxy{}, parts)
+	case "expect-netscaler-cip":
+		err = f.ParseAction(&tcp_actions.ExpectNetscalerCip{}, parts)
+	case "capture":
+		err = f.ParseAction(&tcp_actions.Capture{}, parts)
+	case "track-sc0":
+		err = f.ParseAction(&actions.TrackSc{}, parts)
+	case "track-sc1":
+		err = f.ParseAction(&actions.TrackSc{}, parts)
+	case "track-sc2":
+		err = f.ParseAction(&actions.TrackSc{}, parts)
+	case "set-src":
+		err = f.ParseAction(&tcp_actions.SetSrc{}, parts)
+	case "silent-drop":
+		err = f.ParseAction(&actions.SilentDrop{}, parts)
+	default:
+		switch {
+		case strings.HasPrefix(parts[2], "lua."):
+			err = f.ParseAction(&actions.Lua{}, parts)
+		case strings.HasPrefix(parts[2], "sc-inc-gpc0"):
+			err = f.ParseAction(&actions.ScIncGpc0{}, parts)
+		case strings.HasPrefix(parts[2], "sc-inc-gpc1"):
+			err = f.ParseAction(&actions.ScIncGpc1{}, parts)
+		case strings.HasPrefix(parts[2], "sc-set-gpt0"):
+			err = f.ParseAction(&actions.ScSetGpt0{}, parts)
+		}
+	}
+	return err
 }
 
 func (f *Connection) String() string {
@@ -118,13 +90,6 @@ func (f *Connection) String() string {
 	result.WriteString("connection")
 	result.WriteString(" ")
 	result.WriteString(f.Action.String())
-
-	if f.Cond != "" {
-		result.WriteString(" ")
-		result.WriteString(f.Cond)
-		result.WriteString(" ")
-		result.WriteString(f.CondTest)
-	}
 
 	if f.Comment != "" {
 		result.WriteString(" # ")

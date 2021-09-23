@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type DisableL7Retry struct {
@@ -30,7 +31,7 @@ type DisableL7Retry struct {
 	Comment  string
 }
 
-func (f *DisableL7Retry) Parse(parts []string, comment string) error {
+func (f *DisableL7Retry) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

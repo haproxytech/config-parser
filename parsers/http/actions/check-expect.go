@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 // http-check expect [min-recv <int>] [comment <msg>]
@@ -44,7 +45,7 @@ type CheckExpect struct {
 	Comment         string
 }
 
-func (c *CheckExpect) Parse(parts []string, comment string) error {
+func (c *CheckExpect) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		c.Comment = comment
 	}

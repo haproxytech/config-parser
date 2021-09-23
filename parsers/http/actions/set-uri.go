@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetURI struct {
@@ -31,7 +32,7 @@ type SetURI struct {
 }
 
 // Parse parses http-request set-uri <fmt> [ { if | unless } <condition> ]
-func (f *SetURI) Parse(parts []string, comment string) error {
+func (f *SetURI) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

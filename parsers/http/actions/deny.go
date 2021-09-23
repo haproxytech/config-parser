@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Deny struct {
@@ -31,7 +32,7 @@ type Deny struct {
 	Comment    string
 }
 
-func (f *Deny) Parse(parts []string, comment string) error {
+func (f *Deny) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

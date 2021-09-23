@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetPath struct {
@@ -31,7 +32,7 @@ type SetPath struct {
 }
 
 // Parse parses http-request set-path <fmt> [ { if | unless } <condition> ]
-func (f *SetPath) Parse(parts []string, comment string) error {
+func (f *SetPath) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

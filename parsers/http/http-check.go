@@ -21,24 +21,25 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/parsers/http/actions"
+	"github.com/haproxytech/config-parser/v4/parsers/actions"
+	http_actions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Checks struct {
 	Name        string
 	Mode        string
-	data        []types.HTTPAction
+	data        []types.Action
 	preComments []string // comments that appear before the the actual line
 }
 
 func (h *Checks) Init() {
 	h.Name = "http-check"
-	h.data = []types.HTTPAction{}
+	h.data = []types.Action{}
 }
 
-func (h *Checks) parseHTTPCheck(request types.HTTPAction, parts []string, comment string) error {
-	err := request.Parse(parts, comment)
+func (h *Checks) parseHTTPCheck(request types.Action, parts []string, comment string) error {
+	err := request.Parse(parts, types.HTTP, comment)
 	if err != nil {
 		return &errors.ParseError{Parser: "HTTPCheck", Line: "", Message: err.Error()}
 	}
@@ -63,17 +64,17 @@ func (h *Checks) Parse(line string, parts, previousParts []string, comment strin
 
 	switch {
 	case parts[1] == "comment":
-		err = h.parseHTTPCheck(&actions.CheckComment{}, parts, comment)
+		err = h.parseHTTPCheck(&http_actions.CheckComment{}, parts, comment)
 	case parts[1] == "connect":
-		err = h.parseHTTPCheck(&actions.CheckConnect{}, parts, comment)
+		err = h.parseHTTPCheck(&http_actions.CheckConnect{}, parts, comment)
 	case parts[1] == "disable-on-404":
-		err = h.parseHTTPCheck(&actions.CheckDisableOn404{}, parts, comment)
+		err = h.parseHTTPCheck(&http_actions.CheckDisableOn404{}, parts, comment)
 	case parts[1] == "expect":
-		err = h.parseHTTPCheck(&actions.CheckExpect{}, parts, comment)
+		err = h.parseHTTPCheck(&http_actions.CheckExpect{}, parts, comment)
 	case parts[1] == "send":
-		err = h.parseHTTPCheck(&actions.CheckSend{}, parts, comment)
+		err = h.parseHTTPCheck(&http_actions.CheckSend{}, parts, comment)
 	case parts[1] == "send-state":
-		err = h.parseHTTPCheck(&actions.CheckSendState{}, parts, comment)
+		err = h.parseHTTPCheck(&http_actions.CheckSendState{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var("):
 		err = h.parseHTTPCheck(&actions.SetVar{}, parts, comment)
 	case strings.HasPrefix(parts[1], "unset-var("):
@@ -81,12 +82,7 @@ func (h *Checks) Parse(line string, parts, previousParts []string, comment strin
 	default:
 		err = &errors.ParseError{Parser: "HTTPCheck", Line: line, Message: "invalid http-check type provided"}
 	}
-
-	if err != nil {
-		return "", err
-	}
-
-	return "", nil
+	return "", err
 }
 
 func (h *Checks) Result() ([]common.ReturnResultLine, error) {

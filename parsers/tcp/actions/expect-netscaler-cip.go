@@ -16,13 +16,23 @@ limitations under the License.
 
 package actions
 
+import "github.com/haproxytech/config-parser/v4/types"
+
 type ExpectNetscalerCip struct {
+	Comment string
 }
 
-func (f *ExpectNetscalerCip) Parse(parts []string) error {
+func (f *ExpectNetscalerCip) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if f.Comment != "" {
+		f.Comment = comment
+	}
 	return nil
 }
 
 func (f *ExpectNetscalerCip) String() string {
 	return "expect-netscaler-cip layer4"
+}
+
+func (f *ExpectNetscalerCip) GetComment() string {
+	return f.Comment
 }

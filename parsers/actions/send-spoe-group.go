@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SendSpoeGroup struct {
@@ -32,24 +33,31 @@ type SendSpoeGroup struct {
 	Comment  string
 }
 
-func (f *SendSpoeGroup) Parse(parts []string, comment string) error {
+func (f *SendSpoeGroup) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 4 {
-		command, condition := common.SplitRequest(parts[2:])
-		if len(command) < 2 {
-			return errors.ErrInvalidData
-		}
-		f.Engine = command[0]
-		f.Group = command[1]
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
+	if len(parts) < 4 {
+		return fmt.Errorf("not enough params")
 	}
-	return fmt.Errorf("not enough params")
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+	command, condition := common.SplitRequest(command)
+	if len(command) < 2 {
+		return errors.ErrInvalidData
+	}
+	f.Engine = command[0]
+	f.Group = command[1]
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
 func (f *SendSpoeGroup) String() string {

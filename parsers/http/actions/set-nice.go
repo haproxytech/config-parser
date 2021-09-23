@@ -23,6 +23,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetNice struct {
@@ -32,7 +33,7 @@ type SetNice struct {
 	Comment  string
 }
 
-func (f *SetNice) Parse(parts []string, comment string) error {
+func (f *SetNice) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

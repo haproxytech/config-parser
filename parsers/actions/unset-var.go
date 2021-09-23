@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
@@ -22,44 +21,58 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type TrackSc0 struct {
-	Key      string
-	Table    string
-	Comment  string
+type UnsetVar struct {
+	Scope    string
+	Name     string
 	Cond     string
 	CondTest string
+	Comment  string
 }
 
-func (f *TrackSc0) Parse(parts []string, comment string) error {
-	if len(parts) < 3 {
+func (f *UnsetVar) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if comment != "" {
+		f.Comment = comment
+	}
+	if len(parts) < 2 {
 		return fmt.Errorf("not enough params")
 	}
-
-	command, condition := common.SplitRequest(parts[2:])
-
-	f.Key = command[0]
-
-	if len(command) == 3 && command[1] == "table" {
-		f.Table = command[2]
+	var data string
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
 	}
+	data = strings.TrimPrefix(data, "unset-var(")
+	data = strings.TrimRight(data, ")")
+	d := strings.SplitN(data, ".", 2)
+	if len(d) < 2 || len(d[1]) == 0 {
+		return errors.ErrInvalidData
+	}
+	f.Scope = d[0]
+	f.Name = d[1]
+	_, condition := common.SplitRequest(command)
 	if len(condition) > 1 {
 		f.Cond = condition[0]
 		f.CondTest = strings.Join(condition[1:], " ")
 	}
-
 	return nil
 }
 
-func (f *TrackSc0) String() string {
+func (f *UnsetVar) String() string {
 	var result strings.Builder
-	result.WriteString("track-sc0 ")
-	result.WriteString(f.Key)
-	if f.Table != "" {
-		result.WriteString(" table ")
-		result.WriteString(f.Table)
-	}
+	result.WriteString("unset-var(")
+	result.WriteString(f.Scope)
+	result.WriteString(".")
+	result.WriteString(f.Name)
+	result.WriteString(")")
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -69,6 +82,6 @@ func (f *TrackSc0) String() string {
 	return result.String()
 }
 
-func (f *TrackSc0) GetComment() string {
+func (f *UnsetVar) GetComment() string {
 	return f.Comment
 }

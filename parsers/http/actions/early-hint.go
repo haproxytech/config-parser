@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type EarlyHint struct {
@@ -32,7 +33,7 @@ type EarlyHint struct {
 	Comment  string
 }
 
-func (f *EarlyHint) Parse(parts []string, comment string) error {
+func (f *EarlyHint) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

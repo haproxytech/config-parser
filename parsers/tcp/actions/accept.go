@@ -16,13 +16,43 @@ limitations under the License.
 
 package actions
 
+import (
+	"strings"
+
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
+)
+
 type Accept struct {
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
-func (f *Accept) Parse(command []string) error {
+func (f *Accept) Parse(command []string, parserType types.ParserType, comment string) error {
+	if f.Comment != "" {
+		f.Comment = comment
+	}
+	_, condition := common.SplitRequest(command[2:])
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
 	return nil
 }
 
 func (f *Accept) String() string {
-	return "accept"
+	var result strings.Builder
+	result.WriteString("accept")
+	if f.Cond != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Cond)
+		result.WriteString(" ")
+		result.WriteString(f.CondTest)
+	}
+	return result.String()
+}
+
+func (f *Accept) GetComment() string {
+	return f.Comment
 }

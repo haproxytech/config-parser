@@ -55,9 +55,9 @@ func (p *Checks) Insert(data common.ParserData, index int) error {
 		return errors.ErrInvalidData
 	}
 	switch newValue := data.(type) {
-	case []types.HTTPAction:
+	case []types.Action:
 		p.data = newValue
-	case *types.HTTPAction:
+	case *types.Action:
 		if index > -1 {
 			if index > len(p.data) {
 				return errors.ErrIndexOutOfRange
@@ -68,7 +68,7 @@ func (p *Checks) Insert(data common.ParserData, index int) error {
 		} else {
 			p.data = append(p.data, *newValue)
 		}
-	case types.HTTPAction:
+	case types.Action:
 		if index > -1 {
 			if index > len(p.data) {
 				return errors.ErrIndexOutOfRange
@@ -91,9 +91,9 @@ func (p *Checks) Set(data common.ParserData, index int) error {
 		return nil
 	}
 	switch newValue := data.(type) {
-	case []types.HTTPAction:
+	case []types.Action:
 		p.data = newValue
-	case *types.HTTPAction:
+	case *types.Action:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = *newValue
 		} else if index == -1 {
@@ -101,7 +101,7 @@ func (p *Checks) Set(data common.ParserData, index int) error {
 		} else {
 			return errors.ErrIndexOutOfRange
 		}
-	case types.HTTPAction:
+	case types.Action:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = newValue
 		} else if index == -1 {

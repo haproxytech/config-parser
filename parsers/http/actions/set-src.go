@@ -23,6 +23,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetSrc struct {
@@ -32,7 +33,7 @@ type SetSrc struct {
 	Comment  string
 }
 
-func (f *SetSrc) Parse(parts []string, comment string) error {
+func (f *SetSrc) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

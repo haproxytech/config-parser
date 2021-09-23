@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type UseService struct {
@@ -31,21 +32,30 @@ type UseService struct {
 }
 
 // Parse parses http-request user-service <name> [ { if | unless } <condition> ]
-func (us *UseService) Parse(parts []string, comment string) error {
+func (us *UseService) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		us.Comment = comment
 	}
-
-	if len(parts) >= 3 {
-		_, condition := common.SplitRequest(parts[3:])
-		us.Name = parts[2]
-		if len(condition) > 1 {
-			us.Cond = condition[0]
-			us.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
+	if len(parts) < 3 {
+		return fmt.Errorf("not enough params")
 	}
-	return fmt.Errorf("not enough params")
+	var data string
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		data = parts[2]
+		command = parts[3:]
+	case types.TCP:
+		data = parts[3]
+		command = parts[4:]
+	}
+	_, condition := common.SplitRequest(command)
+	us.Name = data
+	if len(condition) > 1 {
+		us.Cond = condition[0]
+		us.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
 func (us *UseService) String() string {

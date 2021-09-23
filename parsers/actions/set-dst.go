@@ -22,53 +22,54 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type TrackSc2 struct {
-	Key      string
-	Table    string
-	Comment  string
+type SetDst struct {
+	Expr     common.Expression
 	Cond     string
 	CondTest string
+	Comment  string
 }
 
-func (f *TrackSc2) Parse(parts []string, comment string) error {
+func (f *SetDst) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if comment != "" {
+		f.Comment = comment
+	}
 	if len(parts) < 3 {
 		return fmt.Errorf("not enough params")
 	}
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+	command, condition := common.SplitRequest(command)
 
-	command, condition := common.SplitRequest(parts[2:])
-
-	f.Key = command[0]
-
-	if len(command) == 3 && command[1] == "table" {
-		f.Table = command[2]
+	if len(command) > 0 {
+		expr := common.Expression{}
+		err := expr.Parse(command)
+		if err != nil {
+			return fmt.Errorf("not enough params")
+		}
+		f.Expr = expr
 	}
 	if len(condition) > 1 {
 		f.Cond = condition[0]
 		f.CondTest = strings.Join(condition[1:], " ")
 	}
-
 	return nil
 }
 
-func (f *TrackSc2) String() string {
-	var result strings.Builder
-	result.WriteString("track-sc2 ")
-	result.WriteString(f.Key)
-	if f.Table != "" {
-		result.WriteString(" table ")
-		result.WriteString(f.Table)
+func (f *SetDst) String() string {
+	if f.Cond == "" {
+		return fmt.Sprintf("set-dst %s", f.Expr.String())
 	}
-	if f.Cond != "" {
-		result.WriteString(" ")
-		result.WriteString(f.Cond)
-		result.WriteString(" ")
-		result.WriteString(f.CondTest)
-	}
-	return result.String()
+	return fmt.Sprintf("set-dst %s %s %s", f.Expr.String(), f.Cond, f.CondTest)
 }
 
-func (f *TrackSc2) GetComment() string {
+func (f *SetDst) GetComment() string {
 	return f.Comment
 }

@@ -23,6 +23,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Capture struct { // http-request capture sample [ len <length> | id <id> ] [ { if | unless } <condition> ]
@@ -34,7 +35,7 @@ type Capture struct { // http-request capture sample [ len <length> | id <id> ] 
 	Comment  string
 }
 
-func (f *Capture) Parse(parts []string, comment string) error {
+func (f *Capture) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

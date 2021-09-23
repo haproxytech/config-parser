@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Allow struct {
@@ -29,7 +30,7 @@ type Allow struct {
 	Comment  string
 }
 
-func (f *Allow) Parse(parts []string, comment string) error {
+func (f *Allow) Parse(parts []string, parserType types.ParserType, comment string) error {
 	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment

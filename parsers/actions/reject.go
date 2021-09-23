@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
@@ -22,33 +21,38 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetDst struct {
-	Expr     common.Expression
+type Reject struct {
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetDst) Parse(parts []string, comment string) error {
+func (f *Reject) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) < 3 {
+	var command []string
+	var minLen, requiredLen int
+	switch parserType {
+	case types.HTTP:
+		command = parts[1:]
+		minLen = 2
+		requiredLen = 4
+	case types.TCP:
+		command = parts[2:]
+		minLen = 3
+		requiredLen = 5
+	}
+	if len(parts) == minLen {
+		return nil
+	}
+	if len(parts) < requiredLen {
 		return fmt.Errorf("not enough params")
 	}
-
-	command, condition := common.SplitRequest(parts[2:])
-
-	if len(command) > 0 {
-		expr := common.Expression{}
-		err := expr.Parse(command)
-		if err != nil {
-			return fmt.Errorf("not enough params")
-		}
-		f.Expr = expr
-	}
+	_, condition := common.SplitRequest(command)
 	if len(condition) > 1 {
 		f.Cond = condition[0]
 		f.CondTest = strings.Join(condition[1:], " ")
@@ -56,13 +60,13 @@ func (f *SetDst) Parse(parts []string, comment string) error {
 	return nil
 }
 
-func (f *SetDst) String() string {
-	if f.Cond == "" {
-		return fmt.Sprintf("set-dst %s", f.Expr.String())
+func (f *Reject) String() string {
+	if f.Cond != "" {
+		return fmt.Sprintf("reject %s %s", f.Cond, f.CondTest)
 	}
-	return fmt.Sprintf("set-dst %s %s %s", f.Expr.String(), f.Cond, f.CondTest)
+	return "reject"
 }
 
-func (f *SetDst) GetComment() string {
+func (f *Reject) GetComment() string {
 	return f.Comment
 }

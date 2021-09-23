@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
@@ -22,44 +21,40 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type TrackSc1 struct {
-	Key      string
-	Table    string
-	Comment  string
+type SilentDrop struct {
 	Cond     string
 	CondTest string
+	Comment  string
 }
 
-func (f *TrackSc1) Parse(parts []string, comment string) error {
-	if len(parts) < 3 {
+func (f *SilentDrop) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if comment != "" {
+		f.Comment = comment
+	}
+	if len(parts) < 2 {
 		return fmt.Errorf("not enough params")
 	}
-
-	command, condition := common.SplitRequest(parts[2:])
-
-	f.Key = command[0]
-
-	if len(command) == 3 && command[1] == "table" {
-		f.Table = command[2]
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
 	}
+	_, condition := common.SplitRequest(command)
 	if len(condition) > 1 {
 		f.Cond = condition[0]
 		f.CondTest = strings.Join(condition[1:], " ")
 	}
-
 	return nil
 }
 
-func (f *TrackSc1) String() string {
+func (f *SilentDrop) String() string {
 	var result strings.Builder
-	result.WriteString("track-sc1 ")
-	result.WriteString(f.Key)
-	if f.Table != "" {
-		result.WriteString(" table ")
-		result.WriteString(f.Table)
-	}
+	result.WriteString("silent-drop")
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -69,6 +64,6 @@ func (f *TrackSc1) String() string {
 	return result.String()
 }
 
-func (f *TrackSc1) GetComment() string {
+func (f *SilentDrop) GetComment() string {
 	return f.Comment
 }

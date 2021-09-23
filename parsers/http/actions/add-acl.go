@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type AddACL struct {
@@ -32,7 +33,7 @@ type AddACL struct {
 	Comment  string
 }
 
-func (f *AddACL) Parse(parts []string, comment string) error {
+func (f *AddACL) Parse(parts []string, parserType types.ParserType, comment string) error {
 	// we have filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
 	if comment != "" {
 		f.Comment = comment

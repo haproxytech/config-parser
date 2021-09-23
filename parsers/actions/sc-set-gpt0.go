@@ -14,52 +14,78 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetPriorityClass struct {
+type ScSetGpt0 struct {
+	ID       string
+	Int      *int64
 	Expr     common.Expression
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetPriorityClass) Parse(parts []string, comment string) error {
+func (f *ScSetGpt0) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
-		if len(command) == 0 {
-			return errors.ErrInvalidData
-		}
+	if len(parts) < 3 {
+		return fmt.Errorf("not enough params")
+	}
+	var data string
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
+	}
+	f.ID = strings.TrimPrefix(data, "sc-set-gpt0(")
+	f.ID = strings.TrimRight(f.ID, ")")
+	command, condition := common.SplitRequest(command)
+	if len(command) < 1 {
+		return errors.ErrInvalidData
+	}
+	i, err := strconv.ParseInt(command[0], 10, 64)
+	if err == nil {
+		f.Int = &i
+	} else {
 		expr := common.Expression{}
 		err := expr.Parse(command)
 		if err != nil {
 			return fmt.Errorf("not enough params")
 		}
 		f.Expr = expr
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
 	}
-	return fmt.Errorf("not enough params")
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
-func (f *SetPriorityClass) String() string {
+func (f *ScSetGpt0) String() string {
 	var result strings.Builder
-	result.WriteString("set-priority-class ")
-	result.WriteString(f.Expr.String())
+	result.WriteString("sc-set-gpt0(")
+	result.WriteString(f.ID)
+	result.WriteString(") ")
+	if f.Int != nil {
+		result.WriteString(strconv.FormatInt(*f.Int, 10))
+	} else {
+		result.WriteString(f.Expr.String())
+	}
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -69,6 +95,6 @@ func (f *SetPriorityClass) String() string {
 	return result.String()
 }
 
-func (f *SetPriorityClass) GetComment() string {
+func (f *ScSetGpt0) GetComment() string {
 	return f.Comment
 }

@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetStatus struct { // http-request redirect location <loc> [code <code>] [<option>] [<condition>]
@@ -32,7 +33,7 @@ type SetStatus struct { // http-request redirect location <loc> [code <code>] [<
 	Comment  string
 }
 
-func (f *SetStatus) Parse(parts []string, comment string) error {
+func (f *SetStatus) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

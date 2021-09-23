@@ -30,17 +30,11 @@ func (f *InspectDelay) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-
-	if len(parts) >= 3 {
-
-		if len(parts) > 1 {
-			f.Timeout = parts[2]
-		} else {
-			return fmt.Errorf("not enough params")
-		}
-		return nil
+	if len(parts) < 3 {
+		return fmt.Errorf("not enough params")
 	}
-	return fmt.Errorf("not enough params")
+	f.Timeout = parts[2]
+	return nil
 }
 
 func (f *InspectDelay) String() string {

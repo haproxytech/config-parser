@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Return struct { // http-request return [status <code>] [content-type <type>] [ {default-errorfile | <content-format> <content>} ] [ hdr <name> <fmt> ]* [{if | unless} <condition>]
@@ -80,7 +81,7 @@ func allowedStatusCode(code int64) bool {
 	return code >= 200 && code <= 509
 }
 
-func (f *Return) Parse(parts []string, comment string) error {
+func (f *Return) Parse(parts []string, parserType types.ParserType, comment string) error {
 	f.Hdrs = []*Hdr{}
 	if comment != "" {
 		f.Comment = comment

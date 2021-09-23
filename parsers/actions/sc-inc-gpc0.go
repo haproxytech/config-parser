@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -21,46 +22,55 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type UnsetVar struct {
-	Scope    string
-	Name     string
+type ScIncGpc0 struct {
+	ID       string
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *UnsetVar) Parse(parts []string, comment string) error {
+func (f *ScIncGpc0) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	data := strings.TrimPrefix(parts[1], "unset-var(")
-	data = strings.TrimRight(data, ")")
-	d := strings.SplitN(data, ".", 2)
-	if len(d) < 2 || len(d[1]) == 0 {
-		return errors.ErrInvalidData
+	var data string
+	var command []string
+	var minLen, requiredLen int
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+		minLen = 2
+		requiredLen = 4
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
+		minLen = 3
+		requiredLen = 5
 	}
-	f.Scope = d[0]
-	f.Name = d[1]
-	if len(parts) >= 2 {
-		_, condition := common.SplitRequest(parts[2:])
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
+	f.ID = strings.TrimPrefix(data, "sc-inc-gpc0(")
+	f.ID = strings.TrimRight(f.ID, ")")
+	if len(parts) == minLen {
 		return nil
 	}
-	return fmt.Errorf("not enough params")
+	if len(parts) < requiredLen {
+		return fmt.Errorf("not enough params")
+	}
+	_, condition := common.SplitRequest(command)
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
-func (f *UnsetVar) String() string {
+func (f *ScIncGpc0) String() string {
 	var result strings.Builder
-	result.WriteString("unset-var(")
-	result.WriteString(f.Scope)
-	result.WriteString(".")
-	result.WriteString(f.Name)
+	result.WriteString("sc-inc-gpc0(")
+	result.WriteString(f.ID)
 	result.WriteString(")")
 	if f.Cond != "" {
 		result.WriteString(" ")
@@ -71,6 +81,6 @@ func (f *UnsetVar) String() string {
 	return result.String()
 }
 
-func (f *UnsetVar) GetComment() string {
+func (f *ScIncGpc0) GetComment() string {
 	return f.Comment
 }

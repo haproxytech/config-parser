@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type ScIncGpc1 struct {
@@ -31,23 +32,39 @@ type ScIncGpc1 struct {
 	Comment  string
 }
 
-func (f *ScIncGpc1) Parse(parts []string, comment string) error {
+func (f *ScIncGpc1) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	f.ID = strings.TrimPrefix(parts[1], "sc-inc-gpc1(")
+	var data string
+	var command []string
+	var minLen, requiredLen int
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+		minLen = 2
+		requiredLen = 4
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
+		minLen = 3
+		requiredLen = 5
+	}
+	f.ID = strings.TrimPrefix(data, "sc-inc-gpc1(")
 	f.ID = strings.TrimRight(f.ID, ")")
-	if len(parts) >= 4 {
-		_, condition := common.SplitRequest(parts[2:])
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
-	} else if len(parts) == 2 {
+	if len(parts) == minLen {
 		return nil
 	}
-	return fmt.Errorf("not enough params")
+	if len(parts) < requiredLen {
+		return fmt.Errorf("not enough params")
+	}
+	_, condition := common.SplitRequest(command)
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
 func (f *ScIncGpc1) String() string {

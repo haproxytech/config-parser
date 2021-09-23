@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type SetLogLevel struct {
@@ -31,7 +32,7 @@ type SetLogLevel struct {
 	Comment  string
 }
 
-func (f *SetLogLevel) Parse(parts []string, comment string) error {
+func (f *SetLogLevel) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}

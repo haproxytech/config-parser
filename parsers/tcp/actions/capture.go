@@ -19,38 +19,66 @@ package actions
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type Capture struct {
-	Expr common.Expression
-	Len  int64
+	Expr     common.Expression
+	Len      int64
+	Cond     string
+	CondTest string
+	Comment  string
 }
 
-func (f *Capture) Parse(parts []string) error {
+func (f *Capture) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if f.Comment != "" {
+		f.Comment = comment
+	}
+	if len(parts) < 4 {
+		return fmt.Errorf("not enough params")
+	}
 	expr := common.Expression{}
 
-	err := expr.Parse([]string{parts[1]})
+	err := expr.Parse([]string{parts[3]})
 	if err != nil {
 		return fmt.Errorf("invalid expression")
 	}
 
 	f.Expr = expr
 
-	if len(parts) != 4 {
-		return fmt.Errorf("not enough params")
-	}
-
-	if len, err := strconv.ParseInt(parts[3], 10, 64); err == nil {
-		f.Len = len
+	if ln, err := strconv.ParseInt(parts[5], 10, 64); err == nil {
+		f.Len = ln
 	} else {
 		return fmt.Errorf("invalid value for len")
 	}
-
+	_, condition := common.SplitRequest(parts[5:])
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
 	return nil
 }
 
 func (f *Capture) String() string {
-	return fmt.Sprintf("capture %s len %d", f.Expr.String(), f.Len)
+	var result strings.Builder
+	result.WriteString("capture")
+	result.WriteString(" ")
+	result.WriteString(f.Expr.String())
+	result.WriteString(" ")
+	result.WriteString("len ")
+	result.WriteString(fmt.Sprintf("%d", f.Len))
+	if f.Cond != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Cond)
+		result.WriteString(" ")
+		result.WriteString(f.CondTest)
+	}
+	return result.String()
+}
+
+func (f *Capture) GetComment() string {
+	return f.Comment
 }

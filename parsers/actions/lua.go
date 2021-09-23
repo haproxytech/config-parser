@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
@@ -23,43 +22,59 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetPriorityOffset struct {
-	Expr     common.Expression
+type Lua struct {
+	Action   string
+	Params   string
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetPriorityOffset) Parse(parts []string, comment string) error {
+func (f *Lua) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
-		if len(command) == 0 {
-			return errors.ErrInvalidData
-		}
-		expr := common.Expression{}
-		err := expr.Parse(command)
-		if err != nil {
-			return fmt.Errorf("not enough params")
-		}
-		f.Expr = expr
+	if len(parts) < 2 {
+		return fmt.Errorf("not enough params")
+	}
+	var data string
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
+	}
+
+	f.Action = strings.TrimPrefix(data, "lua.")
+	if f.Action == "" {
+		return errors.ErrInvalidData
+	}
+	if len(parts) > 2 {
+		var condition []string
+		command, condition = common.SplitRequest(command)
+		f.Params = strings.Join(command, " ")
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
 		}
-		return nil
 	}
-	return fmt.Errorf("not enough params")
+	return nil
 }
 
-func (f *SetPriorityOffset) String() string {
+func (f *Lua) String() string {
 	var result strings.Builder
-	result.WriteString("set-priority-offset ")
-	result.WriteString(f.Expr.String())
+	result.WriteString("lua.")
+	result.WriteString(f.Action)
+	if f.Params != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Params)
+	}
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -69,6 +84,6 @@ func (f *SetPriorityOffset) String() string {
 	return result.String()
 }
 
-func (f *SetPriorityOffset) GetComment() string {
+func (f *Lua) GetComment() string {
 	return f.Comment
 }

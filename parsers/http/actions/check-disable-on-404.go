@@ -18,6 +18,8 @@ package actions
 
 import (
 	"fmt"
+
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 // http-check disable-on-404
@@ -25,7 +27,7 @@ type CheckDisableOn404 struct {
 	Comment string
 }
 
-func (c *CheckDisableOn404) Parse(parts []string, comment string) error {
+func (c *CheckDisableOn404) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		c.Comment = comment
 	}

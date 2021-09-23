@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type DoResolve struct {
@@ -33,12 +34,24 @@ type DoResolve struct {
 	Comment   string
 }
 
-func (f *DoResolve) Parse(parts []string, comment string) error {
+func (f *DoResolve) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if comment != "" {
+		f.Comment = comment
+	}
 	if len(parts) < 3 {
 		return fmt.Errorf("not enough params")
 	}
-
-	data := strings.TrimPrefix(parts[1], "do-resolve(")
+	var data string
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
+	}
+	data = strings.TrimPrefix(data, "do-resolve(")
 	data = strings.TrimRight(data, ")")
 	d := strings.SplitN(data, ",", 3)
 
@@ -52,8 +65,7 @@ func (f *DoResolve) Parse(parts []string, comment string) error {
 		f.Protocol = d[2]
 	}
 
-	command, condition := common.SplitRequest(parts[2:]) // 2 not 3 !
-
+	command, condition := common.SplitRequest(command)
 	if len(command) > 0 {
 		expr := common.Expression{}
 		err := expr.Parse(command)
@@ -67,7 +79,6 @@ func (f *DoResolve) Parse(parts []string, comment string) error {
 		f.Cond = condition[0]
 		f.CondTest = strings.Join(condition[1:], " ")
 	}
-
 	return nil
 }
 
