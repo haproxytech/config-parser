@@ -23,7 +23,8 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-// tcp-check connect [default] [port <expr>] [addr <ip>] [send-proxy]
+// tcp/http-check connect
+//                    [default] [port <expr>] [addr <ip>] [send-proxy]
 //                    [via-socks4] [ssl] [sni <sni>] [alpn <alpn>] [linger]
 //                    [proto <name>] [comment <msg>]
 type CheckConnect struct {
@@ -45,18 +46,21 @@ func (c *CheckConnect) Parse(parts []string, parserType types.ParserType, commen
 	if comment != "" {
 		c.Comment = comment
 	}
+
+	// Note: "tcp/http-check connect" with no further params is allowed by HAProxy
 	if len(parts) < 2 {
 		return fmt.Errorf("not enough params")
 	}
+
 	for i := 2; i < len(parts); i++ {
 		el := parts[i]
 		switch el {
 		case "default":
 			c.Default = true
 		case "port":
-			checkParsePair(parts, &i, &c.Port)
+			CheckParsePair(parts, &i, &c.Port)
 		case "addr":
-			checkParsePair(parts, &i, &c.Addr)
+			CheckParsePair(parts, &i, &c.Addr)
 		case "send-proxy":
 			c.SendProxy = true
 		case "via-socks4":
@@ -64,17 +68,18 @@ func (c *CheckConnect) Parse(parts []string, parserType types.ParserType, commen
 		case "ssl":
 			c.SSL = true
 		case "sni":
-			checkParsePair(parts, &i, &c.SNI)
+			CheckParsePair(parts, &i, &c.SNI)
 		case "alpn":
-			checkParsePair(parts, &i, &c.ALPN)
+			CheckParsePair(parts, &i, &c.ALPN)
 		case "linger":
 			c.Linger = true
 		case "proto":
-			checkParsePair(parts, &i, &c.Proto)
+			CheckParsePair(parts, &i, &c.Proto)
 		case "comment":
-			checkParsePair(parts, &i, &c.CheckComment)
+			CheckParsePair(parts, &i, &c.CheckComment)
 		}
 	}
+
 	return nil
 }
 
@@ -84,27 +89,27 @@ func (c *CheckConnect) String() string {
 	sb.WriteString("connect")
 
 	if c.Default {
-		checkWritePair(sb, "", "default")
+		CheckWritePair(sb, "", "default")
 	}
-	checkWritePair(sb, "port", c.Port)
-	checkWritePair(sb, "addr", c.Addr)
+	CheckWritePair(sb, "port", c.Port)
+	CheckWritePair(sb, "addr", c.Addr)
 	if c.SendProxy {
-		checkWritePair(sb, "", "send-proxy")
+		CheckWritePair(sb, "", "send-proxy")
 	}
 	if c.ViaSOCKS4 {
-		checkWritePair(sb, "", "via-socks4")
+		CheckWritePair(sb, "", "via-socks4")
 	}
 	if c.SSL {
-		checkWritePair(sb, "", "ssl")
+		CheckWritePair(sb, "", "ssl")
 	}
-	checkWritePair(sb, "sni", c.SNI)
-	checkWritePair(sb, "alpn", c.ALPN)
+	CheckWritePair(sb, "sni", c.SNI)
+	CheckWritePair(sb, "alpn", c.ALPN)
 
 	if c.Linger {
-		checkWritePair(sb, "", "linger")
+		CheckWritePair(sb, "", "linger")
 	}
-	checkWritePair(sb, "proto", c.Proto)
-	checkWritePair(sb, "comment", c.CheckComment)
+	CheckWritePair(sb, "proto", c.Proto)
+	CheckWritePair(sb, "comment", c.CheckComment)
 
 	return sb.String()
 }

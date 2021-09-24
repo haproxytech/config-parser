@@ -18,7 +18,6 @@ package actions
 
 import (
 	"fmt"
-	"io"
 	"strconv"
 	"strings"
 
@@ -26,7 +25,8 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-// http-check expect [min-recv <int>] [comment <msg>]
+// http-check/tcp-check expect
+//                   [min-recv <int>] [comment <msg>]
 //                   [ok-status <st>] [error-status <st>] [tout-status <st>]
 //                   [on-success <fmt>] [on-error <fmt>] [status-code <expr>]
 //                   [!] <match> <pattern>
@@ -70,19 +70,19 @@ LoopExpect:
 				i++
 			}
 		case "comment":
-			checkParsePair(parts, &i, &c.CheckComment)
+			CheckParsePair(parts, &i, &c.CheckComment)
 		case "ok-status":
-			checkParsePair(parts, &i, &c.OKStatus)
+			CheckParsePair(parts, &i, &c.OKStatus)
 		case "error-status":
-			checkParsePair(parts, &i, &c.ErrorStatus)
+			CheckParsePair(parts, &i, &c.ErrorStatus)
 		case "tout-status":
-			checkParsePair(parts, &i, &c.TimeoutStatus)
+			CheckParsePair(parts, &i, &c.TimeoutStatus)
 		case "on-success":
-			checkParsePair(parts, &i, &c.OnSuccess)
+			CheckParsePair(parts, &i, &c.OnSuccess)
 		case "on-error":
-			checkParsePair(parts, &i, &c.OnError)
+			CheckParsePair(parts, &i, &c.OnError)
 		case "status-code":
-			checkParsePair(parts, &i, &c.StatusCode)
+			CheckParsePair(parts, &i, &c.StatusCode)
 		case "!":
 			c.ExclamationMark = true
 		default:
@@ -93,12 +93,18 @@ LoopExpect:
 	// if we broke out of the loop, whatever is leftover should be
 	// `<match> <pattern>`. Prevent panics with bounds checks for safety.
 	if i >= len(parts) {
-		return &errors.ParseError{Parser: "HttpCheck", Message: "http-check expect: match not provided"}
+		if parserType == types.HTTP {
+			return &errors.ParseError{Parser: "HttpCheck", Message: "http-check expect: match not provided"}
+		}
+		return &errors.ParseError{Parser: "TcpCheck", Message: "tcp-check expect: match not provided"}
 	}
 	c.Match = parts[i]
 
 	if i+1 >= len(parts) {
-		return &errors.ParseError{Parser: "HttpCheck", Message: "http-check expect: pattern not provided"}
+		if parserType == types.HTTP {
+			return &errors.ParseError{Parser: "HttpCheck", Message: "http-check expect: pattern not provided"}
+		}
+		return &errors.ParseError{Parser: "TcpCheck", Message: "tcp-check expect: pattern not provided"}
 	}
 	// Since pattern is always the last option provided, we can safely join
 	// the remainder as part of the pattern.
@@ -114,43 +120,25 @@ func (c *CheckExpect) String() string {
 	sb.WriteString("expect")
 
 	if c.MinRecv != nil {
-		checkWritePair(sb, "min-recv", strconv.Itoa(int(*c.MinRecv)))
+		CheckWritePair(sb, "min-recv", strconv.Itoa(int(*c.MinRecv)))
 	}
-	checkWritePair(sb, "comment", c.CheckComment)
-	checkWritePair(sb, "ok-status", c.OKStatus)
-	checkWritePair(sb, "error-status", c.ErrorStatus)
-	checkWritePair(sb, "tout-status", c.TimeoutStatus)
-	checkWritePair(sb, "on-success", c.OnSuccess)
-	checkWritePair(sb, "on-error", c.OnError)
-	checkWritePair(sb, "status-code", c.StatusCode)
+	CheckWritePair(sb, "comment", c.CheckComment)
+	CheckWritePair(sb, "ok-status", c.OKStatus)
+	CheckWritePair(sb, "error-status", c.ErrorStatus)
+	CheckWritePair(sb, "tout-status", c.TimeoutStatus)
+	CheckWritePair(sb, "on-success", c.OnSuccess)
+	CheckWritePair(sb, "on-error", c.OnError)
+	CheckWritePair(sb, "status-code", c.StatusCode)
 
 	if c.ExclamationMark {
-		checkWritePair(sb, "", "!")
+		CheckWritePair(sb, "", "!")
 	}
-	checkWritePair(sb, "", c.Match)
-	checkWritePair(sb, "", c.Pattern)
+	CheckWritePair(sb, "", c.Match)
+	CheckWritePair(sb, "", c.Pattern)
 
 	return sb.String()
 }
 
 func (c *CheckExpect) GetComment() string {
 	return c.Comment
-}
-
-func checkWritePair(sb io.StringWriter, key string, value string) {
-	if value != "" {
-		_, _ = sb.WriteString(" ")
-		if key != "" {
-			_, _ = sb.WriteString(key)
-			_, _ = sb.WriteString(" ")
-		}
-		_, _ = sb.WriteString(value)
-	}
-}
-
-func checkParsePair(parts []string, i *int, str *string) {
-	if (*i + 1) < len(parts) {
-		*str = parts[*i+1]
-		*i++
-	}
 }

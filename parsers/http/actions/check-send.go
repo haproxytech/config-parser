@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/v4/parsers/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -56,13 +57,13 @@ func (c *CheckSend) Parse(parts []string, parserType types.ParserType, comment s
 		el := parts[i]
 		switch el {
 		case "meth":
-			checkParsePair(parts, &i, &c.Method)
+			actions.CheckParsePair(parts, &i, &c.Method)
 		case "uri":
-			checkParsePair(parts, &i, &c.URI)
+			actions.CheckParsePair(parts, &i, &c.URI)
 		case "uri-lf":
-			checkParsePair(parts, &i, &c.URILogFormat)
+			actions.CheckParsePair(parts, &i, &c.URILogFormat)
 		case "ver":
-			checkParsePair(parts, &i, &c.Version)
+			actions.CheckParsePair(parts, &i, &c.Version)
 		// NOTE: HAProxy config supports header values containing spaces,
 		// which config-parser normally would support with `\ `.
 		// However, because parts is split by spaces and hdr can be provided
@@ -75,11 +76,11 @@ func (c *CheckSend) Parse(parts []string, parserType types.ParserType, comment s
 				i++
 			}
 		case "body":
-			checkParsePair(parts, &i, &c.Body)
+			actions.CheckParsePair(parts, &i, &c.Body)
 		case "body-lf":
-			checkParsePair(parts, &i, &c.BodyLogFormat)
+			actions.CheckParsePair(parts, &i, &c.BodyLogFormat)
 		case "comment":
-			checkParsePair(parts, &i, &c.CheckComment)
+			actions.CheckParsePair(parts, &i, &c.CheckComment)
 		}
 	}
 
@@ -91,17 +92,17 @@ func (c *CheckSend) String() string {
 
 	sb.WriteString("send")
 
-	checkWritePair(sb, "meth", c.Method)
-	checkWritePair(sb, "uri", c.URI)
-	checkWritePair(sb, "uri-lf", c.URILogFormat)
-	checkWritePair(sb, "ver", c.Version)
+	actions.CheckWritePair(sb, "meth", c.Method)
+	actions.CheckWritePair(sb, "uri", c.URI)
+	actions.CheckWritePair(sb, "uri-lf", c.URILogFormat)
+	actions.CheckWritePair(sb, "ver", c.Version)
 	for _, h := range c.Header {
-		checkWritePair(sb, "hdr", h.Name)
-		checkWritePair(sb, "", h.Format)
+		actions.CheckWritePair(sb, "hdr", h.Name)
+		actions.CheckWritePair(sb, "", h.Format)
 	}
-	checkWritePair(sb, "body", c.Body)
-	checkWritePair(sb, "body-lf", c.BodyLogFormat)
-	checkWritePair(sb, "comment", c.CheckComment)
+	actions.CheckWritePair(sb, "body", c.Body)
+	actions.CheckWritePair(sb, "body-lf", c.BodyLogFormat)
+	actions.CheckWritePair(sb, "comment", c.CheckComment)
 
 	return sb.String()
 }

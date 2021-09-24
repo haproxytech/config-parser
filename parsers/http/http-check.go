@@ -66,11 +66,11 @@ func (h *Checks) Parse(line string, parts, previousParts []string, comment strin
 	case parts[1] == "comment":
 		err = h.parseHTTPCheck(&http_actions.CheckComment{}, parts, comment)
 	case parts[1] == "connect":
-		err = h.parseHTTPCheck(&http_actions.CheckConnect{}, parts, comment)
+		err = h.parseHTTPCheck(&actions.CheckConnect{}, parts, comment)
 	case parts[1] == "disable-on-404":
 		err = h.parseHTTPCheck(&http_actions.CheckDisableOn404{}, parts, comment)
 	case parts[1] == "expect":
-		err = h.parseHTTPCheck(&http_actions.CheckExpect{}, parts, comment)
+		err = h.parseHTTPCheck(&actions.CheckExpect{}, parts, comment)
 	case parts[1] == "send":
 		err = h.parseHTTPCheck(&http_actions.CheckSend{}, parts, comment)
 	case parts[1] == "send-state":

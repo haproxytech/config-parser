@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/haproxytech/config-parser/v4/parsers/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -41,7 +42,7 @@ func (c *CheckSendBinaryLf) Parse(parts []string, parserType types.ParserType, c
 	for i := 3; i < len(parts); i++ {
 		el := parts[i]
 		if el == "comment" {
-			checkParsePair(parts, &i, &c.CheckComment)
+			actions.CheckParsePair(parts, &i, &c.CheckComment)
 		}
 	}
 	return nil
@@ -52,7 +53,7 @@ func (c *CheckSendBinaryLf) String() string {
 	sb.WriteString("send-binary-lf")
 	sb.WriteString(" ")
 	sb.WriteString(c.HexFmt)
-	checkWritePair(sb, "comment", c.CheckComment)
+	actions.CheckWritePair(sb, "comment", c.CheckComment)
 	return sb.String()
 }
 

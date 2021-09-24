@@ -66,9 +66,9 @@ func (h *Checks) Parse(line string, parts, previousParts []string, comment strin
 	case parts[1] == "comment":
 		err = h.parseTCPCheck(&tcp_actions.CheckComment{}, parts, comment)
 	case parts[1] == "connect":
-		err = h.parseTCPCheck(&tcp_actions.CheckConnect{}, parts, comment)
+		err = h.parseTCPCheck(&actions.CheckConnect{}, parts, comment)
 	case parts[1] == "expect":
-		err = h.parseTCPCheck(&tcp_actions.CheckExpect{}, parts, comment)
+		err = h.parseTCPCheck(&actions.CheckExpect{}, parts, comment)
 	case parts[1] == "send":
 		err = h.parseTCPCheck(&tcp_actions.CheckSend{}, parts, comment)
 	case parts[1] == "send-lf":
@@ -84,10 +84,8 @@ func (h *Checks) Parse(line string, parts, previousParts []string, comment strin
 	default:
 		err = &errors.ParseError{Parser: "TCPCheck", Line: line, Message: "invalid tcp-check type provided"}
 	}
-	if err != nil {
-		return "", err
-	}
-	return "", nil
+
+	return "", err
 }
 
 func (h *Checks) Result() ([]common.ReturnResultLine, error) {
