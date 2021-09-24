@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package configs
+package configs //nolint:testpackage
 
 import (
 	"strings"
@@ -34,7 +34,7 @@ func TestEmpty(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			p.Process(strings.NewReader(config.Config))
+			err = p.Process(strings.NewReader(config.Config))
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
