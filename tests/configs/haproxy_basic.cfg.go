@@ -19,19 +19,19 @@ const configBasic1 = `# _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
 
-global 
+global
   master-worker
 
-defaults 
+defaults
   log global
 
-frontend http 
+frontend http
   mode http
   bind 0.0.0.0:80 name bind_1
   bind :::80 v4v6 name bind_2
   default_backend default_backend
 
-backend default_backend 
+backend default_backend
   mode http
   http-request deny deny_status 400 # deny
 `

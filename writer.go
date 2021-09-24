@@ -104,7 +104,7 @@ func (p *configParser) writeSection(sectionName string, comments []string, resul
 		_, _ = result.WriteString("\n")
 	}
 	_, _ = result.WriteString(sectionName)
-	_, _ = result.WriteString(" \n")
+	_, _ = result.WriteString("\n")
 }
 
 func (p *configParser) writeParsers(sectionName string, parsersData *Parsers, result io.StringWriter, useIndentation bool) {

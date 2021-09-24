@@ -20,7 +20,7 @@ const configFull = `# _version=10
 # https://www.haproxy.com/
 
 # some random global comment
-global 
+global
   daemon
   master-worker
   nbproc 5
@@ -46,7 +46,7 @@ global
   # random comment after snippet
 
 # some random defaults comment
-defaults 
+defaults
   maxconn 2000
   log global
   log 127.0.0.1:514 local0 notice
@@ -66,7 +66,7 @@ defaults
   load-server-state-from-file global
 
 # some random userlist L1
-userlist L1 
+userlist L1
   group G1 users tiger,scott
   group G2 users xdb,scott
   user nopwd groups G2
@@ -75,7 +75,7 @@ userlist L1
   user xdb insecure-password hello
 
 # some random userlist L2
-userlist L2 
+userlist L2
   group G1
   group G2
   # some random user comment #1
@@ -84,27 +84,27 @@ userlist L2
   user scott insecure-password elgato groups G1,G2
   user xdb insecure-password hello groups G2
 
-peers mypeers 
+peers mypeers
   peer haproxy1 192.168.0.1:1024
   peer haproxy2 192.168.0.2:1024
   peer haproxy3 10.2.0.1:1024
 
-peers mypeers2 
+peers mypeers2
   peer haproxy4 192.168.0.1:1024
   peer haproxy5 192.168.0.2:1024
   peer haproxy6 10.2.0.1:1024
 
-mailers mymailers 
+mailers mymailers
   timeout mail 20s
   mailer smtp1 192.168.0.1:587
   mailer smtp2 192.168.0.2:587
 
-mailers mymailers2 
+mailers mymailers2
   timeout mail 10s
   mailer smtp1 192.168.0.3:587
   mailer smtp2 192.168.0.4:587
 
-resolvers mirko 
+resolvers mirko
   nameserver ns_1_new_name_for_0 0.0.0.0:8080
   nameserver ns_2_new_name 0.0.0.0:8081
   hold obsolete 5s
@@ -112,22 +112,22 @@ resolvers mirko
   timeout retry 5s
   accepted_payload_size 323
 
-cache foobar 
+cache foobar
   total-max-size 4
   max-age 240
 
-frontend healthz 
+frontend healthz
   mode http
   monitor-uri /healthz
   no log
 
-frontend http 
+frontend http
   mode http
   bind 0.0.0.0:80 name bind_1
   bind :::80 v4v6 name bind_2
   default_backend default_backend
 
-frontend https 
+frontend https
   mode http
   bind 0.0.0.0:443 name bind_1
   bind :::443 v4v6 name bind_2
@@ -135,7 +135,7 @@ frontend https
   http-request set-header X-Forwarded-Proto https if { ssl_fc }
   default_backend default_backend
 
-frontend xyz 
+frontend xyz
   mode http
   acl network_allowed src 20.30.40.50 8.9.9.0/27
   acl ratelimit_is_abuse src_http_req_rate(Abuse) ge 10
@@ -145,7 +145,7 @@ frontend xyz
   http-request deny if !network_allowed
   default_backend default_backend
 
-frontend xyz2 
+frontend xyz2
   mode http
   maxconn 2000
   bind 0.0.0.0:9981 name http2
@@ -167,7 +167,7 @@ frontend xyz2
   default_backend default_backend2
   http-response set-status some_status if !{ ssl_fc }
 
-frontend xyz3 
+frontend xyz3
   acl network_allowed src 20.30.40.50 8.9.9.0/27
   acl network_allowed src 20.30.40.51 8.9.9.0/27
   acl other acl src 20.30.40.52 8.9.9.0/27
@@ -179,12 +179,12 @@ frontend xyz3
   http-response set-header X-SSL1 %[ssl_fc]
   http-response set-var(req.my_var1) req.fhdr(user-agent),lower
 
-frontend xyz4 
+frontend xyz4
   mode http
   http-request allow if something
   http-request allow
 
-frontend xyz5 
+frontend xyz5
   mode http
   maxconn 2000
   bind 192.168.1.1:80 name webserv
@@ -218,11 +218,11 @@ frontend xyz5
   http-response set-header X-SSL %[ssl_fc]
   http-response set-var(req.my_var) req.fhdr(user-agent),lower
 
-backend default_backend 
+backend default_backend
   mode http
   http-request deny deny_status 400 # deny
 
-backend default_backend2 
+backend default_backend2
   mode http
   balance uri
   option httpchk OPTIONS * HTTP/1.1\r\nHost:\ www
@@ -232,7 +232,7 @@ backend default_backend2
   server THE_NEW_GUY 127.0.0.5:9345 # Newly added
   # server SRV_LkIZw 127.0.0.1:5853 maxconn 1000 weight 1 check disabled #alctl: server SRV_LkIZ9 configuration.
 
-backend test 
+backend test
   mode http
   balance roundrobin
   option http-keep-alive
@@ -265,7 +265,7 @@ backend test
   option contstats
   option contstats
 
-listen stats 
+listen stats
   bind *:1024 process 1
   mode http
   stats enable

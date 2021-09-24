@@ -19,23 +19,23 @@ const configBasic2 = `# _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
 
-global 
+global
   tune.ssl.default-dh-param 2048
   ssl-default-bind-options no-sslv3 no-tls-tickets
   ssl-default-bind-ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK
 
-defaults 
+defaults
   log global
   option tcp-check
   tcp-check send-binary-lf testhexfmt comment testcomment
 
-frontend http 
+frontend http
   mode http
   bind 0.0.0.0:80 name bind_1
   bind :::80 v4v6 name bind_2
   default_backend default_backend
 
-frontend https 
+frontend https
   mode http
   bind 0.0.0.0:443 name bind_1
   bind :::443 v4v6 name bind_2
@@ -43,7 +43,7 @@ frontend https
   http-request set-header X-Forwarded-Proto https if { ssl_fc }
   default_backend default_backend
 
-backend default_backend 
+backend default_backend
   mode http
   option tcp-check
   tcp-check expect string +OK\ POP3\ ready
