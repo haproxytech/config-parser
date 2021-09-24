@@ -42,7 +42,7 @@ func (h *HTTPCheckV2) parse(line string, parts []string, comment string) (*types
 		return hc, nil
 	}
 
-	if len(parts) > 3 {
+	if len(parts) >= 3 {
 		if parts[2] == "!" {
 			hc.ExclamationMark = true
 			hc.Match = parts[3]

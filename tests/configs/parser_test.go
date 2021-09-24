@@ -95,3 +95,17 @@ func TestHashConfig(t *testing.T) {
 		t.Fatalf("configurations does not match")
 	}
 }
+
+func TestConfigUseV2HTTPCheck(t *testing.T) {
+	var buffer bytes.Buffer
+	buffer.WriteString(configBasicUseV2HTTPCheck)
+	p, err := parser.New(options.UseV2HTTPCheck, options.Reader(&buffer))
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	result := p.String()
+	if result != configBasicUseV2HTTPCheck {
+		compare(t, configBasicUseV2HTTPCheck, result)
+		t.Fatalf("configurations does not match")
+	}
+}
