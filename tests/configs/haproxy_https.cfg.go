@@ -26,6 +26,8 @@ global
 
 defaults 
   log global
+  option tcp-check
+  tcp-check send-binary-lf testhexfmt comment testcomment
 
 frontend http 
   mode http
@@ -43,5 +45,9 @@ frontend https
 
 backend default_backend 
   mode http
+  option tcp-check
+  tcp-check expect string +OK\ POP3\ ready
+  tcp-check send-binary-lf testhexfmt comment testcomment
+  tcp-check connect port 110 linger
   http-request deny deny_status 400 # deny
 `

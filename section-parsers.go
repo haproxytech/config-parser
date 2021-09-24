@@ -102,7 +102,6 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.OptionMysqlCheck{})
 	addParser(parser, &sequence, &simple.Option{Name: "abortonclose"})
 	addParser(parser, &sequence, &parsers.OptionPgsqlCheck{})
-	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
 	addParser(parser, &sequence, &simple.Option{Name: "redis-check"})
 	addParser(parser, &sequence, &simple.Option{Name: "splice-auto"})
 	addParser(parser, &sequence, &simple.Option{Name: "splice-request"})
@@ -112,6 +111,8 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "allbackups"})
 	addParser(parser, &sequence, &simple.Option{Name: "external-check"})
 	addParser(parser, &sequence, &parsers.OptionForwardFor{})
+	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
+	addParser(parser, &sequence, &tcp.Checks{})
 	addParser(parser, &sequence, &parsers.OptionHttpchk{})
 	if p.Options.UseV2HTTPCheck {
 		addParser(parser, &sequence, &parsers.HTTPCheckV2{})
@@ -275,7 +276,6 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.OptionMysqlCheck{})
 	addParser(parser, &sequence, &simple.Option{Name: "abortonclose"})
 	addParser(parser, &sequence, &parsers.OptionPgsqlCheck{})
-	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
 	addParser(parser, &sequence, &simple.Option{Name: "redis-check"})
 	addParser(parser, &sequence, &parsers.OptionRedispatch{})
 	addParser(parser, &sequence, &simple.Option{Name: "external-check"})
@@ -285,6 +285,8 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "log-health-checks"})
 	addParser(parser, &sequence, &simple.String{Name: "log-tag"})
 	addParser(parser, &sequence, &simple.Option{Name: "allbackups"})
+	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
+	addParser(parser, &sequence, &tcp.Checks{})
 	addParser(parser, &sequence, &parsers.OptionHttpchk{})
 	if p.Options.UseV2HTTPCheck {
 		addParser(parser, &sequence, &parsers.HTTPCheckV2{})
