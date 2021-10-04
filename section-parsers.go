@@ -134,6 +134,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Timeout{Name: "http-keep-alive"})
 	addParser(parser, &sequence, &simple.Number{Name: "retries"})
 	addParser(parser, &sequence, &parsers.DefaultServer{})
+	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 	addParser(parser, &sequence, &parsers.ErrorFile{})
 	addParser(parser, &sequence, &parsers.DefaultBackend{})
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
@@ -195,7 +196,6 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "server-state-base"})
 	addParser(parser, &sequence, &parsers.SslEngine{})
 	addParser(parser, &sequence, &parsers.SslModeAsync{})
-	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})

@@ -35,7 +35,6 @@ global test
   lua-load /etc/haproxy/lua/foo.lua
   ssl-engine rdrand
   ssl-mode-async
-  load-server-state-from-file global
 
 defaults test
   balance roundrobin
@@ -197,6 +196,7 @@ defaults test
   option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
   unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
   unique-id-header X-Unique-ID
+  load-server-state-from-file global
   monitor-uri /haproxy_test
   http-check comment testcomment
   http-check connect

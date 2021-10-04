@@ -991,7 +991,7 @@ type SslEngine struct {
 //test:fail:ssl-mode-async false
 type SslModeAsync struct{}
 
-//sections:global,backend
+//sections:defaults,backend
 //name:load-server-state-from-file
 //test:ok:load-server-state-from-file global
 //test:ok:load-server-state-from-file local

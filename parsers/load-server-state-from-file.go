@@ -39,7 +39,7 @@ func (p *LoadServerStateFromFile) Parse(line string, parts, previousPats []strin
 		case "none":
 			break
 		default:
-			return "", &errors.ParseError{Parser: "HTTPReuse", Line: line}
+			return "", &errors.ParseError{Parser: "load-server-state-from-file", Line: line}
 		}
 		p.data = &types.LoadServerStateFromFile{Argument: a}
 		return
