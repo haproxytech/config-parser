@@ -568,6 +568,7 @@ type TCPType interface {
 //test:ok:tcp-request connection reject if !HTTP
 //test:ok:tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
 //test:ok:tcp-request connection expect-netscaler-cip layer4
+//test:ok:tcp-request connection expect-netscaler-cip layer4 if TRUE
 //test:ok:tcp-request connection capture req.payload(0,6) len 6
 //test:ok:tcp-request connection track-sc0 src
 //test:ok:tcp-request connection track-sc0 src if some_check

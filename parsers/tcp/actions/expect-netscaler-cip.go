@@ -16,21 +16,41 @@ limitations under the License.
 
 package actions
 
-import "github.com/haproxytech/config-parser/v4/types"
+import (
+	"strings"
+
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/types"
+)
 
 type ExpectNetscalerCip struct {
-	Comment string
+	Comment  string
+	Cond     string
+	CondTest string
 }
 
 func (f *ExpectNetscalerCip) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if f.Comment != "" {
 		f.Comment = comment
 	}
+	_, condition := common.SplitRequest(parts[1:])
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
 	return nil
 }
 
 func (f *ExpectNetscalerCip) String() string {
-	return "expect-netscaler-cip layer4"
+	var result strings.Builder
+	result.WriteString("expect-netscaler-cip layer4")
+	if f.Cond != "" {
+		result.WriteString(" ")
+		result.WriteString(f.Cond)
+		result.WriteString(" ")
+		result.WriteString(f.CondTest)
+	}
+	return result.String()
 }
 
 func (f *ExpectNetscalerCip) GetComment() string {

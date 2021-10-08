@@ -70,6 +70,7 @@ func TestRequeststcp(t *testing.T) {
 		"tcp-request connection reject if !HTTP":                                       true,
 		"tcp-request connection expect-proxy layer4 if { src -f proxies.lst }":         true,
 		"tcp-request connection expect-netscaler-cip layer4":                           true,
+		"tcp-request connection expect-netscaler-cip layer4 if TRUE":                   true,
 		"tcp-request connection capture req.payload(0,6) len 6":                        true,
 		"tcp-request connection track-sc0 src":                                         true,
 		"tcp-request connection track-sc0 src if some_check":                           true,

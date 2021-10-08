@@ -849,6 +849,7 @@ backend test
   tcp-request connection reject if !HTTP
   tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
   tcp-request connection expect-netscaler-cip layer4
+  tcp-request connection expect-netscaler-cip layer4 if TRUE
   tcp-request connection capture req.payload(0,6) len 6
   tcp-request connection track-sc0 src
   tcp-request connection track-sc0 src if some_check
@@ -1264,6 +1265,7 @@ frontend test
   tcp-request connection reject if !HTTP
   tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
   tcp-request connection expect-netscaler-cip layer4
+  tcp-request connection expect-netscaler-cip layer4 if TRUE
   tcp-request connection capture req.payload(0,6) len 6
   tcp-request connection track-sc0 src
   tcp-request connection track-sc0 src if some_check
@@ -2715,6 +2717,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
 `, 2},
   {`  tcp-request connection expect-netscaler-cip layer4
+`, 2},
+  {`  tcp-request connection expect-netscaler-cip layer4 if TRUE
 `, 2},
   {`  tcp-request connection capture req.payload(0,6) len 6
 `, 2},
