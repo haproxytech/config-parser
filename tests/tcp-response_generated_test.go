@@ -39,6 +39,7 @@ func TestResponsestcp(t *testing.T) {
 		"tcp-response content do-resolve":          false,
 		"tcp-response content set-priority-offset": false,
 		"tcp-response content set-dst":             false,
+		"tcp-response content capture":             false,
 		"---":                                      false,
 		"--- ---":                                  false,
 	}

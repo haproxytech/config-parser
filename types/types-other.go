@@ -614,6 +614,7 @@ type TCPType interface {
 //test:ok:tcp-request connection set-src src,ipmask(24) if some_check
 //test:ok:tcp-request connection set-src hdr(x-forwarded-for)
 //test:ok:tcp-request connection set-src hdr(x-forwarded-for) if some_check
+//test:fail:tcp-request connection set-src
 //test:ok:tcp-request connection silent-drop
 //test:ok:tcp-request connection silent-drop if !HTTP
 //test:ok:tcp-request connection lua.foo
@@ -696,6 +697,7 @@ type TCPRequests struct{}
 //test:fail:tcp-response content set-priority-offset
 //test:ok:tcp-response content set-dst dest
 //test:fail:tcp-response content set-dst
+//test:fail:tcp-response content capture
 //test:ok:tcp-response content unset-var(sess.my_var)
 type TCPResponses struct{}
 
