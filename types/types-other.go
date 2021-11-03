@@ -688,6 +688,7 @@ type TCPRequests struct{}
 //test:fail:tcp-response
 //test:fail:tcp-response content lua.
 //test:fail:tcp-response content lua. param
+//test:fail:tcp-response content set-priority-class
 type TCPResponses struct{}
 
 //name:redirect

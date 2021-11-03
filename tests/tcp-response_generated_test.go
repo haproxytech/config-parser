@@ -30,11 +30,12 @@ func TestResponsestcp(t *testing.T) {
 		"tcp-response content lua.foo":                true,
 		"tcp-response content lua.foo param if !HTTP": true,
 		"tcp-response content lua.foo param param1":   true,
-		"tcp-response":                    false,
-		"tcp-response content lua.":       false,
-		"tcp-response content lua. param": false,
-		"---":                             false,
-		"--- ---":                         false,
+		"tcp-response":                            false,
+		"tcp-response content lua.":               false,
+		"tcp-response content lua. param":         false,
+		"tcp-response content set-priority-class": false,
+		"---":     false,
+		"--- ---": false,
 	}
 	parser := &tcp.Responses{}
 	for command, shouldPass := range tests {

@@ -49,6 +49,32 @@ func TestWholeConfigs(t *testing.T) {
 	}
 }
 
+func TestWholeConfigsFail(t *testing.T) {
+	tests := []struct {
+		Name, Config string
+	}{
+		{"configFail1", configFail1},
+		{"configFail2", configFail2},
+		{"configFail3", configFail3},
+		{"configFail4", configFail4},
+	}
+	for _, config := range tests {
+		t.Run(config.Name, func(t *testing.T) {
+			var buffer bytes.Buffer
+			buffer.WriteString(config.Config)
+			p, err := parser.New(options.Reader(&buffer))
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
+			result := p.String()
+			if result == config.Config {
+				compare(t, config.Config, result)
+				t.Fatalf("configurations does not match")
+			}
+		})
+	}
+}
+
 func compare(t *testing.T, configOriginal, configResult string) {
 	original := strings.Split(configOriginal, "\n")
 	result := strings.Split(configResult, "\n")
