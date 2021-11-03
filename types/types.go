@@ -664,6 +664,7 @@ type ExternalCheckCommand struct {
 //test:fail:peer name 127.0.0.1
 //test:fail:peer name :8080
 //test:fail:peer
+//test:fail:peer 0
 type Peer struct {
 	Name    string
 	IP      string

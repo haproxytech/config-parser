@@ -31,6 +31,7 @@ func TestPeer(t *testing.T) {
 		"peer name 127.0.0.1":      false,
 		"peer name :8080":          false,
 		"peer":                     false,
+		"peer 0":                   false,
 		"---":                      false,
 		"--- ---":                  false,
 	}
