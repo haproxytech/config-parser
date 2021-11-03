@@ -503,6 +503,7 @@ type HTTPCheckV2 struct {
 //test:ok:log 127.0.0.1:514 local0 notice notice # same but limit output level
 //test:ok:log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
 //test:fail:log
+//test:fail:log 0 len 0
 type Log struct {
 	Global   bool
 	NoLog    bool

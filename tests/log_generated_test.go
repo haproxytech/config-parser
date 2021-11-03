@@ -35,9 +35,10 @@ func TestLog(t *testing.T) {
 		"log 127.0.0.1:514 local0 notice # only send important events":          true,
 		"log 127.0.0.1:514 local0 notice notice # same but limit output level":  true,
 		"log 127.0.0.1:1515 len 8192 format rfc5424 local2 info":                true,
-		"log":     false,
-		"---":     false,
-		"--- ---": false,
+		"log":         false,
+		"log 0 len 0": false,
+		"---":         false,
+		"--- ---":     false,
 	}
 	parser := &parsers.Log{}
 	for command, shouldPass := range tests {

@@ -87,7 +87,7 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 			currIndex++
 		}
 	}
-	if parts[currIndex] == "format" {
+	if currIndex < len(parts) && parts[currIndex] == "format" {
 		currIndex++
 		if currIndex >= len(parts) {
 			return log, &errors.ParseError{Parser: "Log", Line: line}
