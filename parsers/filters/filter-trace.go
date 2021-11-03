@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
 )
 
 type Trace struct { // filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]
@@ -35,11 +36,17 @@ func (f *Trace) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
+	if len(parts) < 3 {
+		return errors.ErrInvalidData
+	}
 	index := 2
 	for index < len(parts) {
 		switch parts[index] {
 		case "name":
 			index++
+			if index == len(parts) {
+				return errors.ErrInvalidData
+			}
 			f.Name = parts[index]
 		case "random-parsing":
 			f.RandomParsing = true
@@ -47,6 +54,8 @@ func (f *Trace) Parse(parts []string, comment string) error {
 			f.RandomForwarding = true
 		case "hexdump":
 			f.Hexdump = true
+		default:
+			return errors.ErrInvalidData
 		}
 		index++
 	}

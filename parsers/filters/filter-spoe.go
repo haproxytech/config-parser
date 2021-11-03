@@ -38,10 +38,18 @@ func (f *Spoe) Parse(parts []string, comment string) error {
 		switch parts[index] {
 		case "engine":
 			index++
+			if index == len(parts) {
+				return errors.ErrInvalidData
+			}
 			f.Engine = parts[index]
 		case "config":
 			index++
+			if index == len(parts) {
+				return errors.ErrInvalidData
+			}
 			f.Config = parts[index]
+		default:
+			return errors.ErrInvalidData
 		}
 		index++
 	}

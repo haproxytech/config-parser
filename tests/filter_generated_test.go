@@ -27,6 +27,20 @@ import (
 
 func TestFiltersfilters(t *testing.T) {
 	tests := map[string]bool{
+		"filter spoe config file":                                         true,
+		"filter spoe engine name config file":                             true,
+		"filter trace name name random-parsing random-forwarding hexdump": true,
+		"filter trace random-parsing random-forwarding hexdump":           true,
+		"filter trace random-forwarding hexdump":                          true,
+		"filter trace hexdump":                                            true,
+		"filter spoe":                                                     false,
+		"filter spoe config":                                              false,
+		"filter spoe engine":                                              false,
+		"filter spoe engine config":                                       false,
+		"filter trace name":                                               false,
+		"filter trace 0 name":                                             false,
+		"filter trace":                                                    false,
+		"filter spoe l : d 8 t 8 t t c t t t 8 t 8 t t t 8 t t t 8 t 8 t t 8 t t t 8 8 t config": false,
 		"---":     false,
 		"--- ---": false,
 	}
