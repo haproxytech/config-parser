@@ -350,6 +350,8 @@ type Action interface {
 //test:fail:http-request return errorfile
 //test:fail:http-request return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 file
 //test:fail:http-request return 0 hdr
+//test:fail:http-request return 0 0 hdr 0
+//test:fail:http-request return e r s n s c m	t e r  s c t e s t e r s c v e hdr ï
 type HTTPRequests struct{}
 
 //name:http-response
@@ -690,6 +692,8 @@ type TCPRequests struct{}
 //test:fail:tcp-response content lua.
 //test:fail:tcp-response content lua. param
 //test:fail:tcp-response content set-priority-class
+//test:fail:tcp-response content do-resolve
+//test:fail:tcp-response content set-priority-offset
 type TCPResponses struct{}
 
 //name:redirect

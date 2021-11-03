@@ -187,8 +187,10 @@ func TestRequestshttp(t *testing.T) {
 		"http-request return errorfile":                                false,
 		"http-request return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 file":   false,
 		"http-request return 0 hdr":                                    false,
-		"---":                                                          false,
-		"--- ---":                                                      false,
+		"http-request return 0 0 hdr 0":                                false,
+		"http-request return e r s n s c m	t e r  s c t e s t e r s c v e hdr ï": false,
+		"---":     false,
+		"--- ---": false,
 	}
 	parser := &http.Requests{}
 	for command, shouldPass := range tests {
