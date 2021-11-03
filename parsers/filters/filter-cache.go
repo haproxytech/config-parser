@@ -32,7 +32,7 @@ func (f *Cache) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 2 {
+	if len(parts) > 2 {
 		f.Name = parts[2]
 	} else {
 		return fmt.Errorf("no cache name")

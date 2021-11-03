@@ -165,6 +165,7 @@ type Filter interface {
 //test:fail:filter trace 0 name
 //test:fail:filter trace
 //test:fail:filter spoe l : d 8 t 8 t t c t t t 8 t 8 t t t 8 t t t 8 t 8 t t 8 t t t 8 8 t config
+//test:fail:filter cache
 type Filters struct{}
 
 type ParserType int

@@ -41,8 +41,9 @@ func TestFiltersfilters(t *testing.T) {
 		"filter trace 0 name":                                             false,
 		"filter trace":                                                    false,
 		"filter spoe l : d 8 t 8 t t c t t t 8 t 8 t t t 8 t t t 8 t 8 t t 8 t t t 8 8 t config": false,
-		"---":     false,
-		"--- ---": false,
+		"filter cache": false,
+		"---":          false,
+		"--- ---":      false,
 	}
 	parser := &filters.Filters{}
 	for command, shouldPass := range tests {
