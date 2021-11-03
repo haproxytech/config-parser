@@ -109,11 +109,16 @@ func (f *Return) Parse(parts []string, parserType types.ParserType, comment stri
 					f.ContentFormat = command[i]
 				case "hdr":
 					hdr := Hdr{}
+					if len(command) < i+3 {
+						return fmt.Errorf("failed to parse return hdr")
+					}
 					i++
 					hdr.Name = command[i]
 					i++
 					hdr.Fmt = command[i]
 					f.Hdrs = append(f.Hdrs, &hdr)
+				default:
+					return fmt.Errorf("failed to parse hdr")
 				}
 			}
 			if len(condition) > 1 {

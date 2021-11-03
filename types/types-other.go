@@ -329,7 +329,12 @@ type Action interface {
 //test:ok:http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
 //test:ok:http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
 //test:"ok":http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
-
+//test:fail:http-request return 8 t hdr
+//test:fail:http-request return hdr
+//test:fail:http-request return hdr one
+//test:fail:http-request return errorfile
+//test:fail:http-request return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 file
+//test:fail:http-request return 0 hdr
 type HTTPRequests struct{}
 
 //name:http-response

@@ -181,6 +181,12 @@ func TestRequestshttp(t *testing.T) {
 		"http-request do-resolve(txn.myip,mydns,ipv4)":                 false,
 		"http-request set-dst":                                         false,
 		"http-request set-dst-port":                                    false,
+		"http-request return 8 t hdr":                                  false,
+		"http-request return hdr":                                      false,
+		"http-request return hdr one":                                  false,
+		"http-request return errorfile":                                false,
+		"http-request return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 file":   false,
+		"http-request return 0 hdr":                                    false,
 		"---":                                                          false,
 		"--- ---":                                                      false,
 	}
