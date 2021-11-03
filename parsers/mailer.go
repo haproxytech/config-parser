@@ -31,7 +31,7 @@ type Mailer struct {
 }
 
 func (l *Mailer) parse(line string, parts []string, comment string) (*types.Mailer, error) {
-	if len(parts) >= 2 {
+	if len(parts) > 2 {
 		adr := common.StringSplitIgnoreEmpty(parts[2], ':')
 		if len(adr) >= 2 {
 			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {

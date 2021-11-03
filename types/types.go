@@ -521,6 +521,7 @@ type Log struct {
 //test:ok:mailer smtp1 192.168.0.1:587
 //test:ok:mailer smtp1 192.168.0.1:587 # just some comment
 //test:fail:mailer
+//test:fail:mailer 0
 type Mailer struct {
 	Name    string
 	IP      string

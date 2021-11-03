@@ -29,9 +29,10 @@ func TestMailer(t *testing.T) {
 	tests := map[string]bool{
 		"mailer smtp1 192.168.0.1:587":                     true,
 		"mailer smtp1 192.168.0.1:587 # just some comment": true,
-		"mailer":  false,
-		"---":     false,
-		"--- ---": false,
+		"mailer":   false,
+		"mailer 0": false,
+		"---":      false,
+		"--- ---":  false,
 	}
 	parser := &parsers.Mailer{}
 	for command, shouldPass := range tests {
