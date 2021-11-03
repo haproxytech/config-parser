@@ -909,6 +909,8 @@ backend test
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
+  tcp-response content set-dst dest
+  tcp-response content unset-var(sess.my_var)
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -1325,6 +1327,8 @@ frontend test
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
+  tcp-response content set-dst dest
+  tcp-response content unset-var(sess.my_var)
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -2837,6 +2841,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  tcp-response content lua.foo param if !HTTP
 `, 2},
   {`  tcp-response content lua.foo param param1
+`, 2},
+  {`  tcp-response content set-dst dest
+`, 2},
+  {`  tcp-response content unset-var(sess.my_var)
 `, 2},
   {`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 `, 2},

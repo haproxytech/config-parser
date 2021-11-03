@@ -48,14 +48,15 @@ func (f *SetDst) Parse(parts []string, parserType types.ParserType, comment stri
 	}
 	command, condition := common.SplitRequest(command)
 
-	if len(command) > 0 {
-		expr := common.Expression{}
-		err := expr.Parse(command)
-		if err != nil {
-			return fmt.Errorf("not enough params")
-		}
-		f.Expr = expr
+	if len(command) == 0 {
+		return fmt.Errorf("not enough params")
 	}
+	expr := common.Expression{}
+	err := expr.Parse(command)
+	if err != nil {
+		return fmt.Errorf("not enough params")
+	}
+	f.Expr = expr
 	if len(condition) > 1 {
 		f.Cond = condition[0]
 		f.CondTest = strings.Join(condition[1:], " ")

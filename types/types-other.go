@@ -694,6 +694,9 @@ type TCPRequests struct{}
 //test:fail:tcp-response content set-priority-class
 //test:fail:tcp-response content do-resolve
 //test:fail:tcp-response content set-priority-offset
+//test:ok:tcp-response content set-dst dest
+//test:fail:tcp-response content set-dst
+//test:ok:tcp-response content unset-var(sess.my_var)
 type TCPResponses struct{}
 
 //name:redirect
