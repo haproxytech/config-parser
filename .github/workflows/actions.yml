@@ -33,7 +33,7 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
       - name: golangci-lint
-        uses: docker://ghcr.io/haproxytech/go-linter:1.33
+        uses: docker://ghcr.io/haproxytech/go-linter:1.43.0
   tidy:
     name: go mod tidy
     needs: ["generate"]

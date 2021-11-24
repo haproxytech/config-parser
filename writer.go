@@ -70,7 +70,7 @@ func (p *configParser) save(data []byte, filename string) error {
 	if err := f.Lock(); err != nil {
 		return err
 	}
-	err := renameio.WriteFile(filename, data, 0644)
+	err := renameio.WriteFile(filename, data, 0o644)
 	if err != nil {
 		f.Unlock() //nolint:errcheck
 		return err

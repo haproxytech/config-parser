@@ -75,7 +75,7 @@ type ConfigFile struct {
 	Tests   strings.Builder
 }
 
-func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo
+func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cyclop
 	sections := parser.ParserSections
 	testOK := parser.TestOK
 	testOKDefaults := parser.TestOKDefaults
@@ -90,69 +90,69 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo
 	var linesFrontend []string
 	var linesBackend []string
 	var lines2 []string
-	for _, s := range sections {
-		_, ok := c.Section[s]
+	for _, section := range sections {
+		_, ok := c.Section[section]
 		if !ok {
-			c.Section[s] = []string{}
+			c.Section[section] = []string{}
 		}
 		// line = testOK[0]
 		if parser.ParserMultiple {
 			lines = testOK
 			//nolint:gosimple
 			for _, line := range testOK {
-				c.Section[s] = append(c.Section[s], line)
+				c.Section[section] = append(c.Section[section], line)
 			}
 			// c.Section[s] = append(c.Section[s], testOK...)
 		} else {
 			lines = []string{testOK[0]}
-			c.Section[s] = append(c.Section[s], testOK[0])
+			c.Section[section] = append(c.Section[section], testOK[0])
 		}
-		if s == "defaults" {
+		if section == "defaults" {
 			if parser.ParserMultiple {
 				linesDefaults = testOKDefaults
 				//nolint:gosimple
 				for _, line := range testOKDefaults {
-					c.Section[s] = append(c.Section[s], line)
+					c.Section[section] = append(c.Section[section], line)
 				}
 			} else if len(testOKDefaults) > 0 {
 				linesDefaults = []string{testOKDefaults[0]}
-				c.Section[s] = append(c.Section[s], testOKDefaults[0])
+				c.Section[section] = append(c.Section[section], testOKDefaults[0])
 			}
 		}
-		if s == "frontend" {
+		if section == "frontend" {
 			if parser.ParserMultiple {
 				linesFrontend = testOKFrontend
 				//nolint:gosimple
 				for _, line := range testOKFrontend {
-					c.Section[s] = append(c.Section[s], line)
+					c.Section[section] = append(c.Section[section], line)
 				}
 			} else if len(testOKFrontend) > 0 {
 				linesFrontend = []string{testOKFrontend[0]}
-				c.Section[s] = append(c.Section[s], testOKFrontend[0])
+				c.Section[section] = append(c.Section[section], testOKFrontend[0])
 			}
 		}
-		if s == "backend" {
+		if section == "backend" {
 			if parser.ParserMultiple {
 				linesBackend = testOKBackend
 				//nolint:gosimple
 				for _, line := range testOKBackend {
-					c.Section[s] = append(c.Section[s], line)
+					c.Section[section] = append(c.Section[section], line)
 				}
 			} else if len(testOKBackend) > 0 {
 				linesBackend = []string{testOKBackend[0]}
-				c.Section[s] = append(c.Section[s], testOKBackend[0])
+				c.Section[section] = append(c.Section[section], testOKBackend[0])
 			}
 		}
 		if parser.ParserMultiple {
 			lines2 = TestOKEscaped
 			//nolint:gosimple
 			for _, line := range TestOKEscaped {
-				c.Section[s] = append(c.Section[s], line)
+				c.Section[section] = append(c.Section[section], line)
 			}
 			// c.Section[s] = append(c.Section[s], TestOKEscaped...)
 		} else if len(TestOKEscaped) > 0 {
 			lines2 = []string{TestOKEscaped[0]}
-			c.Section[s] = append(c.Section[s], TestOKEscaped[0])
+			c.Section[section] = append(c.Section[section], TestOKEscaped[0])
 		}
 	}
 	if len(lines) == 0 && len(lines2) == 0 {
@@ -256,7 +256,7 @@ func main() {
 	generateTypes(dir, "spoe/")
 
 	filePath := path.Join(dir, "tests", "configs", "haproxy_generated.cfg.go")
-	err = renameio.WriteFile(filePath, []byte(configFile.String()), 0644)
+	err = renameio.WriteFile(filePath, []byte(configFile.String()), 0o644)
 	if err != nil {
 		log.Println(err)
 	}
@@ -270,7 +270,7 @@ func fileExists(filePath string) bool {
 	return !os.IsNotExist(err)
 }
 
-func generateTypesOther(dir string) { //nolint:gocognit,gocyclo
+func generateTypesOther(dir string) { //nolint:gocognit,gocyclo,cyclop
 	dat, err := ioutil.ReadFile("types/types-other.go")
 	if err != nil {
 		log.Println(err)
@@ -581,7 +581,7 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 	}
 }
 
-func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo
+func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo,cyclop
 	dat, err := ioutil.ReadFile(dataDir + "types/types.go")
 	if err != nil {
 		log.Println(err)
@@ -689,11 +689,11 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo
 
 		filePath := path.Join(dir, dataDir, "parsers", cleanFileName(filename)+"_generated.go")
 		log.Println(filePath)
-		f, err := os.Create(filePath)
+		file, err := os.Create(filePath)
 		CheckErr(err)
-		defer f.Close()
+		defer file.Close()
 
-		err = typeTemplate.Execute(f, parserData)
+		err = typeTemplate.Execute(file, parserData)
 		CheckErr(err)
 		fmtFile(filePath)
 
@@ -703,11 +703,11 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo
 
 		filePath = path.Join(dir, dataDir, "tests", cleanFileName(filename)+"_generated_test.go")
 		log.Println(filePath)
-		f, err = os.Create(filePath)
+		file, err = os.Create(filePath)
 		CheckErr(err)
-		defer f.Close()
+		defer file.Close()
 
-		err = testTemplate.Execute(f, parserData)
+		err = testTemplate.Execute(file, parserData)
 		CheckErr(err)
 		fmtFile(filePath)
 
@@ -728,8 +728,7 @@ func CheckErr(err error) {
 
 func fmtFile(filename string) {
 	cmd := exec.Command("gofmt", "-s", "-w", filename)
-	err := cmd.Run()
-	if err != nil {
+	if err := cmd.Run(); err != nil {
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
 }

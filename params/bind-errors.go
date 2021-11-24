@@ -26,20 +26,19 @@ type ErrParseServerOption interface {
 	Error() string
 }
 
-// ErrNotFound struct for creating parse errors
-type ErrNotFound struct {
+// NotFoundError struct for creating parse errors
+type NotFoundError struct {
 	Have string
 	Want string
 }
 
-func (e *ErrNotFound) Error() string {
+func (e *NotFoundError) Error() string {
 	return fmt.Sprintf("error: have [%s] want [%s]", e.Have, e.Want)
 }
 
 // ParseError struct for creating parse errors
-type ErrNotEnoughParams struct {
-}
+type NotEnoughParamsError struct{}
 
-func (e *ErrNotEnoughParams) Error() string {
+func (e *NotEnoughParamsError) Error() string {
 	return "error: not enough params"
 }

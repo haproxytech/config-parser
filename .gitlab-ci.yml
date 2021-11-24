@@ -19,7 +19,7 @@ diff:
 golangci_lint:
   stage: lint
   image:
-    name: $CI_REGISTRY_GO/lint:latest
+    name: $CI_REGISTRY_GO/lint:1.43.0
     entrypoint: [""]
   tags:
     - go

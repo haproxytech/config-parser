@@ -34,8 +34,7 @@ func (h *Filters) Init() {
 }
 
 func (h *Filters) ParseFilter(filter types.Filter, parts []string, comment string) error {
-	err := filter.Parse(parts, "")
-	if err != nil {
+	if err := filter.Parse(parts, ""); err != nil {
 		return &errors.ParseError{Parser: "FilterLines", Line: ""}
 	}
 	h.data = append(h.data, filter)

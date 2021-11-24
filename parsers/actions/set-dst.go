@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
@@ -52,8 +51,8 @@ func (f *SetDst) Parse(parts []string, parserType types.ParserType, comment stri
 		return fmt.Errorf("not enough params")
 	}
 	expr := common.Expression{}
-	err := expr.Parse(command)
-	if err != nil {
+
+	if err := expr.Parse(command); err != nil {
 		return fmt.Errorf("not enough params")
 	}
 	f.Expr = expr

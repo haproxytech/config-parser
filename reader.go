@@ -104,7 +104,7 @@ func (p *configParser) Process(reader io.Reader) error {
 }
 
 // ProcessLine parses line plus determines if we need to change state
-func (p *configParser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo
+func (p *configParser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo,cyclop
 	if config.State != "" {
 		if parts[0] == "" && comment != "" && comment != "##_config-snippet_### BEGIN" && comment != "##_config-snippet_### END" {
 			if line[0] == ' ' {
@@ -171,9 +171,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 				case "global":
 					config.Active = config.Global
 				case "frontend":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Frontend = p.getFrontendParser()
 					p.Parsers[Frontends][data.Name] = config.Frontend
 					config.Active = config.Frontend
@@ -181,9 +181,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%sfrontend section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "backend":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Backend = p.getBackendParser()
 					p.Parsers[Backends][data.Name] = config.Backend
 					config.Active = config.Backend
@@ -191,9 +191,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%sbackend section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "listen":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Listen = p.getListenParser()
 					p.Parsers[Listen][data.Name] = config.Listen
 					config.Active = config.Listen
@@ -201,9 +201,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%slisten section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "resolvers":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Resolver = p.getResolverParser()
 					p.Parsers[Resolvers][data.Name] = config.Resolver
 					config.Active = config.Resolver
@@ -211,9 +211,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%sresolvers section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "userlist":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Userlist = p.getUserlistParser()
 					p.Parsers[UserList][data.Name] = config.Userlist
 					config.Active = config.Userlist
@@ -221,9 +221,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%suserlist section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "peers":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Peers = p.getPeersParser()
 					p.Parsers[Peers][data.Name] = config.Peers
 					config.Active = config.Peers
@@ -231,9 +231,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%spers section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "mailers":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Mailers = p.getMailersParser()
 					p.Parsers[Mailers][data.Name] = config.Mailers
 					config.Active = config.Mailers
@@ -241,9 +241,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%smailers section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "cache":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Cache = p.getCacheParser()
 					p.Parsers[Cache][data.Name] = config.Cache
 					config.Active = config.Cache
@@ -251,9 +251,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%scache section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "program":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Program = p.getProgramParser()
 					p.Parsers[Program][data.Name] = config.Program
 					config.Active = config.Program
@@ -261,9 +261,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%sprogram section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "http-errors":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.HTTPErrors = p.getHTTPErrorsParser()
 					p.Parsers[HTTPErrors][data.Name] = config.HTTPErrors
 					config.Active = config.HTTPErrors
@@ -271,9 +271,9 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 						p.Options.Logger.Tracef("%shttp-errors section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "ring":
-					parserSectionName := parser.(*extra.Section)
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.Section)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Ring = p.getRingParser()
 					p.Parsers[Ring][data.Name] = config.Ring
 					config.Active = config.Ring

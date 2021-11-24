@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:godot,gocritic
+//nolint:godot
 package types
 
 import "github.com/haproxytech/config-parser/v4/common"

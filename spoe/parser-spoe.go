@@ -161,8 +161,8 @@ func (p *Parser) SectionsDelete(scope string, sectionType parser.Section, sectio
 func (p *Parser) ScopeCreate(scope string) error {
 	p.lock()
 	defer p.unLock()
-	_, ok := p.Parsers[scope]
-	if ok {
+
+	if _, ok := p.Parsers[scope]; ok {
 		return errors.ErrScopeAlreadyExists
 	}
 	par := map[parser.Section]map[string]*parser.Parsers{}
@@ -387,7 +387,7 @@ func (p *Parser) Save(filename string) error {
 		return err
 	}
 	d1 := []byte(p.String())
-	err := renameio.WriteFile(filename, d1, 0644)
+	err := renameio.WriteFile(filename, d1, 0o644)
 	if err != nil {
 		f.Unlock() //nolint:errcheck
 		return err
@@ -428,25 +428,25 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 					config.Active = config.Comments
 				}
 				if config.State == string(parser.SPOEAgent) {
-					parserSectionName := prsr.(*parsers.SPOESection)
+					parserSectionName := prsr.(*parsers.SPOESection) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.SPOESection)
+					data := rawData.(*types.SPOESection) //nolint:forcetypeassert
 					config.SPOEAgent = getSPOEAgentParser()
 					p.Parsers[scope][parser.SPOEAgent][data.Name] = config.SPOEAgent
 					config.Active = config.SPOEAgent
 				}
 				if config.State == string(parser.SPOEGroup) {
-					parserSectionName := prsr.(*parsers.SPOESection)
+					parserSectionName := prsr.(*parsers.SPOESection) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.SPOESection)
+					data := rawData.(*types.SPOESection) //nolint:forcetypeassert
 					config.SPOEGroup = getSPOEGroupParser()
 					p.Parsers[scope][parser.SPOEGroup][data.Name] = config.SPOEGroup
 					config.Active = config.SPOEGroup
 				}
 				if config.State == string(parser.SPOEMessage) {
-					parserSectionName := prsr.(*parsers.SPOESection)
+					parserSectionName := prsr.(*parsers.SPOESection) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
-					data := rawData.(*types.SPOESection)
+					data := rawData.(*types.SPOESection) //nolint:forcetypeassert
 					config.SPOEMessage = getSPOEMessageParser()
 					p.Parsers[scope][parser.SPOEMessage][data.Name] = config.SPOEMessage
 					config.Active = config.SPOEMessage

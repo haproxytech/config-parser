@@ -39,9 +39,9 @@ func (b *ServerOptionWord) Parse(options []string, currentIndex int) (int, error
 		if options[currentIndex] == b.Name {
 			return 1, nil
 		}
-		return 0, &ErrNotFound{Have: options[currentIndex], Want: b.Name}
+		return 0, &NotFoundError{Have: options[currentIndex], Want: b.Name}
 	}
-	return 0, &ErrNotEnoughParams{}
+	return 0, &NotEnoughParamsError{}
 }
 
 // Valid ...
@@ -66,12 +66,12 @@ func (b *ServerOptionDoubleWord) Parse(options []string, currentIndex int) (int,
 		if options[currentIndex] == b.Name && b.Value == options[currentIndex+1] {
 			return 2, nil
 		}
-		return 0, &ErrNotFound{
+		return 0, &NotFoundError{
 			Have: fmt.Sprintf("%s %s", options[currentIndex], options[currentIndex]),
 			Want: fmt.Sprintf("%s %s", b.Name, b.Value),
 		}
 	}
-	return 0, &ErrNotEnoughParams{}
+	return 0, &NotEnoughParamsError{}
 }
 
 // Valid ...
@@ -100,9 +100,9 @@ func (b *ServerOptionValue) Parse(options []string, currentIndex int) (int, erro
 			b.Value = options[currentIndex+1]
 			return 2, nil
 		}
-		return 0, &ErrNotFound{Have: options[currentIndex], Want: b.Name}
+		return 0, &NotFoundError{Have: options[currentIndex], Want: b.Name}
 	}
-	return 0, &ErrNotEnoughParams{}
+	return 0, &NotEnoughParamsError{}
 }
 
 // Valid ...

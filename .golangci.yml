@@ -1,10 +1,10 @@
 linters-settings:
   govet:
     check-shadowing: true
-  golint:
-    min-confidence: 0
   gocyclo:
     min-complexity: 30
+  cyclop:
+    max-complexity: 30
   maligned:
     suggest-new: true
   dupl:
@@ -16,6 +16,9 @@ linters-settings:
 linters:
   enable-all: true
   disable:
+    - golint # deprecated, replaced with revive
+    - interfacer # deprecated
+    - maligned # deprecated
     - wrapcheck
     - nlreturn
     - gomnd
@@ -29,6 +32,8 @@ linters:
     - funlen
     - paralleltest
     - godot
+    - varnamelen
+    - ireturn
 
     - goconst
 

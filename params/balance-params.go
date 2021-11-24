@@ -97,26 +97,26 @@ func (u *BalanceURLParam) String() string {
 func (u *BalanceURLParam) Parse(parts []string) (bp BalanceParams, err error) {
 	if len(parts) > 0 {
 
-		for i := 1; i < len(parts); i++ {
-			arg := parts[i]
+		for index := 1; index < len(parts); index++ {
+			arg := parts[index]
 
 			switch arg {
 			case "check_post":
-				if i+1 < len(parts) {
-					i++
-					if u.CheckPost, err = strconv.ParseInt(parts[i], 10, 64); err != nil {
+				if index+1 < len(parts) {
+					index++
+					if u.CheckPost, err = strconv.ParseInt(parts[index], 10, 64); err != nil {
 						return nil, &errors.ParseError{Parser: "Balance", Message: err.Error()}
 					}
 				}
 			case "max_wait":
-				if i+1 < len(parts) {
-					i++
-					if u.MaxWait, err = strconv.ParseInt(parts[i], 10, 64); err != nil {
+				if index+1 < len(parts) {
+					index++
+					if u.MaxWait, err = strconv.ParseInt(parts[index], 10, 64); err != nil {
 						return nil, &errors.ParseError{Parser: "Balance", Message: err.Error()}
 					}
 				}
 			default:
-				if i == 1 {
+				if index == 1 {
 					u.Param = arg
 				}
 			}

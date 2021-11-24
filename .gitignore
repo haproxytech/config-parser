@@ -5,3 +5,4 @@ test/main.go
 .vscode/
 test/*
 .idea/
+tests/pprof/

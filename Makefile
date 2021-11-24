@@ -11,4 +11,8 @@ test:
 
 .PHONY: lint
 lint:
-	docker run --rm -v ${PROJECT_PATH}:/app -w /app ghcr.io/haproxytech/go-linter:1.33 -v --color always
+	docker run --rm -v ${PROJECT_PATH}:/app -w /app ghcr.io/haproxytech/go-linter:1.43.0 -v --color always
+
+.PHONY: lint-local
+lint-local:
+	golangci-lint run

@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:godot,gocritic
+//nolint:godot
 package types
 
-//Enabled is used by parsers Daemon, MasterWorker, ExternalCheck, NoSplice
+// Enabled is used by parsers Daemon, MasterWorker, ExternalCheck, NoSplice
 //gen:Daemon
 //name:daemon
 //create-type:bool
@@ -42,7 +42,7 @@ type Enabled struct {
 	Comment string
 }
 
-//Int64 is used by parsers MaxConn, NbProc, NbThread
+// Int64 is used by parsers MaxConn, NbProc, NbThread
 //gen:MaxConn
 //name:maxconn
 //test:ok:maxconn 10000
@@ -63,7 +63,7 @@ type Int64C struct {
 	Comment string
 }
 
-//String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout
+// String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout
 //gen:Mode
 //name:mode
 //test:ok:mode tcp
@@ -90,7 +90,7 @@ type StringC struct {
 	Comment string
 }
 
-//StringSliceC is used by ConfigSnippet
+// StringSliceC is used by ConfigSnippet
 //gen:ConfigSnippet
 //name:config-snippet
 //test:ok:###_config-snippet_### BEGIN\n  tune.ssl.default-dh-param 2048\n  tune.bufsize 32768\n  ###_config-snippet_### END
