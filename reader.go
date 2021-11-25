@@ -52,21 +52,16 @@ func (p *configParser) Process(reader io.Reader) error {
 		Global:         p.Parsers[Global][GlobalSectionName],
 	}
 
-	bufferedReader := bufio.NewReader(reader)
+	bufferedScanner := bufio.NewScanner(reader)
 
 	var line string
-	var err error
 	var previousLine []string
 
 	if p.Options.Log {
 		p.Options.Logger.Debugf("%sprocessing of data started", p.Options.LogPrefix)
 	}
-	for {
-		line, err = bufferedReader.ReadString('\n')
-		if err != nil {
-			break
-		}
-		line = strings.Trim(line, "\n")
+	for bufferedScanner.Scan() {
+		line = bufferedScanner.Text()
 
 		if line == "" {
 			if parsers.State == "" {
