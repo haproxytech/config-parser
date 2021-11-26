@@ -42,6 +42,14 @@ func (p *OptionRedispatch) Get(createIfNotExist bool) (common.ParserData, error)
 	return p.data, nil
 }
 
+func (p *OptionRedispatch) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *OptionRedispatch) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *OptionRedispatch) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

@@ -37,6 +37,14 @@ func (p *TimeTwoWords) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *TimeTwoWords) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *TimeTwoWords) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *TimeTwoWords) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

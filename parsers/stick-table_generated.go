@@ -42,6 +42,14 @@ func (p *StickTable) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *StickTable) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *StickTable) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *StickTable) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

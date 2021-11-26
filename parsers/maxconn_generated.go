@@ -42,6 +42,14 @@ func (p *MaxConn) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *MaxConn) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *MaxConn) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *MaxConn) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

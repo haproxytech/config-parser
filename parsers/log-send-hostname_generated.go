@@ -42,6 +42,14 @@ func (p *LogSendHostName) Get(createIfNotExist bool) (common.ParserData, error) 
 	return p.data, nil
 }
 
+func (p *LogSendHostName) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *LogSendHostName) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *LogSendHostName) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

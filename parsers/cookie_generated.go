@@ -42,6 +42,14 @@ func (p *Cookie) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *Cookie) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *Cookie) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *Cookie) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

@@ -35,3 +35,51 @@ backend default_backend
   mode http
   http-request deny deny_status 400 # deny
 `
+
+const configBasicWithComments = `# _version=1
+# HAProxy Technologies
+# https://www.haproxy.com/
+
+global
+  master-worker
+
+defaults
+  # line comment 1
+  log global
+
+frontend http
+  mode http # inline comment #1
+  # line comment 2
+  bind 0.0.0.0:80 name bind_1
+  bind :::80 v4v6 name bind_2 # inline comment #2
+  default_backend default_backend
+
+backend default_backend
+  # line comment 3
+  mode http
+  http-request deny deny_status 400 # deny
+`
+
+const configBasicWithLineComments = `# _version=1
+# HAProxy Technologies
+# https://www.haproxy.com/
+
+global
+  master-worker
+
+defaults
+  # line comment 1
+  log global
+
+frontend http
+  mode http
+  # line comment 2
+  bind 0.0.0.0:80 name bind_1
+  bind :::80 v4v6 name bind_2
+  default_backend default_backend
+
+backend default_backend
+  # line comment 3
+  mode http
+  http-request deny deny_status 400 # deny
+`

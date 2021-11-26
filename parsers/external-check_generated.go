@@ -42,6 +42,14 @@ func (p *ExternalCheck) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *ExternalCheck) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *ExternalCheck) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *ExternalCheck) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

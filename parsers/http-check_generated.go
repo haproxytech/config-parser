@@ -38,6 +38,14 @@ func (p *HTTPCheckV2) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *HTTPCheckV2) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *HTTPCheckV2) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *HTTPCheckV2) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
 		return nil, errors.ErrFetch

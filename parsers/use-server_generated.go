@@ -38,6 +38,14 @@ func (p *UseServer) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *UseServer) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *UseServer) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *UseServer) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
 		return nil, errors.ErrFetch

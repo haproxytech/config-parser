@@ -42,6 +42,14 @@ func (p *OptionForwardFor) Get(createIfNotExist bool) (common.ParserData, error)
 	return p.data, nil
 }
 
+func (p *OptionForwardFor) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *OptionForwardFor) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *OptionForwardFor) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

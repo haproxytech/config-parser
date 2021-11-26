@@ -42,6 +42,14 @@ func (p *SslModeAsync) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *SslModeAsync) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *SslModeAsync) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *SslModeAsync) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

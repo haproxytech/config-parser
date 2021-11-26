@@ -38,6 +38,14 @@ func (p *CPUMap) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *CPUMap) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *CPUMap) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *CPUMap) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
 		return nil, errors.ErrFetch

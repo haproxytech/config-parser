@@ -42,6 +42,14 @@ func (p *Event) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *Event) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *Event) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *Event) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

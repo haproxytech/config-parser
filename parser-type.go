@@ -28,10 +28,12 @@ type ParserInterface interface {
 	PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error)
 	GetParserName() string
 	Get(createIfNotExist bool) (common.ParserData, error)
+	GetPreComments() ([]string, error)
 	GetOne(index int) (common.ParserData, error)
 	Delete(index int) error
 	Insert(data common.ParserData, index int) error
 	Set(data common.ParserData, index int) error
+	SetPreComments(preComment []string)
 	ResultAll() ([]common.ReturnResultLine, []string, error)
 }
 
@@ -49,6 +51,14 @@ func (p *Parsers) Get(attribute string, createIfNotExist ...bool) (common.Parser
 	}
 	if parser, ok := p.Parsers[attribute]; ok {
 		return parser.Get(createNew)
+	}
+
+	return nil, errors.ErrParserMissing
+}
+
+func (p *Parsers) GetPreComments(attribute string) ([]string, error) {
+	if parser, ok := p.Parsers[attribute]; ok {
+		return parser.GetPreComments()
 	}
 
 	return nil, errors.ErrParserMissing
@@ -80,6 +90,16 @@ func (p *Parsers) Set(attribute string, data common.ParserData, index ...int) er
 	}
 	if parser, ok := p.Parsers[attribute]; ok {
 		return parser.Set(data, setIndex)
+	}
+
+	return errors.ErrAttributeNotFound
+}
+
+// SetPreComments sets comment lines before parser
+func (p *Parsers) SetPreComments(attribute string, preComment []string) error {
+	if parser, ok := p.Parsers[attribute]; ok {
+		parser.SetPreComments(preComment)
+		return nil
 	}
 
 	return errors.ErrAttributeNotFound

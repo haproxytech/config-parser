@@ -42,6 +42,14 @@ func (p *HTTPReuse) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *HTTPReuse) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *HTTPReuse) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *HTTPReuse) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

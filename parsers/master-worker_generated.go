@@ -42,6 +42,14 @@ func (p *MasterWorker) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *MasterWorker) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *MasterWorker) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *MasterWorker) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

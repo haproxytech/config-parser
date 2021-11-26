@@ -904,6 +904,14 @@ func (p *{{ .StructName }}) Get(createIfNotExist bool) (common.ParserData, error
 }
 {{- end }}
 
+func (p *{{ .StructName }}) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *{{ .StructName }}) SetPreComments(preComments []string)  {
+	p.preComments = preComments
+}
+
 func (p *{{ .StructName }}) GetOne(index int) (common.ParserData, error) {
 {{- if .ParserMultiple }}
 	if index < 0 || index >= len(p.data) {

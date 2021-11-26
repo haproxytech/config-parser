@@ -26,6 +26,14 @@ func (p *ConfigVersion) GetParserName() string {
 	return p.Name
 }
 
+func (p *ConfigVersion) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *ConfigVersion) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *ConfigVersion) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

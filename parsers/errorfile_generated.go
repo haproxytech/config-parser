@@ -33,6 +33,14 @@ func (p *ErrorFile) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *ErrorFile) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *ErrorFile) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *ErrorFile) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
 		return nil, errors.ErrFetch

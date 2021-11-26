@@ -42,6 +42,14 @@ func (p *Daemon) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *Daemon) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *Daemon) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *Daemon) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

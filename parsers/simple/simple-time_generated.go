@@ -42,6 +42,14 @@ func (p *Time) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *Time) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *Time) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *Time) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

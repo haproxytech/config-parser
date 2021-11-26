@@ -42,6 +42,14 @@ func (p *UniqueIDHeader) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *UniqueIDHeader) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *UniqueIDHeader) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *UniqueIDHeader) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

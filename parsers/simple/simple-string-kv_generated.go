@@ -42,6 +42,14 @@ func (p *StringKeyValue) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *StringKeyValue) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *StringKeyValue) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *StringKeyValue) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

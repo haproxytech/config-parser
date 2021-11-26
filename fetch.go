@@ -51,7 +51,22 @@ func (p *configParser) Get(sectionType Section, sectionName string, attribute st
 	return section.Get(attribute, createNew)
 }
 
-// GetOne get attribute from defaults section
+// GetPreComments get attribute from section
+func (p *configParser) GetPreComments(sectionType Section, sectionName string, attribute string) ([]string, error) {
+	p.lock()
+	defer p.unLock()
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return nil, errors.ErrSectionMissing
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return nil, errors.ErrSectionMissing
+	}
+	return section.GetPreComments(attribute)
+}
+
+// GetOne get attribute from section
 func (p *configParser) GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error) {
 	p.lock()
 	defer p.unLock()
@@ -127,7 +142,7 @@ func (p *configParser) SectionsCreate(sectionType Section, sectionName string) e
 	return nil
 }
 
-// Set sets attribute from defaults section, can be nil to disable/remove
+// Set sets attribute from section, can be nil to disable/remove
 func (p *configParser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
 	defer p.unLock()
@@ -144,6 +159,21 @@ func (p *configParser) Set(sectionType Section, sectionName string, attribute st
 		return errors.ErrSectionMissing
 	}
 	return section.Set(attribute, data, setIndex)
+}
+
+// Set sets line comment before attribute from section, can be nil to disable/remove
+func (p *configParser) SetPreComments(sectionType Section, sectionName string, attribute string, preComment []string) error {
+	p.lock()
+	defer p.unLock()
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return errors.ErrSectionMissing
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return errors.ErrSectionMissing
+	}
+	return section.SetPreComments(attribute, preComment)
 }
 
 // Delete remove attribute on defined index, in case of single attributes, index is ignored

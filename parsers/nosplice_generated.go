@@ -42,6 +42,14 @@ func (p *NoSplice) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *NoSplice) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *NoSplice) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *NoSplice) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

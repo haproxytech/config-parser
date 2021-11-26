@@ -42,6 +42,14 @@ func (p *BindProcess) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *BindProcess) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *BindProcess) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *BindProcess) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

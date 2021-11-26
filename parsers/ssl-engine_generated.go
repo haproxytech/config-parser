@@ -42,6 +42,14 @@ func (p *SslEngine) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *SslEngine) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *SslEngine) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *SslEngine) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

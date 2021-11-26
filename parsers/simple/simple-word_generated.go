@@ -42,6 +42,14 @@ func (p *Word) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *Word) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *Word) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *Word) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

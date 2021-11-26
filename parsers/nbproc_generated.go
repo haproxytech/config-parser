@@ -42,6 +42,14 @@ func (p *NbProc) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *NbProc) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *NbProc) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *NbProc) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

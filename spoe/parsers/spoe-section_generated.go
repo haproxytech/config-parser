@@ -33,6 +33,14 @@ func (p *SPOESection) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *SPOESection) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *SPOESection) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *SPOESection) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

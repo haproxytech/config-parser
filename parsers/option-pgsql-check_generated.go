@@ -42,6 +42,14 @@ func (p *OptionPgsqlCheck) Get(createIfNotExist bool) (common.ParserData, error)
 	return p.data, nil
 }
 
+func (p *OptionPgsqlCheck) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *OptionPgsqlCheck) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *OptionPgsqlCheck) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

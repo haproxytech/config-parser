@@ -42,6 +42,14 @@ func (p *MonitorURI) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *MonitorURI) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *MonitorURI) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *MonitorURI) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

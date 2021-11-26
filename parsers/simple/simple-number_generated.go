@@ -42,6 +42,14 @@ func (p *Number) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *Number) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *Number) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *Number) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch

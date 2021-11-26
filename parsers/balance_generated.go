@@ -42,6 +42,14 @@ func (p *Balance) Get(createIfNotExist bool) (common.ParserData, error) {
 	return p.data, nil
 }
 
+func (p *Balance) GetPreComments() ([]string, error) {
+	return p.preComments, nil
+}
+
+func (p *Balance) SetPreComments(preComments []string) {
+	p.preComments = preComments
+}
+
 func (p *Balance) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch
