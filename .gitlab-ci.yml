@@ -10,7 +10,7 @@ diff:
   tags:
     - go
   script:
-    - go run generate/go-generate.go $(pwd)
+    - make generate
     - test -z "$(git diff 2> /dev/null)" || exit 'Files are not generated, issue `go run generate/go-generate.go $(pwd)` and commit the result'
     - test -z "$(git ls-files --others --exclude-standard 2> /dev/null)" || exit 'Generation created untracked files, cannot proceed'
   only:
@@ -61,7 +61,7 @@ test:
     - go
   script:
     - go build -v .
-    - go test ./...
+    - make test
   only:
     - merge_requests
     - branches
