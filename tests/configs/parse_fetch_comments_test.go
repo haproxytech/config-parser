@@ -118,7 +118,7 @@ func TestParseFecthCommentLinesWrite(t *testing.T) {
 	}
 }
 
-func TestParseFecthCommentInline(t *testing.T) {
+func TestParseFetchCommentInline(t *testing.T) {
 	tests := []struct {
 		Name, Config string
 	}{
@@ -152,10 +152,49 @@ func TestParseFecthCommentInline(t *testing.T) {
 				t.Fatalf("wrong type %v", bindList)
 			}
 			if len(bindList) != 2 {
-				t.Fatalf("nexpected length should be 2 but its %d", len(bindList))
+				t.Fatalf("unexpected length should be 2 but its %d", len(bindList))
 			}
 			if bindList[1].Comment != "inline comment #2" {
 				t.Fatalf("comment should be 'inline comment #2' but its %s", bindList[1].Comment)
+			}
+		})
+	}
+}
+
+func TestParseFirstComments(t *testing.T) {
+	tests := []struct {
+		Name, Config string
+	}{
+		{"configBasic1", configBasic1},
+	}
+	for _, config := range tests {
+		t.Run(config.Name, func(t *testing.T) {
+			p, err := parser.New(options.String(config.Config))
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
+			result := p.String()
+			if result != config.Config {
+				compare(t, config.Config, result)
+				t.Fatalf("configurations does not match")
+			}
+
+			comments, err := p.Get(parser.Comments, parser.CommentsSectionName, "#")
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
+			data, ok := comments.([]types.Comments)
+			if !ok {
+				t.Fatal("expected []types.Comments")
+			}
+			if len(data) != 2 {
+				t.Fatalf("unexpected length, should be 2 but its %d", len(data))
+			}
+			if data[0].Value != "HAProxy Technologies" {
+				t.Fatalf("unexpected comment, want [HAProxy Technologies] but got [%s]", data[0].Value)
+			}
+			if data[1].Value != "https://www.haproxy.com/" {
+				t.Fatalf("unexpected comment, want [https://www.haproxy.com/] but got [%s]", data[1].Value)
 			}
 		})
 	}

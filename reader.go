@@ -126,7 +126,11 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 	}
 	// We add iteratively the different parts to form a potential parser name
 	for i := 1; i <= len(parts) && !config.HasDefaultParser; i++ {
-		if parserFound, ok := config.Active.Parsers[strings.Join(parts[:i], " ")]; ok {
+		parserName := strings.Join(parts[:i], " ")
+		if parserName == "" {
+			continue
+		}
+		if parserFound, ok := config.Active.Parsers[parserName]; ok {
 			parsers = append(parsers, parserFound)
 			break
 		}
