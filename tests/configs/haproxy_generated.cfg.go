@@ -691,6 +691,7 @@ backend test
   http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
   http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
   http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
@@ -703,6 +704,7 @@ backend test
   http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-request redirect location /file.html if { var(txn.routecookie) "ROUTEMP" }:1
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
   http-response add-acl(map.lst) [src]
@@ -1164,6 +1166,7 @@ frontend test
   http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
   http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
   http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
@@ -1177,6 +1180,7 @@ frontend test
   http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
   http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-request redirect location /file.html if { var(txn.routecookie) "ROUTEMP" }:1
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
   http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
   http-response add-acl(map.lst) [src]
@@ -2467,6 +2471,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
 `, 2},
   {`  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+`, 2},
+  {`  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 `, 2},
   {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 1},

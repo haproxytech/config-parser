@@ -352,6 +352,10 @@ type Action interface {
 //test:fail:http-request return 0 hdr
 //test:fail:http-request return 0 0 hdr 0
 //test:fail:http-request return e r s n s c m	t e r  s c t e s t e r s c v e hdr ï
+//test:"ok":http-request redirect location /file.html if { var(txn.routecookie) "ROUTEMP" }:1
+//test:ok:http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+//test:fail:http-request redirect location if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+//test:fail:http-request redirect location /file.html code if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 type HTTPRequests struct{}
 
 //name:http-response

@@ -62,7 +62,11 @@ func (f *Redirect) Parse(parts []string, parserType types.ParserType, comment st
 				f.Value = command[index]
 			default:
 				f.Option = fmt.Sprintf("%s %s", command[index], command[index+1])
+				index++
 			}
+		}
+		if index != len(command) {
+			return fmt.Errorf("extra params not processed")
 		}
 
 		if len(condition) > 1 {
