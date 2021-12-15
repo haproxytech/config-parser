@@ -30,7 +30,7 @@ type StringKeyValue struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (s *StringKeyValue) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *StringKeyValue) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] != s.Name {
 		return "", &errors.ParseError{Parser: s.Name, Line: line}
 	}

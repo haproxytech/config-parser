@@ -23,6 +23,6 @@ import (
 
 func ProcessLine(line string, parser configparser.ParserInterface) error {
 	parts, comment := common.StringSplitWithCommentIgnoreEmpty(line)
-	_, err := parser.Parse("  "+line, parts, []string{}, comment)
+	_, err := parser.Parse("  "+line, parts, comment)
 	return err
 }

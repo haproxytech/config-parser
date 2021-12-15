@@ -33,7 +33,7 @@ type OptionRedispatch struct {
 /*
 option redispatch <interval>
 */
-func (s *OptionRedispatch) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *OptionRedispatch) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == "redispatch" {
 		data := &types.OptionRedispatch{
 			Comment: comment,

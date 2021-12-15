@@ -41,7 +41,7 @@ func (t *Timeout) Init() {
 	t.preComments = []string{}
 }
 
-func (t *Timeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (t *Timeout) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) > 2 && parts[0] == "timeout" && parts[1] == t.name {
 		t.data = &types.SimpleTimeout{
 			Value:   parts[2],

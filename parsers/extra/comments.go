@@ -33,7 +33,7 @@ func (p *Comments) Init() {
 	p.data = []types.Comments{}
 }
 
-func (p *Comments) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *Comments) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if line[0] == '#' {
 		p.data = append(p.data, types.Comments{
 			Value: comment,

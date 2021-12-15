@@ -27,7 +27,7 @@ type MasterWorker struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (m *MasterWorker) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (m *MasterWorker) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == "master-worker" {
 		m.data = &types.Enabled{
 			Comment: comment,

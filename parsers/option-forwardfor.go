@@ -32,7 +32,7 @@ type OptionForwardFor struct {
 /*
 option forwardfor [ except <network> ] [ header <name> ] [ if-none ]
 */
-func (s *OptionForwardFor) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *OptionForwardFor) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == "forwardfor" {
 		data := &types.OptionForwardFor{
 			Comment: comment,

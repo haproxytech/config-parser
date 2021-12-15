@@ -30,7 +30,7 @@ type NbThread struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (n *NbThread) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (n *NbThread) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == "nbthread" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "NbThread", Line: line, Message: "Parse error"}

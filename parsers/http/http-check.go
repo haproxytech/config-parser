@@ -47,7 +47,7 @@ func (h *Checks) parseHTTPCheck(request types.Action, parts []string, comment st
 	return nil
 }
 
-func (h *Checks) Parse(line string, parts, previousParts []string, comment string) (string, error) {
+func (h *Checks) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) < 2 {
 		return "", &errors.ParseError{Parser: "HTTPCheck", Line: line, Message: "http-check type not provided"}
 	}

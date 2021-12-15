@@ -81,7 +81,7 @@ func (h *StickTable) parse(line string, parts []string, comment string) (*types.
 	return nil, &errors.ParseError{Parser: "StickTable", Line: line}
 }
 
-func (h *StickTable) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *StickTable) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == "stick-table" {
 		data, err := h.parse(line, parts, comment)
 		if err != nil {

@@ -32,7 +32,7 @@ type ExternalCheckCommand struct {
 }
 
 // external-check command <command>
-func (s *ExternalCheckCommand) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *ExternalCheckCommand) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) == 3 && parts[0] == "external-check" && parts[1] == "command" {
 		s.data = &types.ExternalCheckCommand{
 			Command: parts[2],

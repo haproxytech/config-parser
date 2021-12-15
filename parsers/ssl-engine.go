@@ -29,7 +29,7 @@ type SslEngine struct {
 	preComments []string
 }
 
-func (p *SslEngine) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *SslEngine) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) < 2 || len(parts) > 3 || parts[0] != "ssl-engine" {
 		return "", &errors.ParseError{Parser: "ssl-engine", Line: line}
 	}

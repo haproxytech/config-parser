@@ -35,7 +35,7 @@ func (u *UnProcessed) Init() {
 	u.data = []types.UnProcessed{}
 }
 
-func (u *UnProcessed) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (u *UnProcessed) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	u.data = append(u.data, types.UnProcessed{
 		Value: strings.TrimSpace(line),
 	})

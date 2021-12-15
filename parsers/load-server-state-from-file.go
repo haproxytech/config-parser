@@ -28,7 +28,7 @@ type LoadServerStateFromFile struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *LoadServerStateFromFile) Parse(line string, parts, previousPats []string, comment string) (changeState string, err error) {
+func (p *LoadServerStateFromFile) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if l := len(parts); l == 2 && parts[0] == "load-server-state-from-file" {
 		a := parts[1]
 		switch a {

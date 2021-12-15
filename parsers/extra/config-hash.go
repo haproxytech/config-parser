@@ -49,7 +49,7 @@ func (h *ConfigHash) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 // Parse see if we have version, since it is not haproxy keyword, it's in comments
-func (h *ConfigHash) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *ConfigHash) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if strings.HasPrefix(comment, "_md5hash") {
 		data := common.StringSplitIgnoreEmpty(comment, '=')
 		if len(data) < 2 {

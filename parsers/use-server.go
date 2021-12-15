@@ -30,7 +30,7 @@ type UseServer struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (l *UseServer) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (l *UseServer) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) > 3 && parts[0] == "use-server" {
 		data := types.UseServer{
 			Name:     parts[1],

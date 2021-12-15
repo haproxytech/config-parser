@@ -32,7 +32,7 @@ type ExternalCheckPath struct {
 /*
 external-check path <path>
 */
-func (s *ExternalCheckPath) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *ExternalCheckPath) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) == 3 && parts[0] == "external-check" && parts[1] == "path" {
 		s.data = &types.ExternalCheckPath{
 			Path:    parts[2],

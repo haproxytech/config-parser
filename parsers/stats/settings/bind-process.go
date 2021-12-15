@@ -32,7 +32,7 @@ func (m *BindProcess) Parse(parts []string, comment string) error {
 	}
 
 	m.BindProcess = &parsers.BindProcess{}
-	_, err := m.BindProcess.Parse("", parts[1:], nil, comment)
+	_, err := m.BindProcess.Parse("", parts[1:], comment)
 	if err != nil {
 		return fmt.Errorf("error parsing bind-process")
 	}

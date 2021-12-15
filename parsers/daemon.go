@@ -27,7 +27,7 @@ type Daemon struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (d *Daemon) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (d *Daemon) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == "daemon" {
 		d.data = &types.Enabled{
 			Comment: comment,

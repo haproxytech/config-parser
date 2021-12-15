@@ -47,7 +47,7 @@ func (h *Checks) parseTCPCheck(request types.Action, parts []string, comment str
 	return nil
 }
 
-func (h *Checks) Parse(line string, parts, previousParts []string, comment string) (string, error) {
+func (h *Checks) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) < 2 {
 		return "", &errors.ParseError{Parser: "TCPCheck", Line: line, Message: "tcp-check type not provided"}
 	}

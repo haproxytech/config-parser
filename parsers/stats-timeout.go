@@ -29,7 +29,7 @@ type StatsTimeout struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (s *StatsTimeout) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *StatsTimeout) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "timeout" {
 		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: "StatsTimeout", Line: line, Message: "Parse error"}

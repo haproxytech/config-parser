@@ -199,10 +199,9 @@ func (p *Parser) SectionsCreate(scope string, sectionType parser.Section, sectio
 		Comments: p.Parsers[scope][parser.Comments][parser.CommentsSectionName],
 	}
 
-	previousLine := []string{scope}
 	parts := []string{string(sectionType), sectionName}
 	comment := ""
-	p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, previousLine, comment, parsers)
+	p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, comment, parsers, scope)
 	return nil
 }
 
@@ -410,8 +409,7 @@ func (p *Parser) IsScope(line string) bool {
 }
 
 // ProcessLine parses line plus determines if we need to change state
-func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment string, config parser.ConfiguredParsers) (psrs parser.ConfiguredParsers, scope string) {
-	scope = previousParts[0]
+func (p *Parser) ProcessLine(line string, parts []string, comment string, config parser.ConfiguredParsers, scope string) (psrs parser.ConfiguredParsers, resultScope string) {
 	if p.IsScope(line) {
 		scope = line
 		_ = p.ScopeCreate(scope)
@@ -419,7 +417,7 @@ func (p *Parser) ProcessLine(line string, parts, previousParts []string, comment
 	}
 	for _, section := range config.Active.ParserSequence {
 		prsr := config.Active.Parsers[string(section)]
-		if newState, err := prsr.Parse(line, parts, previousParts, comment); err == nil {
+		if newState, err := prsr.Parse(line, parts, comment); err == nil {
 			// should we have an option to remove it when found?
 			if newState != "" {
 				// log.Printf("change state from %s to %s\n", state, newState)
@@ -500,7 +498,7 @@ func (p *Parser) ParseData(dat string) error {
 			continue
 		}
 		// this is the difference, no previous line is sent to parsers
-		parsers, scope = p.ProcessLine(line, parts, []string{scope}, comment, parsers)
+		parsers, scope = p.ProcessLine(line, parts, comment, parsers, scope)
 	}
 	return nil
 }

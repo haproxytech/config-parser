@@ -29,7 +29,7 @@ type Event struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (e *Event) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (e *Event) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) < 2 || parts[0] != "event" {
 		return "", &errors.ParseError{Parser: "EventLines", Line: line}
 	}

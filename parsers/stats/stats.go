@@ -44,7 +44,7 @@ func (s *Stats) ParseStats(stats types.StatsSettings, parts []string, comment st
 	return nil
 }
 
-func (s *Stats) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *Stats) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] != "stats" || len(parts) < 2 {
 		return "", &errors.ParseError{Parser: "Stats", Line: line}
 	}

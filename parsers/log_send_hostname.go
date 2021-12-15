@@ -29,7 +29,7 @@ type LogSendHostName struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *LogSendHostName) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *LogSendHostName) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] != "log-send-hostname" {
 		return "", &errors.ParseError{Parser: "log-send-hostname", Line: line}
 	}

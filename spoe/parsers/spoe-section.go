@@ -40,13 +40,10 @@ func (s *SPOESection) GetParserName() string {
 }
 
 // Parse see if we have section name
-func (s *SPOESection) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (s *SPOESection) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == s.Name {
 		if len(parts) > 1 {
 			s.data.Name = parts[1]
-		}
-		if len(previousParts) > 1 && previousParts[0] == "#" {
-			s.data.Comment = previousParts[1]
 		}
 		return s.Name, nil
 	}

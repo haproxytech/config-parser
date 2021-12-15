@@ -46,7 +46,7 @@ func (p *Balance) parseBalanceParams(pb params.BalanceParams, line string, parts
 	return nil, &errors.ParseError{Parser: "Balance", Line: line}
 }
 
-func (p *Balance) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *Balance) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == "balance" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Balance", Line: line}

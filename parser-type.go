@@ -24,8 +24,8 @@ import (
 //nolint:golint,revive
 type ParserInterface interface {
 	Init()
-	Parse(line string, parts, previousParts []string, comment string) (changeState string, err error)
-	PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error)
+	Parse(line string, parts []string, comment string) (changeState string, err error)
+	PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error)
 	GetParserName() string
 	Get(createIfNotExist bool) (common.ParserData, error)
 	GetPreComments() ([]string, error)

@@ -135,10 +135,9 @@ func (p *configParser) SectionsCreate(sectionType Section, sectionName string) e
 		Global:   p.Parsers[Global][GlobalSectionName],
 	}
 
-	previousLine := []string{}
 	parts := []string{string(sectionType), sectionName}
 	comment := ""
-	p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, previousLine, comment, parsers)
+	p.ProcessLine(fmt.Sprintf("%s %s", sectionType, sectionName), parts, comment, parsers)
 	return nil
 }
 

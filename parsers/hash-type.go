@@ -28,7 +28,7 @@ type HashType struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *HashType) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *HashType) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == "hash-type" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "HashType", Line: line, Message: "Parse error"}

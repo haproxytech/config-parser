@@ -128,15 +128,15 @@ func (p *HTTPCheckV2) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *HTTPCheckV2) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, previousParts, comment)
+func (p *HTTPCheckV2) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}
 	return changeState, err
 }
 
-func (p *HTTPCheckV2) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (p *HTTPCheckV2) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if parts[0] == "http-check" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {

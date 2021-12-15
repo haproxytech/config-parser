@@ -85,8 +85,8 @@ func (p *NoSplice) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *NoSplice) PreParse(line string, parts, previousParts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, previousParts, comment)
+func (p *NoSplice) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
+	changeState, err = p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}

@@ -55,7 +55,6 @@ func (p *configParser) Process(reader io.Reader) error {
 	bufferedScanner := bufio.NewScanner(reader)
 
 	var line string
-	var previousLine []string
 
 	if p.Options.Log {
 		p.Options.Logger.Debugf("%sprocessing of data started", p.Options.LogPrefix)
@@ -88,8 +87,7 @@ func (p *configParser) Process(reader io.Reader) error {
 		if p.Options.Log {
 			p.Options.Logger.Tracef("%sprocessing line: %s", p.Options.LogPrefix, line)
 		}
-		parsers = p.ProcessLine(line, parts, previousLine, comment, parsers)
-		previousLine = parts
+		parsers = p.ProcessLine(line, parts, comment, parsers)
 	}
 	if parsers.ActiveComments != nil {
 		parsers.Active.PostComments = parsers.ActiveComments
@@ -104,7 +102,7 @@ func (p *configParser) Process(reader io.Reader) error {
 }
 
 // ProcessLine parses line plus determines if we need to change state
-func (p *configParser) ProcessLine(line string, parts, previousParts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo,cyclop
+func (p *configParser) ProcessLine(line string, parts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo,cyclop
 	if config.State != "" {
 		if parts[0] == "" && comment != "" && comment != "##_config-snippet_### BEGIN" && comment != "##_config-snippet_### END" {
 			if line[0] == ' ' {
@@ -154,7 +152,7 @@ func (p *configParser) ProcessLine(line string, parts, previousParts []string, c
 		if p.Options.Log {
 			p.Options.Logger.Tracef("%susing parser [%s]", p.Options.LogPrefix, parser.GetParserName())
 		}
-		if newState, err := parser.PreParse(line, parts, previousParts, config.ActiveComments, comment); err == nil {
+		if newState, err := parser.PreParse(line, parts, config.ActiveComments, comment); err == nil {
 			if newState != "" {
 				if p.Options.Log {
 					p.Options.Logger.Debugf("%schange active section to %s\n", p.Options.LogPrefix, newState)

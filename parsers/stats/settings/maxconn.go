@@ -32,7 +32,7 @@ func (m *MaxConn) Parse(parts []string, comment string) error {
 	}
 
 	m.Maxconn = &parsers.MaxConn{}
-	_, err := m.Maxconn.Parse("", parts[1:], nil, comment)
+	_, err := m.Maxconn.Parse("", parts[1:], comment)
 	if err != nil {
 		return fmt.Errorf("error parsing maxconn")
 	}

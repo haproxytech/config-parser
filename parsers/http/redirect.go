@@ -43,7 +43,7 @@ func (h *Redirect) ParseHTTPResponse(response types.Action, parts []string, comm
 	return nil
 }
 
-func (h *Redirect) Parse(line string, parts, previousParts []string, comment string) (changeState string, err error) {
+func (h *Redirect) Parse(line string, parts []string, comment string) (changeState string, err error) {
 	if len(parts) >= 2 && parts[0] == "redirect" {
 		adjusted := append([]string{""}, parts...)
 		err := h.ParseHTTPResponse(&actions.Redirect{}, adjusted, comment)
