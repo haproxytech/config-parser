@@ -78,7 +78,7 @@ func (h *Checks) Parse(line string, parts []string, comment string) (string, err
 	case strings.HasPrefix(parts[1], "set-var("):
 		err = h.parseHTTPCheck(&actions.SetVar{}, parts, comment)
 	case strings.HasPrefix(parts[1], "unset-var("):
-		err = h.parseHTTPCheck(&actions.UnsetVar{}, parts, comment)
+		err = h.parseHTTPCheck(&actions.UnsetVarCheck{}, parts, comment)
 	default:
 		err = &errors.ParseError{Parser: "HTTPCheck", Line: line, Message: "invalid http-check type provided"}
 	}

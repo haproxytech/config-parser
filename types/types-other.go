@@ -501,6 +501,8 @@ type HTTPResponses struct{}
 //test:fail:http-check expect
 //test:fail:http-check expect status
 //test:fail:http-check expect comment testcomment
+//test:"ok":http-check unset-var(txn.from)
+//test:fail:http-check unset-var(txn.from) if x
 type HTTPCheck struct{}
 
 //sections:defaults,backend
@@ -535,7 +537,8 @@ type HTTPCheck struct{}
 //test:ok:tcp-check send-binary-lf testhexfmt comment testcomment
 //test:"ok":tcp-check set-var-fmt(check.name) "%H"
 //test:"ok":tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
-
+//test:"ok":tcp-check unset-var(txn.from)
+//test:fail:tcp-check unset-var(txn.from) if x
 type TCPCheck struct{}
 
 type TCPType interface {

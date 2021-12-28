@@ -61,11 +61,13 @@ func TestCheckshttp(t *testing.T) {
 		"http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'": true,
 		"http-check send uri-lf my-log-format body-lf 'my-log-format'":                                                                   true,
 		"http-check send-state":                 true,
+		`http-check unset-var(txn.from)`:        true,
 		"http-check":                            false,
 		"http-check comment":                    false,
 		"http-check expect":                     false,
 		"http-check expect status":              false,
 		"http-check expect comment testcomment": false,
+		"http-check unset-var(txn.from) if x":   false,
 		"---":                                   false,
 		"--- ---":                               false,
 	}

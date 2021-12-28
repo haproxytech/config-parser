@@ -232,6 +232,7 @@ defaults test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
+  http-check unset-var(txn.from)
   tcp-check comment testcomment
   tcp-check connect
   tcp-check connect port 443 ssl
@@ -255,6 +256,7 @@ defaults test
   tcp-check send info\ replication\r\n
   tcp-check set-var-fmt(check.name) "%H"
   tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
+  tcp-check unset-var(txn.from)
   stats auth admin1:AdMiN123
   stats enable
   stats hide-version
@@ -789,6 +791,7 @@ backend test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
+  http-check unset-var(txn.from)
   tcp-check comment testcomment
   tcp-check connect
   tcp-check connect port 443 ssl
@@ -812,6 +815,7 @@ backend test
   tcp-check send info\ replication\r\n
   tcp-check set-var-fmt(check.name) "%H"
   tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
+  tcp-check unset-var(txn.from)
   tcp-request content accept
   tcp-request content accept if !HTTP
   tcp-request content reject

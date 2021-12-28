@@ -82,7 +82,7 @@ func (h *Checks) Parse(line string, parts []string, comment string) (string, err
 	case strings.HasPrefix(parts[1], "set-var-fmt("):
 		err = h.parseTCPCheck(&tcp_actions.CheckSetVarFmt{}, parts, comment)
 	case strings.HasPrefix(parts[1], "unset-var("):
-		err = h.parseTCPCheck(&actions.UnsetVar{}, parts, comment)
+		err = h.parseTCPCheck(&actions.UnsetVarCheck{}, parts, comment)
 	default:
 		err = &errors.ParseError{Parser: "TCPCheck", Line: line, Message: "invalid tcp-check type provided"}
 	}

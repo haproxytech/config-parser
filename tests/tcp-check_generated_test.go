@@ -50,8 +50,10 @@ func TestCheckstcp(t *testing.T) {
 		`tcp-check send info\ replication\r\n`:                      true,
 		`tcp-check set-var-fmt(check.name) "%H"`:                    true,
 		`tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"`: true,
-		"---":     false,
-		"--- ---": false,
+		`tcp-check unset-var(txn.from)`:                             true,
+		"tcp-check unset-var(txn.from) if x":                        false,
+		"---":                                                       false,
+		"--- ---":                                                   false,
 	}
 	parser := &tcp.Checks{}
 	for command, shouldPass := range tests {
