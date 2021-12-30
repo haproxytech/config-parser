@@ -232,6 +232,7 @@ defaults test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
+  http-check set-var(check.port) int(1234)
   http-check unset-var(txn.from)
   tcp-check comment testcomment
   tcp-check connect
@@ -247,6 +248,7 @@ defaults test
   tcp-check send-binary testhexstring comment testcomment
   tcp-check send-binary-lf testhexfmt
   tcp-check send-binary-lf testhexfmt comment testcomment
+  tcp-check set-var(check.port) int(1234)
   tcp-check expect string +OK\ POP3\ ready
   tcp-check expect string *\ OK\ IMAP4\ ready
   tcp-check send PING\r\n
@@ -791,6 +793,7 @@ backend test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
+  http-check set-var(check.port) int(1234)
   http-check unset-var(txn.from)
   tcp-check comment testcomment
   tcp-check connect
@@ -806,6 +809,7 @@ backend test
   tcp-check send-binary testhexstring comment testcomment
   tcp-check send-binary-lf testhexfmt
   tcp-check send-binary-lf testhexfmt comment testcomment
+  tcp-check set-var(check.port) int(1234)
   tcp-check expect string +OK\ POP3\ ready
   tcp-check expect string *\ OK\ IMAP4\ ready
   tcp-check send PING\r\n
@@ -2677,6 +2681,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  tcp-check send-binary-lf testhexfmt
 `, 2},
   {`  tcp-check send-binary-lf testhexfmt comment testcomment
+`, 2},
+  {`  tcp-check set-var(check.port) int(1234)
 `, 2},
   {`  tcp-request content accept
 `, 2},

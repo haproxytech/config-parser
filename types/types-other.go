@@ -501,6 +501,9 @@ type HTTPResponses struct{}
 //test:fail:http-check expect
 //test:fail:http-check expect status
 //test:fail:http-check expect comment testcomment
+//test:fail:http-check set-var(check.port)
+//test:"ok":http-check set-var(check.port) int(1234)
+//test:fail:http-check set-var(check.port) int(1234) if x
 //test:"ok":http-check unset-var(txn.from)
 //test:fail:http-check unset-var(txn.from) if x
 type HTTPCheck struct{}
@@ -535,6 +538,9 @@ type HTTPCheck struct{}
 //test:ok:tcp-check send-binary testhexstring comment testcomment
 //test:ok:tcp-check send-binary-lf testhexfmt
 //test:ok:tcp-check send-binary-lf testhexfmt comment testcomment
+//test:fail:tcp-check set-var(check.port)
+//test:ok:tcp-check set-var(check.port) int(1234)
+//test:fail:tcp-check set-var(check.port) int(1234) if x
 //test:"ok":tcp-check set-var-fmt(check.name) "%H"
 //test:"ok":tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
 //test:"ok":tcp-check unset-var(txn.from)

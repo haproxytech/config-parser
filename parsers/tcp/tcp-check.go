@@ -78,7 +78,7 @@ func (h *Checks) Parse(line string, parts []string, comment string) (string, err
 	case parts[1] == "send-binary-lf":
 		err = h.parseTCPCheck(&tcp_actions.CheckSendBinaryLf{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var("):
-		err = h.parseTCPCheck(&actions.SetVar{}, parts, comment)
+		err = h.parseTCPCheck(&actions.SetVarCheck{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var-fmt("):
 		err = h.parseTCPCheck(&tcp_actions.CheckSetVarFmt{}, parts, comment)
 	case strings.HasPrefix(parts[1], "unset-var("):
