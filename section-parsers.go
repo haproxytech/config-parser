@@ -252,6 +252,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.StickTable{})
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
+	addParser(parser, &sequence, &parsers.DeclareCapture{})
 	return p.createParsers(parser, sequence)
 }
 

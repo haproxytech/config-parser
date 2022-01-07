@@ -1087,6 +1087,8 @@ frontend test
   unique-id-header X-Unique-ID
   monitor-uri /haproxy_test
   monitor fail if no_db01 no_db02
+  declare capture request len 1
+  declare capture response len 2
   http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
@@ -2305,6 +2307,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  server-template srv 3 google.com:80
 `, 1},
   {`  server-template srv 3 google.com
+`, 1},
+  {`  declare capture request len 1
+`, 1},
+  {`  declare capture response len 2
 `, 1},
   {`  http-request deny deny_status 0 unless { src 127.0.0.1 }
 `, 2},

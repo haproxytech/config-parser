@@ -1047,3 +1047,32 @@ type ServerTemplate struct {
 	Params     []params.ServerOption
 	Comment    string
 }
+
+//sections:frontend
+//name:declare capture
+//is-multiple:true
+//test:ok:declare capture request len 1
+//test:ok:declare capture response len 2
+//test:fail:declare capture
+//test:fail:declare capture request
+//test:fail:declare capture response
+//test:fail:declare capture something
+//test:fail:declare capture request len
+//test:fail:declare capture response 1
+//test:fail:declare capture response a
+//test:fail:declare capture response len
+//test:fail:declare capture response length
+//test:fail:declare capture response length 1
+//test:fail:declare capture response something
+//test:fail:declare capture response something 1
+//test:fail:declare capture request len abcd
+//test:fail:declare capture response len abcd
+//test:fail:declare capture request len 1 if true
+//test:fail:declare capture response len 2 if true
+//test:fail:declare capture request len abcd if true
+//test:fail:declare capture response len abcd if true
+type DeclareCapture struct {
+	Type    string
+	Length  int64
+	Comment string
+}
