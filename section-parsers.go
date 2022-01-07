@@ -149,9 +149,9 @@ func (p *configParser) getGlobalParser() *Parsers {
 	sequence := []Section{}
 	// environment directives are placed before the rest,
 	// because HAProxy can use the environment vars in subsequent config
-	addParser(parser, &sequence, &simple.StringKeyValue{Name: "presetenv"})
+	addParser(parser, &sequence, &simple.ArrayKeyValue{Name: "presetenv"})
 	addParser(parser, &sequence, &simple.StringSlice{Name: "resetenv"})
-	addParser(parser, &sequence, &simple.StringKeyValue{Name: "setenv"})
+	addParser(parser, &sequence, &simple.ArrayKeyValue{Name: "setenv"})
 	addParser(parser, &sequence, &simple.StringSlice{Name: "unsetenv"})
 	addParser(parser, &sequence, &parsers.Daemon{})
 	addParser(parser, &sequence, &simple.String{Name: "localpeer"})

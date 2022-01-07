@@ -122,6 +122,15 @@ type SimpleStringSlice struct{}
 //parser-type:StringKeyValueC
 type SimpleStringKeyValue struct{}
 
+//name:array-string-kv
+//is-multiple:true
+//no-sections:true
+//no-parse:true
+//struct-name:ArrayKeyValue
+//dir:simple
+//parser-type:StringKeyValueC
+type ArrayStringKeyValue struct{}
+
 //name:simple-time
 //no-sections:true
 //struct-name:Time

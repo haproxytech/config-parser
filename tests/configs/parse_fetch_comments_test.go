@@ -16,6 +16,7 @@ limitations under the License.
 package configs //nolint:testpackage
 
 import (
+	"fmt"
 	"testing"
 
 	parser "github.com/haproxytech/config-parser/v4"
@@ -90,6 +91,8 @@ func TestParseFecthCommentLinesWrite(t *testing.T) {
 				t.Fatalf(err.Error())
 			}
 			result := p.String()
+			fmt.Println(config.Config)
+			fmt.Println(result)
 			if result != config.Config {
 				compare(t, config.Config, result)
 				t.Fatalf("configurations does not match")
@@ -110,6 +113,7 @@ func TestParseFecthCommentLinesWrite(t *testing.T) {
 			}
 
 			result = p.String()
+			fmt.Println(result)
 			if result != config.EndConfig {
 				compare(t, config.Config, result)
 				t.Fatalf("configurations does not match")
