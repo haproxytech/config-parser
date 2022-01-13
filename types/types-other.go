@@ -550,8 +550,6 @@ type HTTPCheck struct{}
 //test:fail:tcp-check set-var(check.port)
 //test:ok:tcp-check set-var(check.port) int(1234)
 //test:fail:tcp-check set-var(check.port) int(1234) if x
-//test:"ok":tcp-check set-var-fmt(check.name) "%H"
-//test:"ok":tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
 //test:"ok":tcp-check unset-var(txn.from)
 //test:fail:tcp-check unset-var(txn.from) if x
 type TCPCheck struct{}

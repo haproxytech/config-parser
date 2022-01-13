@@ -256,8 +256,6 @@ defaults test
   tcp-check send QUIT\r\n
   tcp-check send QUIT\r\n comment testcomment
   tcp-check send info\ replication\r\n
-  tcp-check set-var-fmt(check.name) "%H"
-  tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
   tcp-check unset-var(txn.from)
   stats auth admin1:AdMiN123
   stats enable
@@ -817,8 +815,6 @@ backend test
   tcp-check send QUIT\r\n
   tcp-check send QUIT\r\n comment testcomment
   tcp-check send info\ replication\r\n
-  tcp-check set-var-fmt(check.name) "%H"
-  tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
   tcp-check unset-var(txn.from)
   tcp-request content accept
   tcp-request content accept if !HTTP
