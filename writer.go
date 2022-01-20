@@ -22,8 +22,6 @@ import (
 	"io"
 	"strings"
 
-	"github.com/gofrs/flock"
-	"github.com/google/renameio"
 	"github.com/deyunluo/config-parser/v4/types"
 )
 
@@ -63,23 +61,6 @@ func (p *configParser) Save(filename string) error {
 		return p.save([]byte(data), filename)
 	}
 	return p.save([]byte(p.String()), filename)
-}
-
-func (p *configParser) save(data []byte, filename string) error {
-	f := flock.New(filename)
-	if err := f.Lock(); err != nil {
-		return err
-	}
-	err := renameio.WriteFile(filename, data, 0644)
-	if err != nil {
-		f.Unlock() //nolint:errcheck
-		return err
-	}
-	if err := f.Unlock(); err != nil {
-		errMsg := err.Error()
-		return fmt.Errorf("%w %s", UnlockError{}, errMsg)
-	}
-	return nil
 }
 
 func (p *configParser) StringWithHash() (string, error) {
