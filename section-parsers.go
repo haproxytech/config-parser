@@ -141,6 +141,8 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -253,6 +255,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -326,6 +329,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &http.Responses{Mode: "backend"})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
 	return p.createParsers(parser, sequence)
 }
 
