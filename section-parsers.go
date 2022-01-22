@@ -335,7 +335,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
-	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-server"})
 	return p.createParsers(parser, sequence)
 }
 
