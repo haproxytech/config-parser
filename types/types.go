@@ -1076,3 +1076,16 @@ type DeclareCapture struct {
 	Length  int64
 	Comment string
 }
+
+//sections:global
+//name:h1-case-adjust
+//is-multiple:true
+//test:ok:h1-case-adjust content-type Content-Type
+//test:fail:h1-case-adjust
+//test:fail:h1-case-adjust content-type
+//test:fail:h1-case-adjust content-type Content Type
+type H1CaseAdjust struct {
+	From    string
+	To      string
+	Comment string
+}

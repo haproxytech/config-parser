@@ -35,6 +35,7 @@ global test
   lua-load /etc/haproxy/lua/foo.lua
   ssl-engine rdrand
   ssl-mode-async
+  h1-case-adjust content-type Content-Type
 
 defaults test
   balance roundrobin
@@ -2311,6 +2312,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  declare capture request len 1
 `, 1},
   {`  declare capture response len 2
+`, 1},
+  {`  h1-case-adjust content-type Content-Type
 `, 1},
   {`  http-request deny deny_status 0 unless { src 127.0.0.1 }
 `, 2},

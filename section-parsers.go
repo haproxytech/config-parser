@@ -143,6 +143,8 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
 	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
 	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-server"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -199,6 +201,8 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "server-state-base"})
 	addParser(parser, &sequence, &parsers.SslEngine{})
 	addParser(parser, &sequence, &parsers.SslModeAsync{})
+	addParser(parser, &sequence, &simple.Word{Name: "h1-case-adjust-file"})
+	addParser(parser, &sequence, &parsers.H1CaseAdjust{})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
@@ -256,6 +260,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
 	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -330,6 +335,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
 	return p.createParsers(parser, sequence)
 }
 
