@@ -390,6 +390,8 @@ func (p *configParser) getCacheParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "total-max-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "max-object-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "max-age"})
+	addParser(parser, &sequence, &simple.Number{Name: "max-secondary-entries"})
+	addParser(parser, &sequence, &parsers.ProcessVary{})
 	return p.createParsers(parser, sequence)
 }
 

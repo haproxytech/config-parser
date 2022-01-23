@@ -1089,3 +1089,16 @@ type H1CaseAdjust struct {
 	To      string
 	Comment string
 }
+
+//sections:cache
+//name:process-vary
+//is-multiple:false
+//test:ok:process-vary on
+//test:ok:process-vary off
+//test:fail:process-vary enabled
+//test:fail:process-vary
+//test:fail:process-vary on off
+type ProcessVary struct {
+	On      bool
+	Comment string
+}

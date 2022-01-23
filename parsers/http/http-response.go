@@ -57,6 +57,8 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 			err = h.ParseHTTPResponse(&http_actions.Allow{}, parts, comment)
 		case "auth":
 			err = h.ParseHTTPResponse(&http_actions.Auth{}, parts, comment)
+		case "cache-store":
+			err = h.ParseHTTPResponse(&http_actions.CacheStore{}, parts, comment)
 		case "capture":
 			if h.Mode == "backend" {
 				return "", &errors.ParseError{Parser: "HTTPResponse", Line: line}

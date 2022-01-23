@@ -388,6 +388,10 @@ type HTTPRequests struct{}
 //test:ok:http-response del-acl(map.lst) [src]
 //test:fail:http-response del-acl(map.lst)
 //test:ok:http-response allow
+//test:ok:http-response cache-store cache-name
+//test:ok:http-response cache-store cache-name if FALSE
+//test:fail:http-response cache-store
+//test:fail:http-response cache-store if FALSE
 //test:ok:http-response del-header X-value
 //test:fail:http-response del-header
 //test:ok:http-response del-map(map.lst) %[src] if ! value

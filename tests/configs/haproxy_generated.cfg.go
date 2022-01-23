@@ -716,6 +716,8 @@ backend test
   http-response add-header X-value value
   http-response del-acl(map.lst) [src]
   http-response allow
+  http-response cache-store cache-name
+  http-response cache-store cache-name if FALSE
   http-response del-header X-value
   http-response del-map(map.lst) %[src] if ! value
   http-response del-map(map.lst) %[src]
@@ -949,6 +951,9 @@ backend test
   stats http-request auth if something
   stats http-request deny unless something
   stats http-request allow
+
+cache test
+  process-vary on
 
 frontend test
   acl url_stats path_beg /stats
@@ -1198,6 +1203,8 @@ frontend test
   http-response add-header X-value value
   http-response del-acl(map.lst) [src]
   http-response allow
+  http-response cache-store cache-name
+  http-response cache-store cache-name if FALSE
   http-response del-header X-value
   http-response del-map(map.lst) %[src] if ! value
   http-response del-map(map.lst) %[src]
@@ -2315,6 +2322,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  h1-case-adjust content-type Content-Type
 `, 1},
+  {`  process-vary on
+`, 1},
   {`  http-request deny deny_status 0 unless { src 127.0.0.1 }
 `, 2},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
@@ -2504,6 +2513,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-response del-acl(map.lst) [src]
 `, 2},
   {`  http-response allow
+`, 2},
+  {`  http-response cache-store cache-name
+`, 2},
+  {`  http-response cache-store cache-name if FALSE
 `, 2},
   {`  http-response del-header X-value
 `, 2},
