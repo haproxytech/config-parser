@@ -673,6 +673,9 @@ backend test
   http-request reject
   http-request replace-header User-agent curl foo
   http-request replace-path (.*) /foo
+  http-request replace-path (.*) /foo if TRUE
+  http-request replace-pathq (.*) /foo
+  http-request replace-pathq (.*) /foo if TRUE
   http-request replace-uri ^http://(.*) https://1
   http-request replace-uri ^http://(.*) https://1 if FALSE
   http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
@@ -1196,6 +1199,9 @@ frontend test
   http-request reject
   http-request replace-header User-agent curl foo
   http-request replace-path (.*) /foo
+  http-request replace-path (.*) /foo if TRUE
+  http-request replace-pathq (.*) /foo
+  http-request replace-pathq (.*) /foo if TRUE
   http-request replace-uri ^http://(.*) https://1
   http-request replace-uri ^http://(.*) https://1 if FALSE
   http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
@@ -2525,6 +2531,12 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request replace-header User-agent curl foo
 `, 2},
   {`  http-request replace-path (.*) /foo
+`, 2},
+  {`  http-request replace-path (.*) /foo if TRUE
+`, 2},
+  {`  http-request replace-pathq (.*) /foo
+`, 2},
+  {`  http-request replace-pathq (.*) /foo if TRUE
 `, 2},
   {`  http-request replace-uri ^http://(.*) https://1
 `, 2},

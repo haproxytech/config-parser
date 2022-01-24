@@ -60,9 +60,6 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 		case "cache-use":
 			err = h.ParseHTTPRequest(&http_actions.CacheUse{}, parts, comment)
 		case "capture":
-			if h.Mode == "backend" {
-				return "", &errors.ParseError{Parser: "HTTPRequest", Line: line}
-			}
 			err = h.ParseHTTPRequest(&http_actions.Capture{}, parts, comment)
 		case "del-header":
 			err = h.ParseHTTPRequest(&http_actions.DelHeader{}, parts, comment)
@@ -78,10 +75,12 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&http_actions.Redirect{}, parts, comment)
 		case "reject":
 			err = h.ParseHTTPRequest(&actions.Reject{}, parts, comment)
-		case "replace-path":
-			err = h.ParseHTTPRequest(&http_actions.ReplacePath{}, parts, comment)
 		case "replace-header":
 			err = h.ParseHTTPRequest(&http_actions.ReplaceHeader{}, parts, comment)
+		case "replace-path":
+			err = h.ParseHTTPRequest(&http_actions.ReplacePath{}, parts, comment)
+		case "replace-pathq":
+			err = h.ParseHTTPRequest(&http_actions.ReplacePathQ{}, parts, comment)
 		case "replace-uri":
 			err = h.ParseHTTPRequest(&http_actions.ReplaceURI{}, parts, comment)
 		case "replace-value":
