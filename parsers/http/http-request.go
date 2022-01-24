@@ -117,6 +117,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&http_actions.SetSrc{}, parts, comment)
 		case "set-src-port":
 			err = h.ParseHTTPRequest(&http_actions.SetSrcPort{}, parts, comment)
+		case "set-timeout":
+			err = h.ParseHTTPRequest(&http_actions.SetTimeout{}, parts, comment)
 		case "set-tos":
 			err = h.ParseHTTPRequest(&http_actions.SetTos{}, parts, comment)
 		case "set-uri":

@@ -706,6 +706,10 @@ backend test
   http-request set-src hdr(src) if FALSE
   http-request set-src-port hdr(port)
   http-request set-src-port hdr(port) if FALSE
+  http-request set-timeout server 20
+  http-request set-timeout tunnel 20
+  http-request set-timeout tunnel 20s if TRUE
+  http-request set-timeout server 20s if TRUE
   http-request set-tos 0 if FALSE
   http-request set-tos 0
   http-request set-uri /%[hdr(host)]%[path]
@@ -1233,6 +1237,10 @@ frontend test
   http-request set-src hdr(src) if FALSE
   http-request set-src-port hdr(port)
   http-request set-src-port hdr(port) if FALSE
+  http-request set-timeout server 20
+  http-request set-timeout tunnel 20
+  http-request set-timeout tunnel 20s if TRUE
+  http-request set-timeout server 20s if TRUE
   http-request set-tos 0 if FALSE
   http-request set-tos 0
   http-request set-uri /%[hdr(host)]%[path]
@@ -2599,6 +2607,14 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request set-src-port hdr(port)
 `, 2},
   {`  http-request set-src-port hdr(port) if FALSE
+`, 2},
+  {`  http-request set-timeout server 20
+`, 2},
+  {`  http-request set-timeout tunnel 20
+`, 2},
+  {`  http-request set-timeout tunnel 20s if TRUE
+`, 2},
+  {`  http-request set-timeout server 20s if TRUE
 `, 2},
   {`  http-request set-tos 0 if FALSE
 `, 2},
