@@ -719,6 +719,20 @@ backend test
   http-request strict-mode on
   http-request strict-mode on if FALSE
   http-request tarpit
+  http-request tarpit deny_status 400
+  http-request tarpit if TRUE
+  http-request tarpit deny_status 400 if TRUE
+  http-request tarpit deny_status 400 content-type application/json if TRUE
+  http-request tarpit deny_status 400 content-type application/json
+  http-request tarpit deny_status 400 content-type application/json default-errorfiles
+  http-request tarpit deny_status 400 content-type application/json errorfile errors
+  http-request tarpit deny_status 400 content-type application/json string error if TRUE
+  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
+  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
   http-request track-sc0 src
   http-request track-sc1 src
   http-request track-sc2 src
@@ -1250,6 +1264,20 @@ frontend test
   http-request strict-mode on
   http-request strict-mode on if FALSE
   http-request tarpit
+  http-request tarpit deny_status 400
+  http-request tarpit if TRUE
+  http-request tarpit deny_status 400 if TRUE
+  http-request tarpit deny_status 400 content-type application/json if TRUE
+  http-request tarpit deny_status 400 content-type application/json
+  http-request tarpit deny_status 400 content-type application/json default-errorfiles
+  http-request tarpit deny_status 400 content-type application/json errorfile errors
+  http-request tarpit deny_status 400 content-type application/json string error if TRUE
+  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
+  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
   http-request track-sc0 src
   http-request track-sc1 src
   http-request track-sc2 src
@@ -2633,6 +2661,34 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request strict-mode on if FALSE
 `, 2},
   {`  http-request tarpit
+`, 2},
+  {`  http-request tarpit deny_status 400
+`, 2},
+  {`  http-request tarpit if TRUE
+`, 2},
+  {`  http-request tarpit deny_status 400 if TRUE
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json if TRUE
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json default-errorfiles
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json errorfile errors
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json string error if TRUE
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+`, 2},
+  {`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
 `, 2},
   {`  http-request track-sc0 src
 `, 2},

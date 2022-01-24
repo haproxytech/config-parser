@@ -243,6 +243,7 @@ type Action interface {
 //test:ok:http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
 //test:ok:http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
 //test:ok:http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+//test:fail:http-request deny test test
 //test:ok:http-request disable-l7-retry
 //test:ok:http-request disable-l7-retry if FALSE
 //test:ok:http-request early-hint hint %[src]
@@ -368,6 +369,21 @@ type Action interface {
 //test:fail:http-request strict-mode
 //test:fail:http-request strict-mode if FALSE
 //test:ok:http-request tarpit
+//test:ok:http-request tarpit deny_status 400
+//test:ok:http-request tarpit if TRUE
+//test:ok:http-request tarpit deny_status 400 if TRUE
+//test:ok:http-request tarpit deny_status 400 content-type application/json if TRUE
+//test:ok:http-request tarpit deny_status 400 content-type application/json
+//test:ok:http-request tarpit deny_status 400 content-type application/json default-errorfiles
+//test:ok:http-request tarpit deny_status 400 content-type application/json errorfile errors
+//test:ok:http-request tarpit deny_status 400 content-type application/json string error if TRUE
+//test:ok:http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+//test:ok:http-request tarpit deny_status 400 content-type application/json file /var/errors.file
+//test:ok:http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
+//test:ok:http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
+//test:ok:http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+//test:ok:http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+//test:fail:http-request tarpit test test
 //test:ok:http-request track-sc0 src
 //test:fail:http-request track-sc0
 //test:ok:http-request track-sc1 src
