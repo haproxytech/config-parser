@@ -609,7 +609,6 @@ backend test
   server-template srv 3 google.com:80 check
   server-template srv 3 google.com:80
   server-template srv 3 google.com
-  http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -625,6 +624,20 @@ backend test
   http-request del-map(map.lst) %[src] if ! value
   http-request del-map(map.lst) %[src]
   http-request deny
+  http-request deny deny_status 400
+  http-request deny if TRUE
+  http-request deny deny_status 400 if TRUE
+  http-request deny deny_status 400 content-type application/json if TRUE
+  http-request deny deny_status 400 content-type application/json
+  http-request deny deny_status 400 content-type application/json default-errorfiles
+  http-request deny deny_status 400 content-type application/json errorfile errors
+  http-request deny deny_status 400 content-type application/json string error if TRUE
+  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-request deny deny_status 400 content-type application/json file /var/errors.file
+  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
   http-request disable-l7-retry
   http-request disable-l7-retry if FALSE
   http-request early-hint hint %[src]
@@ -634,6 +647,28 @@ backend test
   http-request lua.foo if FALSE
   http-request lua.foo param
   http-request lua.foo param param2
+  http-request normalize-uri fragment-encode
+  http-request normalize-uri fragment-encode if TRUE
+  http-request normalize-uri fragment-strip
+  http-request normalize-uri fragment-strip if TRUE
+  http-request normalize-uri path-merge-slashes
+  http-request normalize-uri path-merge-slashes if TRUE
+  http-request normalize-uri path-strip-dot
+  http-request normalize-uri path-strip-dot if TRUE
+  http-request normalize-uri path-strip-dotdot
+  http-request normalize-uri path-strip-dotdot full
+  http-request normalize-uri path-strip-dotdot if TRUE
+  http-request normalize-uri path-strip-dotdot full if TRUE
+  http-request normalize-uri percent-decode-unreserved
+  http-request normalize-uri percent-decode-unreserved if TRUE
+  http-request normalize-uri percent-decode-unreserved strict
+  http-request normalize-uri percent-decode-unreserved strict if TRUE
+  http-request normalize-uri percent-to-uppercase
+  http-request normalize-uri percent-to-uppercase if TRUE
+  http-request normalize-uri percent-to-uppercase strict
+  http-request normalize-uri percent-to-uppercase strict if TRUE
+  http-request normalize-uri query-sort-by-name
+  http-request normalize-uri query-sort-by-name if TRUE
   http-request redirect prefix https://mysite.com
   http-request reject
   http-request replace-header User-agent curl foo
@@ -1097,7 +1132,6 @@ frontend test
   monitor fail if no_db01 no_db02
   declare capture request len 1
   declare capture response len 2
-  http-request deny deny_status 0 unless { src 127.0.0.1 }
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -1113,6 +1147,20 @@ frontend test
   http-request del-map(map.lst) %[src] if ! value
   http-request del-map(map.lst) %[src]
   http-request deny
+  http-request deny deny_status 400
+  http-request deny if TRUE
+  http-request deny deny_status 400 if TRUE
+  http-request deny deny_status 400 content-type application/json if TRUE
+  http-request deny deny_status 400 content-type application/json
+  http-request deny deny_status 400 content-type application/json default-errorfiles
+  http-request deny deny_status 400 content-type application/json errorfile errors
+  http-request deny deny_status 400 content-type application/json string error if TRUE
+  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-request deny deny_status 400 content-type application/json file /var/errors.file
+  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
   http-request disable-l7-retry
   http-request disable-l7-retry if FALSE
   http-request early-hint hint %[src]
@@ -1122,6 +1170,28 @@ frontend test
   http-request lua.foo if FALSE
   http-request lua.foo param
   http-request lua.foo param param2
+  http-request normalize-uri fragment-encode
+  http-request normalize-uri fragment-encode if TRUE
+  http-request normalize-uri fragment-strip
+  http-request normalize-uri fragment-strip if TRUE
+  http-request normalize-uri path-merge-slashes
+  http-request normalize-uri path-merge-slashes if TRUE
+  http-request normalize-uri path-strip-dot
+  http-request normalize-uri path-strip-dot if TRUE
+  http-request normalize-uri path-strip-dotdot
+  http-request normalize-uri path-strip-dotdot full
+  http-request normalize-uri path-strip-dotdot if TRUE
+  http-request normalize-uri path-strip-dotdot full if TRUE
+  http-request normalize-uri percent-decode-unreserved
+  http-request normalize-uri percent-decode-unreserved if TRUE
+  http-request normalize-uri percent-decode-unreserved strict
+  http-request normalize-uri percent-decode-unreserved strict if TRUE
+  http-request normalize-uri percent-to-uppercase
+  http-request normalize-uri percent-to-uppercase if TRUE
+  http-request normalize-uri percent-to-uppercase strict
+  http-request normalize-uri percent-to-uppercase strict if TRUE
+  http-request normalize-uri query-sort-by-name
+  http-request normalize-uri query-sort-by-name if TRUE
   http-request redirect prefix https://mysite.com
   http-request reject
   http-request replace-header User-agent curl foo
@@ -2328,8 +2398,6 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  process-vary on
 `, 1},
-  {`  http-request deny deny_status 0 unless { src 127.0.0.1 }
-`, 2},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
@@ -2360,6 +2428,34 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-request deny
 `, 2},
+  {`  http-request deny deny_status 400
+`, 2},
+  {`  http-request deny if TRUE
+`, 2},
+  {`  http-request deny deny_status 400 if TRUE
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json if TRUE
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json default-errorfiles
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json errorfile errors
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json string error if TRUE
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json file /var/errors.file
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+`, 2},
+  {`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+`, 2},
   {`  http-request disable-l7-retry
 `, 2},
   {`  http-request disable-l7-retry if FALSE
@@ -2377,6 +2473,50 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request lua.foo param
 `, 2},
   {`  http-request lua.foo param param2
+`, 2},
+  {`  http-request normalize-uri fragment-encode
+`, 2},
+  {`  http-request normalize-uri fragment-encode if TRUE
+`, 2},
+  {`  http-request normalize-uri fragment-strip
+`, 2},
+  {`  http-request normalize-uri fragment-strip if TRUE
+`, 2},
+  {`  http-request normalize-uri path-merge-slashes
+`, 2},
+  {`  http-request normalize-uri path-merge-slashes if TRUE
+`, 2},
+  {`  http-request normalize-uri path-strip-dot
+`, 2},
+  {`  http-request normalize-uri path-strip-dot if TRUE
+`, 2},
+  {`  http-request normalize-uri path-strip-dotdot
+`, 2},
+  {`  http-request normalize-uri path-strip-dotdot full
+`, 2},
+  {`  http-request normalize-uri path-strip-dotdot if TRUE
+`, 2},
+  {`  http-request normalize-uri path-strip-dotdot full if TRUE
+`, 2},
+  {`  http-request normalize-uri percent-decode-unreserved
+`, 2},
+  {`  http-request normalize-uri percent-decode-unreserved if TRUE
+`, 2},
+  {`  http-request normalize-uri percent-decode-unreserved strict
+`, 2},
+  {`  http-request normalize-uri percent-decode-unreserved strict if TRUE
+`, 2},
+  {`  http-request normalize-uri percent-to-uppercase
+`, 2},
+  {`  http-request normalize-uri percent-to-uppercase if TRUE
+`, 2},
+  {`  http-request normalize-uri percent-to-uppercase strict
+`, 2},
+  {`  http-request normalize-uri percent-to-uppercase strict if TRUE
+`, 2},
+  {`  http-request normalize-uri query-sort-by-name
+`, 2},
+  {`  http-request normalize-uri query-sort-by-name if TRUE
 `, 2},
   {`  http-request redirect prefix https://mysite.com
 `, 2},

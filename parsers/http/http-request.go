@@ -72,6 +72,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&http_actions.DisableL7Retry{}, parts, comment)
 		case "early-hint":
 			err = h.ParseHTTPRequest(&http_actions.EarlyHint{}, parts, comment)
+		case "normalize-uri":
+			err = h.ParseHTTPRequest(&http_actions.NormalizeURI{}, parts, comment)
 		case "redirect":
 			err = h.ParseHTTPRequest(&http_actions.Redirect{}, parts, comment)
 		case "reject":
@@ -144,6 +146,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 				err = h.ParseHTTPRequest(&http_actions.SetMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-map("):
 				err = h.ParseHTTPRequest(&http_actions.DelMap{}, parts, comment)
+			case strings.HasPrefix(parts[1], "do-resolve("):
+				err = h.ParseHTTPRequest(&actions.DoResolve{}, parts, comment)
 			case strings.HasPrefix(parts[1], "lua."):
 				err = h.ParseHTTPRequest(&actions.Lua{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc0("):
@@ -156,8 +160,6 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 				err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
 			case strings.HasPrefix(parts[1], "unset-var("):
 				err = h.ParseHTTPRequest(&actions.UnsetVar{}, parts, comment)
-			case strings.HasPrefix(parts[1], "do-resolve("):
-				err = h.ParseHTTPRequest(&actions.DoResolve{}, parts, comment)
 			default:
 				return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
 			}

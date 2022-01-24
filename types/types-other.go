@@ -202,7 +202,6 @@ type Action interface {
 //test:fail:http-request
 //test:fail:http-request capture req.cook_cnt(FirstVisit),bool strlen 10
 //test:frontend-ok:http-request capture req.cook_cnt(FirstVisit),bool len 10
-//test:ok:http-request deny deny_status 0 unless { src 127.0.0.1 }
 //test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 //test:ok:http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
 //test:fail:http-request set-map(map.lst) %[src]
@@ -230,6 +229,20 @@ type Action interface {
 //test:ok:http-request del-map(map.lst) %[src]
 //test:fail:http-request del-map(map.lst)
 //test:ok:http-request deny
+//test:ok:http-request deny deny_status 400
+//test:ok:http-request deny if TRUE
+//test:ok:http-request deny deny_status 400 if TRUE
+//test:ok:http-request deny deny_status 400 content-type application/json if TRUE
+//test:ok:http-request deny deny_status 400 content-type application/json
+//test:ok:http-request deny deny_status 400 content-type application/json default-errorfiles
+//test:ok:http-request deny deny_status 400 content-type application/json errorfile errors
+//test:ok:http-request deny deny_status 400 content-type application/json string error if TRUE
+//test:ok:http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+//test:ok:http-request deny deny_status 400 content-type application/json file /var/errors.file
+//test:ok:http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
+//test:ok:http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+//test:ok:http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+//test:ok:http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
 //test:ok:http-request disable-l7-retry
 //test:ok:http-request disable-l7-retry if FALSE
 //test:ok:http-request early-hint hint %[src]
@@ -244,6 +257,33 @@ type Action interface {
 //test:fail:http-request lua.
 //test:fail:http-request lua. if FALSE
 //test:fail:http-request lua. param
+//test:ok:http-request normalize-uri fragment-encode
+//test:ok:http-request normalize-uri fragment-encode if TRUE
+//test:ok:http-request normalize-uri fragment-strip
+//test:ok:http-request normalize-uri fragment-strip if TRUE
+//test:ok:http-request normalize-uri path-merge-slashes
+//test:ok:http-request normalize-uri path-merge-slashes if TRUE
+//test:ok:http-request normalize-uri path-strip-dot
+//test:ok:http-request normalize-uri path-strip-dot if TRUE
+//test:ok:http-request normalize-uri path-strip-dotdot
+//test:ok:http-request normalize-uri path-strip-dotdot full
+//test:ok:http-request normalize-uri path-strip-dotdot if TRUE
+//test:ok:http-request normalize-uri path-strip-dotdot full if TRUE
+//test:ok:http-request normalize-uri percent-decode-unreserved
+//test:ok:http-request normalize-uri percent-decode-unreserved if TRUE
+//test:ok:http-request normalize-uri percent-decode-unreserved strict
+//test:ok:http-request normalize-uri percent-decode-unreserved strict if TRUE
+//test:ok:http-request normalize-uri percent-to-uppercase
+//test:ok:http-request normalize-uri percent-to-uppercase if TRUE
+//test:ok:http-request normalize-uri percent-to-uppercase strict
+//test:ok:http-request normalize-uri percent-to-uppercase strict if TRUE
+//test:ok:http-request normalize-uri query-sort-by-name
+//test:ok:http-request normalize-uri query-sort-by-name if TRUE
+//test:fail:http-request normalize-uri bla
+//test:fail:http-request normalize-uri path-strip-dot strict
+//test:fail:http-request normalize-uri path-strip-dot full
+//test:fail:http-request normalize-uri if TRUE
+//test:fail:http-request normalize-uri
 //test:ok:http-request redirect prefix https://mysite.com
 //test:fail:http-request redirect prefix
 //test:ok:http-request reject
