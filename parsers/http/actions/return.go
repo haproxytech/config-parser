@@ -120,19 +120,19 @@ func (f *Return) Parse(parts []string, parserType types.ParserType, comment stri
 					return fmt.Errorf("failed to parse hdr")
 				}
 			}
-			if len(condition) > 1 {
-				f.Cond = condition[0]
-				f.CondTest = strings.Join(condition[1:], " ")
-			}
-
-			return nil
 		}
+		if len(condition) > 1 {
+			f.Cond = condition[0]
+			f.CondTest = strings.Join(condition[1:], " ")
+		}
+		return nil
 	} else if len(parts) == 2 {
 		return nil
 	}
 	return fmt.Errorf("not enough params")
 }
 
+//nolint:dupl
 func (f *Return) String() string {
 	var result strings.Builder
 	result.WriteString("return")
