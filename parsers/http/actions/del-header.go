@@ -26,6 +26,7 @@ import (
 
 type DelHeader struct {
 	Name     string
+	Method   string
 	Cond     string
 	CondTest string
 	Comment  string
@@ -38,8 +39,13 @@ func (f *DelHeader) Parse(parts []string, parserType types.ParserType, comment s
 	}
 
 	if len(parts) >= 3 {
-		_, condition := common.SplitRequest(parts[3:])
+		command, condition := common.SplitRequest(parts[3:])
 		f.Name = parts[2]
+		if len(command) > 1 && command[0] == "-m" {
+			f.Method = command[1]
+		} else if len(command) > 0 {
+			return fmt.Errorf("unknown params after name")
+		}
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
@@ -50,11 +56,17 @@ func (f *DelHeader) Parse(parts []string, parserType types.ParserType, comment s
 }
 
 func (f *DelHeader) String() string {
-	condition := ""
-	if f.Cond != "" {
-		condition = fmt.Sprintf(" %s %s", f.Cond, f.CondTest)
+	sb := &strings.Builder{}
+
+	sb.WriteString("del-header ")
+	sb.WriteString(f.Name)
+	if f.Method != "" {
+		sb.WriteString(fmt.Sprintf(" -m %s", f.Method))
 	}
-	return fmt.Sprintf("del-header %s%s", f.Name, condition)
+	if f.Cond != "" {
+		sb.WriteString(fmt.Sprintf(" %s %s", f.Cond, f.CondTest))
+	}
+	return sb.String()
 }
 
 func (f *DelHeader) GetComment() string {

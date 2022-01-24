@@ -221,7 +221,11 @@ type Action interface {
 //test:ok:http-request allow
 //test:ok:http-request auth
 //test:ok:http-request del-header X-value
+//test:ok:http-request del-header X-value if TRUE
+//test:ok:http-request del-header X-value -m str if TRUE
 //test:fail:http-request del-header
+//test:fail:http-request del-header X-value -m if TRUE
+//test:fail:http-request del-header X-value bla
 //test:ok:http-request del-map(map.lst) %[src] if ! value
 //test:ok:http-request del-map(map.lst) %[src]
 //test:fail:http-request del-map(map.lst)

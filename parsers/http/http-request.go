@@ -57,13 +57,13 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&http_actions.Allow{}, parts, comment)
 		case "auth":
 			err = h.ParseHTTPRequest(&http_actions.Auth{}, parts, comment)
+		case "cache-use":
+			err = h.ParseHTTPRequest(&http_actions.CacheUse{}, parts, comment)
 		case "capture":
 			if h.Mode == "backend" {
 				return "", &errors.ParseError{Parser: "HTTPRequest", Line: line}
 			}
 			err = h.ParseHTTPRequest(&http_actions.Capture{}, parts, comment)
-		case "cache-use":
-			err = h.ParseHTTPRequest(&http_actions.CacheUse{}, parts, comment)
 		case "del-header":
 			err = h.ParseHTTPRequest(&http_actions.DelHeader{}, parts, comment)
 		case "deny":

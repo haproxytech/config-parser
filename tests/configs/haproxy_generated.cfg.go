@@ -620,6 +620,8 @@ backend test
   http-request allow
   http-request auth
   http-request del-header X-value
+  http-request del-header X-value if TRUE
+  http-request del-header X-value -m str if TRUE
   http-request del-map(map.lst) %[src] if ! value
   http-request del-map(map.lst) %[src]
   http-request deny
@@ -1106,6 +1108,8 @@ frontend test
   http-request allow
   http-request auth
   http-request del-header X-value
+  http-request del-header X-value if TRUE
+  http-request del-header X-value -m str if TRUE
   http-request del-map(map.lst) %[src] if ! value
   http-request del-map(map.lst) %[src]
   http-request deny
@@ -2345,6 +2349,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request auth
 `, 2},
   {`  http-request del-header X-value
+`, 2},
+  {`  http-request del-header X-value if TRUE
+`, 2},
+  {`  http-request del-header X-value -m str if TRUE
 `, 2},
   {`  http-request del-map(map.lst) %[src] if ! value
 `, 2},
