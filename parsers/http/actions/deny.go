@@ -89,7 +89,6 @@ func (f *Deny) Parse(parts []string, parserType types.ParserType, comment string
 	return fmt.Errorf("not enough params")
 }
 
-//nolint:dupl
 func (f *Deny) String() string {
 	var result strings.Builder
 	result.WriteString("deny")

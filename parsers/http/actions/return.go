@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -41,8 +42,7 @@ type Hdr struct {
 	Fmt  string
 }
 
-//nolint:gochecknoglobals
-var payloadTypes = map[string]struct{}{
+var payloadTypes = map[string]struct{}{ //nolint:gochecknoglobals
 	"string":    {},
 	"lf-string": {},
 	"file":      {},
@@ -54,8 +54,7 @@ func IsPayload(in string) bool {
 	return ok
 }
 
-//nolint:gochecknoglobals
-var allowedErrorCodes = map[int64]struct{}{
+var allowedErrorCodes = map[int64]struct{}{ //nolint:gochecknoglobals
 	200: {},
 	400: {},
 	403: {},
@@ -132,7 +131,6 @@ func (f *Return) Parse(parts []string, parserType types.ParserType, comment stri
 	return fmt.Errorf("not enough params")
 }
 
-//nolint:dupl
 func (f *Return) String() string {
 	var result strings.Builder
 	result.WriteString("return")
