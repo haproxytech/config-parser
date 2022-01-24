@@ -1,5 +1,5 @@
 /*
-Copyright 2019 HAProxy Technologies
+Copyright 2022 HAProxy Technologies
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -21,18 +22,19 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetVarFmtCheck struct {
+type SetVarFmt struct {
 	VarScope string
 	VarName  string
-	Format   common.Expression
+	Fmt      common.Expression
+	Cond     string
+	CondTest string
 	Comment  string
 }
 
-func (f *SetVarFmtCheck) Parse(parts []string, parserType types.ParserType, comment string) error {
+func (f *SetVarFmt) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -41,10 +43,14 @@ func (f *SetVarFmtCheck) Parse(parts []string, parserType types.ParserType, comm
 	}
 	var data string
 	var command []string
-
-	data = parts[1]
-	command = parts[2:]
-
+	switch parserType {
+	case types.HTTP:
+		data = parts[1]
+		command = parts[2:]
+	case types.TCP:
+		data = parts[2]
+		command = parts[3:]
+	}
 	data = strings.TrimPrefix(data, "set-var-fmt(")
 	data = strings.TrimRight(data, ")")
 	d := strings.SplitN(data, ".", 2)
@@ -52,26 +58,28 @@ func (f *SetVarFmtCheck) Parse(parts []string, parserType types.ParserType, comm
 	f.VarName = d[1]
 	command, condition := common.SplitRequest(command)
 	if len(command) > 0 {
-		format := common.Expression{}
-		err := format.Parse(command)
+		expr := common.Expression{}
+		err := expr.Parse(command)
 		if err != nil {
 			return fmt.Errorf("not enough params")
 		}
-		f.Format = format
-	} else {
-		return fmt.Errorf("not enough params")
+		f.Fmt = expr
 	}
 	if len(condition) > 1 {
-		return errors.ErrInvalidData
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
 	}
-
 	return nil
 }
 
-func (f *SetVarFmtCheck) String() string {
-	return fmt.Sprintf("set-var-fmt(%s.%s) %s", f.VarScope, f.VarName, f.Format.String())
+func (f *SetVarFmt) String() string {
+	condition := ""
+	if f.Cond != "" {
+		condition = fmt.Sprintf(" %s %s", f.Cond, f.CondTest)
+	}
+	return fmt.Sprintf("set-var-fmt(%s.%s) %s%s", f.VarScope, f.VarName, f.Fmt.String(), condition)
 }
 
-func (f *SetVarFmtCheck) GetComment() string {
+func (f *SetVarFmt) GetComment() string {
 	return f.Comment
 }

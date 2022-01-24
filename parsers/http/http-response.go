@@ -117,6 +117,8 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 				err = h.ParseHTTPResponse(&http_actions.DelMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
+			case strings.HasPrefix(parts[1], "set-var-fmt("):
+				err = h.ParseHTTPResponse(&actions.SetVarFmt{}, parts, comment)
 			case strings.HasPrefix(parts[1], "unset-var("):
 				err = h.ParseHTTPResponse(&actions.UnsetVar{}, parts, comment)
 			default:

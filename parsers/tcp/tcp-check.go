@@ -80,7 +80,7 @@ func (h *Checks) Parse(line string, parts []string, comment string) (string, err
 	case strings.HasPrefix(parts[1], "set-var("):
 		err = h.parseTCPCheck(&actions.SetVarCheck{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var-fmt("):
-		err = h.parseTCPCheck(&tcp_actions.SetVarFmtCheck{}, parts, comment)
+		err = h.parseTCPCheck(&actions.SetVarFmtCheck{}, parts, comment)
 	case strings.HasPrefix(parts[1], "unset-var("):
 		err = h.parseTCPCheck(&actions.UnsetVarCheck{}, parts, comment)
 	default:

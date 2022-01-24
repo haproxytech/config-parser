@@ -234,6 +234,7 @@ defaults test
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
   http-check set-var(check.port) int(1234)
+  http-check set-var-fmt(check.port) int(1234)
   http-check unset-var(txn.from)
   tcp-check comment testcomment
   tcp-check connect
@@ -714,6 +715,7 @@ backend test
   http-request set-tos 0
   http-request set-uri /%[hdr(host)]%[path]
   http-request set-var(req.my_var) req.fhdr(user-agent),lower
+  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
   http-request silent-drop
   http-request silent-drop if FALSE
   http-request strict-mode on
@@ -827,6 +829,7 @@ backend test
   http-response set-tos 0 if FALSE
   http-response set-tos 0
   http-response set-var(req.my_var) res.fhdr(user-agent),lower
+  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
   http-response silent-drop
   http-response silent-drop if FALSE
   http-response unset-var(req.my_var)
@@ -891,6 +894,7 @@ backend test
   http-check send uri-lf my-log-format body-lf 'my-log-format'
   http-check send-state
   http-check set-var(check.port) int(1234)
+  http-check set-var-fmt(check.port) int(1234)
   http-check unset-var(txn.from)
   tcp-check comment testcomment
   tcp-check connect
@@ -944,6 +948,8 @@ backend test
   tcp-request content set-dst ipv4(10.0.0.1)
   tcp-request content set-var(sess.src) src
   tcp-request content set-var(sess.dn) ssl_c_s_dn
+  tcp-request content set-var-fmt(sess.src) src
+  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
   tcp-request content unset-var(sess.src)
   tcp-request content unset-var(sess.dn)
   tcp-request content silent-drop
@@ -1013,6 +1019,8 @@ backend test
   tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request session set-var(sess.src) src
   tcp-request session set-var(sess.dn) ssl_c_s_dn
+  tcp-request session set-var-fmt(sess.src) src
+  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
   tcp-request session unset-var(sess.src)
   tcp-request session unset-var(sess.dn)
   tcp-request session silent-drop
@@ -1294,6 +1302,7 @@ frontend test
   http-request set-tos 0
   http-request set-uri /%[hdr(host)]%[path]
   http-request set-var(req.my_var) req.fhdr(user-agent),lower
+  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
   http-request silent-drop
   http-request silent-drop if FALSE
   http-request strict-mode on
@@ -1408,6 +1417,7 @@ frontend test
   http-response set-tos 0 if FALSE
   http-response set-tos 0
   http-response set-var(req.my_var) res.fhdr(user-agent),lower
+  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
   http-response silent-drop
   http-response silent-drop if FALSE
   http-response unset-var(req.my_var)
@@ -1465,6 +1475,8 @@ frontend test
   tcp-request content set-dst ipv4(10.0.0.1)
   tcp-request content set-var(sess.src) src
   tcp-request content set-var(sess.dn) ssl_c_s_dn
+  tcp-request content set-var-fmt(sess.src) src
+  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
   tcp-request content unset-var(sess.src)
   tcp-request content unset-var(sess.dn)
   tcp-request content silent-drop
@@ -1534,6 +1546,8 @@ frontend test
   tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request session set-var(sess.src) src
   tcp-request session set-var(sess.dn) ssl_c_s_dn
+  tcp-request session set-var-fmt(sess.src) src
+  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
   tcp-request session unset-var(sess.src)
   tcp-request session unset-var(sess.dn)
   tcp-request session silent-drop
@@ -2722,6 +2736,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-request set-var(req.my_var) req.fhdr(user-agent),lower
 `, 2},
+  {`  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
+`, 2},
   {`  http-request silent-drop
 `, 2},
   {`  http-request silent-drop if FALSE
@@ -2924,6 +2940,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-response set-var(req.my_var) res.fhdr(user-agent),lower
 `, 2},
+  {`  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
+`, 2},
   {`  http-response silent-drop
 `, 2},
   {`  http-response silent-drop if FALSE
@@ -3116,6 +3134,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  tcp-request content set-var(sess.dn) ssl_c_s_dn
 `, 2},
+  {`  tcp-request content set-var-fmt(sess.src) src
+`, 2},
+  {`  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
+`, 2},
   {`  tcp-request content unset-var(sess.src)
 `, 2},
   {`  tcp-request content unset-var(sess.dn)
@@ -3253,6 +3275,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  tcp-request session set-var(sess.src) src
 `, 2},
   {`  tcp-request session set-var(sess.dn) ssl_c_s_dn
+`, 2},
+  {`  tcp-request session set-var-fmt(sess.src) src
+`, 2},
+  {`  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
 `, 2},
   {`  tcp-request session unset-var(sess.src)
 `, 2},

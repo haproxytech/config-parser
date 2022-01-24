@@ -362,6 +362,8 @@ type Action interface {
 //test:fail:http-request set-uri
 //test:ok:http-request set-var(req.my_var) req.fhdr(user-agent),lower
 //test:fail:http-request set-var(req.my_var)
+//test:ok:http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
+//test:fail:http-request set-var-fmt(req.my_var)
 //test:ok:http-request silent-drop
 //test:ok:http-request silent-drop if FALSE
 //test:ok:http-request strict-mode on
@@ -557,6 +559,8 @@ type HTTPRequests struct{}
 //test:fail:http-response set-tos
 //test:ok:http-response set-var(req.my_var) res.fhdr(user-agent),lower
 //test:fail:http-response set-var(req.my_var)
+//test:ok:http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
+//test:fail:http-response set-var-fmt(req.my_var)
 //test:ok:http-response silent-drop
 //test:ok:http-response silent-drop if FALSE
 //test:ok:http-response unset-var(req.my_var)
@@ -638,6 +642,9 @@ type HTTPResponses struct{}
 //test:fail:http-check set-var(check.port)
 //test:"ok":http-check set-var(check.port) int(1234)
 //test:fail:http-check set-var(check.port) int(1234) if x
+//test:fail:http-check set-var-fmt(check.port)
+//test:"ok":http-check set-var-fmt(check.port) int(1234)
+//test:fail:http-check set-var-fmt(check.port) int(1234) if x
 //test:"ok":http-check unset-var(txn.from)
 //test:fail:http-check unset-var(txn.from) if x
 type HTTPCheck struct{}
@@ -724,6 +731,8 @@ type TCPType interface {
 //test:ok:tcp-request content set-dst ipv4(10.0.0.1)
 //test:ok:tcp-request content set-var(sess.src) src
 //test:ok:tcp-request content set-var(sess.dn) ssl_c_s_dn
+//test:ok:tcp-request content set-var-fmt(sess.src) src
+//test:ok:tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
 //test:ok:tcp-request content unset-var(sess.src)
 //test:ok:tcp-request content unset-var(sess.dn)
 //test:ok:tcp-request content silent-drop
@@ -794,6 +803,8 @@ type TCPType interface {
 //test:ok:tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
 //test:ok:tcp-request session set-var(sess.src) src
 //test:ok:tcp-request session set-var(sess.dn) ssl_c_s_dn
+//test:ok:tcp-request session set-var-fmt(sess.src) src
+//test:ok:tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
 //test:ok:tcp-request session unset-var(sess.src)
 //test:ok:tcp-request session unset-var(sess.dn)
 //test:ok:tcp-request session silent-drop

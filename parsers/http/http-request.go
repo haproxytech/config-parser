@@ -163,6 +163,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 				err = h.ParseHTTPRequest(&actions.ScSetGpt0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPRequest(&actions.SetVar{}, parts, comment)
+			case strings.HasPrefix(parts[1], "set-var-fmt("):
+				err = h.ParseHTTPRequest(&actions.SetVarFmt{}, parts, comment)
 			case strings.HasPrefix(parts[1], "unset-var("):
 				err = h.ParseHTTPRequest(&actions.UnsetVar{}, parts, comment)
 			default:

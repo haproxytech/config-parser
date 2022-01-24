@@ -77,6 +77,8 @@ func (h *Checks) Parse(line string, parts []string, comment string) (string, err
 		err = h.parseHTTPCheck(&http_actions.CheckSendState{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var("):
 		err = h.parseHTTPCheck(&actions.SetVarCheck{}, parts, comment)
+	case strings.HasPrefix(parts[1], "set-var-fmt("):
+		err = h.parseHTTPCheck(&actions.SetVarFmtCheck{}, parts, comment)
 	case strings.HasPrefix(parts[1], "unset-var("):
 		err = h.parseHTTPCheck(&actions.UnsetVarCheck{}, parts, comment)
 	default:

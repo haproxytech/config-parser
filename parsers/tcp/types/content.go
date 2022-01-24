@@ -85,8 +85,10 @@ func (f *Content) Parse(parts []string, comment string) error {
 			err = f.ParseAction(&actions.ScIncGpc1{}, parts)
 		case strings.HasPrefix(parts[2], "sc-set-gpt0"):
 			err = f.ParseAction(&actions.ScSetGpt0{}, parts)
-		case strings.HasPrefix(parts[2], "set-var"):
+		case strings.HasPrefix(parts[2], "set-var("):
 			err = f.ParseAction(&actions.SetVar{}, parts)
+		case strings.HasPrefix(parts[2], "set-var-fmt"):
+			err = f.ParseAction(&actions.SetVarFmt{}, parts)
 		case strings.HasPrefix(parts[2], "unset-var"):
 			err = f.ParseAction(&actions.UnsetVar{}, parts)
 		case strings.HasPrefix(parts[2], "do-resolve"):

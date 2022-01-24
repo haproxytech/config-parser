@@ -26,14 +26,14 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetVarCheck struct {
+type SetVarFmtCheck struct {
 	VarScope string
 	VarName  string
-	Expr     common.Expression
+	Format   common.Expression
 	Comment  string
 }
 
-func (f *SetVarCheck) Parse(parts []string, parserType types.ParserType, comment string) error {
+func (f *SetVarFmtCheck) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -46,19 +46,19 @@ func (f *SetVarCheck) Parse(parts []string, parserType types.ParserType, comment
 	data = parts[1]
 	command = parts[2:]
 
-	data = strings.TrimPrefix(data, "set-var(")
+	data = strings.TrimPrefix(data, "set-var-fmt(")
 	data = strings.TrimRight(data, ")")
 	d := strings.SplitN(data, ".", 2)
 	f.VarScope = d[0]
 	f.VarName = d[1]
 	command, condition := common.SplitRequest(command)
 	if len(command) > 0 {
-		expr := common.Expression{}
-		err := expr.Parse(command)
+		format := common.Expression{}
+		err := format.Parse(command)
 		if err != nil {
 			return fmt.Errorf("not enough params")
 		}
-		f.Expr = expr
+		f.Format = format
 	} else {
 		return fmt.Errorf("not enough params")
 	}
@@ -69,10 +69,10 @@ func (f *SetVarCheck) Parse(parts []string, parserType types.ParserType, comment
 	return nil
 }
 
-func (f *SetVarCheck) String() string {
-	return fmt.Sprintf("set-var(%s.%s) %s", f.VarScope, f.VarName, f.Expr.String())
+func (f *SetVarFmtCheck) String() string {
+	return fmt.Sprintf("set-var-fmt(%s.%s) %s", f.VarScope, f.VarName, f.Format.String())
 }
 
-func (f *SetVarCheck) GetComment() string {
+func (f *SetVarFmtCheck) GetComment() string {
 	return f.Comment
 }
