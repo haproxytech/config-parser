@@ -333,6 +333,8 @@ type Action interface {
 //test:fail:http-request set-method
 //test:ok:http-request set-path /%[hdr(host)]%[path]
 //test:fail:http-request set-path
+//test:ok:http-request set-pathq /%[hdr(host)]%[path]
+//test:fail:http-request set-pathq
 //test:ok:http-request set-priority-class req.hdr(priority)
 //test:ok:http-request set-priority-class req.hdr(priority) if FALSE
 //test:fail:http-request set-priority-class

@@ -99,12 +99,14 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&http_actions.SetLogLevel{}, parts, comment)
 		case "set-mark":
 			err = h.ParseHTTPRequest(&http_actions.SetMark{}, parts, comment)
-		case "set-nice":
-			err = h.ParseHTTPRequest(&http_actions.SetNice{}, parts, comment)
 		case "set-method":
 			err = h.ParseHTTPRequest(&http_actions.SetMethod{}, parts, comment)
+		case "set-nice":
+			err = h.ParseHTTPRequest(&http_actions.SetNice{}, parts, comment)
 		case "set-path":
 			err = h.ParseHTTPRequest(&http_actions.SetPath{}, parts, comment)
+		case "set-pathq":
+			err = h.ParseHTTPRequest(&http_actions.SetPathQ{}, parts, comment)
 		case "set-priority-class":
 			err = h.ParseHTTPRequest(&actions.SetPriorityClass{}, parts, comment)
 		case "set-priority-offset":

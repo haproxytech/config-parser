@@ -696,6 +696,7 @@ backend test
   http-request set-method POST
   http-request set-method POST if FALSE
   http-request set-path /%[hdr(host)]%[path]
+  http-request set-pathq /%[hdr(host)]%[path]
   http-request set-priority-class req.hdr(priority)
   http-request set-priority-class req.hdr(priority) if FALSE
   http-request set-priority-offset req.hdr(offset)
@@ -1222,6 +1223,7 @@ frontend test
   http-request set-method POST
   http-request set-method POST if FALSE
   http-request set-path /%[hdr(host)]%[path]
+  http-request set-pathq /%[hdr(host)]%[path]
   http-request set-priority-class req.hdr(priority)
   http-request set-priority-class req.hdr(priority) if FALSE
   http-request set-priority-offset req.hdr(offset)
@@ -2577,6 +2579,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request set-method POST if FALSE
 `, 2},
   {`  http-request set-path /%[hdr(host)]%[path]
+`, 2},
+  {`  http-request set-pathq /%[hdr(host)]%[path]
 `, 2},
   {`  http-request set-priority-class req.hdr(priority)
 `, 2},
