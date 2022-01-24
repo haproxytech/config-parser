@@ -738,6 +738,10 @@ backend test
   http-request track-sc2 src
   http-request unset-var(req.my_var)
   http-request unset-var(req.my_var) if FALSE
+  http-request wait-for-body time 20s
+  http-request wait-for-body time 20s if TRUE
+  http-request wait-for-body time 20s at-least 100k
+  http-request wait-for-body time 20s at-least 100k if TRUE
   http-request wait-for-handshake
   http-request wait-for-handshake if FALSE
   http-request do-resolve(txn.myip,mydns) hdr(Host),lower
@@ -1283,6 +1287,10 @@ frontend test
   http-request track-sc2 src
   http-request unset-var(req.my_var)
   http-request unset-var(req.my_var) if FALSE
+  http-request wait-for-body time 20s
+  http-request wait-for-body time 20s if TRUE
+  http-request wait-for-body time 20s at-least 100k
+  http-request wait-for-body time 20s at-least 100k if TRUE
   http-request wait-for-handshake
   http-request wait-for-handshake if FALSE
   http-request do-resolve(txn.myip,mydns) hdr(Host),lower
@@ -2699,6 +2707,14 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-request unset-var(req.my_var)
 `, 2},
   {`  http-request unset-var(req.my_var) if FALSE
+`, 2},
+  {`  http-request wait-for-body time 20s
+`, 2},
+  {`  http-request wait-for-body time 20s if TRUE
+`, 2},
+  {`  http-request wait-for-body time 20s at-least 100k
+`, 2},
+  {`  http-request wait-for-body time 20s at-least 100k if TRUE
 `, 2},
   {`  http-request wait-for-handshake
 `, 2},

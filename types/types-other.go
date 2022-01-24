@@ -394,6 +394,12 @@ type Action interface {
 //test:ok:http-request unset-var(req.my_var) if FALSE
 //test:fail:http-request unset-var(req.)
 //test:fail:http-request unset-var(req)
+//test:ok:http-request wait-for-body time 20s
+//test:ok:http-request wait-for-body time 20s if TRUE
+//test:ok:http-request wait-for-body time 20s at-least 100k
+//test:ok:http-request wait-for-body time 20s at-least 100k if TRUE
+//test:fail:http-request wait-for-body 20s at-least 100k
+//test:fail:http-request wait-for-body time 2000 test
 //test:ok:http-request wait-for-handshake
 //test:ok:http-request wait-for-handshake if FALSE
 //test:ok:http-request do-resolve(txn.myip,mydns) hdr(Host),lower

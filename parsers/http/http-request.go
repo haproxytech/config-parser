@@ -137,6 +137,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&actions.TrackSc{}, parts, comment)
 		case "use-service":
 			err = h.ParseHTTPRequest(&actions.UseService{}, parts, comment)
+		case "wait-for-body":
+			err = h.ParseHTTPRequest(&http_actions.WaitForBody{}, parts, comment)
 		case "wait-for-handshake":
 			err = h.ParseHTTPRequest(&http_actions.WaitForHandshake{}, parts, comment)
 		default:
