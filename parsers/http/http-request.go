@@ -85,6 +85,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&http_actions.ReplaceURI{}, parts, comment)
 		case "replace-value":
 			err = h.ParseHTTPRequest(&http_actions.ReplaceValue{}, parts, comment)
+		case "return":
+			err = h.ParseHTTPRequest(&http_actions.Return{}, parts, comment)
 		case "send-spoe-group":
 			err = h.ParseHTTPRequest(&actions.SendSpoeGroup{}, parts, comment)
 		case "set-dst":
@@ -133,8 +135,6 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&actions.UseService{}, parts, comment)
 		case "wait-for-handshake":
 			err = h.ParseHTTPRequest(&http_actions.WaitForHandshake{}, parts, comment)
-		case "return":
-			err = h.ParseHTTPRequest(&http_actions.Return{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):
