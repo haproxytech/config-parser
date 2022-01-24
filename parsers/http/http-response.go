@@ -55,14 +55,9 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 			err = h.ParseHTTPResponse(&http_actions.AddHeader{}, parts, comment)
 		case "allow":
 			err = h.ParseHTTPResponse(&http_actions.Allow{}, parts, comment)
-		case "auth":
-			err = h.ParseHTTPResponse(&http_actions.Auth{}, parts, comment)
 		case "cache-store":
 			err = h.ParseHTTPResponse(&http_actions.CacheStore{}, parts, comment)
 		case "capture":
-			if h.Mode == "backend" {
-				return "", &errors.ParseError{Parser: "HTTPResponse", Line: line}
-			}
 			err = h.ParseHTTPResponse(&http_actions.Capture{}, parts, comment)
 		case "del-header":
 			err = h.ParseHTTPResponse(&http_actions.DelHeader{}, parts, comment)
@@ -74,6 +69,8 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 			err = h.ParseHTTPResponse(&http_actions.ReplaceHeader{}, parts, comment)
 		case "replace-value":
 			err = h.ParseHTTPResponse(&http_actions.ReplaceValue{}, parts, comment)
+		case "return":
+			err = h.ParseHTTPResponse(&http_actions.Return{}, parts, comment)
 		case "send-spoe-group":
 			err = h.ParseHTTPResponse(&actions.SendSpoeGroup{}, parts, comment)
 		case "set-header":
@@ -90,14 +87,16 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 			err = h.ParseHTTPResponse(&http_actions.SetTos{}, parts, comment)
 		case "silent-drop":
 			err = h.ParseHTTPResponse(&actions.SilentDrop{}, parts, comment)
+		case "strict-mode":
+			err = h.ParseHTTPResponse(&http_actions.StrictMode{}, parts, comment)
 		case "track-sc0":
 			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "track-sc1":
 			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "track-sc2":
 			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
-		case "strict-mode":
-			err = h.ParseHTTPResponse(&http_actions.StrictMode{}, parts, comment)
+		case "wait-for-body":
+			err = h.ParseHTTPResponse(&http_actions.WaitForBody{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):

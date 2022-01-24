@@ -785,6 +785,20 @@ backend test
   http-response del-map(map.lst) %[src] if ! value
   http-response del-map(map.lst) %[src]
   http-response deny
+  http-response deny deny_status 400
+  http-response deny if TRUE
+  http-response deny deny_status 400 if TRUE
+  http-response deny deny_status 400 content-type application/json if TRUE
+  http-response deny deny_status 400 content-type application/json
+  http-response deny deny_status 400 content-type application/json default-errorfiles
+  http-response deny deny_status 400 content-type application/json errorfile errors
+  http-response deny deny_status 400 content-type application/json string error if TRUE
+  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-response deny deny_status 400 content-type application/json file /var/errors.file
+  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
   http-response lua.foo
   http-response lua.foo if FALSE
   http-response lua.foo param
@@ -792,6 +806,9 @@ backend test
   http-response redirect prefix https://mysite.com
   http-response replace-header User-agent curl foo
   http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
+  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
   http-response sc-inc-gpc0(1)
   http-response sc-inc-gpc0(1) if FALSE
   http-response sc-inc-gpc1(1)
@@ -825,6 +842,20 @@ backend test
   http-response track-sc2 src
   http-response strict-mode on
   http-response strict-mode on if FALSE
+  http-response wait-for-body time 20s
+  http-response wait-for-body time 20s if TRUE
+  http-response wait-for-body time 20s at-least 100k
+  http-response wait-for-body time 20s at-least 100k if TRUE
+  http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-response return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
   http-check comment testcomment
   http-check connect
   http-check connect default
@@ -1335,6 +1366,20 @@ frontend test
   http-response del-map(map.lst) %[src] if ! value
   http-response del-map(map.lst) %[src]
   http-response deny
+  http-response deny deny_status 400
+  http-response deny if TRUE
+  http-response deny deny_status 400 if TRUE
+  http-response deny deny_status 400 content-type application/json if TRUE
+  http-response deny deny_status 400 content-type application/json
+  http-response deny deny_status 400 content-type application/json default-errorfiles
+  http-response deny deny_status 400 content-type application/json errorfile errors
+  http-response deny deny_status 400 content-type application/json string error if TRUE
+  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-response deny deny_status 400 content-type application/json file /var/errors.file
+  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
   http-response lua.foo
   http-response lua.foo if FALSE
   http-response lua.foo param
@@ -1342,6 +1387,9 @@ frontend test
   http-response redirect prefix https://mysite.com
   http-response replace-header User-agent curl foo
   http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
+  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
   http-response sc-inc-gpc0(1)
   http-response sc-inc-gpc0(1) if FALSE
   http-response sc-inc-gpc1(1)
@@ -1375,7 +1423,21 @@ frontend test
   http-response track-sc2 src
   http-response strict-mode on
   http-response strict-mode on if FALSE
+  http-response wait-for-body time 20s
+  http-response wait-for-body time 20s if TRUE
+  http-response wait-for-body time 20s at-least 100k
+  http-response wait-for-body time 20s at-least 100k if TRUE
   http-response capture res.hdr(Server) id 0
+  http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-response return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
   tcp-request content accept
   tcp-request content accept if !HTTP
   tcp-request content reject
@@ -2778,6 +2840,34 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-response deny
 `, 2},
+  {`  http-response deny deny_status 400
+`, 2},
+  {`  http-response deny if TRUE
+`, 2},
+  {`  http-response deny deny_status 400 if TRUE
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json if TRUE
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json default-errorfiles
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json errorfile errors
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json string error if TRUE
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json file /var/errors.file
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+`, 2},
+  {`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+`, 2},
   {`  http-response lua.foo
 `, 2},
   {`  http-response lua.foo if FALSE
@@ -2791,6 +2881,12 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-response replace-header User-agent curl foo
 `, 2},
   {`  http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+`, 2},
+  {`  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
+`, 2},
+  {`  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+`, 2},
+  {`  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `, 2},
   {`  http-response sc-inc-gpc0(1)
 `, 2},
@@ -2857,6 +2953,14 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  http-response strict-mode on
 `, 2},
   {`  http-response strict-mode on if FALSE
+`, 2},
+  {`  http-response wait-for-body time 20s
+`, 2},
+  {`  http-response wait-for-body time 20s if TRUE
+`, 2},
+  {`  http-response wait-for-body time 20s at-least 100k
+`, 2},
+  {`  http-response wait-for-body time 20s at-least 100k if TRUE
 `, 2},
   {`  http-response capture res.hdr(Server) id 0
 `, 1},

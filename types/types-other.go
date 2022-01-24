@@ -477,6 +477,21 @@ type HTTPRequests struct{}
 //test:ok:http-response del-map(map.lst) %[src]
 //test:fail:http-response del-map(map.lst)
 //test:ok:http-response deny
+//test:ok:http-response deny deny_status 400
+//test:ok:http-response deny if TRUE
+//test:ok:http-response deny deny_status 400 if TRUE
+//test:ok:http-response deny deny_status 400 content-type application/json if TRUE
+//test:ok:http-response deny deny_status 400 content-type application/json
+//test:ok:http-response deny deny_status 400 content-type application/json default-errorfiles
+//test:ok:http-response deny deny_status 400 content-type application/json errorfile errors
+//test:ok:http-response deny deny_status 400 content-type application/json string error if TRUE
+//test:ok:http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+//test:ok:http-response deny deny_status 400 content-type application/json file /var/errors.file
+//test:ok:http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
+//test:ok:http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+//test:ok:http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+//test:ok:http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+//test:fail:http-response deny test test
 //test:ok:http-response lua.foo
 //test:ok:http-response lua.foo if FALSE
 //test:ok:http-response lua.foo param
@@ -490,6 +505,27 @@ type HTTPRequests struct{}
 //test:fail:http-response replace-header User-agent curl
 //test:ok:http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 //test:fail:http-response replace-value X-Forwarded-For ^192.168.(.*)$
+//test:"ok":http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:"ok":http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+//test:"ok":http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:"ok":http-response return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+//test:"ok":http-response return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+//test:"ok":http-response return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+//test:"ok":http-response return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+//test:"ok":http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+//test:"ok":http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+//test:ok:http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
+//test:ok:http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+//test:ok:http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+//test:"ok":http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
+//test:fail:http-response return 8 t hdr
+//test:fail:http-response return hdr
+//test:fail:http-response return hdr one
+//test:fail:http-response return errorfile
+//test:fail:http-response return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 file
+//test:fail:http-response return 0 hdr
+//test:fail:http-response return 0 0 hdr 0
+//test:fail:http-response return e r s n s c m	t e r  s c t e s t e r s c v e hdr ï
 //test:ok:http-response sc-inc-gpc0(1)
 //test:ok:http-response sc-inc-gpc0(1) if FALSE
 //test:fail:http-response sc-inc-gpc0
@@ -543,6 +579,12 @@ type HTTPRequests struct{}
 //test:ok:http-response strict-mode on if FALSE
 //test:fail:http-response strict-mode
 //test:fail:http-response strict-mode if FALSE
+//test:ok:http-response wait-for-body time 20s
+//test:ok:http-response wait-for-body time 20s if TRUE
+//test:ok:http-response wait-for-body time 20s at-least 100k
+//test:ok:http-response wait-for-body time 20s at-least 100k if TRUE
+//test:fail:http-response wait-for-body 20s at-least 100k
+//test:fail:http-response wait-for-body time 2000 test
 type HTTPResponses struct{}
 
 //sections:defaults,backend
