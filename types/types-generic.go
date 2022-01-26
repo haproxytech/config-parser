@@ -17,7 +17,7 @@ limitations under the License.
 //nolint:godot
 package types
 
-// Enabled is used by parsers Daemon, MasterWorker, ExternalCheck, NoSplice
+// Enabled is used by parsers Daemon, MasterWorker, ExternalCheck, NoSplice, CompressionOffload
 //gen:Daemon
 //name:daemon
 //create-type:bool
@@ -38,6 +38,11 @@ package types
 //create-type:bool
 //test:ok:nosplice
 //test:ok:nosplice # comment
+//gen:CompressionOffload
+//name:compression-offload
+//create-type:bool
+//test:ok:compression offload
+//test:ok:compression offload # comment
 type Enabled struct {
 	Comment string
 }
@@ -90,11 +95,21 @@ type StringC struct {
 	Comment string
 }
 
-// StringSliceC is used by ConfigSnippet
+// StringSliceC is used by ConfigSnippet, CompressionAlgo, CompressionType
 //gen:ConfigSnippet
 //name:config-snippet
 //test:ok:###_config-snippet_### BEGIN\n  tune.ssl.default-dh-param 2048\n  tune.bufsize 32768\n  ###_config-snippet_### END
 //test:fail:tune.ssl.default-dh-param 2048\ntune.bufsize 32768
+//gen:CompressionAlgo
+//name:compression-algo
+//test:ok:compression algo identity
+//test:ok:compression algo identity raw-deflate
+//test:fail:compression algo
+//gen:CompressionType
+//name:compression-type
+//test:ok:compression type text/plain
+//test:ok:compression type text/plain application/json
+//test:fail:compression type
 type StringSliceC struct {
 	Value   []string
 	Comment string
