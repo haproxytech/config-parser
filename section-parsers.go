@@ -112,6 +112,10 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "allbackups"})
 	addParser(parser, &sequence, &simple.Option{Name: "external-check"})
 	addParser(parser, &sequence, &parsers.OptionForwardFor{})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-server"})
 	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
 	addParser(parser, &sequence, &tcp.Checks{})
 	addParser(parser, &sequence, &parsers.OptionHttpchk{})
@@ -144,10 +148,6 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
-	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
-	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
-	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
-	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-server"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -241,6 +241,8 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "splice-auto"})
 	addParser(parser, &sequence, &simple.Option{Name: "splice-request"})
 	addParser(parser, &sequence, &simple.Option{Name: "splice-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
 	addParser(parser, &sequence, &simple.Option{Name: "logasap"})
 	addParser(parser, &sequence, &parsers.OptionHTTPLog{})
 	addParser(parser, &sequence, &simple.Timeout{Name: "http-request"})
@@ -265,8 +267,6 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
-	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-request"})
-	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-client"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -301,6 +301,8 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "log-health-checks"})
 	addParser(parser, &sequence, &simple.String{Name: "log-tag"})
 	addParser(parser, &sequence, &simple.Option{Name: "allbackups"})
+	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-server"})
 	addParser(parser, &sequence, &simple.Option{Name: "tcp-check"})
 	addParser(parser, &sequence, &tcp.Checks{})
 	addParser(parser, &sequence, &parsers.OptionHttpchk{})
@@ -343,8 +345,6 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &http.Responses{Mode: "backend"})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
-	addParser(parser, &sequence, &simple.Option{Name: "accept-invalid-http-response"})
-	addParser(parser, &sequence, &simple.Option{Name: "h1-case-adjust-bogus-server"})
 	return p.createParsers(parser, sequence)
 }
 
