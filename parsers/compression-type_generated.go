@@ -28,7 +28,7 @@ func (p *CompressionType) Init() {
 }
 
 func (p *CompressionType) GetParserName() string {
-	return "compression-type"
+	return "compression type"
 }
 
 func (p *CompressionType) Get(createIfNotExist bool) (common.ParserData, error) {

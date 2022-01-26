@@ -28,7 +28,7 @@ func (p *CompressionAlgo) Init() {
 }
 
 func (p *CompressionAlgo) GetParserName() string {
-	return "compression-algo"
+	return "compression algo"
 }
 
 func (p *CompressionAlgo) Get(createIfNotExist bool) (common.ParserData, error) {

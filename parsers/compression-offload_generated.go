@@ -28,7 +28,7 @@ func (p *CompressionOffload) Init() {
 }
 
 func (p *CompressionOffload) GetParserName() string {
-	return "compression-offload"
+	return "compression offload"
 }
 
 func (p *CompressionOffload) Get(createIfNotExist bool) (common.ParserData, error) {
