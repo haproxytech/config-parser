@@ -1102,3 +1102,17 @@ type ProcessVary struct {
 	On      bool
 	Comment string
 }
+
+//sections:backend
+//name:force-persist
+//test:ok:force-persist if acl-name
+//test:ok:force-persist unless acl-name
+//test:fail:force-persist
+//test:fail:force-persist if
+//test:fail:force-persist ddd acl-name
+//test:fail:force-persist acl-name
+type ForcePersist struct {
+	Cond     string
+	CondTest string
+	Comment  string
+}

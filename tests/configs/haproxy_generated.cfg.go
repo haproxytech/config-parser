@@ -610,6 +610,7 @@ backend test
   server-template srv 3 google.com:80 check
   server-template srv 3 google.com:80
   server-template srv 3 google.com
+  force-persist if acl-name
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -2525,6 +2526,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  h1-case-adjust content-type Content-Type
 `, 1},
   {`  process-vary on
+`, 1},
+  {`  force-persist if acl-name
 `, 1},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
