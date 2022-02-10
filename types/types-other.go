@@ -108,6 +108,13 @@ type SimpleNumber struct{}
 //parser-type:StringC
 type SimpleString struct{}
 
+//name:simple-on-off
+//no-sections:true
+//struct-name:OnOff
+//dir:simple
+//parser-type:StringC
+type SimpleOnOff struct{}
+
 //name:simple-string-slice
 //no-sections:true
 //struct-name:StringSlice
@@ -137,6 +144,13 @@ type ArrayStringKeyValue struct{}
 //dir:simple
 //parser-type:StringC
 type SimpleTime struct{}
+
+//name:simple-size
+//no-sections:true
+//struct-name:Size
+//dir:simple
+//parser-type:StringC
+type SimpleSize struct{}
 
 //name:simple-time-two-words
 //no-sections:true
