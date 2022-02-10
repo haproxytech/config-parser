@@ -152,6 +152,13 @@ type SimpleTime struct{}
 //parser-type:StringC
 type SimpleSize struct{}
 
+//name:simple-enabled
+//no-sections:true
+//struct-name:Enabled
+//dir:simple
+//parser-type:Enabled
+type SimpleEnabled struct{}
+
 //name:simple-time-two-words
 //no-sections:true
 //struct-name:TimeTwoWords
