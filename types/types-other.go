@@ -115,6 +115,13 @@ type SimpleString struct{}
 //parser-type:StringC
 type SimpleOnOff struct{}
 
+//name:simple-auto-on-off
+//no-sections:true
+//struct-name:AutoOnOff
+//dir:simple
+//parser-type:StringC
+type SimpleAutoOnOff struct{}
+
 //name:simple-string-slice
 //no-sections:true
 //struct-name:StringSlice

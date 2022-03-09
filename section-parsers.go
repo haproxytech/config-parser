@@ -255,6 +255,17 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &parsers.SslModeAsync{})
 	addParser(parser, &sequence, &simple.Word{Name: "h1-case-adjust-file"})
 	addParser(parser, &sequence, &parsers.H1CaseAdjust{})
+	addParser(parser, &sequence, &simple.Enabled{Name: "busy-polling"})
+	addParser(parser, &sequence, &simple.Number{Name: "max-spread-checks"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "noepoll"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "nokqueue"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "noevports"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "nopoll"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "nosplice"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "nogetaddrinfo"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "noreuseport"})
+	addParser(parser, &sequence, &simple.AutoOnOff{Name: "profiling.tasks"})
+	addParser(parser, &sequence, &simple.Number{Name: "spread-checks"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
