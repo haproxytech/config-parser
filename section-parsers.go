@@ -76,6 +76,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.HashType{})
 	addParser(parser, &sequence, &parsers.Balance{})
 	addParser(parser, &sequence, &parsers.MaxConn{})
+	addParser(parser, &sequence, &simple.Number{Name: "backlog"})
 	addParser(parser, &sequence, &parsers.Log{})
 	addParser(parser, &sequence, &parsers.OptionHTTPLog{})
 	addParser(parser, &sequence, &stats.Stats{Mode: "defaults"})
@@ -279,6 +280,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Mode{})
 	addParser(parser, &sequence, &parsers.MaxConn{})
+	addParser(parser, &sequence, &simple.Number{Name: "backlog"})
 	addParser(parser, &sequence, &parsers.Bind{})
 	addParser(parser, &sequence, &parsers.ACL{})
 	addParser(parser, &sequence, &parsers.MonitorURI{})
