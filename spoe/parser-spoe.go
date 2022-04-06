@@ -25,7 +25,7 @@ import (
 	"sync"
 
 	"github.com/gofrs/flock"
-	"github.com/google/renameio"
+	"github.com/google/renameio/maybe"
 	parser "github.com/haproxytech/config-parser/v4"
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
@@ -386,7 +386,7 @@ func (p *Parser) Save(filename string) error {
 		return err
 	}
 	d1 := []byte(p.String())
-	err := renameio.WriteFile(filename, d1, 0o644)
+	err := maybe.WriteFile(filename, d1, 0o644)
 	if err != nil {
 		f.Unlock() //nolint:errcheck
 		return err

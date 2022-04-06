@@ -23,7 +23,7 @@ import (
 	"strings"
 
 	"github.com/gofrs/flock"
-	"github.com/google/renameio"
+	"github.com/google/renameio/maybe"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -70,7 +70,7 @@ func (p *configParser) save(data []byte, filename string) error {
 	if err := f.Lock(); err != nil {
 		return err
 	}
-	err := renameio.WriteFile(filename, data, 0o644)
+	err := maybe.WriteFile(filename, data, 0o644)
 	if err != nil {
 		f.Unlock() //nolint:errcheck
 		return err
