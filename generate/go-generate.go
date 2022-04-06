@@ -30,7 +30,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/google/renameio"
+	"github.com/google/renameio/maybe"
 	"github.com/haproxytech/config-parser/v4/common"
 )
 
@@ -256,7 +256,7 @@ func main() {
 	generateTypes(dir, "spoe/")
 
 	filePath := path.Join(dir, "tests", "configs", "haproxy_generated.cfg.go")
-	err = renameio.WriteFile(filePath, []byte(configFile.String()), 0o644)
+	err = maybe.WriteFile(filePath, []byte(configFile.String()), 0o644)
 	if err != nil {
 		log.Println(err)
 	}
