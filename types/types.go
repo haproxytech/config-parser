@@ -1116,3 +1116,23 @@ type ForcePersist struct {
 	CondTest string
 	Comment  string
 }
+
+//sections:global
+//name:unix-bind
+//is-multiple:false
+//test:ok:unix-bind prefix pre
+//test:ok:unix-bind prefix pre mode test
+//test:ok:unix-bind prefix pre mode test user ggalinec
+//test:ok:unix-bind prefix pre mode test user ggalinec uid 12345
+//test:ok:unix-bind prefix pre mode test user ggalinec uid 12345 group haproxy
+//test:ok:unix-bind prefix pre mode test user ggalinec uid 12345 group haproxy gid 6789
+//test:fail:unix-bind
+type UnixBind struct {
+	Prefix  string
+	Mode    string
+	User    string
+	UID     string
+	Group   string
+	GID     string
+	Comment string
+}

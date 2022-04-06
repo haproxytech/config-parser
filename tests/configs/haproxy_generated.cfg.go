@@ -36,6 +36,7 @@ global test
   ssl-engine rdrand
   ssl-mode-async
   h1-case-adjust content-type Content-Type
+  unix-bind prefix pre
 
 defaults test
   balance roundrobin
@@ -2528,6 +2529,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  process-vary on
 `, 1},
   {`  force-persist if acl-name
+`, 1},
+  {`  unix-bind prefix pre
 `, 1},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
