@@ -266,11 +266,11 @@ backend test
   option contstats
 
 listen stats
-  bind *:1024 process 1
   mode http
+  bind *:1024 process 1
+  no log
+  option forceclose
   stats enable
   stats realm HAProxy\ Statistics
   stats uri /
-  no log
-  option forceclose
 `
