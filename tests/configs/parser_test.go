@@ -135,3 +135,18 @@ func TestConfigUseV2HTTPCheck(t *testing.T) {
 		t.Fatalf("configurations does not match")
 	}
 }
+
+func TestListenSectionParsers(t *testing.T) {
+	var buffer bytes.Buffer
+	buffer.WriteString(configFull)
+	p, err := parser.New(options.UseListenSectionParsers, options.Reader(&buffer))
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	result := p.String()
+	if result != configFull {
+		compare(t, configFull, result)
+		t.Fatalf("configurations does not match")
+	}
+}

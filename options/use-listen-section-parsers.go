@@ -16,24 +16,12 @@ limitations under the License.
 
 package options
 
-import (
-	"io"
+type useListenSectionParsers struct{}
 
-	"github.com/haproxytech/go-logger"
-)
-
-type Parser struct {
-	Path                    string
-	Reader                  io.Reader
-	Logger                  logger.Format // we always will have p.Options.LogPrefix
-	UseV2HTTPCheck          bool
-	UseMd5Hash              bool
-	UseListenSectionParsers bool
-	DisableUnProcessed      bool
-	Log                     bool
-	LogPrefix               string
+func (u useListenSectionParsers) Set(p *Parser) error {
+	p.UseListenSectionParsers = true
+	return nil
 }
 
-type ParserOption interface {
-	Set(p *Parser) error
-}
+// UseListenSectionParsers sets flag to use listen section parser
+var UseListenSectionParsers = useListenSectionParsers{} //nolint:gochecknoglobals
