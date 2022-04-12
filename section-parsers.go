@@ -250,6 +250,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphers"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphersuites"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-dh-param-file"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "ssl-load-extra-del-ext"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-server-verify"})
 	addParser(parser, &sequence, &simple.Time{Name: "hard-stop-after"})
 	addParser(parser, &sequence, &parsers.Log{})
