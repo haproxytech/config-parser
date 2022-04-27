@@ -40,16 +40,14 @@ func (m *MaxConn) Parse(parts []string, comment string) error {
 }
 
 func (m *MaxConn) String() string {
-	res, _ := m.Maxconn.Result()
-	if len(res) != 0 {
+	if res, _ := m.Maxconn.Result(); len(res) != 0 {
 		return res[0].Data
 	}
 	return "maxconn"
 }
 
 func (m *MaxConn) GetComment() string {
-	res, _ := m.Maxconn.Result()
-	if len(res) != 0 {
+	if res, _ := m.Maxconn.Result(); len(res) != 0 {
 		return res[0].Comment
 	}
 	return ""

@@ -106,8 +106,7 @@ func (p *configParser) SectionsGet(sectionType Section) ([]string, error) {
 func (p *configParser) SectionsDelete(sectionType Section, sectionName string) error {
 	p.lock()
 	defer p.unLock()
-	_, ok := p.Parsers[sectionType]
-	if !ok {
+	if _, ok := p.Parsers[sectionType]; !ok {
 		return errors.ErrSectionMissing
 	}
 	delete(p.Parsers[sectionType], sectionName)

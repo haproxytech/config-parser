@@ -102,7 +102,7 @@ func (p *configParser) Process(reader io.Reader) error {
 }
 
 // ProcessLine parses line plus determines if we need to change state
-func (p *configParser) ProcessLine(line string, parts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo,cyclop
+func (p *configParser) ProcessLine(line string, parts []string, comment string, config ConfiguredParsers) ConfiguredParsers { //nolint:gocognit,gocyclo,cyclop,maintidx
 	if config.State != "" {
 		if parts[0] == "" && comment != "" && comment != "##_config-snippet_### BEGIN" && comment != "##_config-snippet_### END" {
 			if line[0] == ' ' {

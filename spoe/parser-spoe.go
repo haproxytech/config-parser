@@ -133,8 +133,7 @@ func (p *Parser) SectionsGet(scope string, sectionType parser.Section) ([]string
 func (p *Parser) ScopeDelete(scope string) error {
 	p.lock()
 	defer p.unLock()
-	_, ok := p.Parsers[scope]
-	if !ok {
+	if _, ok := p.Parsers[scope]; !ok {
 		return errors.ErrScopeMissing
 	}
 	delete(p.Parsers, scope)
