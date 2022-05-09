@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 package parsers
 
 import (
@@ -23,50 +24,38 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SslEngine struct {
-	data        []types.SslEngine
-	preComments []string
+type ThreadGroup struct {
+	data        []types.ThreadGroup
+	preComments []string // comments that appear before the the actual line
 }
 
-func (s *SslEngine) parse(line string, parts []string, comment string) (*types.SslEngine, error) {
-	if len(parts) < 2 || len(parts) > 3 || parts[0] != "ssl-engine" {
-		return nil, &errors.ParseError{Parser: "ssl-engine", Line: line}
+func (t *ThreadGroup) parse(line string, parts []string, comment string) (*types.ThreadGroup, error) {
+	if len(parts) >= 3 {
+		data := &types.ThreadGroup{
+			Group:      parts[1],
+			NumOrRange: parts[2],
+			Comment:    comment,
+		}
+		return data, nil
 	}
-	sslEngine := &types.SslEngine{
-		Name: parts[1],
-		Algorithms: func() []string {
-			var res []string
-			if len(parts) == 3 {
-				res = strings.Split(parts[2], ",")
-			}
-			return res
-		}(),
-		Comment: comment,
-	}
-	return sslEngine, nil
+	return nil, &errors.ParseError{Parser: "ThreadGroup", Line: line}
 }
 
-func (s *SslEngine) Result() ([]common.ReturnResultLine, error) {
-	if len(s.data) == 0 {
+func (t *ThreadGroup) Result() ([]common.ReturnResultLine, error) {
+	if len(t.data) == 0 {
 		return nil, errors.ErrFetch
 	}
-
-	result := make([]common.ReturnResultLine, len(s.data))
-	for index, data := range s.data {
-
+	result := make([]common.ReturnResultLine, len(t.data))
+	for index, tg := range t.data {
 		var sb strings.Builder
-		sb.WriteString("ssl-engine")
+		sb.WriteString("thread-group")
 		sb.WriteString(" ")
-		sb.WriteString(data.Name)
-
-		if len(data.Algorithms) > 0 {
-			sb.WriteString(" ")
-			sb.WriteString(strings.Join(data.Algorithms, ","))
-		}
-
+		sb.WriteString(tg.Group)
+		sb.WriteString(" ")
+		sb.WriteString(tg.NumOrRange)
 		result[index] = common.ReturnResultLine{
 			Data:    sb.String(),
-			Comment: data.Comment,
+			Comment: tg.Comment,
 		}
 	}
 	return result, nil

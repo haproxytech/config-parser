@@ -978,6 +978,7 @@ type LuaLoad struct {
 
 //sections:global
 //name:ssl-engine
+//is-multiple:true
 //test:ok:ssl-engine rdrand
 //test:ok:ssl-engine rdrand ALL
 //test:ok:ssl-engine rdrand RSA,DSA
@@ -985,6 +986,7 @@ type LuaLoad struct {
 type SslEngine struct {
 	Name       string
 	Algorithms []string
+	Comment    string
 }
 
 //sections:global
@@ -1135,4 +1137,17 @@ type UnixBind struct {
 	Group   string
 	GID     string
 	Comment string
+}
+
+//sections:global
+//name:thread-group
+//is-multiple:true
+//test:ok:thread-group name 1-10
+//test:ok:thread-group name 10
+//test:fail:thread-group
+//test:fail:thread-group name
+type ThreadGroup struct {
+	Group      string
+	NumOrRange string
+	Comment    string
 }

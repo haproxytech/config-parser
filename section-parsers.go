@@ -250,7 +250,6 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphers"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphersuites"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-bind-curves"})
-	// ssl-default-bind-options TODO
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-dh-param-file"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "ssl-load-extra-del-ext"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-server-verify"})
@@ -299,7 +298,21 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Enabled{Name: "set-dumpable"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "strict-limits"})
 	addParser(parser, &sequence, &parsers.UnixBind{})
-	// set-var TODO
+	addParser(parser, &sequence, &simple.String{Name: "deviceatlas-json-file"})
+	addParser(parser, &sequence, &simple.String{Name: "deviceatlas-log-level"})
+	addParser(parser, &sequence, &simple.String{Name: "deviceatlas-separator"})
+	addParser(parser, &sequence, &simple.String{Name: "deviceatlas-properties-cookie"})
+	addParser(parser, &sequence, &simple.Word{Name: "51degrees-data-file"})
+	addParser(parser, &sequence, &simple.String{Name: "51degrees-property-name-list"})
+	addParser(parser, &sequence, &simple.String{Name: "51degrees-property-separator"})
+	addParser(parser, &sequence, &simple.Number{Name: "51degrees-cache-size"})
+	addParser(parser, &sequence, &simple.Number{Name: "thread-groups"})
+	addParser(parser, &sequence, &parsers.StatsMaxconn{})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-load-extra-files"})
+	addParser(parser, &sequence, &parsers.ThreadGroup{})
+	addParser(parser, &sequence, &simple.Enabled{Name: "quiet"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "zero-warning"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "tune.fd.edge-triggered"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})

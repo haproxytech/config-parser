@@ -22,71 +22,71 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-func (p *SslEngine) Init() {
-	p.data = []types.SslEngine{}
+func (p *ThreadGroup) Init() {
+	p.data = []types.ThreadGroup{}
 	p.preComments = []string{}
 }
 
-func (p *SslEngine) GetParserName() string {
-	return "ssl-engine"
+func (p *ThreadGroup) GetParserName() string {
+	return "thread-group"
 }
 
-func (p *SslEngine) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *ThreadGroup) Get(createIfNotExist bool) (common.ParserData, error) {
 	if len(p.data) == 0 && !createIfNotExist {
 		return nil, errors.ErrFetch
 	}
 	return p.data, nil
 }
 
-func (p *SslEngine) GetPreComments() ([]string, error) {
+func (p *ThreadGroup) GetPreComments() ([]string, error) {
 	return p.preComments, nil
 }
 
-func (p *SslEngine) SetPreComments(preComments []string) {
+func (p *ThreadGroup) SetPreComments(preComments []string) {
 	p.preComments = preComments
 }
 
-func (p *SslEngine) GetOne(index int) (common.ParserData, error) {
+func (p *ThreadGroup) GetOne(index int) (common.ParserData, error) {
 	if index < 0 || index >= len(p.data) {
 		return nil, errors.ErrFetch
 	}
 	return p.data[index], nil
 }
 
-func (p *SslEngine) Delete(index int) error {
+func (p *ThreadGroup) Delete(index int) error {
 	if index < 0 || index >= len(p.data) {
 		return errors.ErrFetch
 	}
 	copy(p.data[index:], p.data[index+1:])
-	p.data[len(p.data)-1] = types.SslEngine{}
+	p.data[len(p.data)-1] = types.ThreadGroup{}
 	p.data = p.data[:len(p.data)-1]
 	return nil
 }
 
-func (p *SslEngine) Insert(data common.ParserData, index int) error {
+func (p *ThreadGroup) Insert(data common.ParserData, index int) error {
 	if data == nil {
 		return errors.ErrInvalidData
 	}
 	switch newValue := data.(type) {
-	case []types.SslEngine:
+	case []types.ThreadGroup:
 		p.data = newValue
-	case *types.SslEngine:
+	case *types.ThreadGroup:
 		if index > -1 {
 			if index > len(p.data) {
 				return errors.ErrIndexOutOfRange
 			}
-			p.data = append(p.data, types.SslEngine{})
+			p.data = append(p.data, types.ThreadGroup{})
 			copy(p.data[index+1:], p.data[index:])
 			p.data[index] = *newValue
 		} else {
 			p.data = append(p.data, *newValue)
 		}
-	case types.SslEngine:
+	case types.ThreadGroup:
 		if index > -1 {
 			if index > len(p.data) {
 				return errors.ErrIndexOutOfRange
 			}
-			p.data = append(p.data, types.SslEngine{})
+			p.data = append(p.data, types.ThreadGroup{})
 			copy(p.data[index+1:], p.data[index:])
 			p.data[index] = newValue
 		} else {
@@ -98,15 +98,15 @@ func (p *SslEngine) Insert(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *SslEngine) Set(data common.ParserData, index int) error {
+func (p *ThreadGroup) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
 	}
 	switch newValue := data.(type) {
-	case []types.SslEngine:
+	case []types.ThreadGroup:
 		p.data = newValue
-	case *types.SslEngine:
+	case *types.ThreadGroup:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = *newValue
 		} else if index == -1 {
@@ -114,7 +114,7 @@ func (p *SslEngine) Set(data common.ParserData, index int) error {
 		} else {
 			return errors.ErrIndexOutOfRange
 		}
-	case types.SslEngine:
+	case types.ThreadGroup:
 		if index > -1 && index < len(p.data) {
 			p.data[index] = newValue
 		} else if index == -1 {
@@ -128,7 +128,7 @@ func (p *SslEngine) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *SslEngine) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
+func (p *ThreadGroup) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
 	changeState, err = p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
@@ -136,19 +136,19 @@ func (p *SslEngine) PreParse(line string, parts []string, preComments []string, 
 	return changeState, err
 }
 
-func (p *SslEngine) Parse(line string, parts []string, comment string) (changeState string, err error) {
-	if parts[0] == "ssl-engine" {
+func (p *ThreadGroup) Parse(line string, parts []string, comment string) (changeState string, err error) {
+	if parts[0] == "thread-group" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
-			return "", &errors.ParseError{Parser: "SslEngine", Line: line}
+			return "", &errors.ParseError{Parser: "ThreadGroup", Line: line}
 		}
 		p.data = append(p.data, *data)
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: "SslEngine", Line: line}
+	return "", &errors.ParseError{Parser: "ThreadGroup", Line: line}
 }
 
-func (p *SslEngine) ResultAll() ([]common.ReturnResultLine, []string, error) {
+func (p *ThreadGroup) ResultAll() ([]common.ReturnResultLine, []string, error) {
 	res, err := p.Result()
 	return res, p.preComments, err
 }

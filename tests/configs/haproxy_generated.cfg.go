@@ -34,9 +34,13 @@ global test
   lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
   lua-load /etc/haproxy/lua/foo.lua
   ssl-engine rdrand
+  ssl-engine rdrand ALL
+  ssl-engine rdrand RSA,DSA
   ssl-mode-async
   h1-case-adjust content-type Content-Type
   unix-bind prefix pre
+  thread-group name 1-10
+  thread-group name 10
 
 defaults test
   balance roundrobin
@@ -2504,6 +2508,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  ssl-engine rdrand
 `, 1},
+  {`  ssl-engine rdrand ALL
+`, 1},
+  {`  ssl-engine rdrand RSA,DSA
+`, 1},
   {`  ssl-mode-async
 `, 1},
   {`  load-server-state-from-file global
@@ -2531,6 +2539,10 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  force-persist if acl-name
 `, 1},
   {`  unix-bind prefix pre
+`, 1},
+  {`  thread-group name 1-10
+`, 1},
+  {`  thread-group name 10
 `, 1},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},

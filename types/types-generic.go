@@ -63,6 +63,13 @@ type Enabled struct {
 //test:ok:nbthread 4
 //test:ok:nbthread 4 # comment
 //test:fail:nbthread
+//gen:StatsMaxconn
+//name:stats maxconn
+//test:ok:stats maxconn 10
+//test:fail:stats
+//test:fail:maxconn
+//test:fail:stats maxconn
+//test:fail:stats maxconn string
 type Int64C struct {
 	Value   int64
 	Comment string
