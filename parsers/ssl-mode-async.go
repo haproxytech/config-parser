@@ -35,7 +35,7 @@ func (p *SslModeAsync) Parse(line string, parts []string, comment string) (chang
 	return "", &errors.ParseError{Parser: "ssl-mode-async", Line: line}
 }
 
-func (p *SslModeAsync) Result() (res []common.ReturnResultLine, err error) {
+func (p *SslModeAsync) Result() ([]common.ReturnResultLine, error) {
 	if p.data == nil {
 		return nil, errors.ErrFetch
 	}

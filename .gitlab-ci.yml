@@ -5,7 +5,7 @@ stages:
 diff:
   stage: diff
   image:
-    name: $CI_REGISTRY_GO/golang:1.17
+    name: $CI_REGISTRY_GO/golang:1.18
     entrypoint: [""]
   tags:
     - go
@@ -19,7 +19,7 @@ diff:
 golangci_lint:
   stage: lint
   image:
-    name: $CI_REGISTRY_GO/lint:1.43.0
+    name: $CI_REGISTRY_GO/lint:1.46.2
     entrypoint: [""]
   tags:
     - go
@@ -42,7 +42,7 @@ lint-commit-msg:
 tidy:
   stage: lint
   image:
-    name: $CI_REGISTRY_GO/golang:1.17
+    name: $CI_REGISTRY_GO/golang:1.18
     entrypoint: [""]
   tags:
     - go
@@ -55,7 +55,7 @@ tidy:
 test:
   stage: test
   image:
-    name: $CI_REGISTRY_GO/golang:1.17
+    name: $CI_REGISTRY_GO/golang:1.18
     entrypoint: [""]
   tags:
     - go

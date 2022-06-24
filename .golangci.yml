@@ -36,6 +36,8 @@ linters:
     - ireturn
 
     - goconst
+    - exhaustruct
+    - nonamedreturns
 
 run:
   skip-dirs:

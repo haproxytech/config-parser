@@ -35,11 +35,12 @@ func (p *SslEngine) Parse(line string, parts []string, comment string) (changeSt
 	}
 	p.data = &types.SslEngine{
 		Name: parts[1],
-		Algorithms: func() (res []string) {
+		Algorithms: func() []string {
+			var res []string
 			if len(parts) == 3 {
 				res = strings.Split(parts[2], ",")
 			}
-			return
+			return res
 		}(),
 	}
 	return "", nil

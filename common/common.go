@@ -35,8 +35,8 @@ func StringSplitIgnoreEmpty(s string, separators ...rune) []string {
 	return strings.FieldsFunc(s, f)
 }
 
-// StringSplitWithCommentIgnoreEmpty while spliting, removes empty items, if we have comment, separate it
-func StringSplitWithCommentIgnoreEmpty(s string) (data []string, comment string) { //nolint:gocognit
+// StringSplitWithCommentIgnoreEmpty while splitting, removes empty items, if we have comment, separate it
+func StringSplitWithCommentIgnoreEmpty(s string) (data []string, comment string) { //nolint:gocognit,nonamedreturns
 	data = []string{}
 
 	singleQuoteActive := false
@@ -104,7 +104,7 @@ func StringExtractComment(s string) string {
 }
 
 // SplitRequest searches for "if" or "unless" and returns result
-func SplitRequest(parts []string) (command, condition []string) {
+func SplitRequest(parts []string) (command, condition []string) { //nolint:nonamedreturns
 	if len(parts) == 0 {
 		return []string{}, []string{}
 	}

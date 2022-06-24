@@ -408,7 +408,7 @@ func (p *Parser) IsScope(line string) bool {
 }
 
 // ProcessLine parses line plus determines if we need to change state
-func (p *Parser) ProcessLine(line string, parts []string, comment string, config parser.ConfiguredParsers, scope string) (psrs parser.ConfiguredParsers, resultScope string) {
+func (p *Parser) ProcessLine(line string, parts []string, comment string, config parser.ConfiguredParsers, scope string) (psrs parser.ConfiguredParsers, resultScope string) { //nolint:nonamedreturns
 	if p.IsScope(line) {
 		scope = line
 		_ = p.ScopeCreate(scope)
