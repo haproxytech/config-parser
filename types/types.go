@@ -17,7 +17,10 @@ limitations under the License.
 //nolint:godot
 package types
 
-import "github.com/haproxytech/config-parser/v4/params"
+import (
+	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/params"
+)
 
 //sections:frontend,backend
 //name:acl
@@ -1150,4 +1153,31 @@ type ThreadGroup struct {
 	Group      string
 	NumOrRange string
 	Comment    string
+}
+
+//sections:global
+//name:set-var
+//is-multiple:true
+//test:ok:set-var proc.current_state str(primary)
+//test:ok:set-var proc.prio int(100)
+//test:ok:set-var proc.threshold int(200),sub(proc.prio)
+//test:fail:set-var
+//test:fail:set-var test
+type SetVar struct {
+	Name    string
+	Expr    common.Expression
+	Comment string
+}
+
+//sections:global
+//name:set-var-fmt
+//is-multiple:true
+//test:"ok":set-var-fmt proc.current_state "primary"
+//test:"ok":set-var-fmt proc.bootid "%pid|%t"
+//test:fail:set-var-fmt
+//test:fail:set-var-fmt name
+type SetVarFmt struct {
+	Name    string
+	Format  string
+	Comment string
 }

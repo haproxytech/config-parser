@@ -41,6 +41,11 @@ global test
   unix-bind prefix pre
   thread-group name 1-10
   thread-group name 10
+  set-var proc.current_state str(primary)
+  set-var proc.prio int(100)
+  set-var proc.threshold int(200),sub(proc.prio)
+  set-var-fmt proc.current_state "primary"
+  set-var-fmt proc.bootid "%pid|%t"
 
 defaults test
   balance roundrobin
@@ -2597,6 +2602,12 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  thread-group name 1-10
 `, 1},
   {`  thread-group name 10
+`, 1},
+  {`  set-var proc.current_state str(primary)
+`, 1},
+  {`  set-var proc.prio int(100)
+`, 1},
+  {`  set-var proc.threshold int(200),sub(proc.prio)
 `, 1},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
