@@ -64,6 +64,9 @@ defaults
   timeout server 50s
   timeout tunnel 1h
   timeout http-keep-alive 1m
+  clitcpka-cnt 10
+  clitcpka-idle 10s
+  clitcpka-intvl 10s
   load-server-state-from-file global
 
 # some random userlist L1
@@ -172,6 +175,9 @@ frontend xyz3
   acl network_allowed src 20.30.40.50 8.9.9.0/27
   acl network_allowed src 20.30.40.51 8.9.9.0/27
   acl other acl src 20.30.40.52 8.9.9.0/27
+  clitcpka-cnt 10
+  clitcpka-idle 10s
+  clitcpka-intvl 10s
   http-request allow if src 192.168.0.0/16
   http-request set-header X-SSL %[ssl_fc]
   http-request set-var(req.my_var) req.fhdr(user-agent),lower
@@ -274,4 +280,7 @@ listen stats
   stats enable
   stats realm HAProxy\ Statistics
   stats uri /
+  clitcpka-cnt 10
+  clitcpka-idle 10s
+  clitcpka-intvl 10s
 `
