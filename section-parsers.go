@@ -646,5 +646,14 @@ func (p *configParser) getHTTPErrorsParser() *Parsers {
 }
 
 func (p *configParser) getRingParser() *Parsers {
-	return p.createParsers(map[string]ParserInterface{}, []Section{})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &simple.String{Name: "description"})
+	addParser(parser, &sequence, &simple.String{Name: "format"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxlen"})
+	addParser(parser, &sequence, &simple.Size{Name: "size"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "connect"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "server"})
+	addParser(parser, &sequence, &parsers.Server{})
+	return p.createParsers(parser, sequence)
 }
