@@ -18,6 +18,7 @@ package actions
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
@@ -43,6 +44,11 @@ func (f *SetStatus) Parse(parts []string, parserType types.ParserType, comment s
 			return errors.ErrInvalidData
 		}
 		f.Status = command[0]
+		if value, err := strconv.Atoi(f.Status); err != nil {
+			return fmt.Errorf("expecting an integer value, %w", err)
+		} else if value < 100 || value > 999 {
+			return fmt.Errorf(" expects an integer status code between 100 and 999, got %d", value)
+		}
 		index := 1
 
 		if len(command) >= 3 && command[index] == "reason" {
