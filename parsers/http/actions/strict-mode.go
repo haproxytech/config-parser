@@ -42,7 +42,12 @@ func (f *StrictMode) Parse(parts []string, parserType types.ParserType, comment 
 		if len(command) == 0 {
 			return errors.ErrInvalidData
 		}
-		f.Mode = command[0]
+		switch command[0] {
+		case "on", "off":
+			f.Mode = command[0]
+		default:
+			return fmt.Errorf("only on and off are supported, got %s", command[0])
+		}
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
