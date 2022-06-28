@@ -378,6 +378,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.StickTable{})
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
+	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
 	return p.createParsers(parser, sequence)
 }
@@ -460,6 +461,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "retries"})
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "backend"})
+	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 	return p.createParsers(parser, sequence)
@@ -571,6 +573,7 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &simple.Number{Name: "retries"})
 		addParser(parser, &sequence, &tcp.Responses{})
 		addParser(parser, &sequence, &http.Responses{Mode: "listen"})
+		addParser(parser, &sequence, &http.AfterResponses{})
 		addParser(parser, &sequence, &parsers.DeclareCapture{})
 	}
 	return p.createParsers(parser, sequence)

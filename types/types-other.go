@@ -619,6 +619,59 @@ type HTTPRequests struct{}
 //test:fail:http-response wait-for-body time 2000 test
 type HTTPResponses struct{}
 
+//name:http-after-response
+//sections:frontend,backend
+//struct-name:AfterResponses
+//dir:http
+//is-multiple:true
+//parser-type:Action
+//is-interface:true
+//no-parse:true
+//no-init:true
+//test:fail:http-after-response
+//test:fail:http-after-response set-header
+//test:fail:http-after-response set-header x-foo
+//test:ok:http-after-response allow
+//test:ok:http-after-response allow if acl
+//test:ok:http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
+//test:ok:http-after-response add-header X-Header \"foo=bar\"
+//test:ok:http-after-response add-header X-Header \"foo=bar\" if acl
+//test:ok:http-after-response add-header X-Header \"foo=bar\" unless acl
+//test:ok:http-after-response allow unless acl
+//test:ok:http-after-response del-header X-Value
+//test:ok:http-after-response del-header X-Value -m GET
+//test:ok:http-after-response del-header X-Value -m GET if acl
+//test:ok:http-after-response del-header X-Value -m GET unless acl
+//test:fail:http-after-response del-header
+//test:ok:http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
+//test:ok:http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
+//test:fail:http-after-response replace-header Set-Cookie
+//test:fail:http-after-response replace-header Set-Cookie (C=[^;]*);(.*)
+//test:ok:http-after-response replace-value Cache-control ^public$ private
+//test:ok:http-after-response replace-value Cache-control ^public$ private if acl
+//test:fail:http-after-response replace-value Cache-control
+//test:fail:http-after-response replace-value Cache-control ^public$
+//test:ok:http-after-response set-status 431
+//test:ok:http-after-response set-status 503 reason \"SlowDown\"
+//test:ok:http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
+//test:ok:http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
+//test:fail:http-after-response set-status
+//test:fail:http-after-response set-status error
+//test:ok:http-after-response set-var(sess.last_redir) res.hdr(location)
+//test:ok:http-after-response set-var(sess.last_redir) res.hdr(location) if acl
+//test:ok:http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
+//test:fail:http-after-response set-var(sess.last_redir)
+//test:ok:http-after-response strict-mode on
+//test:ok:http-after-response strict-mode off
+//test:fail:http-after-response strict-mode
+//test:fail:http-after-response strict-mode 1
+//test:fail:http-after-response strict-mode 0
+//test:ok:http-after-response unset-var(sess.last_redir)
+//test:ok:http-after-response unset-var(sess.last_redir) if acl
+//test:ok:http-after-response unset-var(sess.last_redir) unless acl
+//test:fail:http-after-response unset-var()
+type HTTPAfterResponse struct{}
+
 //sections:defaults,backend
 //name:http-check
 //struct-name:Checks

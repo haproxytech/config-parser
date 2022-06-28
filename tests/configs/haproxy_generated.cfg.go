@@ -865,6 +865,33 @@ backend test
   http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
   http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
   http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-after-response allow
+  http-after-response allow if acl
+  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
+  http-after-response add-header X-Header \"foo=bar\"
+  http-after-response add-header X-Header \"foo=bar\" if acl
+  http-after-response add-header X-Header \"foo=bar\" unless acl
+  http-after-response allow unless acl
+  http-after-response del-header X-Value
+  http-after-response del-header X-Value -m GET
+  http-after-response del-header X-Value -m GET if acl
+  http-after-response del-header X-Value -m GET unless acl
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
+  http-after-response replace-value Cache-control ^public$ private
+  http-after-response replace-value Cache-control ^public$ private if acl
+  http-after-response set-status 431
+  http-after-response set-status 503 reason \"SlowDown\"
+  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
+  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
+  http-after-response set-var(sess.last_redir) res.hdr(location)
+  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
+  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
+  http-after-response strict-mode on
+  http-after-response strict-mode off
+  http-after-response unset-var(sess.last_redir)
+  http-after-response unset-var(sess.last_redir) if acl
+  http-after-response unset-var(sess.last_redir) unless acl
   http-check comment testcomment
   http-check connect
   http-check connect default
@@ -1454,6 +1481,33 @@ frontend test
   http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
   http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
   http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-after-response allow
+  http-after-response allow if acl
+  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
+  http-after-response add-header X-Header \"foo=bar\"
+  http-after-response add-header X-Header \"foo=bar\" if acl
+  http-after-response add-header X-Header \"foo=bar\" unless acl
+  http-after-response allow unless acl
+  http-after-response del-header X-Value
+  http-after-response del-header X-Value -m GET
+  http-after-response del-header X-Value -m GET if acl
+  http-after-response del-header X-Value -m GET unless acl
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
+  http-after-response replace-value Cache-control ^public$ private
+  http-after-response replace-value Cache-control ^public$ private if acl
+  http-after-response set-status 431
+  http-after-response set-status 503 reason \"SlowDown\"
+  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
+  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
+  http-after-response set-var(sess.last_redir) res.hdr(location)
+  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
+  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
+  http-after-response strict-mode on
+  http-after-response strict-mode off
+  http-after-response unset-var(sess.last_redir)
+  http-after-response unset-var(sess.last_redir) if acl
+  http-after-response unset-var(sess.last_redir) unless acl
   tcp-request content accept
   tcp-request content accept if !HTTP
   tcp-request content reject
@@ -3000,6 +3054,60 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  http-response capture res.hdr(Server) id 0
 `, 1},
+  {`  http-after-response allow
+`, 2},
+  {`  http-after-response allow if acl
+`, 2},
+  {`  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
+`, 2},
+  {`  http-after-response add-header X-Header \"foo=bar\"
+`, 2},
+  {`  http-after-response add-header X-Header \"foo=bar\" if acl
+`, 2},
+  {`  http-after-response add-header X-Header \"foo=bar\" unless acl
+`, 2},
+  {`  http-after-response allow unless acl
+`, 2},
+  {`  http-after-response del-header X-Value
+`, 2},
+  {`  http-after-response del-header X-Value -m GET
+`, 2},
+  {`  http-after-response del-header X-Value -m GET if acl
+`, 2},
+  {`  http-after-response del-header X-Value -m GET unless acl
+`, 2},
+  {`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
+`, 2},
+  {`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
+`, 2},
+  {`  http-after-response replace-value Cache-control ^public$ private
+`, 2},
+  {`  http-after-response replace-value Cache-control ^public$ private if acl
+`, 2},
+  {`  http-after-response set-status 431
+`, 2},
+  {`  http-after-response set-status 503 reason \"SlowDown\"
+`, 2},
+  {`  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
+`, 2},
+  {`  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
+`, 2},
+  {`  http-after-response set-var(sess.last_redir) res.hdr(location)
+`, 2},
+  {`  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
+`, 2},
+  {`  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
+`, 2},
+  {`  http-after-response strict-mode on
+`, 2},
+  {`  http-after-response strict-mode off
+`, 2},
+  {`  http-after-response unset-var(sess.last_redir)
+`, 2},
+  {`  http-after-response unset-var(sess.last_redir) if acl
+`, 2},
+  {`  http-after-response unset-var(sess.last_redir) unless acl
+`, 2},
   {`  http-check comment testcomment
 `, 2},
   {`  http-check connect
