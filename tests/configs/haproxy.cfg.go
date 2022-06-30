@@ -56,6 +56,19 @@ defaults
   option dontlognull
   option http-server-close
   option http-keep-alive
+  no option checkcache
+  no option http-ignore-probes
+  no option http-use-proxy-header
+  no option httpslog
+  no option independent-streams
+  no option nolinger
+  no option originalto
+  option persist
+  option prefer-last-server
+  option socket-stats
+  option tcp-smart-accept
+  option tcp-smart-connect
+  option transparent
   timeout http-request 5s
   timeout check 15s
   timeout connect 5s
@@ -188,6 +201,14 @@ frontend xyz3
 
 frontend xyz4
   mode http
+  no option http-ignore-probes
+  no option http-use-proxy-header
+  no option httpslog
+  no option independent-streams
+  no option nolinger
+  no option originalto
+  no option socket-stats
+  no option tcp-smart-accept
   http-request allow if something
   http-request allow
 
@@ -203,6 +224,14 @@ frontend xyz5
   option contstats
   option log-separate-errors
   option clitcpka
+  option http-ignore-probes
+  option http-use-proxy-header
+  option httpslog
+  option independent-streams
+  option nolinger
+  option originalto
+  option socket-stats
+  option tcp-smart-accept
   option httplog
   timeout http-request 2s
   timeout client 4s
@@ -227,11 +256,29 @@ frontend xyz5
 
 backend default_backend
   mode http
+  option checkcache
+  option independent-streams
+  option nolinger
+  option originalto
+  option persist
+  option prefer-last-server
+  option spop-check
+  option tcp-smart-connect
+  option transparent
   http-request deny deny_status 400 # deny
 
 backend default_backend2
   mode http
   balance uri
+  no option checkcache
+  no option independent-streams
+  no option nolinger
+  no option originalto
+  no option persist
+  no option prefer-last-server
+  no option spop-check
+  no option tcp-smart-connect
+  no option transparent
   option httpchk OPTIONS * HTTP/1.1\r\nHost:\ www
   server SRV_PYkL1 127.0.0.1:5851 maxconn 1000 weight 1 check # alctl: server SRV_PYkL1 configuration.
   server SRV_VqMNT 127.0.0.1:5852 maxconn 1000 weight 1 check # alctl: server SRV_VqMNT configuration.
@@ -277,6 +324,19 @@ listen stats
   bind *:1024 process 1
   no log
   option forceclose
+  option checkcache
+  option http-ignore-probes
+  option http-use-proxy-header
+  option httpslog
+  option independent-streams
+  option nolinger
+  option originalto
+  option persist
+  option prefer-last-server
+  option socket-stats
+  option tcp-smart-accept
+  option tcp-smart-connect
+  option transparent
   stats enable
   stats realm HAProxy\ Statistics
   stats uri /
