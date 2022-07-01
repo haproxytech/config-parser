@@ -137,6 +137,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "tcp-smart-connect"})
 	addParser(parser, &sequence, &simple.Option{Name: "transparent"})
 	addParser(parser, &sequence, &simple.Option{Name: "idle-close-on-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "dontlog-normal"})
 	addParser(parser, &sequence, &tcp.Checks{})
 	addParser(parser, &sequence, &parsers.OptionHttpchk{})
 	if p.Options.UseV2HTTPCheck {
@@ -387,6 +388,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "socket-stats"})
 	addParser(parser, &sequence, &simple.Option{Name: "tcp-smart-accept"})
 	addParser(parser, &sequence, &simple.Option{Name: "idle-close-on-response"})
+	addParser(parser, &sequence, &simple.Option{Name: "dontlog-normal"})
 	addParser(parser, &sequence, &parsers.OptionHTTPLog{})
 	addParser(parser, &sequence, &simple.Timeout{Name: "http-request"})
 	addParser(parser, &sequence, &simple.Timeout{Name: "client"})
@@ -586,6 +588,7 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &simple.Option{Name: "tcp-smart-connect"})
 		addParser(parser, &sequence, &simple.Option{Name: "transparent"})
 		addParser(parser, &sequence, &simple.Option{Name: "idle-close-on-response"})
+		addParser(parser, &sequence, &simple.Option{Name: "dontlog-normal"})
 		addParser(parser, &sequence, &tcp.Checks{})
 		addParser(parser, &sequence, &parsers.OptionHttpchk{})
 		if p.Options.UseV2HTTPCheck {

@@ -70,6 +70,7 @@ defaults
   option tcp-smart-connect
   option transparent
   option idle-close-on-response
+  option dontlog-normal
   timeout http-request 5s
   timeout check 15s
   timeout connect 5s
@@ -214,6 +215,7 @@ frontend xyz4
   no option socket-stats
   no option tcp-smart-accept
   no option idle-close-on-response
+  no option dontlog-normal
   http-request allow if something
   http-request allow
 
@@ -238,6 +240,7 @@ frontend xyz5
   option socket-stats
   option tcp-smart-accept
   option idle-close-on-response
+  option dontlog-normal
   option httplog
   timeout http-request 2s
   timeout client 4s
@@ -347,6 +350,7 @@ listen stats
   option tcp-smart-connect
   option transparent
   option idle-close-on-response
+  option dontlog-normal
   stats enable
   stats realm HAProxy\ Statistics
   stats uri /
