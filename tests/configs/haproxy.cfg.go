@@ -80,6 +80,9 @@ defaults
   clitcpka-cnt 10
   clitcpka-idle 10s
   clitcpka-intvl 10s
+  srvtcpka-cnt 10
+  srvtcpka-idle 10s
+  srvtcpka-intvl 10s
   load-server-state-from-file global
 
 # some random userlist L1
@@ -297,6 +300,9 @@ backend test
   timeout check 2s
   timeout tunnel 5s
   timeout server 3s
+  srvtcpka-cnt 10
+  srvtcpka-idle 10s
+  srvtcpka-intvl 10s
   default-server fall 2
   default-server rise 4
   default-server inter 5s
@@ -343,4 +349,7 @@ listen stats
   clitcpka-cnt 10
   clitcpka-idle 10s
   clitcpka-intvl 10s
+  srvtcpka-cnt 10
+  srvtcpka-idle 10s
+  srvtcpka-intvl 10s
 `
