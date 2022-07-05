@@ -46,6 +46,7 @@ func (p *configParser) createParsers(parser map[string]ParserInterface, sequence
 	addParser(parser, &sequence, &extra.Section{Name: "program"})
 	addParser(parser, &sequence, &extra.Section{Name: "http-errors"})
 	addParser(parser, &sequence, &extra.Section{Name: "ring"})
+	addParser(parser, &sequence, &extra.Section{Name: "log-forward"})
 	if !p.Options.DisableUnProcessed {
 		addParser(parser, &sequence, &extra.UnProcessed{})
 	}
@@ -723,5 +724,17 @@ func (p *configParser) getRingParser() *Parsers {
 	addParser(parser, &sequence, &simple.Timeout{Name: "connect"})
 	addParser(parser, &sequence, &simple.Timeout{Name: "server"})
 	addParser(parser, &sequence, &parsers.Server{})
+	return p.createParsers(parser, sequence)
+}
+
+func (p *configParser) getLogForwardParser() *Parsers {
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.DgramBind{})
+	addParser(parser, &sequence, &parsers.Bind{})
+	addParser(parser, &sequence, &parsers.Log{})
+	addParser(parser, &sequence, &simple.Number{Name: "backlog"})
+	addParser(parser, &sequence, &simple.Number{Name: "maxconn"})
+	addParser(parser, &sequence, &simple.Timeout{Name: "client"})
 	return p.createParsers(parser, sequence)
 }

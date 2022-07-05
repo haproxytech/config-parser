@@ -40,7 +40,7 @@ func (p *configParser) String() string {
 	p.writeParsers("global", p.Parsers[Global][GlobalSectionName], &result, true)
 	p.writeParsers("defaults", p.Parsers[Defaults][DefaultSectionName], &result, true)
 
-	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Ring, HTTPErrors, Frontends, Backends, Listen, Program}
+	sections := []Section{UserList, Peers, Mailers, Resolvers, Cache, Ring, LogForward, HTTPErrors, Frontends, Backends, Listen, Program}
 
 	for _, section := range sections {
 		sortedSections := p.getSortedList(p.Parsers[section])

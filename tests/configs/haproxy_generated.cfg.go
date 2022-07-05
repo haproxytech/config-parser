@@ -1645,6 +1645,15 @@ frontend test
   stats bind-process 1-4
   stats admin if LOCALHOST
 
+log-forward test
+  dgram-bind :80,:443
+  dgram-bind 10.0.0.1:10080,10.0.0.1:10443
+  dgram-bind :443 interface eth0
+  dgram-bind :443 interface eth1
+  dgram-bind :443 interface pppoe-wan
+  dgram-bind :443 namespace example
+  dgram-bind :443 transparent
+
 mailers test
   mailer smtp1 192.168.0.1:587
   mailer smtp1 192.168.0.1:587 # just some comment
@@ -1891,6 +1900,20 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  bind :443 verify optional
 `, 1},
   {`  bind :443 verify required
+`, 1},
+  {`  dgram-bind :80,:443
+`, 1},
+  {`  dgram-bind 10.0.0.1:10080,10.0.0.1:10443
+`, 1},
+  {`  dgram-bind :443 interface eth0
+`, 1},
+  {`  dgram-bind :443 interface eth1
+`, 1},
+  {`  dgram-bind :443 interface pppoe-wan
+`, 1},
+  {`  dgram-bind :443 namespace example
+`, 1},
+  {`  dgram-bind :443 transparent
 `, 1},
   {`  bind-process all
 `, 1},

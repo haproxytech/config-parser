@@ -278,6 +278,16 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					if p.Options.Log {
 						p.Options.Logger.Tracef("%sring section %s active", p.Options.LogPrefix, data.Name)
 					}
+				case "log-forward":
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
+					config.LogForward = p.getLogForwardParser()
+					p.Parsers[LogForward][data.Name] = config.LogForward
+					config.Active = config.LogForward
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%log-forward section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "snippet_beg":
 					config.Previous = config.Active
 					config.Active = &Parsers{

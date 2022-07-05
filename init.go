@@ -42,6 +42,7 @@ type ConfiguredParsers struct {
 	Program               *Parsers
 	HTTPErrors            *Parsers
 	Ring                  *Parsers
+	LogForward            *Parsers
 	// spoe parsers
 	SPOEAgent   *Parsers
 	SPOEGroup   *Parsers
@@ -90,4 +91,5 @@ func (p *configParser) initParserMaps() {
 	p.Parsers[Program] = map[string]*Parsers{}
 	p.Parsers[HTTPErrors] = map[string]*Parsers{}
 	p.Parsers[Ring] = map[string]*Parsers{}
+	p.Parsers[LogForward] = map[string]*Parsers{}
 }

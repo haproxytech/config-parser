@@ -158,6 +158,23 @@ type Bind struct {
 	Comment string
 }
 
+//sections:log-forward
+//name:dgram-bind
+//is-multiple:true
+//test:fail:dgram-bind
+//test:ok:dgram-bind :80,:443
+//test:ok:dgram-bind 10.0.0.1:10080,10.0.0.1:10443
+//test:ok:dgram-bind :443 interface eth0
+//test:ok:dgram-bind :443 interface eth1
+//test:ok:dgram-bind :443 interface pppoe-wan
+//test:ok:dgram-bind :443 namespace example
+//test:ok:dgram-bind :443 transparent
+type DgramBind struct {
+	Path    string // can be address:port or socket path
+	Params  []params.DgramBindOption
+	Comment string
+}
+
 //sections:frontend
 //name:bind-process
 //is-multiple:false

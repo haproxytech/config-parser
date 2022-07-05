@@ -44,6 +44,7 @@ const (
 	Program    Section = "program"
 	HTTPErrors Section = "http-errors"
 	Ring       Section = "ring"
+	LogForward Section = "log-forward"
 	// spoe sections
 	SPOEAgent   Section = "spoe-agent"
 	SPOEGroup   Section = "spoe-group"
