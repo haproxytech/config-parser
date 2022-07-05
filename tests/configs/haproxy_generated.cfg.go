@@ -1088,8 +1088,8 @@ backend test
   stats bind-process even
   stats bind-process 1 2 3 4
   stats bind-process 1-4
-  stats http-request realm HAProxy\\ Statistics
-  stats http-request realm HAProxy\\ Statistics if something
+  stats http-request auth realm HAProxy\\ Statistics
+  stats http-request auth realm HAProxy\\ Statistics if something
   stats http-request auth if something
   stats http-request deny unless something
   stats http-request allow
@@ -3478,9 +3478,9 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 3},
   {`  stats admin if LOCALHOST
 `, 1},
-  {`  stats http-request realm HAProxy\\ Statistics
+  {`  stats http-request auth realm HAProxy\\ Statistics
 `, 1},
-  {`  stats http-request realm HAProxy\\ Statistics if something
+  {`  stats http-request auth realm HAProxy\\ Statistics if something
 `, 1},
   {`  stats http-request auth if something
 `, 1},

@@ -40,17 +40,42 @@ func (h *HTTPRequest) Parse(parts []string, comment string) error {
 	}
 
 	switch parts[2] {
-	case "allow", "deny", "auth", "realm":
+	case "allow", "deny":
 		command, condition := common.SplitRequest(parts[2:])
-		h.Type = strings.Join(command, " ")
+		if len(command) != 1 {
+			return fmt.Errorf("error parsing http-request")
+		}
+		h.Type = command[0]
 		if len(condition) > 1 {
 			h.Cond = condition[0]
 			h.CondTest = strings.Join(condition[1:], " ")
 		}
 		return nil
+	case "auth":
+		return h.parseAuth(parts)
 	default:
 		return fmt.Errorf("error parsing http-request")
 	}
+}
+
+func (h *HTTPRequest) parseAuth(parts []string) error {
+	command, condition := common.SplitRequest(parts[2:])
+	switch len(command) {
+	case 1:
+		h.Type = strings.Join(command, " ")
+	case 3:
+		if command[1] != "realm" {
+			return fmt.Errorf("error parsing http-request")
+		}
+		h.Type = strings.Join(command, " ")
+	default:
+		return fmt.Errorf("error parsing http-request")
+	}
+	if len(condition) > 1 {
+		h.Cond = condition[0]
+		h.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
 func (h *HTTPRequest) String() string {

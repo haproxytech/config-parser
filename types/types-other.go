@@ -1001,11 +1001,12 @@ type StatsSettings interface {
 //test:fail:stats bind-process 1+4
 //test:fail:stats bind-process none-none
 //test:fail:stats bind-process 1-4 1-3
-//test:backend-ok:stats http-request realm HAProxy\\ Statistics
-//test:backend-ok:stats http-request realm HAProxy\\ Statistics if something
+//test:backend-ok:stats http-request auth realm HAProxy\\ Statistics
+//test:backend-ok:stats http-request auth realm HAProxy\\ Statistics if something
 //test:backend-ok:stats http-request auth if something
 //test:backend-ok:stats http-request deny unless something
 //test:backend-ok:stats http-request allow
 //test:fail:stats http-request
 //test:fail:stats http-request none
+//test:fail:stats http-request realm HAProxy\\ Statistics
 type Stats struct{}
