@@ -275,6 +275,7 @@ defaults test
   stats enable
   stats hide-version
   stats show-legends
+  stats show-modules
   stats maxconn 10
   stats realm HAProxy\\ Statistics
   stats refresh 10s
@@ -1073,6 +1074,7 @@ backend test
   stats enable
   stats hide-version
   stats show-legends
+  stats show-modules
   stats maxconn 10
   stats realm HAProxy\\ Statistics
   stats refresh 10s
@@ -1627,6 +1629,7 @@ frontend test
   stats enable
   stats hide-version
   stats show-legends
+  stats show-modules
   stats maxconn 10
   stats realm HAProxy\\ Statistics
   stats refresh 10s
@@ -3444,6 +3447,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  stats hide-version
 `, 3},
   {`  stats show-legends
+`, 3},
+  {`  stats show-modules
 `, 3},
   {`  stats maxconn 10
 `, 3},

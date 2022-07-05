@@ -978,6 +978,7 @@ type StatsSettings interface {
 //test:ok:stats enable
 //test:ok:stats hide-version
 //test:ok:stats show-legends
+//test:ok:stats show-modules
 //test:fail:stats NON-EXISTS
 //test:ok:stats maxconn 10
 //test:fail:stats maxconn WORD

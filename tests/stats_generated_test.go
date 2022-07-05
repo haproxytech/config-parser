@@ -37,6 +37,7 @@ func TestStatsstats(t *testing.T) {
 		"stats enable":                                               true,
 		"stats hide-version":                                         true,
 		"stats show-legends":                                         true,
+		"stats show-modules":                                         true,
 		"stats maxconn 10":                                           true,
 		"stats realm HAProxy\\ Statistics":                           true,
 		"stats refresh 10s":                                          true,

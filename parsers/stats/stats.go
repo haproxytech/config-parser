@@ -59,7 +59,7 @@ func (s *Stats) Parse(line string, parts []string, comment string) (changeState 
 		err = s.ParseStats(&stats.Auth{}, parts, comment)
 	case "bind-process":
 		err = s.ParseStats(&stats.BindProcess{}, parts, comment)
-	case "enable", "hide-version", "show-legends":
+	case "enable", "hide-version", "show-legends", "show-modules":
 		err = s.ParseStats(&stats.OneWord{}, parts, comment)
 	case "maxconn":
 		err = s.ParseStats(&stats.MaxConn{}, parts, comment)
