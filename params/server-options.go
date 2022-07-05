@@ -162,9 +162,6 @@ func getServerOptions() []ServerOption {
 		&ServerOptionWord{Name: "stick"},
 		&ServerOptionWord{Name: "tfo"},
 		&ServerOptionWord{Name: "tls-tickets"},
-
-		// &ServerOptionDoubleWord{Name: "expose-fd", Value: "listeners"},
-
 		&ServerOptionValue{Name: "addr"},
 		&ServerOptionValue{Name: "agent-send"},
 		&ServerOptionValue{Name: "agent-inter"},
@@ -222,6 +219,8 @@ func getServerOptions() []ServerOption {
 		&ServerOptionValue{Name: "verify"},
 		&ServerOptionValue{Name: "verifyhost"},
 		&ServerOptionValue{Name: "weight"},
+		&ServerOptionValue{Name: "pool-low-conn"},
+		&ServerOptionValue{Name: "ws"},
 	}
 }
 

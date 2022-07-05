@@ -413,6 +413,10 @@ type CPUMap struct {
 //test:ok:default-server weight 1
 //test:ok:default-server weight 128
 //test:ok:default-server weight 256
+//test:ok:default-server pool-low-conn 384
+//test:ok:default-server ws h1
+//test:ok:default-server ws h2
+//test:ok:default-server ws auto
 //test:fail:default-server
 type DefaultServer struct {
 	Params  []params.ServerOption
@@ -838,6 +842,10 @@ type Peer struct {
 //test:ok:server name 127.0.0.1 weight 1
 //test:ok:server name 127.0.0.1 weight 128
 //test:ok:server name 127.0.0.1 weight 256
+//test:ok:server name 127.0.0.1 pool-low-conn 384
+//test:ok:server name 127.0.0.1 ws h1
+//test:ok:server name 127.0.0.1 ws h2
+//test:ok:server name 127.0.0.1 ws auto
 //test:fail:server
 type Server struct {
 	Name    string

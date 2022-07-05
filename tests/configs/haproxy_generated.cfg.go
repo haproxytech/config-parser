@@ -190,6 +190,10 @@ defaults test
   default-server weight 1
   default-server weight 128
   default-server weight 256
+  default-server pool-low-conn 384
+  default-server ws h1
+  default-server ws h2
+  default-server ws auto
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -448,6 +452,10 @@ backend test
   default-server weight 1
   default-server weight 128
   default-server weight 256
+  default-server pool-low-conn 384
+  default-server ws h1
+  default-server ws h2
+  default-server ws auto
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -610,6 +618,10 @@ backend test
   server name 127.0.0.1 weight 1
   server name 127.0.0.1 weight 128
   server name 127.0.0.1 weight 256
+  server name 127.0.0.1 pool-low-conn 384
+  server name 127.0.0.1 ws h1
+  server name 127.0.0.1 ws h2
+  server name 127.0.0.1 ws auto
   stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
   stick on src table pop if !localhost
   stick match src table pop if !localhost
@@ -2209,6 +2221,14 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  default-server weight 256
 `, 2},
+  {`  default-server pool-low-conn 384
+`, 2},
+  {`  default-server ws h1
+`, 2},
+  {`  default-server ws h2
+`, 2},
+  {`  default-server ws auto
+`, 2},
   {`  errorfile 400 /etc/haproxy/errorfiles/400badreq.http
 `, 3},
   {`  errorfile 408 /dev/null # work around Chrome pre-connect bug
@@ -2544,6 +2564,14 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  server name 127.0.0.1 weight 128
 `, 1},
   {`  server name 127.0.0.1 weight 256
+`, 1},
+  {`  server name 127.0.0.1 pool-low-conn 384
+`, 1},
+  {`  server name 127.0.0.1 ws h1
+`, 1},
+  {`  server name 127.0.0.1 ws h2
+`, 1},
+  {`  server name 127.0.0.1 ws auto
 `, 1},
   {`  stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
 `, 2},
