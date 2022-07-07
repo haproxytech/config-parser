@@ -1,6 +1,6 @@
 module github.com/haproxytech/config-parser/v4
 
-go 1.17
+go 1.18
 
 require (
 	github.com/gofrs/flock v0.8.1
@@ -10,6 +10,6 @@ require (
 
 require (
 	github.com/kr/pretty v0.3.0 // indirect
-	golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6 // indirect
+	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )
