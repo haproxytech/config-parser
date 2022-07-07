@@ -32,6 +32,7 @@ func getDgramBindOptions() []DgramBindOption {
 		&BindOptionWord{Name: "transparent"},
 		&BindOptionValue{Name: "interface"},
 		&BindOptionValue{Name: "namespace"},
+		&BindOptionValue{Name: "name"},
 	}
 }
 
