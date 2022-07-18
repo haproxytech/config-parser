@@ -526,18 +526,30 @@ type HTTPCheckV2 struct {
 //test:ok:log 127.0.0.1:514 local0 notice # only send important events
 //test:ok:log 127.0.0.1:514 local0 notice notice # same but limit output level
 //test:ok:log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
+//test:ok:log 127.0.0.1:1515 sample 1:2 local0
+//test:ok:log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+//test:ok:log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
+//test:ok:log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
+//test:ok:log 127.0.0.1:1515 sample 1:6 local2
 //test:fail:log
 //test:fail:log 0 len 0
+//test:fail:log 127.0.0.1:1515 len foo format rfc5424 local2 info
+//test:fail:log 127.0.0.1:1515 sample test local2
+//test:fail:log 127.0.0.1:1515 sample :3 local2
+//test:fail:log 127.0.0.1:1515 sample 1:test local2
+//test:fail:log sample 1:1
 type Log struct {
-	Global   bool
-	NoLog    bool
-	Address  string
-	Length   int64
-	Format   string
-	Facility string
-	Level    string
-	MinLevel string
-	Comment  string
+	Global      bool
+	NoLog       bool
+	Address     string
+	Length      int64
+	Format      string
+	SampleRange string
+	SampleSize  int64
+	Facility    string
+	Level       string
+	MinLevel    string
+	Comment     string
 }
 
 //sections:mailers

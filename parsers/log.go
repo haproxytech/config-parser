@@ -58,7 +58,7 @@ func (l *Log) Init() {
 	l.preComments = []string{}
 }
 
-func (l *Log) parse(line string, parts []string, comment string) (*types.Log, error) {
+func (l *Log) parse(line string, parts []string, comment string) (*types.Log, error) { //nolint: gocognit
 	if len(parts) > 1 && parts[1] == "global" {
 		return &types.Log{
 			Global:  true,
@@ -85,6 +85,8 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 		if num, err := strconv.ParseInt(parts[currIndex], 10, 64); err == nil {
 			log.Length = num
 			currIndex++
+		} else {
+			return log, &errors.ParseError{Parser: "Log", Line: line}
 		}
 	}
 	if currIndex < len(parts) && parts[currIndex] == "format" {
@@ -93,6 +95,23 @@ func (l *Log) parse(line string, parts []string, comment string) (*types.Log, er
 			return log, &errors.ParseError{Parser: "Log", Line: line}
 		}
 		log.Format = parts[currIndex]
+		currIndex++
+	}
+	if currIndex < len(parts) && parts[currIndex] == "sample" {
+		currIndex++
+		if currIndex >= len(parts) {
+			return log, &errors.ParseError{Parser: "Log", Line: line}
+		}
+		sampleData := strings.Split(parts[currIndex], ":")
+		if len(sampleData) != 2 || sampleData[0] == "" {
+			return log, &errors.ParseError{Parser: "Log", Line: line}
+		}
+		log.SampleRange = sampleData[0]
+		if num, err := strconv.ParseInt(sampleData[1], 10, 64); err == nil {
+			log.SampleSize = num
+		} else {
+			return log, &errors.ParseError{Parser: "Log", Line: line}
+		}
 		currIndex++
 	}
 	// we must have facility
@@ -176,6 +195,12 @@ func (l *Log) Result() ([]common.ReturnResultLine, error) {
 		if log.Format != "" {
 			sb.WriteString(" format ")
 			sb.WriteString(log.Format)
+		}
+		if log.SampleRange != "" && log.SampleSize != 0 {
+			sb.WriteString(" sample ")
+			sb.WriteString(log.SampleRange)
+			sb.WriteString(":")
+			sb.WriteString(fmt.Sprintf("%d", log.SampleSize))
 		}
 		sb.WriteString(" ")
 		sb.WriteString(log.Facility)

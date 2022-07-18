@@ -208,6 +208,11 @@ defaults test
   log 127.0.0.1:514 local0 notice # only send important events
   log 127.0.0.1:514 local0 notice notice # same but limit output level
   log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
+  log 127.0.0.1:1515 sample 1:2 local0
+  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
+  log 127.0.0.1:1515 sample 1:6 local2
   option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
   unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
   unique-id-header X-Unique-ID
@@ -470,6 +475,11 @@ backend test
   log 127.0.0.1:514 local0 notice # only send important events
   log 127.0.0.1:514 local0 notice notice # same but limit output level
   log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
+  log 127.0.0.1:1515 sample 1:2 local0
+  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
+  log 127.0.0.1:1515 sample 1:6 local2
   option forwardfor
   option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
   option mysql-check
@@ -1237,6 +1247,11 @@ frontend test
   log 127.0.0.1:514 local0 notice # only send important events
   log 127.0.0.1:514 local0 notice notice # same but limit output level
   log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
+  log 127.0.0.1:1515 sample 1:2 local0
+  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
+  log 127.0.0.1:1515 sample 1:6 local2
   option forwardfor
   option httplog
   stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
@@ -2260,6 +2275,16 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
   {`  log 127.0.0.1:514 local0 notice notice # same but limit output level
 `, 3},
   {`  log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
+`, 3},
+  {`  log 127.0.0.1:1515 sample 1:2 local0
+`, 3},
+  {`  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+`, 3},
+  {`  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
+`, 3},
+  {`  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
+`, 3},
+  {`  log 127.0.0.1:1515 sample 1:6 local2
 `, 3},
   {`  mailer smtp1 192.168.0.1:587
 `, 1},
