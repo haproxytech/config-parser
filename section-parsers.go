@@ -176,6 +176,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
+	addParser(parser, &sequence, &parsers.EmailAlert{})
 	return p.createParsers(parser, sequence)
 }
 
@@ -417,6 +418,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
 	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
+	addParser(parser, &sequence, &parsers.EmailAlert{})
 	return p.createParsers(parser, sequence)
 }
 
@@ -513,6 +515,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
+	addParser(parser, &sequence, &parsers.EmailAlert{})
 	return p.createParsers(parser, sequence)
 }
 

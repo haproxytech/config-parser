@@ -194,6 +194,12 @@ defaults test
   default-server ws h1
   default-server ws h2
   default-server ws auto
+  email-alert from admin@example.com
+  email-alert to a@z,x@y
+  email-alert level warning
+  email-alert mailers local-mailers
+  email-alert myhostname srv01.example.com
+  email-alert to support@example.com
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -461,6 +467,12 @@ backend test
   default-server ws h1
   default-server ws h2
   default-server ws auto
+  email-alert from admin@example.com
+  email-alert to a@z,x@y
+  email-alert level warning
+  email-alert mailers local-mailers
+  email-alert myhostname srv01.example.com
+  email-alert to support@example.com
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -1235,6 +1247,12 @@ frontend test
   bind :443 verify optional
   bind :443 verify required
   bind-process all
+  email-alert from admin@example.com
+  email-alert to a@z,x@y
+  email-alert level warning
+  email-alert mailers local-mailers
+  email-alert myhostname srv01.example.com
+  email-alert to support@example.com
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -2244,6 +2262,18 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  default-server ws auto
 `, 2},
+  {`  email-alert from admin@example.com
+`, 3},
+  {`  email-alert to a@z,x@y
+`, 3},
+  {`  email-alert level warning
+`, 3},
+  {`  email-alert mailers local-mailers
+`, 3},
+  {`  email-alert myhostname srv01.example.com
+`, 3},
+  {`  email-alert to support@example.com
+`, 3},
   {`  errorfile 400 /etc/haproxy/errorfiles/400badreq.http
 `, 3},
   {`  errorfile 408 /dev/null # work around Chrome pre-connect bug

@@ -423,6 +423,25 @@ type DefaultServer struct {
 	Comment string
 }
 
+//sections:defaults,backend,frontend
+//name:email-alert
+//is-multiple:true
+//test:ok:email-alert from admin@example.com
+//test:ok:email-alert to a@z,x@y
+//test:fail:email-alert to \"a@b, c@d\"
+//test:fail:email-alert to a@b, c@d
+//test:ok:email-alert level warning
+//test:fail:email-alert level max
+//test:ok:email-alert mailers local-mailers
+//test:ok:email-alert myhostname srv01.example.com
+//test:ok:email-alert to support@example.com
+//test:fail:email-alert
+type EmailAlert struct {
+	Attribute string
+	Value     string
+	Comment   string
+}
+
 //sections:defaults,frontend,backend
 //name:errorfile
 //no-init:true
