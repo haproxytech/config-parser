@@ -43,7 +43,8 @@ func (p *ConfigSnippet) Parse(line string, parts []string, comment string) (chan
 				p.active = false
 				return "snippet_end", nil
 			default:
-				return "", &errors.ParseError{Parser: "ConfigSnippet", Line: line}
+				p.data.Value = append(p.data.Value, strings.TrimSpace(line))
+				return "", nil
 			}
 		}
 	}
