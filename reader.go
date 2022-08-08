@@ -106,11 +106,14 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 	if config.State != "" {
 		if parts[0] == "" && comment != "" && comment != "##_config-snippet_### BEGIN" && comment != "##_config-snippet_### END" {
 			if line[0] == ' ' {
-				config.ActiveComments = append(config.ActiveComments, comment)
+				if config.State != "snippet_beg" {
+					config.ActiveComments = append(config.ActiveComments, comment)
+					return config
+				}
 			} else {
 				config.ActiveSectionComments = append(config.ActiveSectionComments, comment)
+				return config
 			}
-			return config
 		}
 	}
 	parsers := make([]ParserInterface, 0, 2)

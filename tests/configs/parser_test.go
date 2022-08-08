@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,7 @@ func TestWholeConfigs(t *testing.T) {
 		{"configBasic1", configBasic1},
 		{"configBasic2", configBasic2},
 		{"configFull", configFull},
+		{"configSnippet", configSnippet},
 	}
 	for _, config := range tests {
 		t.Run(config.Name, func(t *testing.T) {
