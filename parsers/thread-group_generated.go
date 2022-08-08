@@ -140,6 +140,9 @@ func (p *ThreadGroup) Parse(line string, parts []string, comment string) (change
 	if parts[0] == "thread-group" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "ThreadGroup", Line: line}
 		}
 		p.data = append(p.data, *data)

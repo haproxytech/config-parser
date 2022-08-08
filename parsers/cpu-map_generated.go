@@ -140,6 +140,9 @@ func (p *CPUMap) Parse(line string, parts []string, comment string) (changeState
 	if parts[0] == "cpu-map" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "CPUMap", Line: line}
 		}
 		p.data = append(p.data, *data)

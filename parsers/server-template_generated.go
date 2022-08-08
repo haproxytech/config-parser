@@ -140,6 +140,9 @@ func (p *ServerTemplate) Parse(line string, parts []string, comment string) (cha
 	if parts[0] == "server-template" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "ServerTemplate", Line: line}
 		}
 		p.data = append(p.data, *data)

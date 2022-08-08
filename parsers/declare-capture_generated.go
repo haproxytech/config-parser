@@ -140,6 +140,9 @@ func (p *DeclareCapture) Parse(line string, parts []string, comment string) (cha
 	if len(parts) > 1 && parts[0] == "declare" && parts[1] == "capture" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "DeclareCapture", Line: line}
 		}
 		p.data = append(p.data, *data)

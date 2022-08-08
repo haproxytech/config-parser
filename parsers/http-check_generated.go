@@ -140,6 +140,9 @@ func (p *HTTPCheckV2) Parse(line string, parts []string, comment string) (change
 	if parts[0] == "http-check" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "HTTPCheckV2", Line: line}
 		}
 		p.data = append(p.data, *data)

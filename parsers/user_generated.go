@@ -140,6 +140,9 @@ func (p *User) Parse(line string, parts []string, comment string) (changeState s
 	if parts[0] == "user" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "User", Line: line}
 		}
 		p.data = append(p.data, *data)

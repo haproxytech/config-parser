@@ -140,6 +140,9 @@ func (p *SslEngine) Parse(line string, parts []string, comment string) (changeSt
 	if parts[0] == "ssl-engine" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "SslEngine", Line: line}
 		}
 		p.data = append(p.data, *data)

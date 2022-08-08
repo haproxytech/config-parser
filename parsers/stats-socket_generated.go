@@ -140,6 +140,9 @@ func (p *Socket) Parse(line string, parts []string, comment string) (changeState
 	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "socket" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "Socket", Line: line}
 		}
 		p.data = append(p.data, *data)

@@ -140,6 +140,9 @@ func (p *LuaPrependPath) Parse(line string, parts []string, comment string) (cha
 	if parts[0] == "lua-prepend-path" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "LuaPrependPath", Line: line}
 		}
 		p.data = append(p.data, *data)

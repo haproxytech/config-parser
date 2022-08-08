@@ -140,6 +140,9 @@ func (p *ACL) Parse(line string, parts []string, comment string) (changeState st
 	if parts[0] == "acl" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "ACL", Line: line}
 		}
 		p.data = append(p.data, *data)

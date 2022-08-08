@@ -1053,6 +1053,9 @@ func (p *{{ .StructName }}) Parse(line string, parts []string, comment string) (
 {{- end }}
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "{{ .StructName }}", Line: line}
 		}
 		p.data = append(p.data, *data)

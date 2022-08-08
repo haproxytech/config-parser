@@ -140,6 +140,9 @@ func (p *Bind) Parse(line string, parts []string, comment string) (changeState s
 	if parts[0] == "bind" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "Bind", Line: line}
 		}
 		p.data = append(p.data, *data)

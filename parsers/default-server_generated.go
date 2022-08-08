@@ -140,6 +140,9 @@ func (p *DefaultServer) Parse(line string, parts []string, comment string) (chan
 	if parts[0] == "default-server" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "DefaultServer", Line: line}
 		}
 		p.data = append(p.data, *data)

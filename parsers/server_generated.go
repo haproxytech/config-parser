@@ -140,6 +140,9 @@ func (p *Server) Parse(line string, parts []string, comment string) (changeState
 	if parts[0] == "server" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "Server", Line: line}
 		}
 		p.data = append(p.data, *data)

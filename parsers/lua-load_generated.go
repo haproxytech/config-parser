@@ -140,6 +140,9 @@ func (p *LuaLoad) Parse(line string, parts []string, comment string) (changeStat
 	if parts[0] == "lua-load" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "LuaLoad", Line: line}
 		}
 		p.data = append(p.data, *data)
