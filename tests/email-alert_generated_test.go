@@ -33,7 +33,7 @@ func TestEmailAlert(t *testing.T) {
 		"email-alert mailers local-mailers":        true,
 		"email-alert myhostname srv01.example.com": true,
 		"email-alert to support@example.com":       true,
-		"email-alert to \"a@b, c@d\"":              false,
+		`email-alert to "a@b, c@d"`:                true,
 		"email-alert to a@b, c@d":                  false,
 		"email-alert level max":                    false,
 		"email-alert":                              false,

@@ -200,6 +200,7 @@ defaults test
   email-alert mailers local-mailers
   email-alert myhostname srv01.example.com
   email-alert to support@example.com
+  email-alert to "a@b, c@d"
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -473,6 +474,7 @@ backend test
   email-alert mailers local-mailers
   email-alert myhostname srv01.example.com
   email-alert to support@example.com
+  email-alert to "a@b, c@d"
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -1253,6 +1255,7 @@ frontend test
   email-alert mailers local-mailers
   email-alert myhostname srv01.example.com
   email-alert to support@example.com
+  email-alert to "a@b, c@d"
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http

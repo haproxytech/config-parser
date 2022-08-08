@@ -18,7 +18,7 @@ package parsers
 
 import (
 	"fmt"
-	"net/mail"
+	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
@@ -39,8 +39,7 @@ func (e *EmailAlert) parse(line string, parts []string, comment string) (*types.
 
 	switch attr {
 	case "from", "to":
-		// While not documented, HAProxy 2.6 will accept multiple addresses, as long as there is no space in between.
-		if addrs, err := mail.ParseAddressList(value); err != nil || len(addrs) == 0 {
+		if !strings.Contains(value, "@") {
 			return nil, &errors.ParseError{Parser: "EmailAlert", Line: line, Message: fmt.Sprintf("invalid email address: '%s'", value)}
 		}
 	case "level":

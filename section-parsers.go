@@ -80,6 +80,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "backlog"})
 	addParser(parser, &sequence, &parsers.Log{})
 	addParser(parser, &sequence, &parsers.OptionHTTPLog{})
+	addParser(parser, &sequence, &parsers.EmailAlert{})
 	addParser(parser, &sequence, &stats.Stats{Mode: "defaults"})
 	addParser(parser, &sequence, &simple.Word{Name: "log-tag"})
 	addParser(parser, &sequence, &simple.String{Name: "log-format"})
@@ -176,7 +177,6 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
-	addParser(parser, &sequence, &parsers.EmailAlert{})
 	return p.createParsers(parser, sequence)
 }
 
@@ -359,6 +359,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &simple.String{Name: "log-format"})
 	addParser(parser, &sequence, &simple.String{Name: "log-format-sd"})
 	addParser(parser, &sequence, &parsers.Log{})
+	addParser(parser, &sequence, &parsers.EmailAlert{})
 	addParser(parser, &sequence, &simple.Option{Name: "httpclose"})
 	addParser(parser, &sequence, &simple.Option{Name: "forceclose"})
 	addParser(parser, &sequence, &simple.Option{Name: "http-buffer-request"})
@@ -418,7 +419,6 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
 	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
-	addParser(parser, &sequence, &parsers.EmailAlert{})
 	return p.createParsers(parser, sequence)
 }
 
@@ -480,6 +480,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.ExternalCheckPath{})
 	addParser(parser, &sequence, &parsers.ExternalCheckCommand{})
 	addParser(parser, &sequence, &parsers.Log{})
+	addParser(parser, &sequence, &parsers.EmailAlert{})
 	addParser(parser, &sequence, &simple.Timeout{Name: "http-request"})
 	addParser(parser, &sequence, &simple.Timeout{Name: "queue"})
 	addParser(parser, &sequence, &simple.Timeout{Name: "http-keep-alive"})
@@ -515,7 +516,6 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
-	addParser(parser, &sequence, &parsers.EmailAlert{})
 	return p.createParsers(parser, sequence)
 }
 

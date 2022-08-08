@@ -140,6 +140,9 @@ func (p *EmailAlert) Parse(line string, parts []string, comment string) (changeS
 	if parts[0] == "email-alert" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
 			return "", &errors.ParseError{Parser: "EmailAlert", Line: line}
 		}
 		p.data = append(p.data, *data)
