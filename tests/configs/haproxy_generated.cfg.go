@@ -650,6 +650,7 @@ backend test
   stick on src table pop if !localhost
   stick match src table pop if !localhost
   stick store-request src table pop if !localhost
+  use-fcgi-app application
   use-server www if { req_ssl_sni -i www.example.com }
   use-server www if { req_ssl_sni -i www.example.com } # comment
   load-server-state-from-file global
@@ -2667,6 +2668,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 2},
   {`  unique-id-header X-Unique-ID
 `, 2},
+  {`  use-fcgi-app application
+`, 1},
   {`  use-server www if { req_ssl_sni -i www.example.com }
 `, 1},
   {`  use-server www if { req_ssl_sni -i www.example.com } # comment

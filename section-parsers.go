@@ -72,6 +72,8 @@ func (p *configParser) getStartParser() *Parsers {
 func (p *configParser) getDefaultParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
+	addParser(parser, &sequence, &simple.Enabled{Name: "enabled"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "disabled"})
 	addParser(parser, &sequence, &parsers.Mode{})
 	addParser(parser, &sequence, &parsers.MonitorURI{})
 	addParser(parser, &sequence, &parsers.HashType{})
@@ -167,6 +169,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "srvtcpka-cnt"})
 	addParser(parser, &sequence, &simple.Time{Name: "srvtcpka-idle"})
 	addParser(parser, &sequence, &simple.Time{Name: "srvtcpka-intvl"})
+	addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
 	addParser(parser, &sequence, &parsers.CompressionAlgo{})
 	addParser(parser, &sequence, &parsers.CompressionType{})
 	addParser(parser, &sequence, &parsers.CompressionOffload{})
@@ -176,6 +179,8 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.DefaultBackend{})
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
+	// the ConfigSnippet must be at the end to parsers load order to ensure
+	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
 	return p.createParsers(parser, sequence)
 }
@@ -347,6 +352,10 @@ func (p *configParser) getGlobalParser() *Parsers {
 func (p *configParser) getFrontendParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
+	addParser(parser, &sequence, &simple.Number{Name: "id"})
+	addParser(parser, &sequence, &simple.String{Name: "description"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "enabled"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "disabled"})
 	addParser(parser, &sequence, &parsers.Mode{})
 	addParser(parser, &sequence, &parsers.MaxConn{})
 	addParser(parser, &sequence, &simple.Number{Name: "backlog"})
@@ -425,6 +434,10 @@ func (p *configParser) getFrontendParser() *Parsers {
 func (p *configParser) getBackendParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
+	addParser(parser, &sequence, &simple.Number{Name: "id"})
+	addParser(parser, &sequence, &simple.String{Name: "description"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "enabled"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "disabled"})
 	addParser(parser, &sequence, &parsers.Mode{})
 	addParser(parser, &sequence, &parsers.HashType{})
 	addParser(parser, &sequence, &parsers.Balance{})
@@ -516,6 +529,8 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
+	addParser(parser, &sequence, &parsers.UseFcgiApp{})
+	addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -523,6 +538,10 @@ func (p *configParser) getListenParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	if p.Options.UseListenSectionParsers {
+		addParser(parser, &sequence, &simple.Number{Name: "id"})
+		addParser(parser, &sequence, &simple.String{Name: "description"})
+		addParser(parser, &sequence, &simple.Enabled{Name: "enabled"})
+		addParser(parser, &sequence, &simple.Enabled{Name: "disabled"})
 		addParser(parser, &sequence, &parsers.Mode{})
 		addParser(parser, &sequence, &parsers.HashType{})
 		addParser(parser, &sequence, &parsers.Balance{})
@@ -628,6 +647,7 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &parsers.UseServer{})
 		addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 		addParser(parser, &sequence, &parsers.UniqueIDHeader{})
+		addParser(parser, &sequence, &parsers.UseFcgiApp{})
 		addParser(parser, &sequence, &parsers.ErrorFile{})
 		addParser(parser, &sequence, &parsers.ConfigSnippet{})
 		addParser(parser, &sequence, &parsers.UseBackend{})
@@ -647,6 +667,8 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &http.Responses{Mode: "listen"})
 		addParser(parser, &sequence, &http.AfterResponses{})
 		addParser(parser, &sequence, &parsers.DeclareCapture{})
+		addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
+		addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
 	}
 	return p.createParsers(parser, sequence)
 }

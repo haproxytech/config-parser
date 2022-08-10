@@ -158,6 +158,9 @@ frontend https
   default_backend default_backend
 
 frontend xyz
+  id 1024
+  enabled
+  disabled
   mode http
   acl network_allowed src 20.30.40.50 8.9.9.0/27
   acl ratelimit_is_abuse src_http_req_rate(Abuse) ge 10

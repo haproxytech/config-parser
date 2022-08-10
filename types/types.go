@@ -1000,6 +1000,15 @@ type UniqueIDHeader struct {
 }
 
 //sections:backend
+//name:use-fcgi-app
+//test:ok:use-fcgi-app application
+//test:fail:use-fcgi-app
+type UseFcgiApp struct {
+	Name    string
+	Comment string
+}
+
+//sections:backend
 //name:use-server
 //is-multiple:true
 //no-parse:true
