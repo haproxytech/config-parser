@@ -179,6 +179,11 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.DefaultBackend{})
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
+	addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
+	addParser(parser, &sequence, &simple.Word{Name: "http-send-name-header"})
+	addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
+	addParser(parser, &sequence, &parsers.PersistRdpCookie{})
+	addParser(parser, &sequence, &simple.String{Name: "retry-on"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
@@ -443,6 +448,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.Balance{})
 	addParser(parser, &sequence, &parsers.ACL{})
 	addParser(parser, &sequence, &parsers.ForcePersist{})
+	addParser(parser, &sequence, &parsers.IgnorePersist{})
 	addParser(parser, &sequence, &parsers.BindProcess{})
 	addParser(parser, &sequence, &simple.Option{Name: "httpclose"})
 	addParser(parser, &sequence, &simple.Option{Name: "forceclose"})
@@ -531,6 +537,11 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 	addParser(parser, &sequence, &parsers.UseFcgiApp{})
 	addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
+	addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
+	addParser(parser, &sequence, &simple.Word{Name: "http-send-name-header"})
+	addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
+	addParser(parser, &sequence, &parsers.PersistRdpCookie{})
+	addParser(parser, &sequence, &simple.String{Name: "retry-on"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -550,6 +561,7 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &parsers.Bind{})
 		addParser(parser, &sequence, &parsers.ACL{})
 		addParser(parser, &sequence, &parsers.ForcePersist{})
+		addParser(parser, &sequence, &parsers.IgnorePersist{})
 		addParser(parser, &sequence, &parsers.MonitorURI{})
 		addParser(parser, &sequence, &parsers.MonitorFail{})
 		addParser(parser, &sequence, &parsers.BindProcess{})
@@ -669,6 +681,11 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &parsers.DeclareCapture{})
 		addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 		addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
+		addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
+		addParser(parser, &sequence, &simple.Word{Name: "http-send-name-header"})
+		addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
+		addParser(parser, &sequence, &parsers.PersistRdpCookie{})
+		addParser(parser, &sequence, &simple.String{Name: "retry-on"})
 	}
 	return p.createParsers(parser, sequence)
 }

@@ -225,6 +225,7 @@ defaults test
   unique-id-header X-Unique-ID
   load-server-state-from-file global
   monitor-uri /haproxy_test
+  persist rdp-cookie
   http-check comment testcomment
   http-check connect
   http-check connect default
@@ -659,6 +660,8 @@ backend test
   server-template srv 3 google.com:80
   server-template srv 3 google.com
   force-persist if acl-name
+  ignore-persist if acl-name
+  persist rdp-cookie
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -2712,6 +2715,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  force-persist if acl-name
 `, 1},
+  {`  ignore-persist if acl-name
+`, 1},
   {`  unix-bind prefix pre
 `, 1},
   {`  thread-group name 1-10
@@ -2724,6 +2729,8 @@ var configTests = []configTest{  {`  acl url_stats path_beg /stats
 `, 1},
   {`  set-var proc.threshold int(200),sub(proc.prio)
 `, 1},
+  {`  persist rdp-cookie
+`, 2},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
   {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]

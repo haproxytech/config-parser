@@ -1187,6 +1187,20 @@ type ForcePersist struct {
 	Comment  string
 }
 
+//sections:backend
+//name:ignore-persist
+//test:ok:ignore-persist if acl-name
+//test:ok:ignore-persist unless acl-name
+//test:fail:ignore-persist
+//test:fail:ignore-persist if
+//test:fail:ignore-persist ddd acl-name
+//test:fail:ignore-persist acl-name
+type IgnorePersist struct {
+	Cond     string
+	CondTest string
+	Comment  string
+}
+
 //sections:global
 //name:unix-bind
 //is-multiple:false
@@ -1244,5 +1258,15 @@ type SetVar struct {
 type SetVarFmt struct {
 	Name    string
 	Format  string
+	Comment string
+}
+
+//sections:defaults,backend
+//name:persist rdp-cookie
+//is-multiple:false
+//test:ok:persist rdp-cookie
+//test:ok:persist rdp-cookie(cookies)
+type PersistRdpCookie struct {
+	Name    string
 	Comment string
 }
