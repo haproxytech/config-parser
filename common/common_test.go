@@ -53,3 +53,72 @@ func TestStringSplitWithCommentIgnoreEmpty(t *testing.T) {
 		})
 	}
 }
+
+func TestCutRight(t *testing.T) {
+	tests := []struct {
+		name   string
+		s      string
+		sep    string
+		before string
+		after  string
+		found  bool
+	}{
+		{
+			name:   "simple",
+			s:      "ab:cd:ef",
+			sep:    ":",
+			before: "ab:cd",
+			after:  "ef",
+			found:  true,
+		},
+		{
+			name:   "multi-characters-sep",
+			s:      "ab:-:cd:-:ef",
+			sep:    ":-:",
+			before: "ab:-:cd",
+			after:  "ef",
+			found:  true,
+		},
+		{
+			name:   "sep-at-start",
+			s:      ":abcd",
+			sep:    ":",
+			before: "",
+			after:  "abcd",
+			found:  true,
+		},
+		{
+			name:   "sep-at-end",
+			s:      "abcd:",
+			sep:    ":",
+			before: "abcd",
+			after:  "",
+			found:  true,
+		},
+		{
+			name:   "no-sep",
+			s:      "abcd",
+			sep:    ":",
+			before: "abcd",
+			after:  "",
+			found:  false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			before, after, found := CutRight(tt.s, tt.sep)
+			if before != tt.before {
+				t.Errorf("Part before separator doesn't match expected: %q != %q", before, tt.before)
+				return
+			}
+			if after != tt.after {
+				t.Errorf("Part after separator doesn't match expected: %q != %q", after, tt.after)
+				return
+			}
+			if found != tt.found {
+				t.Errorf("Found result doesn't match expected: %v != %v", found, tt.found)
+				return
+			}
+		})
+	}
+}

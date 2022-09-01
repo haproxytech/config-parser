@@ -124,3 +124,19 @@ func SplitRequest(parts []string) (command, condition []string) { //nolint:nonam
 	condition = parts[index:]
 	return command, condition
 }
+
+// CutRight slices string around the last occurrence of sep returning the text
+// before and after sep. The found result reports whether sep appears in s. If
+// sep does not appear in s, cut returns s, "", false.
+func CutRight(s, sep string) (before, after string, found bool) {
+	pos := strings.LastIndex(s, sep)
+	if pos < 0 {
+		before = s
+		found = false
+	} else {
+		before = s[:pos]
+		after = s[pos+len(sep):]
+		found = true
+	}
+	return before, after, found
+}
