@@ -26,10 +26,10 @@ func (h *ServerTemplate) parse(line string, parts []string, comment string) (*ty
 	data.NumOrRange = parts[2]
 	data.Comment = comment
 
-	address := common.StringSplitIgnoreEmpty(parts[3], ':')
-	if len(address) == 2 {
-		if port, err := strconv.ParseInt(address[1], 10, 64); err == nil {
-			data.Fqdn = address[0]
+	address, p, found := common.CutRight(parts[3], ":")
+	if found {
+		if port, err := strconv.ParseInt(p, 10, 64); err == nil {
+			data.Fqdn = address
 			data.Port = port
 		}
 	} else {

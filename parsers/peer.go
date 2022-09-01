@@ -32,12 +32,12 @@ type Peer struct {
 
 func (l *Peer) parse(line string, parts []string, comment string) (*types.Peer, error) {
 	if len(parts) > 2 {
-		adr := common.StringSplitIgnoreEmpty(parts[2], ':')
-		if len(adr) >= 2 {
-			if port, err := strconv.ParseInt(adr[1], 10, 64); err == nil {
+		adr, p, found := common.CutRight(parts[2], ":")
+		if found && len(adr) > 0 {
+			if port, err := strconv.ParseInt(p, 10, 64); err == nil {
 				return &types.Peer{
 					Name:    parts[1],
-					IP:      adr[0],
+					IP:      adr,
 					Port:    port,
 					Comment: comment,
 				}, nil
