@@ -188,6 +188,16 @@ type Filter interface {
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:ok:filter bwlim-in name default-limit 1024 default-period 10
+//test:ok:filter bwlim-in name default-limit 1024 default-period 10 min-size 32
+//test:ok:filter bwlim-in name limit 1024 key name(arg1)
+//test:ok:filter bwlim-in name limit 1024 key name(arg1) table st_src_global
+//test:ok:filter bwlim-in name limit 1024 key name(arg1) table st_src_global min-size 32
+//test:ok:filter bwlim-out name default-limit 1024 default-period 10
+//test:ok:filter bwlim-out name default-limit 1024 default-period 10 min-size 32
+//test:ok:filter bwlim-out name limit 1024 key name(arg1)
+//test:ok:filter bwlim-out name limit 1024 key name(arg1) table st_src_global
+//test:ok:filter bwlim-out name limit 1024 key name(arg1) table st_src_global min-size 32
 //test:ok:filter opentracing id qwerty-1234-uiop-567890 config file
 //test:ok:filter opentracing config file
 //test:ok:filter fcgi-app my-application
@@ -198,6 +208,25 @@ type Filter interface {
 //test:ok:filter trace random-parsing random-forwarding hexdump
 //test:ok:filter trace random-forwarding hexdump
 //test:ok:filter trace hexdump
+//test:fail:filter bwlim-in
+//test:fail:filter bwlim-in name
+//test:fail:filter bwlim-in name default-limit
+//test:fail:filter bwlim-in name default-limit 1024
+//test:fail:filter bwlim-in name default-limit 1024 default-period
+//test:fail:filter bwlim-in name default-limit 1024 default-period 10 min-size
+//test:fail:filter bwlim-in name default-limit 1024 key name(arg1)
+//test:fail:filter bwlim-in name limit 1024 default-period 100
+//test:fail:filter bwlim-out
+//test:fail:filter bwlim-out name
+//test:fail:filter bwlim-out name default-limit
+//test:fail:filter bwlim-out name default-limit 1024
+//test:fail:filter bwlim-out name default-limit 1024 default-period
+//test:fail:filter bwlim-out name default-limit 1024 default-period 10 min-size
+//test:fail:filter bwlim-out name limit
+//test:fail:filter bwlim-out name limit 1024
+//test:fail:filter bwlim-out name limit 1024 key
+//test:fail:filter bwlim-out name limit 1024 key name(arg1) table
+//test:fail:filter bwlim-out name limit 1024 key name(arg1) table st_src_global min-size
 //test:fail:filter opentracing
 //test:fail:filter opentracing id
 //test:fail:filter opentracing id qwerty-1234-uiop-567890 config

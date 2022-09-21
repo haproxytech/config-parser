@@ -57,6 +57,8 @@ func (h *Filters) Parse(line string, parts []string, comment string) (changeStat
 			err = h.ParseFilter(&FcgiApp{}, parts, comment)
 		case "opentracing":
 			err = h.ParseFilter(&Opentracing{}, parts, comment)
+		case "bwlim-in", "bwlim-out":
+			err = h.ParseFilter(&BandwidthLimit{}, parts, comment)
 		default:
 			return "", &errors.ParseError{Parser: "FilterLines", Line: line}
 		}
