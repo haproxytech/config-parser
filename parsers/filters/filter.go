@@ -53,6 +53,8 @@ func (h *Filters) Parse(line string, parts []string, comment string) (changeStat
 			err = h.ParseFilter(&Cache{}, parts, comment)
 		case "spoe":
 			err = h.ParseFilter(&Spoe{}, parts, comment)
+		case "fcgi-app":
+			err = h.ParseFilter(&FcgiApp{}, parts, comment)
 		default:
 			return "", &errors.ParseError{Parser: "FilterLines", Line: line}
 		}

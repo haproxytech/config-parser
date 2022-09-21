@@ -27,6 +27,7 @@ import (
 
 func TestFiltersfilters(t *testing.T) {
 	tests := map[string]bool{
+		"filter fcgi-app my-application":                                  true,
 		"filter compression":                                              true,
 		"filter spoe config file":                                         true,
 		"filter spoe engine name config file":                             true,
@@ -34,6 +35,8 @@ func TestFiltersfilters(t *testing.T) {
 		"filter trace random-parsing random-forwarding hexdump":           true,
 		"filter trace random-forwarding hexdump":                          true,
 		"filter trace hexdump":                                            true,
+		"filter fcgi-app":                                                 false,
+		"filter fcgi-app first second":                                    false,
 		"filter compression false":                                        false,
 		"filter spoe":                                                     false,
 		"filter spoe config":                                              false,

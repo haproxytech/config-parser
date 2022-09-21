@@ -188,6 +188,7 @@ type Filter interface {
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:ok:filter fcgi-app my-application
 //test:ok:filter compression
 //test:ok:filter spoe config file
 //test:ok:filter spoe engine name config file
@@ -195,6 +196,8 @@ type Filter interface {
 //test:ok:filter trace random-parsing random-forwarding hexdump
 //test:ok:filter trace random-forwarding hexdump
 //test:ok:filter trace hexdump
+//test:fail:filter fcgi-app
+//test:fail:filter fcgi-app first second
 //test:fail:filter compression false
 //test:fail:filter spoe
 //test:fail:filter spoe config
