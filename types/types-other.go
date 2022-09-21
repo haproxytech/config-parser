@@ -188,6 +188,8 @@ type Filter interface {
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:ok:filter opentracing id qwerty-1234-uiop-567890 config file
+//test:ok:filter opentracing config file
 //test:ok:filter fcgi-app my-application
 //test:ok:filter compression
 //test:ok:filter spoe config file
@@ -196,6 +198,11 @@ type Filter interface {
 //test:ok:filter trace random-parsing random-forwarding hexdump
 //test:ok:filter trace random-forwarding hexdump
 //test:ok:filter trace hexdump
+//test:fail:filter opentracing
+//test:fail:filter opentracing id
+//test:fail:filter opentracing id qwerty-1234-uiop-567890 config
+//test:fail:filter opentracing id qwerty-1234-uiop-567890 config file extra
+//test:fail:filter opentracing id qwerty-1234-uiop-567890 config file extra option
 //test:fail:filter fcgi-app
 //test:fail:filter fcgi-app first second
 //test:fail:filter compression false
