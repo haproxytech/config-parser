@@ -17,6 +17,7 @@ limitations under the License.
 package filters
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
@@ -30,6 +31,9 @@ type Compression struct {
 func (f *Compression) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
+	}
+	if len(parts) > 2 {
+		return fmt.Errorf("unexpected extra args: %s", strings.Join(parts[2:], " "))
 	}
 	f.Enabled = true
 	return nil

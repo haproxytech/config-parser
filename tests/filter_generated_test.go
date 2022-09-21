@@ -27,12 +27,14 @@ import (
 
 func TestFiltersfilters(t *testing.T) {
 	tests := map[string]bool{
+		"filter compression":                                              true,
 		"filter spoe config file":                                         true,
 		"filter spoe engine name config file":                             true,
 		"filter trace name name random-parsing random-forwarding hexdump": true,
 		"filter trace random-parsing random-forwarding hexdump":           true,
 		"filter trace random-forwarding hexdump":                          true,
 		"filter trace hexdump":                                            true,
+		"filter compression false":                                        false,
 		"filter spoe":                                                     false,
 		"filter spoe config":                                              false,
 		"filter spoe engine":                                              false,

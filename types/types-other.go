@@ -188,12 +188,14 @@ type Filter interface {
 //is-interface:true
 //no-init:true
 //no-parse:true
+//test:ok:filter compression
 //test:ok:filter spoe config file
 //test:ok:filter spoe engine name config file
 //test:ok:filter trace name name random-parsing random-forwarding hexdump
 //test:ok:filter trace random-parsing random-forwarding hexdump
 //test:ok:filter trace random-forwarding hexdump
 //test:ok:filter trace hexdump
+//test:fail:filter compression false
 //test:fail:filter spoe
 //test:fail:filter spoe config
 //test:fail:filter spoe engine
