@@ -814,6 +814,10 @@ backend test
   http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
   http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+  http-request set-bandwidth-limit my-limit
+  http-request set-bandwidth-limit my-limit limit 1m period 10s
+  http-request set-bandwidth-limit my-limit period 10s
+  http-request set-bandwidth-limit my-limit limit 1m
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
   http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
@@ -901,6 +905,10 @@ backend test
   http-response wait-for-body time 20s if TRUE
   http-response wait-for-body time 20s at-least 100k
   http-response wait-for-body time 20s at-least 100k if TRUE
+  http-response set-bandwidth-limit my-limit
+  http-response set-bandwidth-limit my-limit limit 1m period 10s
+  http-response set-bandwidth-limit my-limit period 10s
+  http-response set-bandwidth-limit my-limit limit 1m
   http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
   http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
   http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
@@ -1104,11 +1112,19 @@ backend test
   tcp-request session unset-var(sess.dn)
   tcp-request session silent-drop
   tcp-request session silent-drop if !HTTP
+  tcp-request content set-bandwidth-limit my-limit
+  tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
+  tcp-request content set-bandwidth-limit my-limit period 10s
+  tcp-request content set-bandwidth-limit my-limit limit 1m
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
   tcp-response content set-dst dest
   tcp-response content unset-var(sess.my_var)
+  tcp-response content set-bandwidth-limit my-limit
+  tcp-response content set-bandwidth-limit my-limit limit 1m period 10s
+  tcp-response content set-bandwidth-limit my-limit period 10s
+  tcp-response content set-bandwidth-limit my-limit limit 1m
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -1454,6 +1470,10 @@ frontend test
   http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
   http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+  http-request set-bandwidth-limit my-limit
+  http-request set-bandwidth-limit my-limit limit 1m period 10s
+  http-request set-bandwidth-limit my-limit period 10s
+  http-request set-bandwidth-limit my-limit limit 1m
   http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
@@ -1542,6 +1562,10 @@ frontend test
   http-response wait-for-body time 20s if TRUE
   http-response wait-for-body time 20s at-least 100k
   http-response wait-for-body time 20s at-least 100k if TRUE
+  http-response set-bandwidth-limit my-limit
+  http-response set-bandwidth-limit my-limit limit 1m period 10s
+  http-response set-bandwidth-limit my-limit period 10s
+  http-response set-bandwidth-limit my-limit limit 1m
   http-response capture res.hdr(Server) id 0
   http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
   http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
@@ -1684,11 +1708,19 @@ frontend test
   tcp-request session unset-var(sess.dn)
   tcp-request session silent-drop
   tcp-request session silent-drop if !HTTP
+  tcp-request content set-bandwidth-limit my-limit
+  tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
+  tcp-request content set-bandwidth-limit my-limit period 10s
+  tcp-request content set-bandwidth-limit my-limit limit 1m
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
   tcp-response content set-dst dest
   tcp-response content unset-var(sess.my_var)
+  tcp-response content set-bandwidth-limit my-limit
+  tcp-response content set-bandwidth-limit my-limit limit 1m period 10s
+  tcp-response content set-bandwidth-limit my-limit period 10s
+  tcp-response content set-bandwidth-limit my-limit limit 1m
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -3070,6 +3102,14 @@ var configTests = []configTest{{`  set-param name fmt if acl
 `, 2},
 	{`  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 `, 2},
+	{`  http-request set-bandwidth-limit my-limit
+`, 2},
+	{`  http-request set-bandwidth-limit my-limit limit 1m period 10s
+`, 2},
+	{`  http-request set-bandwidth-limit my-limit period 10s
+`, 2},
+	{`  http-request set-bandwidth-limit my-limit limit 1m
+`, 2},
 	{`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 1},
 	{`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
@@ -3219,6 +3259,14 @@ var configTests = []configTest{{`  set-param name fmt if acl
 	{`  http-response wait-for-body time 20s at-least 100k
 `, 2},
 	{`  http-response wait-for-body time 20s at-least 100k if TRUE
+`, 2},
+	{`  http-response set-bandwidth-limit my-limit
+`, 2},
+	{`  http-response set-bandwidth-limit my-limit limit 1m period 10s
+`, 2},
+	{`  http-response set-bandwidth-limit my-limit period 10s
+`, 2},
+	{`  http-response set-bandwidth-limit my-limit limit 1m
 `, 2},
 	{`  http-response capture res.hdr(Server) id 0
 `, 1},
@@ -3582,6 +3630,14 @@ var configTests = []configTest{{`  set-param name fmt if acl
 `, 2},
 	{`  tcp-request session silent-drop if !HTTP
 `, 2},
+	{`  tcp-request content set-bandwidth-limit my-limit
+`, 2},
+	{`  tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
+`, 2},
+	{`  tcp-request content set-bandwidth-limit my-limit period 10s
+`, 2},
+	{`  tcp-request content set-bandwidth-limit my-limit limit 1m
+`, 2},
 	{`  tcp-response content lua.foo
 `, 2},
 	{`  tcp-response content lua.foo param if !HTTP
@@ -3591,6 +3647,14 @@ var configTests = []configTest{{`  set-param name fmt if acl
 	{`  tcp-response content set-dst dest
 `, 2},
 	{`  tcp-response content unset-var(sess.my_var)
+`, 2},
+	{`  tcp-response content set-bandwidth-limit my-limit
+`, 2},
+	{`  tcp-response content set-bandwidth-limit my-limit limit 1m period 10s
+`, 2},
+	{`  tcp-response content set-bandwidth-limit my-limit period 10s
+`, 2},
+	{`  tcp-response content set-bandwidth-limit my-limit limit 1m
 `, 2},
 	{`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 `, 2},

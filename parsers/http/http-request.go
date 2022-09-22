@@ -141,6 +141,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 			err = h.ParseHTTPRequest(&http_actions.WaitForBody{}, parts, comment)
 		case "wait-for-handshake":
 			err = h.ParseHTTPRequest(&http_actions.WaitForHandshake{}, parts, comment)
+		case "set-bandwidth-limit":
+			err = h.ParseHTTPRequest(&actions.SetBandwidthLimit{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):

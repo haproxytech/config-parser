@@ -515,6 +515,15 @@ type Action interface {
 //test:ok:http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 //test:fail:http-request redirect location if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 //test:fail:http-request redirect location /file.html code if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+//test:ok:http-request set-bandwidth-limit my-limit
+//test:ok:http-request set-bandwidth-limit my-limit limit 1m period 10s
+//test:ok:http-request set-bandwidth-limit my-limit period 10s
+//test:ok:http-request set-bandwidth-limit my-limit limit 1m
+//test:fail:http-request set-bandwidth-limit my-limit limit
+//test:fail:http-request set-bandwidth-limit my-limit period
+//test:fail:http-request set-bandwidth-limit my-limit 10s
+//test:fail:http-request set-bandwidth-limit my-limit period 10s limit
+//test:fail:http-request set-bandwidth-limit my-limit limit period 10s
 type HTTPRequests struct{}
 
 //name:http-response
@@ -658,6 +667,15 @@ type HTTPRequests struct{}
 //test:ok:http-response wait-for-body time 20s at-least 100k if TRUE
 //test:fail:http-response wait-for-body 20s at-least 100k
 //test:fail:http-response wait-for-body time 2000 test
+//test:ok:http-response set-bandwidth-limit my-limit
+//test:ok:http-response set-bandwidth-limit my-limit limit 1m period 10s
+//test:ok:http-response set-bandwidth-limit my-limit period 10s
+//test:ok:http-response set-bandwidth-limit my-limit limit 1m
+//test:fail:http-response set-bandwidth-limit my-limit limit
+//test:fail:http-response set-bandwidth-limit my-limit period
+//test:fail:http-response set-bandwidth-limit my-limit 10s
+//test:fail:http-response set-bandwidth-limit my-limit period 10s limit
+//test:fail:http-response set-bandwidth-limit my-limit limit period 10s
 type HTTPResponses struct{}
 
 //name:http-after-response
@@ -931,6 +949,10 @@ type TCPType interface {
 //test:ok:tcp-request session unset-var(sess.dn)
 //test:ok:tcp-request session silent-drop
 //test:ok:tcp-request session silent-drop if !HTTP
+//test:ok:tcp-request content set-bandwidth-limit my-limit
+//test:ok:tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
+//test:ok:tcp-request content set-bandwidth-limit my-limit period 10s
+//test:ok:tcp-request content set-bandwidth-limit my-limit limit 1m
 //test:fail:tcp-request
 //test:fail:tcp-request content
 //test:fail:tcp-request connection
@@ -958,6 +980,11 @@ type TCPType interface {
 //test:fail:tcp-request session track-sc1 src table if some_check
 //test:fail:tcp-request session track-sc2 src table
 //test:fail:tcp-request session track-sc2 src table if some_check
+//test:fail:tcp-request content set-bandwidth-limit my-limit limit
+//test:fail:tcp-request content set-bandwidth-limit my-limit period
+//test:fail:tcp-request content set-bandwidth-limit my-limit 10s
+//test:fail:tcp-request content set-bandwidth-limit my-limit period 10s limit
+//test:fail:tcp-request content set-bandwidth-limit my-limit limit period 10s
 type TCPRequests struct{}
 
 //name:tcp-response
@@ -982,6 +1009,15 @@ type TCPRequests struct{}
 //test:fail:tcp-response content set-dst
 //test:fail:tcp-response content capture
 //test:ok:tcp-response content unset-var(sess.my_var)
+//test:ok:tcp-response content set-bandwidth-limit my-limit
+//test:ok:tcp-response content set-bandwidth-limit my-limit limit 1m period 10s
+//test:ok:tcp-response content set-bandwidth-limit my-limit period 10s
+//test:ok:tcp-response content set-bandwidth-limit my-limit limit 1m
+//test:fail:tcp-response content set-bandwidth-limit my-limit limit
+//test:fail:tcp-response content set-bandwidth-limit my-limit period
+//test:fail:tcp-response content set-bandwidth-limit my-limit 10s
+//test:fail:tcp-response content set-bandwidth-limit my-limit period 10s limit
+//test:fail:tcp-response content set-bandwidth-limit my-limit limit period 10s
 type TCPResponses struct{}
 
 //name:redirect

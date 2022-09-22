@@ -75,6 +75,8 @@ func (f *Content) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.SendSpoeGroup{}, parts)
 	case "use-service":
 		err = f.ParseAction(&actions.UseService{}, parts)
+	case "set-bandwidth-limit":
+		err = f.ParseAction(&actions.SetBandwidthLimit{}, parts)
 	default:
 		switch {
 		case strings.HasPrefix(parts[2], "lua."):

@@ -97,6 +97,8 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "wait-for-body":
 			err = h.ParseHTTPResponse(&http_actions.WaitForBody{}, parts, comment)
+		case "set-bandwidth-limit":
+			err = h.ParseHTTPResponse(&actions.SetBandwidthLimit{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):
