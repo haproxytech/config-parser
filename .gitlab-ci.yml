@@ -5,13 +5,14 @@ stages:
 diff:
   stage: diff
   image:
-    name: $CI_REGISTRY_GO/golang:1.18
+    name: $CI_REGISTRY_GO/golang:1.19
     entrypoint: [""]
   tags:
     - go
   script:
     - make generate
-    - test -z "$(git diff 2> /dev/null)" || exit 'Files are not generated, issue `go run generate/go-generate.go $(pwd)` and commit the result'
+    - git diff
+    - test -z "$(git diff 2> /dev/null)" || exit 'Files are not generated or formatted with gofumpt, issue `make generate` and commit the result'
     - test -z "$(git ls-files --others --exclude-standard 2> /dev/null)" || exit 'Generation created untracked files, cannot proceed'
   only:
     - merge_requests

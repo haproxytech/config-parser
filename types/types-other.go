@@ -20,158 +20,158 @@ package types
 import "github.com/haproxytech/config-parser/v4/common"
 
 //name:section
-//no-sections:true
+//no:sections
 //dir:extra
-//no-init:true
+//no:init
 type Section struct {
 	Name    string
 	Comment string
 }
 
 //name:config-version
-//no-sections:true
+//no:sections
 //dir:extra
-//no-init:true
-//no-get:true
+//no:init
+//no:get
 type ConfigVersion struct {
 	Value int64
 }
 
 //name:config-hash
-//no-sections:true
+//no:sections
 //dir:extra
-//no-init:true
-//no-get:true
+//no:init
+//no:get
 type ConfigHash struct {
 	Value string
 }
 
 //name:comments
-//no-sections:true
+//no:sections
 //dir:extra
-//is-multiple:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//no:init
+//no:parse
 type Comments struct {
 	Value string
 }
 
 //name:unprocessed
-//no-sections:true
+//no:sections
 //dir:extra
-//is-multiple:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//no:init
+//no:parse
 //test:skip
 type UnProcessed struct {
 	Value string
 }
 
 //name:simple-option
-//no-sections:true
-//struct-name:Option
+//no:sections
+//struct:name:Option
 //dir:simple
-//no-init:true
+//no:init
 type SimpleOption struct {
 	NoOption bool
 	Comment  string
 }
 
 //name:simple-timeout
-//no-sections:true
-//struct-name:Timeout
+//no:sections
+//struct:name:Timeout
 //dir:simple
-//no-init:true
+//no:init
 type SimpleTimeout struct {
 	Value   string
 	Comment string
 }
 
 //name:simple-word
-//no-sections:true
-//struct-name:Word
+//no:sections
+//struct:name:Word
 //dir:simple
-//parser-type:StringC
+//parser:type:StringC
 type SimpleWord struct{}
 
 //name:simple-number
-//no-sections:true
-//struct-name:Number
+//no:sections
+//struct:name:Number
 //dir:simple
-//parser-type:Int64C
+//parser:type:Int64C
 type SimpleNumber struct{}
 
 //name:simple-string
-//no-sections:true
-//struct-name:String
+//no:sections
+//struct:name:String
 //dir:simple
-//parser-type:StringC
+//parser:type:StringC
 type SimpleString struct{}
 
 //name:simple-on-off
-//no-sections:true
-//struct-name:OnOff
+//no:sections
+//struct:name:OnOff
 //dir:simple
-//parser-type:StringC
+//parser:type:StringC
 type SimpleOnOff struct{}
 
 //name:simple-auto-on-off
-//no-sections:true
-//struct-name:AutoOnOff
+//no:sections
+//struct:name:AutoOnOff
 //dir:simple
-//parser-type:StringC
+//parser:type:StringC
 type SimpleAutoOnOff struct{}
 
 //name:simple-string-slice
-//no-sections:true
-//struct-name:StringSlice
+//no:sections
+//struct:name:StringSlice
 //dir:simple
-//parser-type:StringSliceC
+//parser:type:StringSliceC
 type SimpleStringSlice struct{}
 
 //name:simple-string-kv
-//no-sections:true
-//struct-name:StringKeyValue
+//no:sections
+//struct:name:StringKeyValue
 //dir:simple
-//parser-type:StringKeyValueC
+//parser:type:StringKeyValueC
 type SimpleStringKeyValue struct{}
 
 //name:array-string-kv
-//is-multiple:true
-//no-sections:true
-//no-parse:true
-//struct-name:ArrayKeyValue
+//is:multiple
+//no:sections
+//no:parse
+//struct:name:ArrayKeyValue
 //dir:simple
-//parser-type:StringKeyValueC
+//parser:type:StringKeyValueC
 type ArrayStringKeyValue struct{}
 
 //name:simple-time
-//no-sections:true
-//struct-name:Time
+//no:sections
+//struct:name:Time
 //dir:simple
-//parser-type:StringC
+//parser:type:StringC
 type SimpleTime struct{}
 
 //name:simple-size
-//no-sections:true
-//struct-name:Size
+//no:sections
+//struct:name:Size
 //dir:simple
-//parser-type:StringC
+//parser:type:StringC
 type SimpleSize struct{}
 
 //name:simple-enabled
-//no-sections:true
-//struct-name:Enabled
+//no:sections
+//struct:name:Enabled
 //dir:simple
-//parser-type:Enabled
+//parser:type:Enabled
 type SimpleEnabled struct{}
 
 //name:simple-time-two-words
-//no-sections:true
-//struct-name:TimeTwoWords
+//no:sections
+//struct:name:TimeTwoWords
 //dir:simple
-//no-init:true
-//parser-type:StringC
+//no:init
+//parser:type:StringC
 //test:skip
 type TimeTwoWords struct{}
 
@@ -181,13 +181,13 @@ type Filter interface {
 }
 
 //name:filter
-//no-sections:true
+//no:sections
 //dir:filters
-//is-multiple:true
-//parser-type:Filter
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:Filter
+//is:interface
+//no:init
+//no:parse
 //test:ok:filter bwlim-in name default-limit 1024 default-period 10
 //test:ok:filter bwlim-in name default-limit 1024 default-period 10 min-size 32
 //test:ok:filter bwlim-in name limit 1024 key name(arg1)
@@ -261,13 +261,13 @@ type Action interface {
 
 //sections:frontend,backend
 //name:http-request
-//struct-name:Requests
+//struct:name:Requests
 //dir:http
-//is-multiple:true
-//parser-type:Action
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:Action
+//is:interface
+//no:init
+//no:parse
 //test:fail:http-request
 //test:fail:http-request capture req.cook_cnt(FirstVisit),bool strlen 10
 //test:frontend-ok:http-request capture req.cook_cnt(FirstVisit),bool len 10
@@ -277,8 +277,8 @@ type Action interface {
 //test:ok:http-request add-acl(map.lst) [src]
 //test:fail:http-request add-acl(map.lst)
 //test:ok:http-request add-header X-value value
-//test:"ok":http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
-//test:"ok":http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
+//test:quote_ok:http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
+//test:quote_ok:http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
 //test:fail:http-request add-header X-value
 //test:ok:http-request cache-use cache-name
 //test:ok:http-request cache-use cache-name if FALSE
@@ -490,19 +490,19 @@ type Action interface {
 //test:ok:http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
 //test:ok:http-request set-dst-port int(4000)
 //test:fail:http-request set-dst-port
-//test:"ok":http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
-//test:"ok":http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
-//test:"ok":http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
-//test:"ok":http-request return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
-//test:"ok":http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
-//test:"ok":http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
-//test:"ok":http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
-//test:"ok":http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
-//test:"ok":http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+//test:quote_ok:http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:quote_ok:http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+//test:quote_ok:http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:quote_ok:http-request return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+//test:quote_ok:http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+//test:quote_ok:http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+//test:quote_ok:http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+//test:quote_ok:http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+//test:quote_ok:http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
 //test:ok:http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
 //test:ok:http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
 //test:ok:http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
-//test:"ok":http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
+//test:quote_ok:http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
 //test:fail:http-request return 8 t hdr
 //test:fail:http-request return hdr
 //test:fail:http-request return hdr one
@@ -511,7 +511,7 @@ type Action interface {
 //test:fail:http-request return 0 hdr
 //test:fail:http-request return 0 0 hdr 0
 //test:fail:http-request return e r s n s c m	t e r  s c t e s t e r s c v e hdr ï
-//test:"ok":http-request redirect location /file.html if { var(txn.routecookie) "ROUTEMP" }:1
+//test:quote_ok:http-request redirect location /file.html if { var(txn.routecookie) "ROUTEMP" }:1
 //test:ok:http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 //test:fail:http-request redirect location if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 //test:fail:http-request redirect location /file.html code if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
@@ -519,13 +519,13 @@ type HTTPRequests struct{}
 
 //name:http-response
 //sections:frontend,backend
-//struct-name:Responses
+//struct:name:Responses
 //dir:http
-//is-multiple:true
-//parser-type:Action
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:Action
+//is:interface
+//no:init
+//no:parse
 //test:fail:http-response
 //test:frontend-ok:http-response capture res.hdr(Server) id 0
 //test:ok:http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
@@ -576,19 +576,19 @@ type HTTPRequests struct{}
 //test:fail:http-response replace-header User-agent curl
 //test:ok:http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 //test:fail:http-response replace-value X-Forwarded-For ^192.168.(.*)$
-//test:"ok":http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
-//test:"ok":http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
-//test:"ok":http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
-//test:"ok":http-response return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
-//test:"ok":http-response return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
-//test:"ok":http-response return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
-//test:"ok":http-response return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
-//test:"ok":http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
-//test:"ok":http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+//test:quote_ok:http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:quote_ok:http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+//test:quote_ok:http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+//test:quote_ok:http-response return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+//test:quote_ok:http-response return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+//test:quote_ok:http-response return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+//test:quote_ok:http-response return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+//test:quote_ok:http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+//test:quote_ok:http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
 //test:ok:http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
 //test:ok:http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
 //test:ok:http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
-//test:"ok":http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
+//test:quote_ok:http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
 //test:fail:http-response return 8 t hdr
 //test:fail:http-response return hdr
 //test:fail:http-response return hdr one
@@ -662,13 +662,13 @@ type HTTPResponses struct{}
 
 //name:http-after-response
 //sections:frontend,backend
-//struct-name:AfterResponses
+//struct:name:AfterResponses
 //dir:http
-//is-multiple:true
-//parser-type:Action
-//is-interface:true
-//no-parse:true
-//no-init:true
+//is:multiple
+//parser:type:Action
+//is:interface
+//no:parse
+//no:init
 //test:fail:http-after-response
 //test:fail:http-after-response set-header
 //test:fail:http-after-response set-header x-foo
@@ -713,15 +713,15 @@ type HTTPResponses struct{}
 //test:fail:http-after-response unset-var()
 type HTTPAfterResponse struct{}
 
-//sections:defaults,backend
 //name:http-check
-//struct-name:Checks
+//sections:defaults,backend
+//struct:name:Checks
 //dir:http
-//is-multiple:true
-//parser-type:Action
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:Action
+//is:interface
+//no:init
+//no:parse
 //test:ok:http-check comment testcomment
 //test:ok:http-check connect
 //test:ok:http-check connect default
@@ -762,39 +762,39 @@ type HTTPAfterResponse struct{}
 //test:fail:http-check expect status
 //test:fail:http-check expect comment testcomment
 //test:fail:http-check set-var(check.port)
-//test:"ok":http-check set-var(check.port) int(1234)
+//test:quote_ok:http-check set-var(check.port) int(1234)
 //test:fail:http-check set-var(check.port) int(1234) if x
 //test:fail:http-check set-var-fmt(check.port)
-//test:"ok":http-check set-var-fmt(check.port) int(1234)
+//test:quote_ok:http-check set-var-fmt(check.port) int(1234)
 //test:fail:http-check set-var-fmt(check.port) int(1234) if x
-//test:"ok":http-check unset-var(txn.from)
+//test:quote_ok:http-check unset-var(txn.from)
 //test:fail:http-check unset-var(txn.from) if x
 type HTTPCheck struct{}
 
-//sections:defaults,backend
 //name:tcp-check
-//struct-name:Checks
+//sections:defaults,backend
+//struct:name:Checks
 //dir:tcp
-//is-multiple:true
-//parser-type:Action
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:Action
+//is:interface
+//no:init
+//no:parse
 //test:ok:tcp-check comment testcomment
 //test:ok:tcp-check connect
 //test:ok:tcp-check connect port 443 ssl
 //test:ok:tcp-check connect port 110 linger
 //test:ok:tcp-check connect port 143
-//test:"ok":tcp-check expect string +OK\ POP3\ ready
-//test:"ok":tcp-check expect string *\ OK\ IMAP4\ ready
+//test:quote_ok:tcp-check expect string +OK\ POP3\ ready
+//test:quote_ok:tcp-check expect string *\ OK\ IMAP4\ ready
 //test:ok:tcp-check expect string +PONG
 //test:ok:tcp-check expect string role:master
 //test:ok:tcp-check expect string +OK
-//test:"ok":tcp-check send PING\r\n
-//test:"ok":tcp-check send PING\r\n comment testcomment
-//test:"ok":tcp-check send QUIT\r\n
-//test:"ok":tcp-check send QUIT\r\n comment testcomment
-//test:"ok":tcp-check send info\ replication\r\n
+//test:quote_ok:tcp-check send PING\r\n
+//test:quote_ok:tcp-check send PING\r\n comment testcomment
+//test:quote_ok:tcp-check send QUIT\r\n
+//test:quote_ok:tcp-check send QUIT\r\n comment testcomment
+//test:quote_ok:tcp-check send info\ replication\r\n
 //test:ok:tcp-check send-lf testfmt
 //test:ok:tcp-check send-lf testfmt comment testcomment
 //test:ok:tcp-check send-binary testhexstring
@@ -804,10 +804,10 @@ type HTTPCheck struct{}
 //test:fail:tcp-check set-var(check.port)
 //test:ok:tcp-check set-var(check.port) int(1234)
 //test:fail:tcp-check set-var(check.port) int(1234) if x
-//test:"ok":tcp-check set-var-fmt(check.name) "%H"
-//test:"ok":tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
-//test:"fail":tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port] if TRUE"
-//test:"ok":tcp-check unset-var(txn.from)
+//test:quote_ok:tcp-check set-var-fmt(check.name) "%H"
+//test:quote_ok:tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
+//test:quote_fail:tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port] if TRUE"
+//test:quote_ok:tcp-check unset-var(txn.from)
 //test:fail:tcp-check unset-var(txn.from) if x
 type TCPCheck struct{}
 
@@ -819,13 +819,13 @@ type TCPType interface {
 
 //name:tcp-request
 //sections:frontend,backend
-//struct-name:Requests
+//struct:name:Requests
 //dir:tcp
-//is-multiple:true
-//parser-type:TCPType
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:TCPType
+//is:interface
+//no:init
+//no:parse
 //test:ok:tcp-request content accept
 //test:ok:tcp-request content accept if !HTTP
 //test:ok:tcp-request content reject
@@ -962,13 +962,13 @@ type TCPRequests struct{}
 
 //name:tcp-response
 //sections:frontend,backend
-//struct-name:Responses
+//struct:name:Responses
 //dir:tcp
-//is-multiple:true
-//parser-type:TCPType
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:TCPType
+//is:interface
+//no:init
+//no:parse
 //test:ok:tcp-response content lua.foo
 //test:ok:tcp-response content lua.foo param if !HTTP
 //test:ok:tcp-response content lua.foo param param1
@@ -987,11 +987,11 @@ type TCPResponses struct{}
 //name:redirect
 //sections:frontend,backend
 //dir:http
-//is-multiple:true
-//parser-type:Action
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:Action
+//is:interface
+//no:init
+//no:parse
 //test:fail:redirect
 //test:ok:redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 type Redirect struct{}
@@ -1004,13 +1004,13 @@ type StatsSettings interface {
 
 //name:stats
 //sections:defaults,frontend,backend
-//struct-name:Stats
+//struct:name:Stats
 //dir:stats
-//is-multiple:true
-//parser-type:StatsSettings
-//is-interface:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//parser:type:StatsSettings
+//is:interface
+//no:init
+//no:parse
 //test:fail:stats
 //test:frontend-ok:stats admin if LOCALHOST
 //test:ok:stats auth admin1:AdMiN123

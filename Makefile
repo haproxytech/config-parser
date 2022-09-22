@@ -2,8 +2,14 @@ PROJECT_PATH=${PWD}
 
 .PHONY: generate
 generate:
+	go install mvdan.cc/gofumpt@latest
 	echo ${PROJECT_PATH}
 	go run generate/go-generate.go ${PROJECT_PATH}
+	gofumpt -l -w .
+
+.PHONY: format
+format:
+	gofumpt -l -w .
 
 .PHONY: test
 test:

@@ -283,7 +283,7 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo,cyclop
 			s := strings.Split(line, ":")
 			parserData.ParserSections = strings.Split(s[1], ",")
 		}
-		if strings.HasPrefix(line, "//no-sections:true") {
+		if strings.HasPrefix(line, "//no:sections") {
 			parserData.NoSections = true
 		}
 		if strings.HasPrefix(line, "//name:") {
@@ -295,37 +295,37 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo,cyclop
 				parserData.ParserSecondName = items[1]
 			}
 		}
-		if strings.HasPrefix(line, "//struct-name:") {
+		if strings.HasPrefix(line, "//struct:name:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
-			parserData.StructName = data[1]
+			parserData.StructName = data[2]
 		}
 		if strings.HasPrefix(line, "//dir:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
 			parserData.Dir = data[1]
 		}
-		if strings.HasPrefix(line, "//is-multiple:true") {
+		if strings.HasPrefix(line, "//is:multiple") {
 			parserData.ParserMultiple = true
 		}
-		if strings.HasPrefix(line, "//no-init:true") {
+		if strings.HasPrefix(line, "//no:init") {
 			parserData.NoInit = true
 		}
-		if strings.HasPrefix(line, "//no-name:true") {
+		if strings.HasPrefix(line, "//no:name") {
 			parserData.NoName = true
 		}
-		if strings.HasPrefix(line, "//no-parse:true") {
+		if strings.HasPrefix(line, "//no:parse") {
 			parserData.NoParse = true
 		}
-		if strings.HasPrefix(line, "//is-interface:true") {
+		if strings.HasPrefix(line, "//is:interface") {
 			parserData.IsInterface = true
 		}
-		if strings.HasPrefix(line, "//parser-type:") {
+		if strings.HasPrefix(line, "//parser:type:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
-			parserData.ParserTypeOverride = data[1]
+			parserData.ParserTypeOverride = data[2]
 		}
-		if strings.HasPrefix(line, "//no-get:true") {
+		if strings.HasPrefix(line, "//no:get") {
 			parserData.NoGet = true
 		}
-		if strings.HasPrefix(line, `//test:"ok"`) {
+		if strings.HasPrefix(line, `//test:quote_ok`) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
 		}
@@ -345,7 +345,7 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo,cyclop
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
 		}
-		if strings.HasPrefix(line, `//test:"fail"`) {
+		if strings.HasPrefix(line, `//test:quote_fail`) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFailEscaped = append(parserData.TestFailEscaped, data[2])
 		}
@@ -459,7 +459,7 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 			s := strings.Split(line, ":")
 			parserData.ParserSections = strings.Split(s[1], ",")
 		}
-		if strings.HasPrefix(line, "//no-sections:true") {
+		if strings.HasPrefix(line, "//no:sections") {
 			parserData.NoSections = true
 		}
 		if strings.HasPrefix(line, "//name:") {
@@ -471,16 +471,16 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 				parserData.ParserSecondName = items[1]
 			}
 		}
-		if strings.HasPrefix(line, "//no-init:true") {
+		if strings.HasPrefix(line, "//no:init") {
 			parserData.NoInit = true
 		}
-		if strings.HasPrefix(line, "//no-name:true") {
+		if strings.HasPrefix(line, "//no:name") {
 			parserData.NoName = true
 		}
-		if strings.HasPrefix(line, "//no-parse:true") {
+		if strings.HasPrefix(line, "//no:parse") {
 			parserData.NoParse = true
 		}
-		if strings.HasPrefix(line, `//test:"ok"`) {
+		if strings.HasPrefix(line, `//test:quote_ok`) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
 		}
@@ -500,7 +500,7 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
 		}
-		if strings.HasPrefix(line, `//test:"fail"`) {
+		if strings.HasPrefix(line, `//test:quote_fail`) {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFailEscaped = append(parserData.TestFailEscaped, data[2])
 		}
@@ -523,11 +523,11 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 				log.Fatalf("not able to process line %s", line)
 			}
 		}
-		if strings.HasPrefix(line, "//gen:") {
+		if strings.HasPrefix(line, "//generate:type:") {
 			data := common.StringSplitIgnoreEmpty(line, ':')
 			parserData = &Data{}
-			parserData.StructName = data[1]
-			parsers[data[1]] = parserData
+			parserData.StructName = data[2]
+			parsers[data[2]] = parserData
 		}
 		if strings.HasPrefix(line, "//has-alias:true") {
 			parserData.HasAlias = true
@@ -599,7 +599,7 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo,cyclo
 			s := strings.Split(line, ":")
 			parserData.ParserSections = strings.Split(s[1], ",")
 		}
-		if strings.HasPrefix(line, "//no-sections:true") {
+		if strings.HasPrefix(line, "//no:sections") {
 			parserData.NoSections = true
 		}
 		if strings.HasPrefix(line, "//name:") {
@@ -611,19 +611,19 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo,cyclo
 				parserData.ParserSecondName = items[1]
 			}
 		}
-		if strings.HasPrefix(line, "//is-multiple:true") {
+		if strings.HasPrefix(line, "//is:multiple") {
 			parserData.ParserMultiple = true
 		}
-		if strings.HasPrefix(line, "//no-init:true") {
+		if strings.HasPrefix(line, "//no:init") {
 			parserData.NoInit = true
 		}
-		if strings.HasPrefix(line, "//no-name:true") {
+		if strings.HasPrefix(line, "//no:name") {
 			parserData.NoName = true
 		}
-		if strings.HasPrefix(line, "//no-parse:true") {
+		if strings.HasPrefix(line, "//no:parse") {
 			parserData.NoParse = true
 		}
-		if strings.HasPrefix(line, `//test:"ok"`) && !parserData.Deprecated {
+		if strings.HasPrefix(line, `//test:quote_ok`) && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOKEscaped = append(parserData.TestOKEscaped, data[2])
 		}
@@ -643,7 +643,7 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo,cyclo
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestOK = append(parserData.TestOK, data[2])
 		}
-		if strings.HasPrefix(line, `//test:"fail"`) && !parserData.Deprecated {
+		if strings.HasPrefix(line, `//test:quote_fail`) && !parserData.Deprecated {
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFailEscaped = append(parserData.TestFailEscaped, data[2])
 		}

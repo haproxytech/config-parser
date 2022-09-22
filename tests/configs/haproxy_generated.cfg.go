@@ -1725,1886 +1725,1886 @@ userlist test
   user bear insecure-password hello groups G2
 `
 
-var configTests = []configTest{  {`  acl url_stats path_beg /stats
+var configTests = []configTest{{`  acl url_stats path_beg /stats
 `, 2},
-  {`  acl url_static path_beg -i /static /images /javascript /stylesheets
+	{`  acl url_static path_beg -i /static /images /javascript /stylesheets
 `, 2},
-  {`  acl url_static path_end -i .jpg .gif .png .css .js
+	{`  acl url_static path_end -i .jpg .gif .png .css .js
 `, 2},
-  {`  acl be_app_ok nbsrv(be_app) gt 0
+	{`  acl be_app_ok nbsrv(be_app) gt 0
 `, 2},
-  {`  acl be_static_ok nbsrv(be_static) gt 0
+	{`  acl be_static_ok nbsrv(be_static) gt 0
 `, 2},
-  {`  acl key req.hdr(X-Add-ACL-Key) -m found
+	{`  acl key req.hdr(X-Add-ACL-Key) -m found
 `, 2},
-  {`  acl add path /addacl
+	{`  acl add path /addacl
 `, 2},
-  {`  acl del path /delacl
+	{`  acl del path /delacl
 `, 2},
-  {`  acl myhost hdr(Host) -f myhost.lst
+	{`  acl myhost hdr(Host) -f myhost.lst
 `, 2},
-  {`  acl clear dst_port 80
+	{`  acl clear dst_port 80
 `, 2},
-  {`  acl secure dst_port 8080
+	{`  acl secure dst_port 8080
 `, 2},
-  {`  acl login_page url_beg /login
+	{`  acl login_page url_beg /login
 `, 2},
-  {`  acl logout url_beg /logout
+	{`  acl logout url_beg /logout
 `, 2},
-  {`  acl uid_given url_reg /login?userid=[^&]+
+	{`  acl uid_given url_reg /login?userid=[^&]+
 `, 2},
-  {`  acl cookie_set hdr_sub(cookie) SEEN=1
+	{`  acl cookie_set hdr_sub(cookie) SEEN=1
 `, 2},
-  {`  bind :80,:443
+	{`  bind :80,:443
 `, 1},
-  {`  bind 10.0.0.1:10080,10.0.0.1:10443
+	{`  bind 10.0.0.1:10080,10.0.0.1:10443
 `, 1},
-  {`  bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
+	{`  bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
 `, 1},
-  {`  bind :80
+	{`  bind :80
 `, 1},
-  {`  bind :443 ssl crt /etc/haproxy/site.pem
+	{`  bind :443 ssl crt /etc/haproxy/site.pem
 `, 1},
-  {`  bind :443 ssl crt /etc/haproxy/site.pem alpn h2,http/1.1
+	{`  bind :443 ssl crt /etc/haproxy/site.pem alpn h2,http/1.1
 `, 1},
-  {`  bind :::443 v4v6 ssl crt /etc/haproxy/site.pem alpn h2,http/1.1
+	{`  bind :::443 v4v6 ssl crt /etc/haproxy/site.pem alpn h2,http/1.1
 `, 1},
-  {`  bind ipv6@:80
+	{`  bind ipv6@:80
 `, 1},
-  {`  bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem
+	{`  bind ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem
 `, 1},
-  {`  bind unix@ssl-frontend.sock user root mode 600 accept-proxy
+	{`  bind unix@ssl-frontend.sock user root mode 600 accept-proxy
 `, 1},
-  {`  bind :443 accept-netscaler-cip 1234
+	{`  bind :443 accept-netscaler-cip 1234
 `, 1},
-  {`  bind :443 accept-proxy
+	{`  bind :443 accept-proxy
 `, 1},
-  {`  bind :443 allow-0rtt
+	{`  bind :443 allow-0rtt
 `, 1},
-  {`  bind :443 alpn h2
+	{`  bind :443 alpn h2
 `, 1},
-  {`  bind :443 alpn http/1.1
+	{`  bind :443 alpn http/1.1
 `, 1},
-  {`  bind :443 alpn h2,http/1.1
+	{`  bind :443 alpn h2,http/1.1
 `, 1},
-  {`  bind :443 backlog test
+	{`  bind :443 backlog test
 `, 1},
-  {`  bind :443 curves ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+	{`  bind :443 curves ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
 `, 1},
-  {`  bind :443 ecdhe ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
+	{`  bind :443 ecdhe ECDH_ECDSA,ECDHE_ECDSA,ECDH_RSA,ECDHE_RSA,ECDH_anon
 `, 1},
-  {`  bind :443 ca-file file.pem
+	{`  bind :443 ca-file file.pem
 `, 1},
-  {`  bind :443 ca-ignore-err all
+	{`  bind :443 ca-ignore-err all
 `, 1},
-  {`  bind :443 ca-ignore-err 1234
+	{`  bind :443 ca-ignore-err 1234
 `, 1},
-  {`  bind :443 ca-sign-file file.test
+	{`  bind :443 ca-sign-file file.test
 `, 1},
-  {`  bind :443 ca-sign-pass passphrase
+	{`  bind :443 ca-sign-pass passphrase
 `, 1},
-  {`  bind :443 ca-verify-file file.test
+	{`  bind :443 ca-verify-file file.test
 `, 1},
-  {`  bind :443 ciphers ECDHE+aRSA+AES256+GCM+SHA384:ECDHE+aRSA+AES128+GCM+SHA256:ECDHE+aRSA+AES256+SHA384:ECDHE+aRSA+AES128+SHA256:ECDHE+aRSA+RC4+SHA:ECDHE+aRSA+AES256+SHA:ECDHE+aRSA+AES128+SHA:AES256+GCM+SHA384:AES128+GCM+SHA256:AES128+SHA256:AES256+SHA256:DHE+aRSA+AES128+SHA:RC4+SHA:HIGH:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
+	{`  bind :443 ciphers ECDHE+aRSA+AES256+GCM+SHA384:ECDHE+aRSA+AES128+GCM+SHA256:ECDHE+aRSA+AES256+SHA384:ECDHE+aRSA+AES128+SHA256:ECDHE+aRSA+RC4+SHA:ECDHE+aRSA+AES256+SHA:ECDHE+aRSA+AES128+SHA:AES256+GCM+SHA384:AES128+GCM+SHA256:AES128+SHA256:AES256+SHA256:DHE+aRSA+AES128+SHA:RC4+SHA:HIGH:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
 `, 1},
-  {`  bind :443 ciphersuites TODO
+	{`  bind :443 ciphersuites TODO
 `, 1},
-  {`  bind :443 crl-file file.test
+	{`  bind :443 crl-file file.test
 `, 1},
-  {`  bind :443 crt example.pem
+	{`  bind :443 crt example.pem
 `, 1},
-  {`  bind :443 crt-ignore-err all
+	{`  bind :443 crt-ignore-err all
 `, 1},
-  {`  bind :443 crt-ignore-err 404,410
+	{`  bind :443 crt-ignore-err 404,410
 `, 1},
-  {`  bind :443 crt-list cert1.pem
+	{`  bind :443 crt-list cert1.pem
 `, 1},
-  {`  bind :443 defer-accept
+	{`  bind :443 defer-accept
 `, 1},
-  {`  bind :443 expose-fd listeners
+	{`  bind :443 expose-fd listeners
 `, 1},
-  {`  bind :443 force-sslv3
+	{`  bind :443 force-sslv3
 `, 1},
-  {`  bind :443 force-tlsv10
+	{`  bind :443 force-tlsv10
 `, 1},
-  {`  bind :443 force-tlsv11
+	{`  bind :443 force-tlsv11
 `, 1},
-  {`  bind :443 force-tlsv12
+	{`  bind :443 force-tlsv12
 `, 1},
-  {`  bind :443 force-tlsv13
+	{`  bind :443 force-tlsv13
 `, 1},
-  {`  bind :443 generate-certificates
+	{`  bind :443 generate-certificates
 `, 1},
-  {`  bind :443 gid users
+	{`  bind :443 gid users
 `, 1},
-  {`  bind :443 group group
+	{`  bind :443 group group
 `, 1},
-  {`  bind :443 id 1
+	{`  bind :443 id 1
 `, 1},
-  {`  bind :443 interface eth0
+	{`  bind :443 interface eth0
 `, 1},
-  {`  bind :443 interface eth1
+	{`  bind :443 interface eth1
 `, 1},
-  {`  bind :443 interface pppoe-wan
+	{`  bind :443 interface pppoe-wan
 `, 1},
-  {`  bind :443 level user
+	{`  bind :443 level user
 `, 1},
-  {`  bind :443 level opeerator
+	{`  bind :443 level opeerator
 `, 1},
-  {`  bind :443 level admin
+	{`  bind :443 level admin
 `, 1},
-  {`  bind :443 severity-output none
+	{`  bind :443 severity-output none
 `, 1},
-  {`  bind :443 severity-output number
+	{`  bind :443 severity-output number
 `, 1},
-  {`  bind :443 severity-output string
+	{`  bind :443 severity-output string
 `, 1},
-  {`  bind :443 maxconn 1024
+	{`  bind :443 maxconn 1024
 `, 1},
-  {`  bind :443 mode TODO
+	{`  bind :443 mode TODO
 `, 1},
-  {`  bind :443 mss 1460
+	{`  bind :443 mss 1460
 `, 1},
-  {`  bind :443 mss -1460
+	{`  bind :443 mss -1460
 `, 1},
-  {`  bind :443 name sockets
+	{`  bind :443 name sockets
 `, 1},
-  {`  bind :443 namespace example
+	{`  bind :443 namespace example
 `, 1},
-  {`  bind :443 nice 0
+	{`  bind :443 nice 0
 `, 1},
-  {`  bind :443 nice 1024
+	{`  bind :443 nice 1024
 `, 1},
-  {`  bind :443 nice -1024
+	{`  bind :443 nice -1024
 `, 1},
-  {`  bind :443 no-ca-names
+	{`  bind :443 no-ca-names
 `, 1},
-  {`  bind :443 no-sslv3
+	{`  bind :443 no-sslv3
 `, 1},
-  {`  bind :443 no-tlsv10
+	{`  bind :443 no-tlsv10
 `, 1},
-  {`  bind :443 no-tlsv11
+	{`  bind :443 no-tlsv11
 `, 1},
-  {`  bind :443 no-tlsv12
+	{`  bind :443 no-tlsv12
 `, 1},
-  {`  bind :443 no-tlsv13
+	{`  bind :443 no-tlsv13
 `, 1},
-  {`  bind :443 npn http/1.0
+	{`  bind :443 npn http/1.0
 `, 1},
-  {`  bind :443 npn http/1.1
+	{`  bind :443 npn http/1.1
 `, 1},
-  {`  bind :443 npn http/1.0,http/1.1
+	{`  bind :443 npn http/1.0,http/1.1
 `, 1},
-  {`  bind :443 prefer-client-ciphers
+	{`  bind :443 prefer-client-ciphers
 `, 1},
-  {`  bind :443 process all
+	{`  bind :443 process all
 `, 1},
-  {`  bind :443 process odd
+	{`  bind :443 process odd
 `, 1},
-  {`  bind :443 process even
+	{`  bind :443 process even
 `, 1},
-  {`  bind :443 process 1-4
+	{`  bind :443 process 1-4
 `, 1},
-  {`  bind :443 proto h2
+	{`  bind :443 proto h2
 `, 1},
-  {`  bind :443 ssl
+	{`  bind :443 ssl
 `, 1},
-  {`  bind :443 ssl-max-ver SSLv3
+	{`  bind :443 ssl-max-ver SSLv3
 `, 1},
-  {`  bind :443 ssl-max-ver TLSv1.0
+	{`  bind :443 ssl-max-ver TLSv1.0
 `, 1},
-  {`  bind :443 ssl-max-ver TLSv1.1
+	{`  bind :443 ssl-max-ver TLSv1.1
 `, 1},
-  {`  bind :443 ssl-max-ver TLSv1.2
+	{`  bind :443 ssl-max-ver TLSv1.2
 `, 1},
-  {`  bind :443 ssl-max-ver TLSv1.3
+	{`  bind :443 ssl-max-ver TLSv1.3
 `, 1},
-  {`  bind :443 ssl-min-ver SSLv3
+	{`  bind :443 ssl-min-ver SSLv3
 `, 1},
-  {`  bind :443 ssl-min-ver TLSv1.0
+	{`  bind :443 ssl-min-ver TLSv1.0
 `, 1},
-  {`  bind :443 ssl-min-ver TLSv1.1
+	{`  bind :443 ssl-min-ver TLSv1.1
 `, 1},
-  {`  bind :443 ssl-min-ver TLSv1.2
+	{`  bind :443 ssl-min-ver TLSv1.2
 `, 1},
-  {`  bind :443 ssl-min-ver TLSv1.3
+	{`  bind :443 ssl-min-ver TLSv1.3
 `, 1},
-  {`  bind :443 strict-sni
+	{`  bind :443 strict-sni
 `, 1},
-  {`  bind :443 tcp-ut 30s
+	{`  bind :443 tcp-ut 30s
 `, 1},
-  {`  bind :443 tfo
+	{`  bind :443 tfo
 `, 1},
-  {`  bind :443 tls-ticket-keys /tmp/tls_ticket_keys
+	{`  bind :443 tls-ticket-keys /tmp/tls_ticket_keys
 `, 1},
-  {`  bind :443 transparent
+	{`  bind :443 transparent
 `, 1},
-  {`  bind :443 v4v6
+	{`  bind :443 v4v6
 `, 1},
-  {`  bind :443 v6only
+	{`  bind :443 v6only
 `, 1},
-  {`  bind :443 uid 65534
+	{`  bind :443 uid 65534
 `, 1},
-  {`  bind :443 user web1
+	{`  bind :443 user web1
 `, 1},
-  {`  bind :443 verify none
+	{`  bind :443 verify none
 `, 1},
-  {`  bind :443 verify optional
+	{`  bind :443 verify optional
 `, 1},
-  {`  bind :443 verify required
+	{`  bind :443 verify required
 `, 1},
-  {`  dgram-bind :80,:443
+	{`  dgram-bind :80,:443
 `, 1},
-  {`  dgram-bind 10.0.0.1:10080,10.0.0.1:10443
+	{`  dgram-bind 10.0.0.1:10080,10.0.0.1:10443
 `, 1},
-  {`  dgram-bind :443 interface eth0
+	{`  dgram-bind :443 interface eth0
 `, 1},
-  {`  dgram-bind :443 interface eth1
+	{`  dgram-bind :443 interface eth1
 `, 1},
-  {`  dgram-bind :443 interface pppoe-wan
+	{`  dgram-bind :443 interface pppoe-wan
 `, 1},
-  {`  dgram-bind :443 namespace example
+	{`  dgram-bind :443 namespace example
 `, 1},
-  {`  dgram-bind :443 transparent
+	{`  dgram-bind :443 transparent
 `, 1},
-  {`  bind-process all
+	{`  bind-process all
 `, 1},
-  {`  balance roundrobin
+	{`  balance roundrobin
 `, 2},
-  {`  cookie test
+	{`  cookie test
 `, 2},
-  {`  cpu-map 1-4 0-3
+	{`  cpu-map 1-4 0-3
 `, 1},
-  {`  cpu-map 1/all 0-3
+	{`  cpu-map 1/all 0-3
 `, 1},
-  {`  cpu-map auto:1-4 0-3
+	{`  cpu-map auto:1-4 0-3
 `, 1},
-  {`  cpu-map auto:1-4 0-1 2-3
+	{`  cpu-map auto:1-4 0-1 2-3
 `, 1},
-  {`  default-server addr 127.0.0.1
+	{`  default-server addr 127.0.0.1
 `, 2},
-  {`  default-server addr ::1
+	{`  default-server addr ::1
 `, 2},
-  {`  default-server agent-check
+	{`  default-server agent-check
 `, 2},
-  {`  default-server agent-send name
+	{`  default-server agent-send name
 `, 2},
-  {`  default-server agent-inter 1000ms
+	{`  default-server agent-inter 1000ms
 `, 2},
-  {`  default-server agent-addr 127.0.0.1
+	{`  default-server agent-addr 127.0.0.1
 `, 2},
-  {`  default-server agent-addr site.com
+	{`  default-server agent-addr site.com
 `, 2},
-  {`  default-server agent-port 1
+	{`  default-server agent-port 1
 `, 2},
-  {`  default-server agent-port 65535
+	{`  default-server agent-port 65535
 `, 2},
-  {`  default-server allow-0rtt
+	{`  default-server allow-0rtt
 `, 2},
-  {`  default-server alpn h2
+	{`  default-server alpn h2
 `, 2},
-  {`  default-server alpn http/1.1
+	{`  default-server alpn http/1.1
 `, 2},
-  {`  default-server alpn h2,http/1.1
+	{`  default-server alpn h2,http/1.1
 `, 2},
-  {`  default-server backup
+	{`  default-server backup
 `, 2},
-  {`  default-server ca-file cert.crt
+	{`  default-server ca-file cert.crt
 `, 2},
-  {`  default-server check
+	{`  default-server check
 `, 2},
-  {`  default-server check-send-proxy
+	{`  default-server check-send-proxy
 `, 2},
-  {`  default-server check-alpn http/1.0
+	{`  default-server check-alpn http/1.0
 `, 2},
-  {`  default-server check-alpn http/1.1,http/1.0
+	{`  default-server check-alpn http/1.1,http/1.0
 `, 2},
-  {`  default-server check-proto h2
+	{`  default-server check-proto h2
 `, 2},
-  {`  default-server check-ssl
+	{`  default-server check-ssl
 `, 2},
-  {`  default-server check-via-socks4
+	{`  default-server check-via-socks4
 `, 2},
-  {`  default-server ciphers ECDHE-RSA-AES128-GCM-SHA256
+	{`  default-server ciphers ECDHE-RSA-AES128-GCM-SHA256
 `, 2},
-  {`  default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+	{`  default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
 `, 2},
-  {`  default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+	{`  default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
 `, 2},
-  {`  default-server cookie value
+	{`  default-server cookie value
 `, 2},
-  {`  default-server crl-file file.pem
+	{`  default-server crl-file file.pem
 `, 2},
-  {`  default-server crt cert.pem
+	{`  default-server crt cert.pem
 `, 2},
-  {`  default-server disabled
+	{`  default-server disabled
 `, 2},
-  {`  default-server enabled
+	{`  default-server enabled
 `, 2},
-  {`  default-server error-limit 50
+	{`  default-server error-limit 50
 `, 2},
-  {`  default-server fall 30
+	{`  default-server fall 30
 `, 2},
-  {`  default-server fall 1 rise 2 inter 3s port 4444
+	{`  default-server fall 1 rise 2 inter 3s port 4444
 `, 2},
-  {`  default-server force-sslv3
+	{`  default-server force-sslv3
 `, 2},
-  {`  default-server force-tlsv10
+	{`  default-server force-tlsv10
 `, 2},
-  {`  default-server force-tlsv11
+	{`  default-server force-tlsv11
 `, 2},
-  {`  default-server force-tlsv12
+	{`  default-server force-tlsv12
 `, 2},
-  {`  default-server force-tlsv13
+	{`  default-server force-tlsv13
 `, 2},
-  {`  default-server init-addr last,libc,none
+	{`  default-server init-addr last,libc,none
 `, 2},
-  {`  default-server init-addr last,libc,none,127.0.0.1
+	{`  default-server init-addr last,libc,none,127.0.0.1
 `, 2},
-  {`  default-server inter 1500ms
+	{`  default-server inter 1500ms
 `, 2},
-  {`  default-server inter 1000 weight 13
+	{`  default-server inter 1000 weight 13
 `, 2},
-  {`  default-server fastinter 2500ms
+	{`  default-server fastinter 2500ms
 `, 2},
-  {`  default-server fastinter unknown
+	{`  default-server fastinter unknown
 `, 2},
-  {`  default-server downinter 3500ms
+	{`  default-server downinter 3500ms
 `, 2},
-  {`  default-server log-proto legacy
+	{`  default-server log-proto legacy
 `, 2},
-  {`  default-server log-proto octet-count
+	{`  default-server log-proto octet-count
 `, 2},
-  {`  default-server maxconn 1
+	{`  default-server maxconn 1
 `, 2},
-  {`  default-server maxconn 50
+	{`  default-server maxconn 50
 `, 2},
-  {`  default-server maxqueue 0
+	{`  default-server maxqueue 0
 `, 2},
-  {`  default-server maxqueue 1000
+	{`  default-server maxqueue 1000
 `, 2},
-  {`  default-server max-reuse -1
+	{`  default-server max-reuse -1
 `, 2},
-  {`  default-server max-reuse 0
+	{`  default-server max-reuse 0
 `, 2},
-  {`  default-server max-reuse 1
+	{`  default-server max-reuse 1
 `, 2},
-  {`  default-server minconn 1
+	{`  default-server minconn 1
 `, 2},
-  {`  default-server minconn 50
+	{`  default-server minconn 50
 `, 2},
-  {`  default-server namespace test
+	{`  default-server namespace test
 `, 2},
-  {`  default-server no-agent-check
+	{`  default-server no-agent-check
 `, 2},
-  {`  default-server no-backup
+	{`  default-server no-backup
 `, 2},
-  {`  default-server no-check
+	{`  default-server no-check
 `, 2},
-  {`  default-server no-check-ssl
+	{`  default-server no-check-ssl
 `, 2},
-  {`  default-server no-send-proxy-v2
+	{`  default-server no-send-proxy-v2
 `, 2},
-  {`  default-server no-send-proxy-v2-ssl
+	{`  default-server no-send-proxy-v2-ssl
 `, 2},
-  {`  default-server no-send-proxy-v2-ssl-cn
+	{`  default-server no-send-proxy-v2-ssl-cn
 `, 2},
-  {`  default-server no-ssl
+	{`  default-server no-ssl
 `, 2},
-  {`  default-server no-ssl-reuse
+	{`  default-server no-ssl-reuse
 `, 2},
-  {`  default-server no-sslv3
+	{`  default-server no-sslv3
 `, 2},
-  {`  default-server no-tls-tickets
+	{`  default-server no-tls-tickets
 `, 2},
-  {`  default-server no-tlsv10
+	{`  default-server no-tlsv10
 `, 2},
-  {`  default-server no-tlsv11
+	{`  default-server no-tlsv11
 `, 2},
-  {`  default-server no-tlsv12
+	{`  default-server no-tlsv12
 `, 2},
-  {`  default-server no-tlsv13
+	{`  default-server no-tlsv13
 `, 2},
-  {`  default-server no-verifyhost
+	{`  default-server no-verifyhost
 `, 2},
-  {`  default-server no-tfo
+	{`  default-server no-tfo
 `, 2},
-  {`  default-server non-stick
+	{`  default-server non-stick
 `, 2},
-  {`  default-server npn http/1.1,http/1.0
+	{`  default-server npn http/1.1,http/1.0
 `, 2},
-  {`  default-server observe layer4
+	{`  default-server observe layer4
 `, 2},
-  {`  default-server observe layer7
+	{`  default-server observe layer7
 `, 2},
-  {`  default-server on-error fastinter
+	{`  default-server on-error fastinter
 `, 2},
-  {`  default-server on-error fail-check
+	{`  default-server on-error fail-check
 `, 2},
-  {`  default-server on-error sudden-death
+	{`  default-server on-error sudden-death
 `, 2},
-  {`  default-server on-error mark-down
+	{`  default-server on-error mark-down
 `, 2},
-  {`  default-server on-marked-down shutdown-sessions
+	{`  default-server on-marked-down shutdown-sessions
 `, 2},
-  {`  default-server on-marked-up shutdown-backup-session
+	{`  default-server on-marked-up shutdown-backup-session
 `, 2},
-  {`  default-server pool-max-conn -1
+	{`  default-server pool-max-conn -1
 `, 2},
-  {`  default-server pool-max-conn 0
+	{`  default-server pool-max-conn 0
 `, 2},
-  {`  default-server pool-max-conn 100
+	{`  default-server pool-max-conn 100
 `, 2},
-  {`  default-server pool-purge-delay 0
+	{`  default-server pool-purge-delay 0
 `, 2},
-  {`  default-server pool-purge-delay 5
+	{`  default-server pool-purge-delay 5
 `, 2},
-  {`  default-server pool-purge-delay 500
+	{`  default-server pool-purge-delay 500
 `, 2},
-  {`  default-server port 27015
+	{`  default-server port 27015
 `, 2},
-  {`  default-server port 27016
+	{`  default-server port 27016
 `, 2},
-  {`  default-server proto h2
+	{`  default-server proto h2
 `, 2},
-  {`  default-server redir http://image1.mydomain.com
+	{`  default-server redir http://image1.mydomain.com
 `, 2},
-  {`  default-server redir https://image1.mydomain.com
+	{`  default-server redir https://image1.mydomain.com
 `, 2},
-  {`  default-server rise 2
+	{`  default-server rise 2
 `, 2},
-  {`  default-server rise 200
+	{`  default-server rise 200
 `, 2},
-  {`  default-server resolve-opts allow-dup-ip
+	{`  default-server resolve-opts allow-dup-ip
 `, 2},
-  {`  default-server resolve-opts ignore-weight
+	{`  default-server resolve-opts ignore-weight
 `, 2},
-  {`  default-server resolve-opts allow-dup-ip,ignore-weight
+	{`  default-server resolve-opts allow-dup-ip,ignore-weight
 `, 2},
-  {`  default-server resolve-opts prevent-dup-ip,ignore-weight
+	{`  default-server resolve-opts prevent-dup-ip,ignore-weight
 `, 2},
-  {`  default-server resolve-prefer ipv4
+	{`  default-server resolve-prefer ipv4
 `, 2},
-  {`  default-server resolve-prefer ipv6
+	{`  default-server resolve-prefer ipv6
 `, 2},
-  {`  default-server resolve-net 10.0.0.0/8
+	{`  default-server resolve-net 10.0.0.0/8
 `, 2},
-  {`  default-server resolve-net 10.0.0.0/8,10.0.0.0/16
+	{`  default-server resolve-net 10.0.0.0/8,10.0.0.0/16
 `, 2},
-  {`  default-server resolvers mydns
+	{`  default-server resolvers mydns
 `, 2},
-  {`  default-server send-proxy
+	{`  default-server send-proxy
 `, 2},
-  {`  default-server send-proxy-v2
+	{`  default-server send-proxy-v2
 `, 2},
-  {`  default-server proxy-v2-options ssl
+	{`  default-server proxy-v2-options ssl
 `, 2},
-  {`  default-server proxy-v2-options ssl,cert-cn
+	{`  default-server proxy-v2-options ssl,cert-cn
 `, 2},
-  {`  default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+	{`  default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
 `, 2},
-  {`  default-server send-proxy-v2-ssl
+	{`  default-server send-proxy-v2-ssl
 `, 2},
-  {`  default-server send-proxy-v2-ssl-cn
+	{`  default-server send-proxy-v2-ssl-cn
 `, 2},
-  {`  default-server slowstart 2000ms
+	{`  default-server slowstart 2000ms
 `, 2},
-  {`  default-server sni TODO
+	{`  default-server sni TODO
 `, 2},
-  {`  default-server source TODO
+	{`  default-server source TODO
 `, 2},
-  {`  default-server ssl
+	{`  default-server ssl
 `, 2},
-  {`  default-server ssl-max-ver SSLv3
+	{`  default-server ssl-max-ver SSLv3
 `, 2},
-  {`  default-server ssl-max-ver TLSv1.0
+	{`  default-server ssl-max-ver TLSv1.0
 `, 2},
-  {`  default-server ssl-max-ver TLSv1.1
+	{`  default-server ssl-max-ver TLSv1.1
 `, 2},
-  {`  default-server ssl-max-ver TLSv1.2
+	{`  default-server ssl-max-ver TLSv1.2
 `, 2},
-  {`  default-server ssl-max-ver TLSv1.3
+	{`  default-server ssl-max-ver TLSv1.3
 `, 2},
-  {`  default-server ssl-min-ver SSLv3
+	{`  default-server ssl-min-ver SSLv3
 `, 2},
-  {`  default-server ssl-min-ver TLSv1.0
+	{`  default-server ssl-min-ver TLSv1.0
 `, 2},
-  {`  default-server ssl-min-ver TLSv1.1
+	{`  default-server ssl-min-ver TLSv1.1
 `, 2},
-  {`  default-server ssl-min-ver TLSv1.2
+	{`  default-server ssl-min-ver TLSv1.2
 `, 2},
-  {`  default-server ssl-min-ver TLSv1.3
+	{`  default-server ssl-min-ver TLSv1.3
 `, 2},
-  {`  default-server ssl-reuse
+	{`  default-server ssl-reuse
 `, 2},
-  {`  default-server stick
+	{`  default-server stick
 `, 2},
-  {`  default-server socks4 127.0.0.1:81
+	{`  default-server socks4 127.0.0.1:81
 `, 2},
-  {`  default-server tcp-ut 20ms
+	{`  default-server tcp-ut 20ms
 `, 2},
-  {`  default-server tfo
+	{`  default-server tfo
 `, 2},
-  {`  default-server track TODO
+	{`  default-server track TODO
 `, 2},
-  {`  default-server tls-tickets
+	{`  default-server tls-tickets
 `, 2},
-  {`  default-server verify none
+	{`  default-server verify none
 `, 2},
-  {`  default-server verify required
+	{`  default-server verify required
 `, 2},
-  {`  default-server verifyhost site.com
+	{`  default-server verifyhost site.com
 `, 2},
-  {`  default-server weight 1
+	{`  default-server weight 1
 `, 2},
-  {`  default-server weight 128
+	{`  default-server weight 128
 `, 2},
-  {`  default-server weight 256
+	{`  default-server weight 256
 `, 2},
-  {`  default-server pool-low-conn 384
+	{`  default-server pool-low-conn 384
 `, 2},
-  {`  default-server ws h1
+	{`  default-server ws h1
 `, 2},
-  {`  default-server ws h2
+	{`  default-server ws h2
 `, 2},
-  {`  default-server ws auto
+	{`  default-server ws auto
 `, 2},
-  {`  email-alert from admin@example.com
+	{`  email-alert from admin@example.com
 `, 3},
-  {`  email-alert to a@z,x@y
+	{`  email-alert to a@z,x@y
 `, 3},
-  {`  email-alert level warning
+	{`  email-alert level warning
 `, 3},
-  {`  email-alert mailers local-mailers
+	{`  email-alert mailers local-mailers
 `, 3},
-  {`  email-alert myhostname srv01.example.com
+	{`  email-alert myhostname srv01.example.com
 `, 3},
-  {`  email-alert to support@example.com
+	{`  email-alert to support@example.com
 `, 3},
-  {`  errorfile 400 /etc/haproxy/errorfiles/400badreq.http
+	{`  errorfile 400 /etc/haproxy/errorfiles/400badreq.http
 `, 3},
-  {`  errorfile 408 /dev/null # work around Chrome pre-connect bug
+	{`  errorfile 408 /dev/null # work around Chrome pre-connect bug
 `, 3},
-  {`  errorfile 403 /etc/haproxy/errorfiles/403forbid.http
+	{`  errorfile 403 /etc/haproxy/errorfiles/403forbid.http
 `, 3},
-  {`  errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+	{`  errorfile 503 /etc/haproxy/errorfiles/503sorry.http
 `, 3},
-  {`  group G1 users tiger,scott
+	{`  group G1 users tiger,scott
 `, 1},
-  {`  group G1
+	{`  group G1
 `, 1},
-  {`  hash-type map-based
+	{`  hash-type map-based
 `, 2},
-  {`  http-reuse never
+	{`  http-reuse never
 `, 2},
-  {`  log global
+	{`  log global
 `, 3},
-  {`  no log
+	{`  no log
 `, 3},
-  {`  log stdout format short daemon # send log to systemd
+	{`  log stdout format short daemon # send log to systemd
 `, 3},
-  {`  log stdout format raw daemon # send everything to stdout
+	{`  log stdout format raw daemon # send everything to stdout
 `, 3},
-  {`  log stderr format raw daemon notice # send important events to stderr
+	{`  log stderr format raw daemon notice # send important events to stderr
 `, 3},
-  {`  log 127.0.0.1:514 local0 notice # only send important events
+	{`  log 127.0.0.1:514 local0 notice # only send important events
 `, 3},
-  {`  log 127.0.0.1:514 local0 notice notice # same but limit output level
+	{`  log 127.0.0.1:514 local0 notice notice # same but limit output level
 `, 3},
-  {`  log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
+	{`  log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
 `, 3},
-  {`  log 127.0.0.1:1515 sample 1:2 local0
+	{`  log 127.0.0.1:1515 sample 1:2 local0
 `, 3},
-  {`  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+	{`  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
 `, 3},
-  {`  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
+	{`  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
 `, 3},
-  {`  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
+	{`  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
 `, 3},
-  {`  log 127.0.0.1:1515 sample 1:6 local2
+	{`  log 127.0.0.1:1515 sample 1:6 local2
 `, 3},
-  {`  mailer smtp1 192.168.0.1:587
+	{`  mailer smtp1 192.168.0.1:587
 `, 1},
-  {`  mailer smtp1 192.168.0.1:587 # just some comment
+	{`  mailer smtp1 192.168.0.1:587 # just some comment
 `, 1},
-  {`  option forwardfor
+	{`  option forwardfor
 `, 2},
-  {`  option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
+	{`  option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
 `, 2},
-  {`  option httplog
+	{`  option httplog
 `, 1},
-  {`  option mysql-check
+	{`  option mysql-check
 `, 1},
-  {`  option pgsql-check user john
+	{`  option pgsql-check user john
 `, 1},
-  {`  option redispatch
+	{`  option redispatch
 `, 1},
-  {`  option smtpchk
+	{`  option smtpchk
 `, 1},
-  {`  external-check path /usr/bin:/bin
+	{`  external-check path /usr/bin:/bin
 `, 1},
-  {`  external-check command /bin/true
+	{`  external-check command /bin/true
 `, 1},
-  {`  peer name 127.0.0.1:8080
+	{`  peer name 127.0.0.1:8080
 `, 1},
-  {`  server name 127.0.0.1:8080
+	{`  server name 127.0.0.1:8080
 `, 1},
-  {`  server name 127.0.0.1
+	{`  server name 127.0.0.1
 `, 1},
-  {`  server addr 127.0.0.1
+	{`  server addr 127.0.0.1
 `, 1},
-  {`  server addr ::1
+	{`  server addr ::1
 `, 1},
-  {`  server name 127.0.0.1 agent-check
+	{`  server name 127.0.0.1 agent-check
 `, 1},
-  {`  server name 127.0.0.1 agent-send name
+	{`  server name 127.0.0.1 agent-send name
 `, 1},
-  {`  server name 127.0.0.1 agent-inter 1000ms
+	{`  server name 127.0.0.1 agent-inter 1000ms
 `, 1},
-  {`  server name 127.0.0.1 agent-addr 127.0.0.1
+	{`  server name 127.0.0.1 agent-addr 127.0.0.1
 `, 1},
-  {`  server name 127.0.0.1 agent-addr site.com
+	{`  server name 127.0.0.1 agent-addr site.com
 `, 1},
-  {`  server name 127.0.0.1 agent-port 1
+	{`  server name 127.0.0.1 agent-port 1
 `, 1},
-  {`  server name 127.0.0.1 agent-port 65535
+	{`  server name 127.0.0.1 agent-port 65535
 `, 1},
-  {`  server name 127.0.0.1 allow-0rtt
+	{`  server name 127.0.0.1 allow-0rtt
 `, 1},
-  {`  server name 127.0.0.1 alpn h2
+	{`  server name 127.0.0.1 alpn h2
 `, 1},
-  {`  server name 127.0.0.1 alpn http/1.1
+	{`  server name 127.0.0.1 alpn http/1.1
 `, 1},
-  {`  server name 127.0.0.1 alpn h2,http/1.1
+	{`  server name 127.0.0.1 alpn h2,http/1.1
 `, 1},
-  {`  server name 127.0.0.1 backup
+	{`  server name 127.0.0.1 backup
 `, 1},
-  {`  server name 127.0.0.1 ca-file cert.crt
+	{`  server name 127.0.0.1 ca-file cert.crt
 `, 1},
-  {`  server name 127.0.0.1 check
+	{`  server name 127.0.0.1 check
 `, 1},
-  {`  server name 127.0.0.1 check-send-proxy
+	{`  server name 127.0.0.1 check-send-proxy
 `, 1},
-  {`  server name 127.0.0.1 check-alpn http/1.0
+	{`  server name 127.0.0.1 check-alpn http/1.0
 `, 1},
-  {`  server name 127.0.0.1 check-alpn http/1.1,http/1.0
+	{`  server name 127.0.0.1 check-alpn http/1.1,http/1.0
 `, 1},
-  {`  server name 127.0.0.1 check-proto h2
+	{`  server name 127.0.0.1 check-proto h2
 `, 1},
-  {`  server name 127.0.0.1 check-ssl
+	{`  server name 127.0.0.1 check-ssl
 `, 1},
-  {`  server name 127.0.0.1 check-via-socks4
+	{`  server name 127.0.0.1 check-via-socks4
 `, 1},
-  {`  server name 127.0.0.1 ciphers ECDHE-RSA-AES128-GCM-SHA256
+	{`  server name 127.0.0.1 ciphers ECDHE-RSA-AES128-GCM-SHA256
 `, 1},
-  {`  server name 127.0.0.1 ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+	{`  server name 127.0.0.1 ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
 `, 1},
-  {`  server name 127.0.0.1 ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+	{`  server name 127.0.0.1 ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
 `, 1},
-  {`  server name 127.0.0.1 cookie value
+	{`  server name 127.0.0.1 cookie value
 `, 1},
-  {`  server name 127.0.0.1 crl-file file.pem
+	{`  server name 127.0.0.1 crl-file file.pem
 `, 1},
-  {`  server name 127.0.0.1 crt cert.pem
+	{`  server name 127.0.0.1 crt cert.pem
 `, 1},
-  {`  server name 127.0.0.1 disabled
+	{`  server name 127.0.0.1 disabled
 `, 1},
-  {`  server name 127.0.0.1 enabled
+	{`  server name 127.0.0.1 enabled
 `, 1},
-  {`  server name 127.0.0.1 error-limit 50
+	{`  server name 127.0.0.1 error-limit 50
 `, 1},
-  {`  server name 127.0.0.1 fall 30
+	{`  server name 127.0.0.1 fall 30
 `, 1},
-  {`  server name 127.0.0.1 force-sslv3
+	{`  server name 127.0.0.1 force-sslv3
 `, 1},
-  {`  server name 127.0.0.1 force-tlsv10
+	{`  server name 127.0.0.1 force-tlsv10
 `, 1},
-  {`  server name 127.0.0.1 force-tlsv11
+	{`  server name 127.0.0.1 force-tlsv11
 `, 1},
-  {`  server name 127.0.0.1 force-tlsv12
+	{`  server name 127.0.0.1 force-tlsv12
 `, 1},
-  {`  server name 127.0.0.1 force-tlsv13
+	{`  server name 127.0.0.1 force-tlsv13
 `, 1},
-  {`  server name 127.0.0.1 init-addr last,libc,none
+	{`  server name 127.0.0.1 init-addr last,libc,none
 `, 1},
-  {`  server name 127.0.0.1 init-addr last,libc,none,127.0.0.1
+	{`  server name 127.0.0.1 init-addr last,libc,none,127.0.0.1
 `, 1},
-  {`  server name 127.0.0.1 inter 1500ms
+	{`  server name 127.0.0.1 inter 1500ms
 `, 1},
-  {`  server name 127.0.0.1 fastinter 2500ms
+	{`  server name 127.0.0.1 fastinter 2500ms
 `, 1},
-  {`  server name 127.0.0.1 fastinter unknown
+	{`  server name 127.0.0.1 fastinter unknown
 `, 1},
-  {`  server name 127.0.0.1 downinter 3500ms
+	{`  server name 127.0.0.1 downinter 3500ms
 `, 1},
-  {`  server name 127.0.0.1 log-proto legacy
+	{`  server name 127.0.0.1 log-proto legacy
 `, 1},
-  {`  server name 127.0.0.1 log-proto octet-count
+	{`  server name 127.0.0.1 log-proto octet-count
 `, 1},
-  {`  server name 127.0.0.1 maxconn 1
+	{`  server name 127.0.0.1 maxconn 1
 `, 1},
-  {`  server name 127.0.0.1 maxconn 50
+	{`  server name 127.0.0.1 maxconn 50
 `, 1},
-  {`  server name 127.0.0.1 maxqueue 0
+	{`  server name 127.0.0.1 maxqueue 0
 `, 1},
-  {`  server name 127.0.0.1 maxqueue 1000
+	{`  server name 127.0.0.1 maxqueue 1000
 `, 1},
-  {`  server name 127.0.0.1 max-reuse -1
+	{`  server name 127.0.0.1 max-reuse -1
 `, 1},
-  {`  server name 127.0.0.1 max-reuse 0
+	{`  server name 127.0.0.1 max-reuse 0
 `, 1},
-  {`  server name 127.0.0.1 max-reuse 1
+	{`  server name 127.0.0.1 max-reuse 1
 `, 1},
-  {`  server name 127.0.0.1 minconn 1
+	{`  server name 127.0.0.1 minconn 1
 `, 1},
-  {`  server name 127.0.0.1 minconn 50
+	{`  server name 127.0.0.1 minconn 50
 `, 1},
-  {`  server name 127.0.0.1 namespace test
+	{`  server name 127.0.0.1 namespace test
 `, 1},
-  {`  server name 127.0.0.1 no-agent-check
+	{`  server name 127.0.0.1 no-agent-check
 `, 1},
-  {`  server name 127.0.0.1 no-backup
+	{`  server name 127.0.0.1 no-backup
 `, 1},
-  {`  server name 127.0.0.1 no-check
+	{`  server name 127.0.0.1 no-check
 `, 1},
-  {`  server name 127.0.0.1 no-check-ssl
+	{`  server name 127.0.0.1 no-check-ssl
 `, 1},
-  {`  server name 127.0.0.1 no-send-proxy-v2
+	{`  server name 127.0.0.1 no-send-proxy-v2
 `, 1},
-  {`  server name 127.0.0.1 no-send-proxy-v2-ssl
+	{`  server name 127.0.0.1 no-send-proxy-v2-ssl
 `, 1},
-  {`  server name 127.0.0.1 no-send-proxy-v2-ssl-cn
+	{`  server name 127.0.0.1 no-send-proxy-v2-ssl-cn
 `, 1},
-  {`  server name 127.0.0.1 no-ssl
+	{`  server name 127.0.0.1 no-ssl
 `, 1},
-  {`  server name 127.0.0.1 no-ssl-reuse
+	{`  server name 127.0.0.1 no-ssl-reuse
 `, 1},
-  {`  server name 127.0.0.1 no-sslv3
+	{`  server name 127.0.0.1 no-sslv3
 `, 1},
-  {`  server name 127.0.0.1 no-tls-tickets
+	{`  server name 127.0.0.1 no-tls-tickets
 `, 1},
-  {`  server name 127.0.0.1 no-tlsv10
+	{`  server name 127.0.0.1 no-tlsv10
 `, 1},
-  {`  server name 127.0.0.1 no-tlsv11
+	{`  server name 127.0.0.1 no-tlsv11
 `, 1},
-  {`  server name 127.0.0.1 no-tlsv12
+	{`  server name 127.0.0.1 no-tlsv12
 `, 1},
-  {`  server name 127.0.0.1 no-tlsv13
+	{`  server name 127.0.0.1 no-tlsv13
 `, 1},
-  {`  server name 127.0.0.1 no-verifyhost
+	{`  server name 127.0.0.1 no-verifyhost
 `, 1},
-  {`  server name 127.0.0.1 no-tfo
+	{`  server name 127.0.0.1 no-tfo
 `, 1},
-  {`  server name 127.0.0.1 non-stick
+	{`  server name 127.0.0.1 non-stick
 `, 1},
-  {`  server name 127.0.0.1 npn http/1.1,http/1.0
+	{`  server name 127.0.0.1 npn http/1.1,http/1.0
 `, 1},
-  {`  server name 127.0.0.1 observe layer4
+	{`  server name 127.0.0.1 observe layer4
 `, 1},
-  {`  server name 127.0.0.1 observe layer7
+	{`  server name 127.0.0.1 observe layer7
 `, 1},
-  {`  server name 127.0.0.1 on-error fastinter
+	{`  server name 127.0.0.1 on-error fastinter
 `, 1},
-  {`  server name 127.0.0.1 on-error fail-check
+	{`  server name 127.0.0.1 on-error fail-check
 `, 1},
-  {`  server name 127.0.0.1 on-error sudden-death
+	{`  server name 127.0.0.1 on-error sudden-death
 `, 1},
-  {`  server name 127.0.0.1 on-error mark-down
+	{`  server name 127.0.0.1 on-error mark-down
 `, 1},
-  {`  server name 127.0.0.1 on-marked-down shutdown-sessions
+	{`  server name 127.0.0.1 on-marked-down shutdown-sessions
 `, 1},
-  {`  server name 127.0.0.1 on-marked-up shutdown-backup-session
+	{`  server name 127.0.0.1 on-marked-up shutdown-backup-session
 `, 1},
-  {`  server name 127.0.0.1 pool-max-conn -1
+	{`  server name 127.0.0.1 pool-max-conn -1
 `, 1},
-  {`  server name 127.0.0.1 pool-max-conn 0
+	{`  server name 127.0.0.1 pool-max-conn 0
 `, 1},
-  {`  server name 127.0.0.1 pool-max-conn 100
+	{`  server name 127.0.0.1 pool-max-conn 100
 `, 1},
-  {`  server name 127.0.0.1 pool-purge-delay 0
+	{`  server name 127.0.0.1 pool-purge-delay 0
 `, 1},
-  {`  server name 127.0.0.1 pool-purge-delay 5
+	{`  server name 127.0.0.1 pool-purge-delay 5
 `, 1},
-  {`  server name 127.0.0.1 pool-purge-delay 500
+	{`  server name 127.0.0.1 pool-purge-delay 500
 `, 1},
-  {`  server name 127.0.0.1 port 27015
+	{`  server name 127.0.0.1 port 27015
 `, 1},
-  {`  server name 127.0.0.1 port 27016
+	{`  server name 127.0.0.1 port 27016
 `, 1},
-  {`  server name 127.0.0.1 proto h2
+	{`  server name 127.0.0.1 proto h2
 `, 1},
-  {`  server name 127.0.0.1 redir http://image1.mydomain.com
+	{`  server name 127.0.0.1 redir http://image1.mydomain.com
 `, 1},
-  {`  server name 127.0.0.1 redir https://image1.mydomain.com
+	{`  server name 127.0.0.1 redir https://image1.mydomain.com
 `, 1},
-  {`  server name 127.0.0.1 rise 2
+	{`  server name 127.0.0.1 rise 2
 `, 1},
-  {`  server name 127.0.0.1 rise 200
+	{`  server name 127.0.0.1 rise 200
 `, 1},
-  {`  server name 127.0.0.1 resolve-opts allow-dup-ip
+	{`  server name 127.0.0.1 resolve-opts allow-dup-ip
 `, 1},
-  {`  server name 127.0.0.1 resolve-opts ignore-weight
+	{`  server name 127.0.0.1 resolve-opts ignore-weight
 `, 1},
-  {`  server name 127.0.0.1 resolve-opts allow-dup-ip,ignore-weight
+	{`  server name 127.0.0.1 resolve-opts allow-dup-ip,ignore-weight
 `, 1},
-  {`  server name 127.0.0.1 resolve-opts prevent-dup-ip,ignore-weight
+	{`  server name 127.0.0.1 resolve-opts prevent-dup-ip,ignore-weight
 `, 1},
-  {`  server name 127.0.0.1 resolve-prefer ipv4
+	{`  server name 127.0.0.1 resolve-prefer ipv4
 `, 1},
-  {`  server name 127.0.0.1 resolve-prefer ipv6
+	{`  server name 127.0.0.1 resolve-prefer ipv6
 `, 1},
-  {`  server name 127.0.0.1 resolve-net 10.0.0.0/8
+	{`  server name 127.0.0.1 resolve-net 10.0.0.0/8
 `, 1},
-  {`  server name 127.0.0.1 resolve-net 10.0.0.0/8,10.0.0.0/16
+	{`  server name 127.0.0.1 resolve-net 10.0.0.0/8,10.0.0.0/16
 `, 1},
-  {`  server name 127.0.0.1 resolvers mydns
+	{`  server name 127.0.0.1 resolvers mydns
 `, 1},
-  {`  server name 127.0.0.1 send-proxy
+	{`  server name 127.0.0.1 send-proxy
 `, 1},
-  {`  server name 127.0.0.1 send-proxy-v2
+	{`  server name 127.0.0.1 send-proxy-v2
 `, 1},
-  {`  server name 127.0.0.1 proxy-v2-options ssl
+	{`  server name 127.0.0.1 proxy-v2-options ssl
 `, 1},
-  {`  server name 127.0.0.1 proxy-v2-options ssl,cert-cn
+	{`  server name 127.0.0.1 proxy-v2-options ssl,cert-cn
 `, 1},
-  {`  server name 127.0.0.1 proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+	{`  server name 127.0.0.1 proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
 `, 1},
-  {`  server name 127.0.0.1 send-proxy-v2-ssl
+	{`  server name 127.0.0.1 send-proxy-v2-ssl
 `, 1},
-  {`  server name 127.0.0.1 send-proxy-v2-ssl-cn
+	{`  server name 127.0.0.1 send-proxy-v2-ssl-cn
 `, 1},
-  {`  server name 127.0.0.1 slowstart 2000ms
+	{`  server name 127.0.0.1 slowstart 2000ms
 `, 1},
-  {`  server name 127.0.0.1 sni TODO
+	{`  server name 127.0.0.1 sni TODO
 `, 1},
-  {`  server name 127.0.0.1 source TODO
+	{`  server name 127.0.0.1 source TODO
 `, 1},
-  {`  server name 127.0.0.1 ssl
+	{`  server name 127.0.0.1 ssl
 `, 1},
-  {`  server name 127.0.0.1 ssl-max-ver SSLv3
+	{`  server name 127.0.0.1 ssl-max-ver SSLv3
 `, 1},
-  {`  server name 127.0.0.1 ssl-max-ver TLSv1.0
+	{`  server name 127.0.0.1 ssl-max-ver TLSv1.0
 `, 1},
-  {`  server name 127.0.0.1 ssl-max-ver TLSv1.1
+	{`  server name 127.0.0.1 ssl-max-ver TLSv1.1
 `, 1},
-  {`  server name 127.0.0.1 ssl-max-ver TLSv1.2
+	{`  server name 127.0.0.1 ssl-max-ver TLSv1.2
 `, 1},
-  {`  server name 127.0.0.1 ssl-max-ver TLSv1.3
+	{`  server name 127.0.0.1 ssl-max-ver TLSv1.3
 `, 1},
-  {`  server name 127.0.0.1 ssl-min-ver SSLv3
+	{`  server name 127.0.0.1 ssl-min-ver SSLv3
 `, 1},
-  {`  server name 127.0.0.1 ssl-min-ver TLSv1.0
+	{`  server name 127.0.0.1 ssl-min-ver TLSv1.0
 `, 1},
-  {`  server name 127.0.0.1 ssl-min-ver TLSv1.1
+	{`  server name 127.0.0.1 ssl-min-ver TLSv1.1
 `, 1},
-  {`  server name 127.0.0.1 ssl-min-ver TLSv1.2
+	{`  server name 127.0.0.1 ssl-min-ver TLSv1.2
 `, 1},
-  {`  server name 127.0.0.1 ssl-min-ver TLSv1.3
+	{`  server name 127.0.0.1 ssl-min-ver TLSv1.3
 `, 1},
-  {`  server name 127.0.0.1 ssl-reuse
+	{`  server name 127.0.0.1 ssl-reuse
 `, 1},
-  {`  server name 127.0.0.1 stick
+	{`  server name 127.0.0.1 stick
 `, 1},
-  {`  server name 127.0.0.1 socks4 127.0.0.1:81
+	{`  server name 127.0.0.1 socks4 127.0.0.1:81
 `, 1},
-  {`  server name 127.0.0.1 tcp-ut 20ms
+	{`  server name 127.0.0.1 tcp-ut 20ms
 `, 1},
-  {`  server name 127.0.0.1 tfo
+	{`  server name 127.0.0.1 tfo
 `, 1},
-  {`  server name 127.0.0.1 track TODO
+	{`  server name 127.0.0.1 track TODO
 `, 1},
-  {`  server name 127.0.0.1 tls-tickets
+	{`  server name 127.0.0.1 tls-tickets
 `, 1},
-  {`  server name 127.0.0.1 verify none
+	{`  server name 127.0.0.1 verify none
 `, 1},
-  {`  server name 127.0.0.1 verify required
+	{`  server name 127.0.0.1 verify required
 `, 1},
-  {`  server name 127.0.0.1 verifyhost site.com
+	{`  server name 127.0.0.1 verifyhost site.com
 `, 1},
-  {`  server name 127.0.0.1 weight 1
+	{`  server name 127.0.0.1 weight 1
 `, 1},
-  {`  server name 127.0.0.1 weight 128
+	{`  server name 127.0.0.1 weight 128
 `, 1},
-  {`  server name 127.0.0.1 weight 256
+	{`  server name 127.0.0.1 weight 256
 `, 1},
-  {`  server name 127.0.0.1 pool-low-conn 384
+	{`  server name 127.0.0.1 pool-low-conn 384
 `, 1},
-  {`  server name 127.0.0.1 ws h1
+	{`  server name 127.0.0.1 ws h1
 `, 1},
-  {`  server name 127.0.0.1 ws h2
+	{`  server name 127.0.0.1 ws h2
 `, 1},
-  {`  server name 127.0.0.1 ws auto
+	{`  server name 127.0.0.1 ws auto
 `, 1},
-  {`  stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
+	{`  stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
 `, 2},
-  {`  stats socket 127.0.0.1:8080
+	{`  stats socket 127.0.0.1:8080
 `, 1},
-  {`  stats socket 127.0.0.1:8080 mode admin
+	{`  stats socket 127.0.0.1:8080 mode admin
 `, 1},
-  {`  stats socket /some/path/to/socket
+	{`  stats socket /some/path/to/socket
 `, 1},
-  {`  stats socket /some/path/to/socket mode admin
+	{`  stats socket /some/path/to/socket mode admin
 `, 1},
-  {`  stick on src table pop if !localhost
+	{`  stick on src table pop if !localhost
 `, 1},
-  {`  stick match src table pop if !localhost
+	{`  stick match src table pop if !localhost
 `, 1},
-  {`  stick store-request src table pop if !localhost
+	{`  stick store-request src table pop if !localhost
 `, 1},
-  {`  nameserver dns1 10.0.0.1:53
+	{`  nameserver dns1 10.0.0.1:53
 `, 1},
-  {`  nameserver dns1 10.0.0.1:53 # comment
+	{`  nameserver dns1 10.0.0.1:53 # comment
 `, 1},
-  {`  use_backend test if TRUE
+	{`  use_backend test if TRUE
 `, 1},
-  {`  use_backend test if TRUE # deny
+	{`  use_backend test if TRUE # deny
 `, 1},
-  {`  use_backend test # deny
+	{`  use_backend test # deny
 `, 1},
-  {`  user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
+	{`  user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
 `, 1},
-  {`  user panda insecure-password elgato groups G1,G2
+	{`  user panda insecure-password elgato groups G1,G2
 `, 1},
-  {`  user bear insecure-password hello groups G2
+	{`  user bear insecure-password hello groups G2
 `, 1},
-  {`  unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
+	{`  unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
 `, 2},
-  {`  unique-id-header X-Unique-ID
+	{`  unique-id-header X-Unique-ID
 `, 2},
-  {`  use-fcgi-app application
+	{`  use-fcgi-app application
 `, 1},
-  {`  use-server www if { req_ssl_sni -i www.example.com }
+	{`  use-server www if { req_ssl_sni -i www.example.com }
 `, 1},
-  {`  use-server www if { req_ssl_sni -i www.example.com } # comment
+	{`  use-server www if { req_ssl_sni -i www.example.com } # comment
 `, 1},
-  {`  lua-prepend-path /usr/share/haproxy-lua/?/init.lua
+	{`  lua-prepend-path /usr/share/haproxy-lua/?/init.lua
 `, 1},
-  {`  lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
+	{`  lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
 `, 1},
-  {`  lua-load /etc/haproxy/lua/foo.lua
+	{`  lua-load /etc/haproxy/lua/foo.lua
 `, 1},
-  {`  ssl-engine rdrand
+	{`  ssl-engine rdrand
 `, 1},
-  {`  ssl-engine rdrand ALL
+	{`  ssl-engine rdrand ALL
 `, 1},
-  {`  ssl-engine rdrand RSA,DSA
+	{`  ssl-engine rdrand RSA,DSA
 `, 1},
-  {`  ssl-mode-async
+	{`  ssl-mode-async
 `, 1},
-  {`  load-server-state-from-file global
+	{`  load-server-state-from-file global
 `, 2},
-  {`  monitor-uri /haproxy_test
+	{`  monitor-uri /haproxy_test
 `, 2},
-  {`  monitor fail if no_db01 no_db02
+	{`  monitor fail if no_db01 no_db02
 `, 1},
-  {`  server-template srv 1-3 google.com:80 check
+	{`  server-template srv 1-3 google.com:80 check
 `, 1},
-  {`  server-template srv 3 google.com:80 check
+	{`  server-template srv 3 google.com:80 check
 `, 1},
-  {`  server-template srv 3 google.com:80
+	{`  server-template srv 3 google.com:80
 `, 1},
-  {`  server-template srv 3 google.com
+	{`  server-template srv 3 google.com
 `, 1},
-  {`  declare capture request len 1
+	{`  declare capture request len 1
 `, 1},
-  {`  declare capture response len 2
+	{`  declare capture response len 2
 `, 1},
-  {`  h1-case-adjust content-type Content-Type
+	{`  h1-case-adjust content-type Content-Type
 `, 1},
-  {`  process-vary on
+	{`  process-vary on
 `, 1},
-  {`  force-persist if acl-name
+	{`  force-persist if acl-name
 `, 1},
-  {`  ignore-persist if acl-name
+	{`  ignore-persist if acl-name
 `, 1},
-  {`  unix-bind prefix pre
+	{`  unix-bind prefix pre
 `, 1},
-  {`  thread-group name 1-10
+	{`  thread-group name 1-10
 `, 1},
-  {`  thread-group name 10
+	{`  thread-group name 10
 `, 1},
-  {`  set-var proc.current_state str(primary)
+	{`  set-var proc.current_state str(primary)
 `, 1},
-  {`  set-var proc.prio int(100)
+	{`  set-var proc.prio int(100)
 `, 1},
-  {`  set-var proc.threshold int(200),sub(proc.prio)
+	{`  set-var proc.threshold int(200),sub(proc.prio)
 `, 1},
-  {`  persist rdp-cookie
+	{`  persist rdp-cookie
 `, 2},
-  {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
+	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
-  {`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
+	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
 `, 2},
-  {`  http-request add-acl(map.lst) [src]
+	{`  http-request add-acl(map.lst) [src]
 `, 2},
-  {`  http-request add-header X-value value
+	{`  http-request add-header X-value value
 `, 2},
-  {`  http-request cache-use cache-name
+	{`  http-request cache-use cache-name
 `, 2},
-  {`  http-request cache-use cache-name if FALSE
+	{`  http-request cache-use cache-name if FALSE
 `, 2},
-  {`  http-request del-acl(map.lst) [src]
+	{`  http-request del-acl(map.lst) [src]
 `, 2},
-  {`  http-request allow
+	{`  http-request allow
 `, 2},
-  {`  http-request auth
+	{`  http-request auth
 `, 2},
-  {`  http-request del-header X-value
+	{`  http-request del-header X-value
 `, 2},
-  {`  http-request del-header X-value if TRUE
+	{`  http-request del-header X-value if TRUE
 `, 2},
-  {`  http-request del-header X-value -m str if TRUE
+	{`  http-request del-header X-value -m str if TRUE
 `, 2},
-  {`  http-request del-map(map.lst) %[src] if ! value
+	{`  http-request del-map(map.lst) %[src] if ! value
 `, 2},
-  {`  http-request del-map(map.lst) %[src]
+	{`  http-request del-map(map.lst) %[src]
 `, 2},
-  {`  http-request deny
+	{`  http-request deny
 `, 2},
-  {`  http-request deny deny_status 400
+	{`  http-request deny deny_status 400
 `, 2},
-  {`  http-request deny if TRUE
+	{`  http-request deny if TRUE
 `, 2},
-  {`  http-request deny deny_status 400 if TRUE
+	{`  http-request deny deny_status 400 if TRUE
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json if TRUE
+	{`  http-request deny deny_status 400 content-type application/json if TRUE
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json
+	{`  http-request deny deny_status 400 content-type application/json
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json default-errorfiles
+	{`  http-request deny deny_status 400 content-type application/json default-errorfiles
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json errorfile errors
+	{`  http-request deny deny_status 400 content-type application/json errorfile errors
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json string error if TRUE
+	{`  http-request deny deny_status 400 content-type application/json string error if TRUE
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+	{`  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json file /var/errors.file
+	{`  http-request deny deny_status 400 content-type application/json file /var/errors.file
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
+	{`  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+	{`  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+	{`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
 `, 2},
-  {`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+	{`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
 `, 2},
-  {`  http-request disable-l7-retry
+	{`  http-request disable-l7-retry
 `, 2},
-  {`  http-request disable-l7-retry if FALSE
+	{`  http-request disable-l7-retry if FALSE
 `, 2},
-  {`  http-request early-hint hint %[src]
+	{`  http-request early-hint hint %[src]
 `, 2},
-  {`  http-request early-hint hint %[src] if FALSE
+	{`  http-request early-hint hint %[src] if FALSE
 `, 2},
-  {`  http-request early-hint if FALSE
+	{`  http-request early-hint if FALSE
 `, 2},
-  {`  http-request lua.foo
+	{`  http-request lua.foo
 `, 2},
-  {`  http-request lua.foo if FALSE
+	{`  http-request lua.foo if FALSE
 `, 2},
-  {`  http-request lua.foo param
+	{`  http-request lua.foo param
 `, 2},
-  {`  http-request lua.foo param param2
+	{`  http-request lua.foo param param2
 `, 2},
-  {`  http-request normalize-uri fragment-encode
+	{`  http-request normalize-uri fragment-encode
 `, 2},
-  {`  http-request normalize-uri fragment-encode if TRUE
+	{`  http-request normalize-uri fragment-encode if TRUE
 `, 2},
-  {`  http-request normalize-uri fragment-strip
+	{`  http-request normalize-uri fragment-strip
 `, 2},
-  {`  http-request normalize-uri fragment-strip if TRUE
+	{`  http-request normalize-uri fragment-strip if TRUE
 `, 2},
-  {`  http-request normalize-uri path-merge-slashes
+	{`  http-request normalize-uri path-merge-slashes
 `, 2},
-  {`  http-request normalize-uri path-merge-slashes if TRUE
+	{`  http-request normalize-uri path-merge-slashes if TRUE
 `, 2},
-  {`  http-request normalize-uri path-strip-dot
+	{`  http-request normalize-uri path-strip-dot
 `, 2},
-  {`  http-request normalize-uri path-strip-dot if TRUE
+	{`  http-request normalize-uri path-strip-dot if TRUE
 `, 2},
-  {`  http-request normalize-uri path-strip-dotdot
+	{`  http-request normalize-uri path-strip-dotdot
 `, 2},
-  {`  http-request normalize-uri path-strip-dotdot full
+	{`  http-request normalize-uri path-strip-dotdot full
 `, 2},
-  {`  http-request normalize-uri path-strip-dotdot if TRUE
+	{`  http-request normalize-uri path-strip-dotdot if TRUE
 `, 2},
-  {`  http-request normalize-uri path-strip-dotdot full if TRUE
+	{`  http-request normalize-uri path-strip-dotdot full if TRUE
 `, 2},
-  {`  http-request normalize-uri percent-decode-unreserved
+	{`  http-request normalize-uri percent-decode-unreserved
 `, 2},
-  {`  http-request normalize-uri percent-decode-unreserved if TRUE
+	{`  http-request normalize-uri percent-decode-unreserved if TRUE
 `, 2},
-  {`  http-request normalize-uri percent-decode-unreserved strict
+	{`  http-request normalize-uri percent-decode-unreserved strict
 `, 2},
-  {`  http-request normalize-uri percent-decode-unreserved strict if TRUE
+	{`  http-request normalize-uri percent-decode-unreserved strict if TRUE
 `, 2},
-  {`  http-request normalize-uri percent-to-uppercase
+	{`  http-request normalize-uri percent-to-uppercase
 `, 2},
-  {`  http-request normalize-uri percent-to-uppercase if TRUE
+	{`  http-request normalize-uri percent-to-uppercase if TRUE
 `, 2},
-  {`  http-request normalize-uri percent-to-uppercase strict
+	{`  http-request normalize-uri percent-to-uppercase strict
 `, 2},
-  {`  http-request normalize-uri percent-to-uppercase strict if TRUE
+	{`  http-request normalize-uri percent-to-uppercase strict if TRUE
 `, 2},
-  {`  http-request normalize-uri query-sort-by-name
+	{`  http-request normalize-uri query-sort-by-name
 `, 2},
-  {`  http-request normalize-uri query-sort-by-name if TRUE
+	{`  http-request normalize-uri query-sort-by-name if TRUE
 `, 2},
-  {`  http-request redirect prefix https://mysite.com
+	{`  http-request redirect prefix https://mysite.com
 `, 2},
-  {`  http-request reject
+	{`  http-request reject
 `, 2},
-  {`  http-request replace-header User-agent curl foo
+	{`  http-request replace-header User-agent curl foo
 `, 2},
-  {`  http-request replace-path (.*) /foo
+	{`  http-request replace-path (.*) /foo
 `, 2},
-  {`  http-request replace-path (.*) /foo if TRUE
+	{`  http-request replace-path (.*) /foo if TRUE
 `, 2},
-  {`  http-request replace-pathq (.*) /foo
+	{`  http-request replace-pathq (.*) /foo
 `, 2},
-  {`  http-request replace-pathq (.*) /foo if TRUE
+	{`  http-request replace-pathq (.*) /foo if TRUE
 `, 2},
-  {`  http-request replace-uri ^http://(.*) https://1
+	{`  http-request replace-uri ^http://(.*) https://1
 `, 2},
-  {`  http-request replace-uri ^http://(.*) https://1 if FALSE
+	{`  http-request replace-uri ^http://(.*) https://1 if FALSE
 `, 2},
-  {`  http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+	{`  http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 `, 2},
-  {`  http-request sc-inc-gpc0(1)
+	{`  http-request sc-inc-gpc0(1)
 `, 2},
-  {`  http-request sc-inc-gpc0(1) if FALSE
+	{`  http-request sc-inc-gpc0(1) if FALSE
 `, 2},
-  {`  http-request sc-inc-gpc1(1)
+	{`  http-request sc-inc-gpc1(1)
 `, 2},
-  {`  http-request sc-inc-gpc1(1) if FALSE
+	{`  http-request sc-inc-gpc1(1) if FALSE
 `, 2},
-  {`  http-request sc-set-gpt0(1) hdr(Host),lower
+	{`  http-request sc-set-gpt0(1) hdr(Host),lower
 `, 2},
-  {`  http-request sc-set-gpt0(1) 10
+	{`  http-request sc-set-gpt0(1) 10
 `, 2},
-  {`  http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
+	{`  http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
 `, 2},
-  {`  http-request send-spoe-group engine group
+	{`  http-request send-spoe-group engine group
 `, 2},
-  {`  http-request set-header X-value value
+	{`  http-request set-header X-value value
 `, 2},
-  {`  http-request set-log-level silent
+	{`  http-request set-log-level silent
 `, 2},
-  {`  http-request set-mark 20
+	{`  http-request set-mark 20
 `, 2},
-  {`  http-request set-mark 0x1Ab
+	{`  http-request set-mark 0x1Ab
 `, 2},
-  {`  http-request set-nice 0
+	{`  http-request set-nice 0
 `, 2},
-  {`  http-request set-nice 0 if FALSE
+	{`  http-request set-nice 0 if FALSE
 `, 2},
-  {`  http-request set-method POST
+	{`  http-request set-method POST
 `, 2},
-  {`  http-request set-method POST if FALSE
+	{`  http-request set-method POST if FALSE
 `, 2},
-  {`  http-request set-path /%[hdr(host)]%[path]
+	{`  http-request set-path /%[hdr(host)]%[path]
 `, 2},
-  {`  http-request set-pathq /%[hdr(host)]%[path]
+	{`  http-request set-pathq /%[hdr(host)]%[path]
 `, 2},
-  {`  http-request set-priority-class req.hdr(priority)
+	{`  http-request set-priority-class req.hdr(priority)
 `, 2},
-  {`  http-request set-priority-class req.hdr(priority) if FALSE
+	{`  http-request set-priority-class req.hdr(priority) if FALSE
 `, 2},
-  {`  http-request set-priority-offset req.hdr(offset)
+	{`  http-request set-priority-offset req.hdr(offset)
 `, 2},
-  {`  http-request set-priority-offset req.hdr(offset) if FALSE
+	{`  http-request set-priority-offset req.hdr(offset) if FALSE
 `, 2},
-  {`  http-request set-query %[query,regsub(%3D,=,g)]
+	{`  http-request set-query %[query,regsub(%3D,=,g)]
 `, 2},
-  {`  http-request set-src hdr(src)
+	{`  http-request set-src hdr(src)
 `, 2},
-  {`  http-request set-src hdr(src) if FALSE
+	{`  http-request set-src hdr(src) if FALSE
 `, 2},
-  {`  http-request set-src-port hdr(port)
+	{`  http-request set-src-port hdr(port)
 `, 2},
-  {`  http-request set-src-port hdr(port) if FALSE
+	{`  http-request set-src-port hdr(port) if FALSE
 `, 2},
-  {`  http-request set-timeout server 20
+	{`  http-request set-timeout server 20
 `, 2},
-  {`  http-request set-timeout tunnel 20
+	{`  http-request set-timeout tunnel 20
 `, 2},
-  {`  http-request set-timeout tunnel 20s if TRUE
+	{`  http-request set-timeout tunnel 20s if TRUE
 `, 2},
-  {`  http-request set-timeout server 20s if TRUE
+	{`  http-request set-timeout server 20s if TRUE
 `, 2},
-  {`  http-request set-tos 0 if FALSE
+	{`  http-request set-tos 0 if FALSE
 `, 2},
-  {`  http-request set-tos 0
+	{`  http-request set-tos 0
 `, 2},
-  {`  http-request set-uri /%[hdr(host)]%[path]
+	{`  http-request set-uri /%[hdr(host)]%[path]
 `, 2},
-  {`  http-request set-var(req.my_var) req.fhdr(user-agent),lower
+	{`  http-request set-var(req.my_var) req.fhdr(user-agent),lower
 `, 2},
-  {`  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
+	{`  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
 `, 2},
-  {`  http-request silent-drop
+	{`  http-request silent-drop
 `, 2},
-  {`  http-request silent-drop if FALSE
+	{`  http-request silent-drop if FALSE
 `, 2},
-  {`  http-request strict-mode on
+	{`  http-request strict-mode on
 `, 2},
-  {`  http-request strict-mode on if FALSE
+	{`  http-request strict-mode on if FALSE
 `, 2},
-  {`  http-request tarpit
+	{`  http-request tarpit
 `, 2},
-  {`  http-request tarpit deny_status 400
+	{`  http-request tarpit deny_status 400
 `, 2},
-  {`  http-request tarpit if TRUE
+	{`  http-request tarpit if TRUE
 `, 2},
-  {`  http-request tarpit deny_status 400 if TRUE
+	{`  http-request tarpit deny_status 400 if TRUE
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json if TRUE
+	{`  http-request tarpit deny_status 400 content-type application/json if TRUE
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json
+	{`  http-request tarpit deny_status 400 content-type application/json
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json default-errorfiles
+	{`  http-request tarpit deny_status 400 content-type application/json default-errorfiles
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json errorfile errors
+	{`  http-request tarpit deny_status 400 content-type application/json errorfile errors
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json string error if TRUE
+	{`  http-request tarpit deny_status 400 content-type application/json string error if TRUE
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+	{`  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
+	{`  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
+	{`  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
+	{`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+	{`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
 `, 2},
-  {`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+	{`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
 `, 2},
-  {`  http-request track-sc0 src
+	{`  http-request track-sc0 src
 `, 2},
-  {`  http-request track-sc1 src
+	{`  http-request track-sc1 src
 `, 2},
-  {`  http-request track-sc2 src
+	{`  http-request track-sc2 src
 `, 2},
-  {`  http-request unset-var(req.my_var)
+	{`  http-request unset-var(req.my_var)
 `, 2},
-  {`  http-request unset-var(req.my_var) if FALSE
+	{`  http-request unset-var(req.my_var) if FALSE
 `, 2},
-  {`  http-request wait-for-body time 20s
+	{`  http-request wait-for-body time 20s
 `, 2},
-  {`  http-request wait-for-body time 20s if TRUE
+	{`  http-request wait-for-body time 20s if TRUE
 `, 2},
-  {`  http-request wait-for-body time 20s at-least 100k
+	{`  http-request wait-for-body time 20s at-least 100k
 `, 2},
-  {`  http-request wait-for-body time 20s at-least 100k if TRUE
+	{`  http-request wait-for-body time 20s at-least 100k if TRUE
 `, 2},
-  {`  http-request wait-for-handshake
+	{`  http-request wait-for-handshake
 `, 2},
-  {`  http-request wait-for-handshake if FALSE
+	{`  http-request wait-for-handshake if FALSE
 `, 2},
-  {`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower
+	{`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower
 `, 2},
-  {`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower if { var(txn.myip) -m found }
+	{`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower if { var(txn.myip) -m found }
 `, 2},
-  {`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower unless { var(txn.myip) -m found }
+	{`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower unless { var(txn.myip) -m found }
 `, 2},
-  {`  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
+	{`  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
 `, 2},
-  {`  http-request do-resolve(txn.myip,mydns,ipv6) hdr(Host),lower
+	{`  http-request do-resolve(txn.myip,mydns,ipv6) hdr(Host),lower
 `, 2},
-  {`  http-request set-dst var(txn.myip)
+	{`  http-request set-dst var(txn.myip)
 `, 2},
-  {`  http-request set-dst var(txn.myip) if { var(txn.myip) -m found }
+	{`  http-request set-dst var(txn.myip) if { var(txn.myip) -m found }
 `, 2},
-  {`  http-request set-dst var(txn.myip) unless { var(txn.myip) -m found }
+	{`  http-request set-dst var(txn.myip) unless { var(txn.myip) -m found }
 `, 2},
-  {`  http-request set-dst-port hdr(x-port)
+	{`  http-request set-dst-port hdr(x-port)
 `, 2},
-  {`  http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
+	{`  http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
 `, 2},
-  {`  http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
+	{`  http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
 `, 2},
-  {`  http-request set-dst-port int(4000)
+	{`  http-request set-dst-port int(4000)
 `, 2},
-  {`  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
+	{`  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
 `, 2},
-  {`  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+	{`  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
 `, 2},
-  {`  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+	{`  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `, 2},
-  {`  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+	{`  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
 `, 2},
-  {`  http-request capture req.cook_cnt(FirstVisit),bool len 10
+	{`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 1},
-  {`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+	{`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
 `, 2},
-  {`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+	{`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
 `, 2},
-  {`  http-response add-acl(map.lst) [src]
+	{`  http-response add-acl(map.lst) [src]
 `, 2},
-  {`  http-response add-header X-value value
+	{`  http-response add-header X-value value
 `, 2},
-  {`  http-response del-acl(map.lst) [src]
+	{`  http-response del-acl(map.lst) [src]
 `, 2},
-  {`  http-response allow
+	{`  http-response allow
 `, 2},
-  {`  http-response cache-store cache-name
+	{`  http-response cache-store cache-name
 `, 2},
-  {`  http-response cache-store cache-name if FALSE
+	{`  http-response cache-store cache-name if FALSE
 `, 2},
-  {`  http-response del-header X-value
+	{`  http-response del-header X-value
 `, 2},
-  {`  http-response del-map(map.lst) %[src] if ! value
+	{`  http-response del-map(map.lst) %[src] if ! value
 `, 2},
-  {`  http-response del-map(map.lst) %[src]
+	{`  http-response del-map(map.lst) %[src]
 `, 2},
-  {`  http-response deny
+	{`  http-response deny
 `, 2},
-  {`  http-response deny deny_status 400
+	{`  http-response deny deny_status 400
 `, 2},
-  {`  http-response deny if TRUE
+	{`  http-response deny if TRUE
 `, 2},
-  {`  http-response deny deny_status 400 if TRUE
+	{`  http-response deny deny_status 400 if TRUE
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json if TRUE
+	{`  http-response deny deny_status 400 content-type application/json if TRUE
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json
+	{`  http-response deny deny_status 400 content-type application/json
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json default-errorfiles
+	{`  http-response deny deny_status 400 content-type application/json default-errorfiles
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json errorfile errors
+	{`  http-response deny deny_status 400 content-type application/json errorfile errors
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json string error if TRUE
+	{`  http-response deny deny_status 400 content-type application/json string error if TRUE
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+	{`  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json file /var/errors.file
+	{`  http-response deny deny_status 400 content-type application/json file /var/errors.file
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
+	{`  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+	{`  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+	{`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
 `, 2},
-  {`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+	{`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
 `, 2},
-  {`  http-response lua.foo
+	{`  http-response lua.foo
 `, 2},
-  {`  http-response lua.foo if FALSE
+	{`  http-response lua.foo if FALSE
 `, 2},
-  {`  http-response lua.foo param
+	{`  http-response lua.foo param
 `, 2},
-  {`  http-response lua.foo param param2
+	{`  http-response lua.foo param param2
 `, 2},
-  {`  http-response redirect prefix https://mysite.com
+	{`  http-response redirect prefix https://mysite.com
 `, 2},
-  {`  http-response replace-header User-agent curl foo
+	{`  http-response replace-header User-agent curl foo
 `, 2},
-  {`  http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+	{`  http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 `, 2},
-  {`  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
+	{`  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
 `, 2},
-  {`  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+	{`  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
 `, 2},
-  {`  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+	{`  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `, 2},
-  {`  http-response sc-inc-gpc0(1)
+	{`  http-response sc-inc-gpc0(1)
 `, 2},
-  {`  http-response sc-inc-gpc0(1) if FALSE
+	{`  http-response sc-inc-gpc0(1) if FALSE
 `, 2},
-  {`  http-response sc-inc-gpc1(1)
+	{`  http-response sc-inc-gpc1(1)
 `, 2},
-  {`  http-response sc-inc-gpc1(1) if FALSE
+	{`  http-response sc-inc-gpc1(1) if FALSE
 `, 2},
-  {`  http-response sc-set-gpt0(1) hdr(Host),lower
+	{`  http-response sc-set-gpt0(1) hdr(Host),lower
 `, 2},
-  {`  http-response sc-set-gpt0(1) 10
+	{`  http-response sc-set-gpt0(1) 10
 `, 2},
-  {`  http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
+	{`  http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
 `, 2},
-  {`  http-response send-spoe-group engine group
+	{`  http-response send-spoe-group engine group
 `, 2},
-  {`  http-response set-header X-value value
+	{`  http-response set-header X-value value
 `, 2},
-  {`  http-response set-log-level silent
+	{`  http-response set-log-level silent
 `, 2},
-  {`  http-response set-mark 20
+	{`  http-response set-mark 20
 `, 2},
-  {`  http-response set-mark 0x1Ab
+	{`  http-response set-mark 0x1Ab
 `, 2},
-  {`  http-response set-nice 0
+	{`  http-response set-nice 0
 `, 2},
-  {`  http-response set-nice 0 if FALSE
+	{`  http-response set-nice 0 if FALSE
 `, 2},
-  {`  http-response set-status 503
+	{`  http-response set-status 503
 `, 2},
-  {`  http-response set-tos 0 if FALSE
+	{`  http-response set-tos 0 if FALSE
 `, 2},
-  {`  http-response set-tos 0
+	{`  http-response set-tos 0
 `, 2},
-  {`  http-response set-var(req.my_var) res.fhdr(user-agent),lower
+	{`  http-response set-var(req.my_var) res.fhdr(user-agent),lower
 `, 2},
-  {`  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
+	{`  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
 `, 2},
-  {`  http-response silent-drop
+	{`  http-response silent-drop
 `, 2},
-  {`  http-response silent-drop if FALSE
+	{`  http-response silent-drop if FALSE
 `, 2},
-  {`  http-response unset-var(req.my_var)
+	{`  http-response unset-var(req.my_var)
 `, 2},
-  {`  http-response unset-var(req.my_var) if FALSE
+	{`  http-response unset-var(req.my_var) if FALSE
 `, 2},
-  {`  http-response track-sc0 src if FALSE
+	{`  http-response track-sc0 src if FALSE
 `, 2},
-  {`  http-response track-sc0 src table tr if FALSE
+	{`  http-response track-sc0 src table tr if FALSE
 `, 2},
-  {`  http-response track-sc0 src
+	{`  http-response track-sc0 src
 `, 2},
-  {`  http-response track-sc1 src if FALSE
+	{`  http-response track-sc1 src if FALSE
 `, 2},
-  {`  http-response track-sc1 src table tr if FALSE
+	{`  http-response track-sc1 src table tr if FALSE
 `, 2},
-  {`  http-response track-sc1 src
+	{`  http-response track-sc1 src
 `, 2},
-  {`  http-response track-sc2 src if FALSE
+	{`  http-response track-sc2 src if FALSE
 `, 2},
-  {`  http-response track-sc2 src table tr if FALSE
+	{`  http-response track-sc2 src table tr if FALSE
 `, 2},
-  {`  http-response track-sc2 src
+	{`  http-response track-sc2 src
 `, 2},
-  {`  http-response strict-mode on
+	{`  http-response strict-mode on
 `, 2},
-  {`  http-response strict-mode on if FALSE
+	{`  http-response strict-mode on if FALSE
 `, 2},
-  {`  http-response wait-for-body time 20s
+	{`  http-response wait-for-body time 20s
 `, 2},
-  {`  http-response wait-for-body time 20s if TRUE
+	{`  http-response wait-for-body time 20s if TRUE
 `, 2},
-  {`  http-response wait-for-body time 20s at-least 100k
+	{`  http-response wait-for-body time 20s at-least 100k
 `, 2},
-  {`  http-response wait-for-body time 20s at-least 100k if TRUE
+	{`  http-response wait-for-body time 20s at-least 100k if TRUE
 `, 2},
-  {`  http-response capture res.hdr(Server) id 0
+	{`  http-response capture res.hdr(Server) id 0
 `, 1},
-  {`  http-after-response allow
+	{`  http-after-response allow
 `, 2},
-  {`  http-after-response allow if acl
+	{`  http-after-response allow if acl
 `, 2},
-  {`  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
+	{`  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
 `, 2},
-  {`  http-after-response add-header X-Header \"foo=bar\"
+	{`  http-after-response add-header X-Header \"foo=bar\"
 `, 2},
-  {`  http-after-response add-header X-Header \"foo=bar\" if acl
+	{`  http-after-response add-header X-Header \"foo=bar\" if acl
 `, 2},
-  {`  http-after-response add-header X-Header \"foo=bar\" unless acl
+	{`  http-after-response add-header X-Header \"foo=bar\" unless acl
 `, 2},
-  {`  http-after-response allow unless acl
+	{`  http-after-response allow unless acl
 `, 2},
-  {`  http-after-response del-header X-Value
+	{`  http-after-response del-header X-Value
 `, 2},
-  {`  http-after-response del-header X-Value -m GET
+	{`  http-after-response del-header X-Value -m GET
 `, 2},
-  {`  http-after-response del-header X-Value -m GET if acl
+	{`  http-after-response del-header X-Value -m GET if acl
 `, 2},
-  {`  http-after-response del-header X-Value -m GET unless acl
+	{`  http-after-response del-header X-Value -m GET unless acl
 `, 2},
-  {`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
+	{`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
 `, 2},
-  {`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
+	{`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
 `, 2},
-  {`  http-after-response replace-value Cache-control ^public$ private
+	{`  http-after-response replace-value Cache-control ^public$ private
 `, 2},
-  {`  http-after-response replace-value Cache-control ^public$ private if acl
+	{`  http-after-response replace-value Cache-control ^public$ private if acl
 `, 2},
-  {`  http-after-response set-status 431
+	{`  http-after-response set-status 431
 `, 2},
-  {`  http-after-response set-status 503 reason \"SlowDown\"
+	{`  http-after-response set-status 503 reason \"SlowDown\"
 `, 2},
-  {`  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
+	{`  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
 `, 2},
-  {`  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
+	{`  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
 `, 2},
-  {`  http-after-response set-var(sess.last_redir) res.hdr(location)
+	{`  http-after-response set-var(sess.last_redir) res.hdr(location)
 `, 2},
-  {`  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
+	{`  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
 `, 2},
-  {`  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
+	{`  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
 `, 2},
-  {`  http-after-response strict-mode on
+	{`  http-after-response strict-mode on
 `, 2},
-  {`  http-after-response strict-mode off
+	{`  http-after-response strict-mode off
 `, 2},
-  {`  http-after-response unset-var(sess.last_redir)
+	{`  http-after-response unset-var(sess.last_redir)
 `, 2},
-  {`  http-after-response unset-var(sess.last_redir) if acl
+	{`  http-after-response unset-var(sess.last_redir) if acl
 `, 2},
-  {`  http-after-response unset-var(sess.last_redir) unless acl
+	{`  http-after-response unset-var(sess.last_redir) unless acl
 `, 2},
-  {`  http-check comment testcomment
+	{`  http-check comment testcomment
 `, 2},
-  {`  http-check connect
+	{`  http-check connect
 `, 2},
-  {`  http-check connect default
+	{`  http-check connect default
 `, 2},
-  {`  http-check connect port 8080
+	{`  http-check connect port 8080
 `, 2},
-  {`  http-check connect addr 8.8.8.8
+	{`  http-check connect addr 8.8.8.8
 `, 2},
-  {`  http-check connect send-proxy
+	{`  http-check connect send-proxy
 `, 2},
-  {`  http-check connect via-socks4
+	{`  http-check connect via-socks4
 `, 2},
-  {`  http-check connect ssl
+	{`  http-check connect ssl
 `, 2},
-  {`  http-check connect sni haproxy.1wt.eu
+	{`  http-check connect sni haproxy.1wt.eu
 `, 2},
-  {`  http-check connect alpn h2,http/1.1
+	{`  http-check connect alpn h2,http/1.1
 `, 2},
-  {`  http-check connect proto h2
+	{`  http-check connect proto h2
 `, 2},
-  {`  http-check connect linger
+	{`  http-check connect linger
 `, 2},
-  {`  http-check connect comment testcomment
+	{`  http-check connect comment testcomment
 `, 2},
-  {`  http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
+	{`  http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
 `, 2},
-  {`  http-check disable-on-404
+	{`  http-check disable-on-404
 `, 2},
-  {`  http-check expect status 200
+	{`  http-check expect status 200
 `, 2},
-  {`  http-check expect min-recv 50 status 200
+	{`  http-check expect min-recv 50 status 200
 `, 2},
-  {`  http-check expect comment testcomment status 200
+	{`  http-check expect comment testcomment status 200
 `, 2},
-  {`  http-check expect ok-status L7OK status 200
+	{`  http-check expect ok-status L7OK status 200
 `, 2},
-  {`  http-check expect error-status L7RSP status 200
+	{`  http-check expect error-status L7RSP status 200
 `, 2},
-  {`  http-check expect tout-status L7TOUT status 200
+	{`  http-check expect tout-status L7TOUT status 200
 `, 2},
-  {`  http-check expect on-success \"my-log-format\" status 200
+	{`  http-check expect on-success \"my-log-format\" status 200
 `, 2},
-  {`  http-check expect on-error \"my-log-format\" status 200
+	{`  http-check expect on-error \"my-log-format\" status 200
 `, 2},
-  {`  http-check expect status-code \"500\" status 200
+	{`  http-check expect status-code \"500\" status 200
 `, 2},
-  {`  http-check expect ! string SQL\\ Error
+	{`  http-check expect ! string SQL\\ Error
 `, 2},
-  {`  http-check expect ! rstatus ^5
+	{`  http-check expect ! rstatus ^5
 `, 2},
-  {`  http-check expect rstring <!--tag:[0-9a-f]*--></html>
+	{`  http-check expect rstring <!--tag:[0-9a-f]*--></html>
 `, 2},
-  {`  http-check send meth GET
+	{`  http-check send meth GET
 `, 2},
-  {`  http-check send uri /health
+	{`  http-check send uri /health
 `, 2},
-  {`  http-check send ver \"HTTP/1.1\"
+	{`  http-check send ver \"HTTP/1.1\"
 `, 2},
-  {`  http-check send comment testcomment
+	{`  http-check send comment testcomment
 `, 2},
-  {`  http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
+	{`  http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
 `, 2},
-  {`  http-check send uri-lf my-log-format body-lf 'my-log-format'
+	{`  http-check send uri-lf my-log-format body-lf 'my-log-format'
 `, 2},
-  {`  http-check send-state
+	{`  http-check send-state
 `, 2},
-  {`  tcp-check comment testcomment
+	{`  tcp-check comment testcomment
 `, 2},
-  {`  tcp-check connect
+	{`  tcp-check connect
 `, 2},
-  {`  tcp-check connect port 443 ssl
+	{`  tcp-check connect port 443 ssl
 `, 2},
-  {`  tcp-check connect port 110 linger
+	{`  tcp-check connect port 110 linger
 `, 2},
-  {`  tcp-check connect port 143
+	{`  tcp-check connect port 143
 `, 2},
-  {`  tcp-check expect string +PONG
+	{`  tcp-check expect string +PONG
 `, 2},
-  {`  tcp-check expect string role:master
+	{`  tcp-check expect string role:master
 `, 2},
-  {`  tcp-check expect string +OK
+	{`  tcp-check expect string +OK
 `, 2},
-  {`  tcp-check send-lf testfmt
+	{`  tcp-check send-lf testfmt
 `, 2},
-  {`  tcp-check send-lf testfmt comment testcomment
+	{`  tcp-check send-lf testfmt comment testcomment
 `, 2},
-  {`  tcp-check send-binary testhexstring
+	{`  tcp-check send-binary testhexstring
 `, 2},
-  {`  tcp-check send-binary testhexstring comment testcomment
+	{`  tcp-check send-binary testhexstring comment testcomment
 `, 2},
-  {`  tcp-check send-binary-lf testhexfmt
+	{`  tcp-check send-binary-lf testhexfmt
 `, 2},
-  {`  tcp-check send-binary-lf testhexfmt comment testcomment
+	{`  tcp-check send-binary-lf testhexfmt comment testcomment
 `, 2},
-  {`  tcp-check set-var(check.port) int(1234)
+	{`  tcp-check set-var(check.port) int(1234)
 `, 2},
-  {`  tcp-request content accept
+	{`  tcp-request content accept
 `, 2},
-  {`  tcp-request content accept if !HTTP
+	{`  tcp-request content accept if !HTTP
 `, 2},
-  {`  tcp-request content reject
+	{`  tcp-request content reject
 `, 2},
-  {`  tcp-request content reject if !HTTP
+	{`  tcp-request content reject if !HTTP
 `, 2},
-  {`  tcp-request content capture req.payload(0,6) len 6
+	{`  tcp-request content capture req.payload(0,6) len 6
 `, 2},
-  {`  tcp-request content capture req.payload(0,6) len 6 if !HTTP
+	{`  tcp-request content capture req.payload(0,6) len 6 if !HTTP
 `, 2},
-  {`  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
+	{`  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
 `, 2},
-  {`  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
+	{`  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
 `, 2},
-  {`  tcp-request content set-priority-class int(1)
+	{`  tcp-request content set-priority-class int(1)
 `, 2},
-  {`  tcp-request content set-priority-class int(1) if some_check
+	{`  tcp-request content set-priority-class int(1) if some_check
 `, 2},
-  {`  tcp-request content set-priority-offset int(10)
+	{`  tcp-request content set-priority-offset int(10)
 `, 2},
-  {`  tcp-request content set-priority-offset int(10) if some_check
+	{`  tcp-request content set-priority-offset int(10) if some_check
 `, 2},
-  {`  tcp-request content track-sc0 src
+	{`  tcp-request content track-sc0 src
 `, 2},
-  {`  tcp-request content track-sc0 src if some_check
+	{`  tcp-request content track-sc0 src if some_check
 `, 2},
-  {`  tcp-request content track-sc1 src
+	{`  tcp-request content track-sc1 src
 `, 2},
-  {`  tcp-request content track-sc1 src if some_check
+	{`  tcp-request content track-sc1 src if some_check
 `, 2},
-  {`  tcp-request content track-sc2 src
+	{`  tcp-request content track-sc2 src
 `, 2},
-  {`  tcp-request content track-sc2 src if some_check
+	{`  tcp-request content track-sc2 src if some_check
 `, 2},
-  {`  tcp-request content track-sc0 src table foo
+	{`  tcp-request content track-sc0 src table foo
 `, 2},
-  {`  tcp-request content track-sc0 src table foo if some_check
+	{`  tcp-request content track-sc0 src table foo if some_check
 `, 2},
-  {`  tcp-request content track-sc1 src table foo
+	{`  tcp-request content track-sc1 src table foo
 `, 2},
-  {`  tcp-request content track-sc1 src table foo if some_check
+	{`  tcp-request content track-sc1 src table foo if some_check
 `, 2},
-  {`  tcp-request content track-sc2 src table foo
+	{`  tcp-request content track-sc2 src table foo
 `, 2},
-  {`  tcp-request content track-sc2 src table foo if some_check
+	{`  tcp-request content track-sc2 src table foo if some_check
 `, 2},
-  {`  tcp-request content set-dst ipv4(10.0.0.1)
+	{`  tcp-request content set-dst ipv4(10.0.0.1)
 `, 2},
-  {`  tcp-request content set-var(sess.src) src
+	{`  tcp-request content set-var(sess.src) src
 `, 2},
-  {`  tcp-request content set-var(sess.dn) ssl_c_s_dn
+	{`  tcp-request content set-var(sess.dn) ssl_c_s_dn
 `, 2},
-  {`  tcp-request content set-var-fmt(sess.src) src
+	{`  tcp-request content set-var-fmt(sess.src) src
 `, 2},
-  {`  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
+	{`  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
 `, 2},
-  {`  tcp-request content unset-var(sess.src)
+	{`  tcp-request content unset-var(sess.src)
 `, 2},
-  {`  tcp-request content unset-var(sess.dn)
+	{`  tcp-request content unset-var(sess.dn)
 `, 2},
-  {`  tcp-request content silent-drop
+	{`  tcp-request content silent-drop
 `, 2},
-  {`  tcp-request content silent-drop if !HTTP
+	{`  tcp-request content silent-drop if !HTTP
 `, 2},
-  {`  tcp-request content send-spoe-group engine group
+	{`  tcp-request content send-spoe-group engine group
 `, 2},
-  {`  tcp-request content use-service lua.deny
+	{`  tcp-request content use-service lua.deny
 `, 2},
-  {`  tcp-request content use-service lua.deny if !HTTP
+	{`  tcp-request content use-service lua.deny if !HTTP
 `, 2},
-  {`  tcp-request content lua.foo
+	{`  tcp-request content lua.foo
 `, 2},
-  {`  tcp-request content lua.foo param if !HTTP
+	{`  tcp-request content lua.foo param if !HTTP
 `, 2},
-  {`  tcp-request content lua.foo param param1
+	{`  tcp-request content lua.foo param param1
 `, 2},
-  {`  tcp-request connection accept
+	{`  tcp-request connection accept
 `, 2},
-  {`  tcp-request connection accept if !HTTP
+	{`  tcp-request connection accept if !HTTP
 `, 2},
-  {`  tcp-request connection reject
+	{`  tcp-request connection reject
 `, 2},
-  {`  tcp-request connection reject if !HTTP
+	{`  tcp-request connection reject if !HTTP
 `, 2},
-  {`  tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
+	{`  tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
 `, 2},
-  {`  tcp-request connection expect-netscaler-cip layer4
+	{`  tcp-request connection expect-netscaler-cip layer4
 `, 2},
-  {`  tcp-request connection expect-netscaler-cip layer4 if TRUE
+	{`  tcp-request connection expect-netscaler-cip layer4 if TRUE
 `, 2},
-  {`  tcp-request connection capture req.payload(0,6) len 6
+	{`  tcp-request connection capture req.payload(0,6) len 6
 `, 2},
-  {`  tcp-request connection track-sc0 src
+	{`  tcp-request connection track-sc0 src
 `, 2},
-  {`  tcp-request connection track-sc0 src if some_check
+	{`  tcp-request connection track-sc0 src if some_check
 `, 2},
-  {`  tcp-request connection track-sc1 src
+	{`  tcp-request connection track-sc1 src
 `, 2},
-  {`  tcp-request connection track-sc1 src if some_check
+	{`  tcp-request connection track-sc1 src if some_check
 `, 2},
-  {`  tcp-request connection track-sc2 src
+	{`  tcp-request connection track-sc2 src
 `, 2},
-  {`  tcp-request connection track-sc2 src if some_check
+	{`  tcp-request connection track-sc2 src if some_check
 `, 2},
-  {`  tcp-request connection track-sc0 src table foo
+	{`  tcp-request connection track-sc0 src table foo
 `, 2},
-  {`  tcp-request connection track-sc0 src table foo if some_check
+	{`  tcp-request connection track-sc0 src table foo if some_check
 `, 2},
-  {`  tcp-request connection track-sc1 src table foo
+	{`  tcp-request connection track-sc1 src table foo
 `, 2},
-  {`  tcp-request connection track-sc1 src table foo if some_check
+	{`  tcp-request connection track-sc1 src table foo if some_check
 `, 2},
-  {`  tcp-request connection track-sc2 src table foo
+	{`  tcp-request connection track-sc2 src table foo
 `, 2},
-  {`  tcp-request connection track-sc2 src table foo if some_check
+	{`  tcp-request connection track-sc2 src table foo if some_check
 `, 2},
-  {`  tcp-request connection sc-inc-gpc0(2)
+	{`  tcp-request connection sc-inc-gpc0(2)
 `, 2},
-  {`  tcp-request connection sc-inc-gpc0(2) if is-error
+	{`  tcp-request connection sc-inc-gpc0(2) if is-error
 `, 2},
-  {`  tcp-request connection sc-inc-gpc1(2)
+	{`  tcp-request connection sc-inc-gpc1(2)
 `, 2},
-  {`  tcp-request connection sc-inc-gpc1(2) if is-error
+	{`  tcp-request connection sc-inc-gpc1(2) if is-error
 `, 2},
-  {`  tcp-request connection sc-set-gpt0(0) 1337
+	{`  tcp-request connection sc-set-gpt0(0) 1337
 `, 2},
-  {`  tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
+	{`  tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
 `, 2},
-  {`  tcp-request connection set-src src,ipmask(24)
+	{`  tcp-request connection set-src src,ipmask(24)
 `, 2},
-  {`  tcp-request connection set-src src,ipmask(24) if some_check
+	{`  tcp-request connection set-src src,ipmask(24) if some_check
 `, 2},
-  {`  tcp-request connection set-src hdr(x-forwarded-for)
+	{`  tcp-request connection set-src hdr(x-forwarded-for)
 `, 2},
-  {`  tcp-request connection set-src hdr(x-forwarded-for) if some_check
+	{`  tcp-request connection set-src hdr(x-forwarded-for) if some_check
 `, 2},
-  {`  tcp-request connection silent-drop
+	{`  tcp-request connection silent-drop
 `, 2},
-  {`  tcp-request connection silent-drop if !HTTP
+	{`  tcp-request connection silent-drop if !HTTP
 `, 2},
-  {`  tcp-request connection lua.foo
+	{`  tcp-request connection lua.foo
 `, 2},
-  {`  tcp-request connection lua.foo param if !HTTP
+	{`  tcp-request connection lua.foo param if !HTTP
 `, 2},
-  {`  tcp-request connection lua.foo param param1
+	{`  tcp-request connection lua.foo param param1
 `, 2},
-  {`  tcp-request session accept
+	{`  tcp-request session accept
 `, 2},
-  {`  tcp-request session accept if !HTTP
+	{`  tcp-request session accept if !HTTP
 `, 2},
-  {`  tcp-request session reject
+	{`  tcp-request session reject
 `, 2},
-  {`  tcp-request session reject if !HTTP
+	{`  tcp-request session reject if !HTTP
 `, 2},
-  {`  tcp-request session track-sc0 src
+	{`  tcp-request session track-sc0 src
 `, 2},
-  {`  tcp-request session track-sc0 src if some_check
+	{`  tcp-request session track-sc0 src if some_check
 `, 2},
-  {`  tcp-request session track-sc1 src
+	{`  tcp-request session track-sc1 src
 `, 2},
-  {`  tcp-request session track-sc1 src if some_check
+	{`  tcp-request session track-sc1 src if some_check
 `, 2},
-  {`  tcp-request session track-sc2 src
+	{`  tcp-request session track-sc2 src
 `, 2},
-  {`  tcp-request session track-sc2 src if some_check
+	{`  tcp-request session track-sc2 src if some_check
 `, 2},
-  {`  tcp-request session track-sc0 src table foo
+	{`  tcp-request session track-sc0 src table foo
 `, 2},
-  {`  tcp-request session track-sc0 src table foo if some_check
+	{`  tcp-request session track-sc0 src table foo if some_check
 `, 2},
-  {`  tcp-request session track-sc1 src table foo
+	{`  tcp-request session track-sc1 src table foo
 `, 2},
-  {`  tcp-request session track-sc1 src table foo if some_check
+	{`  tcp-request session track-sc1 src table foo if some_check
 `, 2},
-  {`  tcp-request session track-sc2 src table foo
+	{`  tcp-request session track-sc2 src table foo
 `, 2},
-  {`  tcp-request session track-sc2 src table foo if some_check
+	{`  tcp-request session track-sc2 src table foo if some_check
 `, 2},
-  {`  tcp-request session sc-inc-gpc0(2)
+	{`  tcp-request session sc-inc-gpc0(2)
 `, 2},
-  {`  tcp-request session sc-inc-gpc0(2) if is-error
+	{`  tcp-request session sc-inc-gpc0(2) if is-error
 `, 2},
-  {`  tcp-request session sc-inc-gpc1(2)
+	{`  tcp-request session sc-inc-gpc1(2)
 `, 2},
-  {`  tcp-request session sc-inc-gpc1(2) if is-error
+	{`  tcp-request session sc-inc-gpc1(2) if is-error
 `, 2},
-  {`  tcp-request session sc-set-gpt0(0) 1337
+	{`  tcp-request session sc-set-gpt0(0) 1337
 `, 2},
-  {`  tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
+	{`  tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
 `, 2},
-  {`  tcp-request session set-var(sess.src) src
+	{`  tcp-request session set-var(sess.src) src
 `, 2},
-  {`  tcp-request session set-var(sess.dn) ssl_c_s_dn
+	{`  tcp-request session set-var(sess.dn) ssl_c_s_dn
 `, 2},
-  {`  tcp-request session set-var-fmt(sess.src) src
+	{`  tcp-request session set-var-fmt(sess.src) src
 `, 2},
-  {`  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
+	{`  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
 `, 2},
-  {`  tcp-request session unset-var(sess.src)
+	{`  tcp-request session unset-var(sess.src)
 `, 2},
-  {`  tcp-request session unset-var(sess.dn)
+	{`  tcp-request session unset-var(sess.dn)
 `, 2},
-  {`  tcp-request session silent-drop
+	{`  tcp-request session silent-drop
 `, 2},
-  {`  tcp-request session silent-drop if !HTTP
+	{`  tcp-request session silent-drop if !HTTP
 `, 2},
-  {`  tcp-response content lua.foo
+	{`  tcp-response content lua.foo
 `, 2},
-  {`  tcp-response content lua.foo param if !HTTP
+	{`  tcp-response content lua.foo param if !HTTP
 `, 2},
-  {`  tcp-response content lua.foo param param1
+	{`  tcp-response content lua.foo param param1
 `, 2},
-  {`  tcp-response content set-dst dest
+	{`  tcp-response content set-dst dest
 `, 2},
-  {`  tcp-response content unset-var(sess.my_var)
+	{`  tcp-response content unset-var(sess.my_var)
 `, 2},
-  {`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
+	{`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 `, 2},
-  {`  stats auth admin1:AdMiN123
+	{`  stats auth admin1:AdMiN123
 `, 3},
-  {`  stats enable
+	{`  stats enable
 `, 3},
-  {`  stats hide-version
+	{`  stats hide-version
 `, 3},
-  {`  stats show-legends
+	{`  stats show-legends
 `, 3},
-  {`  stats show-modules
+	{`  stats show-modules
 `, 3},
-  {`  stats maxconn 10
+	{`  stats maxconn 10
 `, 3},
-  {`  stats realm HAProxy\\ Statistics
+	{`  stats realm HAProxy\\ Statistics
 `, 3},
-  {`  stats refresh 10s
+	{`  stats refresh 10s
 `, 3},
-  {`  stats scope .
+	{`  stats scope .
 `, 3},
-  {`  stats show-desc Master node for Europe, Asia, Africa
+	{`  stats show-desc Master node for Europe, Asia, Africa
 `, 3},
-  {`  stats show-node
+	{`  stats show-node
 `, 3},
-  {`  stats show-node Europe-1
+	{`  stats show-node Europe-1
 `, 3},
-  {`  stats uri /admin?stats
+	{`  stats uri /admin?stats
 `, 3},
-  {`  stats bind-process all
+	{`  stats bind-process all
 `, 3},
-  {`  stats bind-process odd
+	{`  stats bind-process odd
 `, 3},
-  {`  stats bind-process even
+	{`  stats bind-process even
 `, 3},
-  {`  stats bind-process 1 2 3 4
+	{`  stats bind-process 1 2 3 4
 `, 3},
-  {`  stats bind-process 1-4
+	{`  stats bind-process 1-4
 `, 3},
-  {`  stats admin if LOCALHOST
+	{`  stats admin if LOCALHOST
 `, 1},
-  {`  stats http-request auth realm HAProxy\\ Statistics
+	{`  stats http-request auth realm HAProxy\\ Statistics
 `, 1},
-  {`  stats http-request auth realm HAProxy\\ Statistics if something
+	{`  stats http-request auth realm HAProxy\\ Statistics if something
 `, 1},
-  {`  stats http-request auth if something
+	{`  stats http-request auth if something
 `, 1},
-  {`  stats http-request deny unless something
+	{`  stats http-request deny unless something
 `, 1},
-  {`  stats http-request allow
+	{`  stats http-request allow
 `, 1},
 }

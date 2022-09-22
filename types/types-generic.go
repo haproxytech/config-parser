@@ -18,29 +18,30 @@ limitations under the License.
 package types
 
 // Enabled is used by parsers Daemon, MasterWorker, ExternalCheck, NoSplice, CompressionOffload
-//gen:Daemon
+//
+//generate:type:Daemon
 //name:daemon
-//create-type:bool
+//create:type:bool
 //test:ok:daemon
 //test:ok:daemon # comment
-//gen:MasterWorker
+//generate:type:MasterWorker
 //name:master-worker
-//create-type:bool
+//create:type:bool
 //test:ok:master-worker
 //test:ok:master-worker # comment
-//gen:ExternalCheck
+//generate:type:ExternalCheck
 //name:external-check
-//create-type:bool
+//create:type:bool
 //test:ok:external-check
 //test:ok:external-check # comment
-//gen:NoSplice
+//generate:type:NoSplice
 //name:nosplice
-//create-type:bool
+//create:type:bool
 //test:ok:nosplice
 //test:ok:nosplice # comment
-//gen:CompressionOffload
+//generate:type:CompressionOffload
 //name:compression offload
-//create-type:bool
+//create:type:bool
 //test:ok:compression offload
 //test:ok:compression offload # comment
 type Enabled struct {
@@ -48,22 +49,23 @@ type Enabled struct {
 }
 
 // Int64 is used by parsers MaxConn, NbProc, NbThread
-//gen:MaxConn
+//
+//generate:type:MaxConn
 //name:maxconn
 //test:ok:maxconn 10000
 //test:ok:maxconn 10000 # comment
 //test:fail:maxconn
-//gen:NbProc
+//generate:type:NbProc
 //name:nbproc
 //test:ok:nbproc 4
 //test:ok:nbproc 4 # comment
 //test:fail:nbproc
-//gen:NbThread
+//generate:type:NbThread
 //name:nbthread
 //test:ok:nbthread 4
 //test:ok:nbthread 4 # comment
 //test:fail:nbthread
-//gen:StatsMaxconn
+//generate:type:StatsMaxconn
 //name:stats maxconn
 //test:ok:stats maxconn 10
 //test:fail:stats
@@ -76,24 +78,25 @@ type Int64C struct {
 }
 
 // String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout
-//gen:Mode
+//
+//generate:type:Mode
 //name:mode
 //test:ok:mode tcp
 //test:ok:mode http
 //test:ok:mode tcp # comment
 //test:fail:mode
-//gen:DefaultBackend
+//generate:type:DefaultBackend
 //name:default_backend
 //test:ok:default_backend http
 //test:fail:default_backend
-//gen:StatsTimeout
+//generate:type:StatsTimeout
 //name:stats timeout
 //test:ok:stats timeout 4
 //test:ok:stats timeout 4 # comment
 //test:fail:stats timeout
 //test:fail:stats
 //test:fail:timeout
-//gen:LogSendHostName
+//generate:type:LogSendHostName
 //name:log-send-hostname
 //test:ok:log-send-hostname
 //test:ok:log-send-hostname something
@@ -103,16 +106,17 @@ type StringC struct {
 }
 
 // StringSliceC is used by ConfigSnippet, CompressionAlgo, CompressionType
-//gen:ConfigSnippet
+//
+//generate:type:ConfigSnippet
 //name:config-snippet
 //test:ok:###_config-snippet_### BEGIN\n  tune.ssl.default-dh-param 2048\n  tune.bufsize 32768\n  ###_config-snippet_### END
 //test:fail:tune.ssl.default-dh-param 2048\ntune.bufsize 32768
-//gen:CompressionAlgo
+//generate:type:CompressionAlgo
 //name:compression algo
 //test:ok:compression algo identity
 //test:ok:compression algo identity raw-deflate
 //test:fail:compression algo
-//gen:CompressionType
+//generate:type:CompressionType
 //name:compression type
 //test:ok:compression type text/plain
 //test:ok:compression type text/plain application/json

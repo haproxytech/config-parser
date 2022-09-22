@@ -24,7 +24,7 @@ import (
 
 //sections:frontend,backend
 //name:acl
-//is-multiple:true
+//is:multiple
 //test:ok:acl url_stats path_beg /stats
 //test:ok:acl url_static path_beg -i /static /images /javascript /stylesheets
 //test:ok:acl url_static path_end -i .jpg .gif .png .css .js
@@ -51,7 +51,7 @@ type ACL struct {
 
 //sections:frontend
 //name:bind
-//is-multiple:true
+//is:multiple
 //test:fail:bind
 //test:ok:bind :80,:443
 //test:ok:bind 10.0.0.1:10080,10.0.0.1:10443
@@ -160,7 +160,7 @@ type Bind struct {
 
 //sections:log-forward
 //name:dgram-bind
-//is-multiple:true
+//is:multiple
 //test:fail:dgram-bind
 //test:ok:dgram-bind :80,:443
 //test:ok:dgram-bind 10.0.0.1:10080,10.0.0.1:10443
@@ -177,7 +177,6 @@ type DgramBind struct {
 
 //sections:frontend
 //name:bind-process
-//is-multiple:false
 //test:ok:bind-process all
 //test:ok:bind-process odd
 //test:ok:bind-process even
@@ -194,7 +193,6 @@ type BindProcess struct {
 
 //sections:defaults,backend
 //name:balance
-//is-multiple:false
 //test:ok:balance roundrobin
 //test:ok:balance uri
 //test:ok:balance uri whole
@@ -226,7 +224,6 @@ type Balance struct {
 
 //sections:defaults,backend
 //name:cookie
-//is-multiple:false
 //test:ok:cookie test
 //test:ok:cookie myCookie domain dom1 indirect postonly
 //test:ok:cookie myCookie domain dom1 domain dom2 indirect postonly
@@ -258,7 +255,7 @@ type Cookie struct {
 
 //sections:global
 //name:cpu-map
-//is-multiple:true
+//is:multiple
 //test:ok:cpu-map 1-4 0-3
 //test:ok:cpu-map 1/all 0-3
 //test:ok:cpu-map auto:1-4 0-3
@@ -272,7 +269,7 @@ type CPUMap struct {
 
 //sections:defaults,backend
 //name:default-server
-//is-multiple:true
+//is:multiple
 //test:ok:default-server addr 127.0.0.1
 //test:ok:default-server addr ::1
 //test:ok:default-server agent-check
@@ -425,10 +422,10 @@ type DefaultServer struct {
 
 //sections:defaults,backend,frontend
 //name:email-alert
-//is-multiple:true
+//is:multiple
 //test:ok:email-alert from admin@example.com
 //test:ok:email-alert to a@z,x@y
-//test:"ok":email-alert to "a@b, c@d"
+//test:quote_ok:email-alert to "a@b, c@d"
 //test:fail:email-alert to a@b, c@d
 //test:ok:email-alert level warning
 //test:fail:email-alert level max
@@ -444,8 +441,8 @@ type EmailAlert struct {
 
 //sections:defaults,frontend,backend
 //name:errorfile
-//no-init:true
-//is-multiple:true
+//no:init
+//is:multiple
 //test:ok:errorfile 400 /etc/haproxy/errorfiles/400badreq.http
 //test:ok:errorfile 408 /dev/null # work around Chrome pre-connect bug
 //test:ok:errorfile 403 /etc/haproxy/errorfiles/403forbid.http
@@ -459,7 +456,7 @@ type ErrorFile struct {
 
 //sections:userlist
 //name:group
-//is-multiple:true
+//is:multiple
 //test:ok:group G1 users tiger,scott
 //test:ok:group G1
 //test:fail:group
@@ -502,7 +499,6 @@ type HashType struct {
 
 //sections:defaults,backend
 //name:http-reuse
-//is-multiple:false
 //test:ok:http-reuse never
 //test:ok:http-reuse safe
 //test:ok:http-reuse aggressive
@@ -516,7 +512,7 @@ type HTTPReuse struct {
 //deprecated:true
 //sections:defaults,backend
 //name:http-check
-//is-multiple:true
+//is:multiple
 //test:ok:http-check disable-on-404
 //test:ok:http-check send-state
 //test:ok:http-check expect status 200
@@ -534,9 +530,9 @@ type HTTPCheckV2 struct {
 
 //sections:defaults,frontend,backend
 //name:log
-//is-multiple:true
-//no-init:true
-//no-parse:true
+//is:multiple
+//no:init
+//no:parse
 //test:ok:log global
 //test:ok:no log
 //test:ok:log stdout format short daemon # send log to systemd
@@ -573,7 +569,7 @@ type Log struct {
 
 //sections:mailers
 //name:mailer
-//is-multiple:true
+//is:multiple
 //test:ok:mailer smtp1 192.168.0.1:587
 //test:ok:mailer smtp1 192.168.0.1:587 # just some comment
 //test:fail:mailer
@@ -587,7 +583,7 @@ type Mailer struct {
 
 //sections:frontend,backend
 //name:option forwardfor
-//no-parse:true
+//no:parse
 //test:ok:option forwardfor
 //test:ok:option forwardfor except A
 //test:ok:option forwardfor except A header B
@@ -606,7 +602,7 @@ type OptionForwardFor struct {
 
 //sections:defaults,backend
 //name:option httpchk
-//no-parse:true
+//no:parse
 //test:ok:option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
 //test:ok:option httpchk <uri>
 //test:ok:option httpchk <method> <uri>
@@ -621,7 +617,7 @@ type OptionHttpchk struct {
 
 //sections:frontend
 //name:option httplog
-//no-parse:true
+//no:parse
 //test:ok:option httplog
 //test:ok:no option httplog
 //test:ok:option httplog clf
@@ -635,7 +631,7 @@ type OptionHTTPLog struct {
 
 //sections:backend
 //name:option mysql-check
-//no-parse:true
+//no:parse
 //test:ok:option mysql-check
 //test:ok:option mysql-check user john
 //test:ok:option mysql-check user john post-41
@@ -653,7 +649,7 @@ type OptionMysqlCheck struct {
 
 //sections:backend
 //name:option pgsql-check
-//no-parse:true
+//no:parse
 //test:ok:option pgsql-check user john
 //test:ok:option pgsql-check user john # comment
 //test:fail:option pgsql-check
@@ -668,7 +664,7 @@ type OptionPgsqlCheck struct {
 
 //sections:backend
 //name:option redispatch
-//no-parse:true
+//no:parse
 //test:ok:option redispatch
 //test:ok:no option redispatch
 //test:ok:option redispatch 1
@@ -682,7 +678,7 @@ type OptionRedispatch struct {
 
 //sections:backend
 //name:option smtpchk
-//no-parse:true
+//no:parse
 //test:ok:option smtpchk
 //test:ok:no option smtpchk
 //test:ok:option smtpchk HELO mydomain.org
@@ -698,7 +694,7 @@ type OptionSmtpchk struct {
 
 //sections:backend
 //name:external-check path
-//no-parse:true
+//no:parse
 //test:ok:external-check path /usr/bin:/bin
 type ExternalCheckPath struct {
 	Path    string
@@ -707,7 +703,7 @@ type ExternalCheckPath struct {
 
 //sections:backend
 //name:external-check command
-//no-parse:true
+//no:parse
 //test:ok:external-check command /bin/true
 type ExternalCheckCommand struct {
 	Command string
@@ -716,7 +712,7 @@ type ExternalCheckCommand struct {
 
 //sections:peers
 //name:peer
-//is-multiple:true
+//is:multiple
 //test:ok:peer name 127.0.0.1:8080
 //test:fail:peer name 127.0.0.1
 //test:fail:peer name :8080
@@ -731,7 +727,7 @@ type Peer struct {
 
 //sections:backend
 //name:server
-//is-multiple:true
+//is:multiple
 //test:ok:server name 127.0.0.1:8080
 //test:ok:server name 127.0.0.1
 //test:ok:server addr 127.0.0.1
@@ -908,7 +904,7 @@ type StickTable struct {
 
 //sections:global
 //name:stats socket
-//is-multiple:true
+//is:multiple
 //test:ok:stats socket 127.0.0.1:8080
 //test:ok:stats socket 127.0.0.1:8080 mode admin
 //test:ok:stats socket /some/path/to/socket
@@ -923,8 +919,8 @@ type Socket struct {
 
 //sections:backend
 //name:stick
-//is-multiple:true
-//no-parse:true
+//is:multiple
+//no:parse
 //test:ok:stick on src table pop if !localhost
 //test:ok:stick match src table pop if !localhost
 //test:ok:stick store-request src table pop if !localhost
@@ -940,7 +936,7 @@ type Stick struct {
 
 //sections:resolvers
 //name:nameserver
-//is-multiple:true
+//is:multiple
 //test:ok:nameserver dns1 10.0.0.1:53
 //test:ok:nameserver dns1 10.0.0.1:53 # comment
 //test:fail:nameserver
@@ -952,7 +948,7 @@ type Nameserver struct {
 
 //sections:frontend
 //name:use_backend
-//is-multiple:true
+//is:multiple
 //test:ok:use_backend test if TRUE
 //test:ok:use_backend test if TRUE # deny
 //test:ok:use_backend test # deny
@@ -966,7 +962,7 @@ type UseBackend struct {
 
 //sections:userlist
 //name:user
-//is-multiple:true
+//is:multiple
 //test:ok:user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
 //test:ok:user panda insecure-password elgato groups G1,G2
 //test:ok:user bear insecure-password hello groups G2
@@ -1010,8 +1006,8 @@ type UseFcgiApp struct {
 
 //sections:backend
 //name:use-server
-//is-multiple:true
-//no-parse:true
+//is:multiple
+//no:parse
 //test:ok:use-server www if { req_ssl_sni -i www.example.com }
 //test:ok:use-server www if { req_ssl_sni -i www.example.com } # comment
 //test:fail:use-server
@@ -1024,7 +1020,7 @@ type UseServer struct {
 
 //sections:global
 //name:lua-prepend-path
-//is-multiple:true
+//is:multiple
 //test:ok:lua-prepend-path /usr/share/haproxy-lua/?/init.lua
 //test:ok:lua-prepend-path /usr/share/haproxy-lua/?/init.lua cpath
 //test:fail:lua-prepend-path
@@ -1036,7 +1032,7 @@ type LuaPrependPath struct {
 
 //sections:global
 //name:lua-load
-//is-multiple:true
+//is:multiple
 //test:ok:lua-load /etc/haproxy/lua/foo.lua
 //test:fail:lua-load
 type LuaLoad struct {
@@ -1046,7 +1042,7 @@ type LuaLoad struct {
 
 //sections:global
 //name:ssl-engine
-//is-multiple:true
+//is:multiple
 //test:ok:ssl-engine rdrand
 //test:ok:ssl-engine rdrand ALL
 //test:ok:ssl-engine rdrand RSA,DSA
@@ -1100,7 +1096,7 @@ type MonitorFail struct {
 
 //sections:backend
 //name:server-template
-//is-multiple:true
+//is:multiple
 //test:ok:server-template srv 1-3 google.com:80 check
 //test:ok:server-template srv 3 google.com:80 check
 //test:ok:server-template srv 3 google.com:80
@@ -1120,7 +1116,7 @@ type ServerTemplate struct {
 
 //sections:frontend
 //name:declare capture
-//is-multiple:true
+//is:multiple
 //test:ok:declare capture request len 1
 //test:ok:declare capture response len 2
 //test:fail:declare capture
@@ -1149,7 +1145,7 @@ type DeclareCapture struct {
 
 //sections:global
 //name:h1-case-adjust
-//is-multiple:true
+//is:multiple
 //test:ok:h1-case-adjust content-type Content-Type
 //test:fail:h1-case-adjust
 //test:fail:h1-case-adjust content-type
@@ -1162,7 +1158,6 @@ type H1CaseAdjust struct {
 
 //sections:cache
 //name:process-vary
-//is-multiple:false
 //test:ok:process-vary on
 //test:ok:process-vary off
 //test:fail:process-vary enabled
@@ -1203,7 +1198,6 @@ type IgnorePersist struct {
 
 //sections:global
 //name:unix-bind
-//is-multiple:false
 //test:ok:unix-bind prefix pre
 //test:ok:unix-bind prefix pre mode test
 //test:ok:unix-bind prefix pre mode test user ggalinec
@@ -1223,7 +1217,7 @@ type UnixBind struct {
 
 //sections:global
 //name:thread-group
-//is-multiple:true
+//is:multiple
 //test:ok:thread-group name 1-10
 //test:ok:thread-group name 10
 //test:fail:thread-group
@@ -1236,7 +1230,7 @@ type ThreadGroup struct {
 
 //sections:global
 //name:set-var
-//is-multiple:true
+//is:multiple
 //test:ok:set-var proc.current_state str(primary)
 //test:ok:set-var proc.prio int(100)
 //test:ok:set-var proc.threshold int(200),sub(proc.prio)
@@ -1250,9 +1244,9 @@ type SetVar struct {
 
 //sections:global
 //name:set-var-fmt
-//is-multiple:true
-//test:"ok":set-var-fmt proc.current_state "primary"
-//test:"ok":set-var-fmt proc.bootid "%pid|%t"
+//is:multiple
+//test:quote_ok:set-var-fmt proc.current_state "primary"
+//test:quote_ok:set-var-fmt proc.bootid "%pid|%t"
 //test:fail:set-var-fmt
 //test:fail:set-var-fmt name
 type SetVarFmt struct {
@@ -1263,7 +1257,6 @@ type SetVarFmt struct {
 
 //sections:defaults,backend
 //name:persist rdp-cookie
-//is-multiple:false
 //test:ok:persist rdp-cookie
 //test:ok:persist rdp-cookie(cookies)
 type PersistRdpCookie struct {
