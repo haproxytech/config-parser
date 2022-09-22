@@ -26,10 +26,11 @@ import (
 )
 
 // http-check/tcp-check expect
-//                   [min-recv <int>] [comment <msg>]
-//                   [ok-status <st>] [error-status <st>] [tout-status <st>]
-//                   [on-success <fmt>] [on-error <fmt>] [status-code <expr>]
-//                   [!] <match> <pattern>
+//
+//	[min-recv <int>] [comment <msg>]
+//	[ok-status <st>] [error-status <st>] [tout-status <st>]
+//	[on-success <fmt>] [on-error <fmt>] [status-code <expr>]
+//	[!] <match> <pattern>
 type CheckExpect struct {
 	MinRecv         *int64
 	CheckComment    string

@@ -24,9 +24,10 @@ import (
 )
 
 // tcp/http-check connect
-//                    [default] [port <expr>] [addr <ip>] [send-proxy]
-//                    [via-socks4] [ssl] [sni <sni>] [alpn <alpn>] [linger]
-//                    [proto <name>] [comment <msg>]
+//
+//	[default] [port <expr>] [addr <ip>] [send-proxy]
+//	[via-socks4] [ssl] [sni <sni>] [alpn <alpn>] [linger]
+//	[proto <name>] [comment <msg>]
 type CheckConnect struct {
 	Port         string
 	Addr         string

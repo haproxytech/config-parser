@@ -25,8 +25,9 @@ import (
 )
 
 // http-check send [meth <method>] [{ uri <uri> | uri-lf <fmt> }>] [ver <version>]
-//                 [hdr <name> <fmt>]* [{ body <string> | body-lf <fmt> }]
-//                 [comment <msg>]
+//
+//	[hdr <name> <fmt>]* [{ body <string> | body-lf <fmt> }]
+//	[comment <msg>]
 type CheckSend struct {
 	Method        string
 	URI           string

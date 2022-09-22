@@ -18,17 +18,16 @@ limitations under the License.
 package types
 
 //name:spoe-section
-//no-sections:true
-//no-init:true
-//no-name:true
+//no:sections
+//no:init
+//no:name
 type SPOESection struct {
 	Name    string
 	Comment string
 }
 
 //name:event
-//no-sections:true
-//is-multiple:false
+//no:sections
 //test:ok:event on-client-session
 //test:ok:event on-client-session if ! { src -f /etc/haproxy/whitelist.lst }
 //test:fail:event
