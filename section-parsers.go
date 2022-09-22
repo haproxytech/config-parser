@@ -229,7 +229,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.String{Name: "pidfile"})
 	addParser(parser, &sequence, &parsers.Socket{})
 	addParser(parser, &sequence, &parsers.StatsTimeout{})
-	addParser(parser, &sequence, &simple.String{Name: "anonkey"})
+	addParser(parser, &sequence, &simple.Number{Name: "anonkey"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.buffers.limit"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.buffers.reserve"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.bufsize"})
