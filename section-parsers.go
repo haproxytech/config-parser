@@ -726,6 +726,7 @@ func (p *configParser) getFcgiAppParser() *Parsers {
 	addParser(parser, &sequence, &simple.String{Name: "docroot"})
 	addParser(parser, &sequence, &simple.String{Name: "index"})
 	addParser(parser, &sequence, &parsers.LogStdErr{})
+	addParser(parser, &sequence, &parsers.PassHeader{})
 	addParser(parser, &sequence, &simple.String{Name: "path-info"})
 	addParser(parser, &sequence, &simple.Option{Name: "get-values"})
 	addParser(parser, &sequence, &simple.Option{Name: "keep-conn"})
