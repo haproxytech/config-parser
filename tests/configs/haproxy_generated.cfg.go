@@ -1138,6 +1138,10 @@ cache test
   process-vary on
 
 fcgi-app test
+  option max-reqs 1024
+  pass-header x-header unless acl
+  pass-header x-header if acl
+  pass-header x-header
   log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info debug
   log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
   log-stderr 127.0.0.1:1515 local2
@@ -1731,7 +1735,15 @@ userlist test
   user bear insecure-password hello groups G2
 `
 
-var configTests = []configTest{{`  log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info debug
+var configTests = []configTest{{`  option max-reqs 1024
+`, 1},
+	{`  pass-header x-header unless acl
+`, 1},
+	{`  pass-header x-header if acl
+`, 1},
+	{`  pass-header x-header
+`, 1},
+	{`  log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info debug
 `, 1},
 	{`  log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
 `, 1},

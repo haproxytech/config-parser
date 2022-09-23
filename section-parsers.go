@@ -730,6 +730,7 @@ func (p *configParser) getFcgiAppParser() *Parsers {
 	addParser(parser, &sequence, &simple.String{Name: "path-info"})
 	addParser(parser, &sequence, &simple.Option{Name: "get-values"})
 	addParser(parser, &sequence, &simple.Option{Name: "keep-conn"})
+	addParser(parser, &sequence, &parsers.OptionMaxReqs{})
 	addParser(parser, &sequence, &simple.Option{Name: "mpxs-conns"})
 	return p.createParsers(parser, sequence)
 }

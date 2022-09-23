@@ -23,6 +23,33 @@ import (
 )
 
 //sections:fcgi-app
+//name:option max-reqs
+//no:parse
+//test:ok:option max-reqs 1024
+//test:fail:option max-reqs
+type OptionMaxReqs struct {
+	Reqs    int64
+	Comment string
+}
+
+//sections:fcgi-app
+//name:pass-header
+//is:multiple
+//no:parse
+//test:ok:pass-header x-header unless acl
+//test:ok:pass-header x-header if acl
+//test:ok:pass-header x-header
+//test:fail:pass-header
+//test:fail:pass-header x-header if
+//test:fail:pass-header x-header unless
+type PassHeader struct {
+	Name      string
+	Criterion string
+	Value     string
+	Comment   string
+}
+
+//sections:fcgi-app
 //name:log-stderr
 //is:multiple
 //no:parse
