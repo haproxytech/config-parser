@@ -1431,3 +1431,35 @@ type DefaultBind struct {
 	Params  []params.BindOption
 	Comment string
 }
+
+//sections:defaults,backend
+//name:source
+//is:multiple
+//test:ok:source 192.168.1.200
+//test:ok:source 192.168.1.200 usesrc clientip
+//test:ok:source 192.168.1.200:80 usesrc clientip
+//test:ok:source 192.168.1.200 usesrc client
+//test:ok:source 192.168.1.200:80 usesrc client
+//test:ok:source 0.0.0.0 usesrc clientip
+//test:ok:source 0.0.0.0 usesrc hdr_ip(x-forwarded-for,-1)
+//test:ok:source 192.168.1.200 interface name
+//test:ok:source 192.168.1.200 usesrc 192.168.1.201
+//test:ok:source 192.168.1.200 usesrc hdr_ip(hdr)
+//test:ok:source 192.168.1.200 usesrc hdr_ip(hdr,occ)
+//test:fail:source 192.168.1.200 interface
+//test:fail:source 192.168.1.200 usesrc
+//test:fail:source
+type Source struct {
+	Address       string
+	Port          int64
+	UseSrc        bool
+	AddressSecond string
+	PortSecond    int64
+	Client        bool
+	ClientIP      bool
+	HdrIP         bool
+	Hdr           string
+	Occ           string
+	Interface     string
+	Comment       string
+}

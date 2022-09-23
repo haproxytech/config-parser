@@ -233,6 +233,17 @@ defaults test
   persist rdp-cookie
   http-send-name-header
   option http-restrict-req-hdr-names preserve
+  source 192.168.1.200
+  source 192.168.1.200 usesrc clientip
+  source 192.168.1.200:80 usesrc clientip
+  source 192.168.1.200 usesrc client
+  source 192.168.1.200:80 usesrc client
+  source 0.0.0.0 usesrc clientip
+  source 0.0.0.0 usesrc hdr_ip(x-forwarded-for,-1)
+  source 192.168.1.200 interface name
+  source 192.168.1.200 usesrc 192.168.1.201
+  source 192.168.1.200 usesrc hdr_ip(hdr)
+  source 192.168.1.200 usesrc hdr_ip(hdr,occ)
   http-error status 400
   http-error status 400 default-errorfiles
   http-error status 400 errorfile /my/fancy/errorfile
@@ -686,6 +697,17 @@ backend test
   persist rdp-cookie
   http-send-name-header
   option http-restrict-req-hdr-names preserve
+  source 192.168.1.200
+  source 192.168.1.200 usesrc clientip
+  source 192.168.1.200:80 usesrc clientip
+  source 192.168.1.200 usesrc client
+  source 192.168.1.200:80 usesrc client
+  source 0.0.0.0 usesrc clientip
+  source 0.0.0.0 usesrc hdr_ip(x-forwarded-for,-1)
+  source 192.168.1.200 interface name
+  source 192.168.1.200 usesrc 192.168.1.201
+  source 192.168.1.200 usesrc hdr_ip(hdr)
+  source 192.168.1.200 usesrc hdr_ip(hdr,occ)
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -3072,6 +3094,28 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 3},
 	{`  default-bind user root mode 600 accept-proxy
 `, 1},
+	{`  source 192.168.1.200
+`, 2},
+	{`  source 192.168.1.200 usesrc clientip
+`, 2},
+	{`  source 192.168.1.200:80 usesrc clientip
+`, 2},
+	{`  source 192.168.1.200 usesrc client
+`, 2},
+	{`  source 192.168.1.200:80 usesrc client
+`, 2},
+	{`  source 0.0.0.0 usesrc clientip
+`, 2},
+	{`  source 0.0.0.0 usesrc hdr_ip(x-forwarded-for,-1)
+`, 2},
+	{`  source 192.168.1.200 interface name
+`, 2},
+	{`  source 192.168.1.200 usesrc 192.168.1.201
+`, 2},
+	{`  source 192.168.1.200 usesrc hdr_ip(hdr)
+`, 2},
+	{`  source 192.168.1.200 usesrc hdr_ip(hdr,occ)
+`, 2},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
