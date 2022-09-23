@@ -732,6 +732,7 @@ func (p *configParser) getFcgiAppParser() *Parsers {
 	addParser(parser, &sequence, &simple.Option{Name: "keep-conn"})
 	addParser(parser, &sequence, &parsers.OptionMaxReqs{})
 	addParser(parser, &sequence, &simple.Option{Name: "mpxs-conns"})
+	addParser(parser, &sequence, &parsers.SetParam{})
 	return p.createParsers(parser, sequence)
 }
 

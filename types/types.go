@@ -23,6 +23,24 @@ import (
 )
 
 //sections:fcgi-app
+//name:set-param
+//is:multiple
+//no:parse
+//test:ok:set-param name fmt if acl
+//test:ok:set-param name fmt unless acl
+//test:ok:set-param name fmt
+//test:fail:set-param name
+//test:fail:set-param name fmt if
+//test:fail:set-param name fmt unless
+type SetParam struct {
+	Name      string
+	Format    string
+	Criterion string
+	Value     string
+	Comment   string
+}
+
+//sections:fcgi-app
 //name:option max-reqs
 //no:parse
 //test:ok:option max-reqs 1024

@@ -1138,6 +1138,9 @@ cache test
   process-vary on
 
 fcgi-app test
+  set-param name fmt if acl
+  set-param name fmt unless acl
+  set-param name fmt
   option max-reqs 1024
   pass-header x-header unless acl
   pass-header x-header if acl
@@ -1735,7 +1738,13 @@ userlist test
   user bear insecure-password hello groups G2
 `
 
-var configTests = []configTest{{`  option max-reqs 1024
+var configTests = []configTest{{`  set-param name fmt if acl
+`, 1},
+	{`  set-param name fmt unless acl
+`, 1},
+	{`  set-param name fmt
+`, 1},
+	{`  option max-reqs 1024
 `, 1},
 	{`  pass-header x-header unless acl
 `, 1},
