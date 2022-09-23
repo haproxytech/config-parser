@@ -722,6 +722,13 @@ func (p *configParser) getUserlistParser() *Parsers {
 func (p *configParser) getFcgiAppParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.ACL{})
+	addParser(parser, &sequence, &simple.String{Name: "docroot"})
+	addParser(parser, &sequence, &simple.String{Name: "index"})
+	addParser(parser, &sequence, &simple.String{Name: "path-info"})
+	addParser(parser, &sequence, &simple.Option{Name: "get-values"})
+	addParser(parser, &sequence, &simple.Option{Name: "keep-conn"})
+	addParser(parser, &sequence, &simple.Option{Name: "mpxs-conns"})
 	return p.createParsers(parser, sequence)
 }
 
