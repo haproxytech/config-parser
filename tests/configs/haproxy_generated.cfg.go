@@ -1137,6 +1137,12 @@ backend test
 cache test
   process-vary on
 
+fcgi-app test
+  log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info debug
+  log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+  log-stderr 127.0.0.1:1515 local2
+  log-stderr global
+
 frontend test
   acl url_stats path_beg /stats
   acl url_static path_beg -i /static /images /javascript /stylesheets
@@ -1725,7 +1731,15 @@ userlist test
   user bear insecure-password hello groups G2
 `
 
-var configTests = []configTest{{`  acl url_stats path_beg /stats
+var configTests = []configTest{{`  log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info debug
+`, 1},
+	{`  log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+`, 1},
+	{`  log-stderr 127.0.0.1:1515 local2
+`, 1},
+	{`  log-stderr global
+`, 1},
+	{`  acl url_stats path_beg /stats
 `, 2},
 	{`  acl url_static path_beg -i /static /images /javascript /stylesheets
 `, 2},

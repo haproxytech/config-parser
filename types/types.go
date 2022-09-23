@@ -22,6 +22,32 @@ import (
 	"github.com/haproxytech/config-parser/v4/params"
 )
 
+//sections:fcgi-app
+//name:log-stderr
+//is:multiple
+//no:parse
+//test:ok:log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info debug
+//test:ok:log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+//test:ok:log-stderr 127.0.0.1:1515 local2
+//test:ok:log-stderr global
+//test:fail:log-stderr
+//test:fail:log-stderr 127.0.0.1:1515
+//test:fail:log-stderr 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5 local2 info debug
+//test:fail:log-stderr 127.0.0.1:1515 len 8192 format sample 1,2-5:6 local2 info debug
+//test:fail:log-stderr 127.0.0.1:1515 len format rfc5424 sample 1,2-5:6 local2 info debug
+type LogStdErr struct {
+	Global      bool
+	Address     string
+	Length      int64
+	Format      string
+	SampleRange string
+	SampleSize  int64
+	Facility    string
+	Level       string
+	MinLevel    string
+	Comment     string
+}
+
 //sections:frontend,backend
 //name:acl
 //is:multiple
