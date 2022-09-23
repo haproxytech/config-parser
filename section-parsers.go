@@ -47,6 +47,7 @@ func (p *configParser) createParsers(parser map[string]ParserInterface, sequence
 	addParser(parser, &sequence, &extra.Section{Name: "http-errors"})
 	addParser(parser, &sequence, &extra.Section{Name: "ring"})
 	addParser(parser, &sequence, &extra.Section{Name: "log-forward"})
+	addParser(parser, &sequence, &extra.Section{Name: "fcgi-app"})
 	if !p.Options.DisableUnProcessed {
 		addParser(parser, &sequence, &extra.UnProcessed{})
 	}
@@ -715,6 +716,12 @@ func (p *configParser) getUserlistParser() *Parsers {
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Group{})
 	addParser(parser, &sequence, &parsers.User{})
+	return p.createParsers(parser, sequence)
+}
+
+func (p *configParser) getFcgiAppParser() *Parsers {
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
 	return p.createParsers(parser, sequence)
 }
 

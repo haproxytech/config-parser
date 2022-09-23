@@ -221,6 +221,16 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					if p.Options.Log {
 						p.Options.Logger.Tracef("%suserlist section %s active", p.Options.LogPrefix, data.Name)
 					}
+				case "fcgi-app":
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
+					config.FCGIApp = p.getFcgiAppParser()
+					p.Parsers[FCGIApp][data.Name] = config.FCGIApp
+					config.Active = config.FCGIApp
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%sfcgi-app section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "peers":
 					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
 					rawData, _ := parserSectionName.Get(false)
