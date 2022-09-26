@@ -17,48 +17,42 @@ limitations under the License.
 package actions
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetLogLevel struct {
-	Level    string
+type Close struct {
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetLogLevel) Parse(parts []string, parserType types.ParserType, comment string) error {
-	if comment != "" {
+func (f *Close) Parse(command []string, parserType types.ParserType, comment string) error {
+	if f.Comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
-		if len(command) == 0 {
-			return errors.ErrInvalidData
-		}
-		f.Level = command[0]
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
+	_, condition := common.SplitRequest(command[2:])
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
 	}
-	return fmt.Errorf("not enough params")
+	return nil
 }
 
-func (f *SetLogLevel) String() string {
-	condition := ""
+func (f *Close) String() string {
+	var result strings.Builder
+	result.WriteString("close")
 	if f.Cond != "" {
-		condition = fmt.Sprintf(" %s %s", f.Cond, f.CondTest)
+		result.WriteString(" ")
+		result.WriteString(f.Cond)
+		result.WriteString(" ")
+		result.WriteString(f.CondTest)
 	}
-	return fmt.Sprintf("set-log-level %s%s", f.Level, condition)
+	return result.String()
 }
 
-func (f *SetLogLevel) GetComment() string {
+func (f *Close) GetComment() string {
 	return f.Comment
 }

@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
@@ -22,40 +21,48 @@ import (
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetTos struct {
-	Value    string
+type SwitchMode struct {
+	Proto    string
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetTos) Parse(parts []string, parserType types.ParserType, comment string) error {
-	if comment != "" {
+func (f *SwitchMode) Parse(parts []string, parserType types.ParserType, comment string) error {
+	if f.Comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
-		if len(command) == 0 {
-			return errors.ErrInvalidData
+	command, condition := common.SplitRequest(parts)
+	switch len(command) {
+	case 4:
+	case 6:
+		if command[4] != "proto" {
+			return fmt.Errorf("invalid param: %s", command[4])
 		}
-		f.Value = command[0]
-		if len(condition) > 1 {
-			f.Cond = condition[0]
-			f.CondTest = strings.Join(condition[1:], " ")
-		}
-		return nil
+		f.Proto = command[5]
+	default:
+		return fmt.Errorf("not enough params")
 	}
-	return fmt.Errorf("not enough params")
+	if command[3] != "http" {
+		return fmt.Errorf("invalid param %s", command[3])
+	}
+	if len(condition) > 1 {
+		f.Cond = condition[0]
+		f.CondTest = strings.Join(condition[1:], " ")
+	}
+	return nil
 }
 
-func (f *SetTos) String() string {
+func (f *SwitchMode) String() string {
 	var result strings.Builder
-	result.WriteString("set-tos ")
-	result.WriteString(f.Value)
+	result.WriteString("switch-mode http")
+	if f.Proto != "" {
+		result.WriteString(" proto ")
+		result.WriteString(f.Proto)
+	}
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -65,6 +72,6 @@ func (f *SetTos) String() string {
 	return result.String()
 }
 
-func (f *SetTos) GetComment() string {
+func (f *SwitchMode) GetComment() string {
 	return f.Comment
 }

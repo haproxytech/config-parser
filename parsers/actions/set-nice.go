@@ -26,19 +26,29 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetMark struct {
+type SetNice struct {
 	Value    string
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetMark) Parse(parts []string, parserType types.ParserType, comment string) error {
+func (f *SetNice) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
+
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+
+	if len(parts) >= 1 {
+		var condition []string
+		command, condition = common.SplitRequest(command)
 		if len(command) == 0 {
 			return errors.ErrInvalidData
 		}
@@ -52,9 +62,9 @@ func (f *SetMark) Parse(parts []string, parserType types.ParserType, comment str
 	return fmt.Errorf("not enough params")
 }
 
-func (f *SetMark) String() string {
+func (f *SetNice) String() string {
 	var result strings.Builder
-	result.WriteString("set-mark ")
+	result.WriteString("set-nice ")
 	result.WriteString(f.Value)
 	if f.Cond != "" {
 		result.WriteString(" ")
@@ -65,6 +75,6 @@ func (f *SetMark) String() string {
 	return result.String()
 }
 
-func (f *SetMark) GetComment() string {
+func (f *SetNice) GetComment() string {
 	return f.Comment
 }

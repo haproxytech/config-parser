@@ -25,28 +25,33 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetSrc struct {
-	Expr     common.Expression
+type SetLogLevel struct {
+	Level    string
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetSrc) Parse(parts []string, parserType types.ParserType, comment string) error {
+func (f *SetLogLevel) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
+
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+
+	if len(command) >= 1 {
+		var condition []string
+		command, condition = common.SplitRequest(command)
 		if len(command) == 0 {
 			return errors.ErrInvalidData
 		}
-		expr := common.Expression{}
-		err := expr.Parse(command)
-		if err != nil {
-			return fmt.Errorf("not enough params")
-		}
-		f.Expr = expr
+		f.Level = command[0]
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
@@ -56,19 +61,14 @@ func (f *SetSrc) Parse(parts []string, parserType types.ParserType, comment stri
 	return fmt.Errorf("not enough params")
 }
 
-func (f *SetSrc) String() string {
-	var result strings.Builder
-	result.WriteString("set-src ")
-	result.WriteString(f.Expr.String())
+func (f *SetLogLevel) String() string {
+	condition := ""
 	if f.Cond != "" {
-		result.WriteString(" ")
-		result.WriteString(f.Cond)
-		result.WriteString(" ")
-		result.WriteString(f.CondTest)
+		condition = fmt.Sprintf(" %s %s", f.Cond, f.CondTest)
 	}
-	return result.String()
+	return fmt.Sprintf("set-log-level %s%s", f.Level, condition)
 }
 
-func (f *SetSrc) GetComment() string {
+func (f *SetLogLevel) GetComment() string {
 	return f.Comment
 }

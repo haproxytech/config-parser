@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//nolint:dupl
 package actions
 
 import (
@@ -37,8 +36,18 @@ func (f *SetSrcPort) Parse(parts []string, parserType types.ParserType, comment 
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
+
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+
+	if len(parts) >= 1 {
+		var condition []string
+		command, condition = common.SplitRequest(command)
 		if len(command) == 0 {
 			return errors.ErrInvalidData
 		}

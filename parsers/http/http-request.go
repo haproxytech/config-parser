@@ -96,13 +96,13 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 		case "set-header":
 			err = h.ParseHTTPRequest(&http_actions.SetHeader{}, parts, comment)
 		case "set-log-level":
-			err = h.ParseHTTPRequest(&http_actions.SetLogLevel{}, parts, comment)
+			err = h.ParseHTTPRequest(&actions.SetLogLevel{}, parts, comment)
 		case "set-mark":
-			err = h.ParseHTTPRequest(&http_actions.SetMark{}, parts, comment)
+			err = h.ParseHTTPRequest(&actions.SetMark{}, parts, comment)
 		case "set-method":
 			err = h.ParseHTTPRequest(&http_actions.SetMethod{}, parts, comment)
 		case "set-nice":
-			err = h.ParseHTTPRequest(&http_actions.SetNice{}, parts, comment)
+			err = h.ParseHTTPRequest(&actions.SetNice{}, parts, comment)
 		case "set-path":
 			err = h.ParseHTTPRequest(&http_actions.SetPath{}, parts, comment)
 		case "set-pathq":
@@ -116,11 +116,11 @@ func (h *Requests) Parse(line string, parts []string, comment string) (changeSta
 		case "set-src":
 			err = h.ParseHTTPRequest(&http_actions.SetSrc{}, parts, comment)
 		case "set-src-port":
-			err = h.ParseHTTPRequest(&http_actions.SetSrcPort{}, parts, comment)
+			err = h.ParseHTTPRequest(&actions.SetSrcPort{}, parts, comment)
 		case "set-timeout":
 			err = h.ParseHTTPRequest(&http_actions.SetTimeout{}, parts, comment)
 		case "set-tos":
-			err = h.ParseHTTPRequest(&http_actions.SetTos{}, parts, comment)
+			err = h.ParseHTTPRequest(&actions.SetTos{}, parts, comment)
 		case "set-uri":
 			err = h.ParseHTTPRequest(&http_actions.SetURI{}, parts, comment)
 		case "silent-drop":

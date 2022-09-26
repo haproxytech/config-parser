@@ -978,6 +978,25 @@ type TCPType interface {
 //test:ok:tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
 //test:ok:tcp-request content set-bandwidth-limit my-limit period 10s
 //test:ok:tcp-request content set-bandwidth-limit my-limit limit 1m
+//test:ok:tcp-request content set-log-level silent
+//test:ok:tcp-request content set-log-level silent if FALSE
+//test:ok:tcp-request content set-mark 20
+//test:ok:tcp-request content set-mark 0x1Ab if FALSE
+//test:ok:tcp-request connection set-mark 20
+//test:ok:tcp-request connection set-mark 0x1Ab if FALSE
+//test:ok:tcp-request connection set-src-port hdr(port)
+//test:ok:tcp-request connection set-src-port hdr(port) if FALSE
+//test:ok:tcp-request content set-src-port hdr(port)
+//test:ok:tcp-request content set-src-port hdr(port) if FALSE
+//test:ok:tcp-request content set-tos 0 if FALSE
+//test:ok:tcp-request content set-tos 0
+//test:ok:tcp-request connection set-tos 0 if FALSE
+//test:ok:tcp-request connection set-tos 0
+//test:ok:tcp-request content set-nice 0 if FALSE
+//test:ok:tcp-request content set-nice 0
+//test:ok:tcp-request content switch-mode http
+//test:ok:tcp-request content switch-mode http if FALSE
+//test:ok:tcp-request content switch-mode http proto my-proto
 //test:fail:tcp-request
 //test:fail:tcp-request content
 //test:fail:tcp-request connection
@@ -1010,6 +1029,18 @@ type TCPType interface {
 //test:fail:tcp-request content set-bandwidth-limit my-limit 10s
 //test:fail:tcp-request content set-bandwidth-limit my-limit period 10s limit
 //test:fail:tcp-request content set-bandwidth-limit my-limit limit period 10s
+//test:fail:tcp-request content set-log-level
+//test:fail:tcp-request connection set-mark
+//test:fail:tcp-request content set-mark
+//test:fail:tcp-request connection set-src-port
+//test:fail:tcp-request content set-src-port
+//test:fail:tcp-request connection set-tos
+//test:fail:tcp-request content set-tos
+//test:fail:tcp-request content set-nice
+//test:fail:tcp-request content switch-mode
+//test:fail:tcp-request content switch-mode tcp
+//test:fail:tcp-request content switch-mode http proto
+
 type TCPRequests struct{}
 
 //name:tcp-response
@@ -1043,6 +1074,20 @@ type TCPRequests struct{}
 //test:fail:tcp-response content set-bandwidth-limit my-limit 10s
 //test:fail:tcp-response content set-bandwidth-limit my-limit period 10s limit
 //test:fail:tcp-response content set-bandwidth-limit my-limit limit period 10s
+//test:ok:tcp-response content set-log-level silent
+//test:ok:tcp-response content set-log-level silent if FALSE
+//test:fail:tcp-response content set-log-level
+//test:ok:tcp-response content set-mark 20
+//test:ok:tcp-response content set-mark 0x1Ab if FALSE
+//test:fail:tcp-response content set-mark
+//test:ok:tcp-response content set-tos 0 if FALSE
+//test:ok:tcp-response content set-tos 0
+//test:fail:tcp-response content set-tos
+//test:ok:tcp-response content set-nice 0 if FALSE
+//test:ok:tcp-response content set-nice 0
+//test:fail:tcp-response content set-nice
+//test:ok:tcp-response content close
+//test:ok:tcp-response content close if !HTTP
 type TCPResponses struct{}
 
 //name:redirect

@@ -69,6 +69,12 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&tcp_actions.SetSrc{}, parts)
 	case "silent-drop":
 		err = f.ParseAction(&actions.SilentDrop{}, parts)
+	case "set-mark":
+		err = f.ParseAction(&actions.SetMark{}, parts)
+	case "set-tos":
+		err = f.ParseAction(&actions.SetTos{}, parts)
+	case "set-src-port":
+		err = f.ParseAction(&actions.SetSrcPort{}, parts)
 	default:
 		switch {
 		case strings.HasPrefix(parts[2], "lua."):
@@ -79,6 +85,8 @@ func (f *Connection) Parse(parts []string, comment string) error {
 			err = f.ParseAction(&actions.ScIncGpc1{}, parts)
 		case strings.HasPrefix(parts[2], "sc-set-gpt0"):
 			err = f.ParseAction(&actions.ScSetGpt0{}, parts)
+		case strings.HasPrefix(parts[2], "set-var-fmt"):
+			err = f.ParseAction(&actions.SetVarFmt{}, parts)
 		}
 	}
 	return err

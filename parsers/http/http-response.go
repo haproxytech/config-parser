@@ -76,15 +76,15 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 		case "set-header":
 			err = h.ParseHTTPResponse(&http_actions.SetHeader{}, parts, comment)
 		case "set-log-level":
-			err = h.ParseHTTPResponse(&http_actions.SetLogLevel{}, parts, comment)
+			err = h.ParseHTTPResponse(&actions.SetLogLevel{}, parts, comment)
 		case "set-mark":
-			err = h.ParseHTTPResponse(&http_actions.SetMark{}, parts, comment)
+			err = h.ParseHTTPResponse(&actions.SetMark{}, parts, comment)
 		case "set-nice":
-			err = h.ParseHTTPResponse(&http_actions.SetNice{}, parts, comment)
+			err = h.ParseHTTPResponse(&actions.SetNice{}, parts, comment)
 		case "set-status":
 			err = h.ParseHTTPResponse(&http_actions.SetStatus{}, parts, comment)
 		case "set-tos":
-			err = h.ParseHTTPResponse(&http_actions.SetTos{}, parts, comment)
+			err = h.ParseHTTPResponse(&actions.SetTos{}, parts, comment)
 		case "silent-drop":
 			err = h.ParseHTTPResponse(&actions.SilentDrop{}, parts, comment)
 		case "strict-mode":

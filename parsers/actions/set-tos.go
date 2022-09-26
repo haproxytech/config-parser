@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+//nolint:dupl
 package actions
 
 import (
@@ -25,28 +26,32 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-type SetSrc struct {
-	Expr     common.Expression
+type SetTos struct {
+	Value    string
 	Cond     string
 	CondTest string
 	Comment  string
 }
 
-func (f *SetSrc) Parse(parts []string, parserType types.ParserType, comment string) error {
+func (f *SetTos) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) >= 3 {
-		command, condition := common.SplitRequest(parts[2:])
+
+	var command []string
+	switch parserType {
+	case types.HTTP:
+		command = parts[2:]
+	case types.TCP:
+		command = parts[3:]
+	}
+	if len(parts) >= 1 {
+		var condition []string
+		command, condition = common.SplitRequest(command)
 		if len(command) == 0 {
 			return errors.ErrInvalidData
 		}
-		expr := common.Expression{}
-		err := expr.Parse(command)
-		if err != nil {
-			return fmt.Errorf("not enough params")
-		}
-		f.Expr = expr
+		f.Value = command[0]
 		if len(condition) > 1 {
 			f.Cond = condition[0]
 			f.CondTest = strings.Join(condition[1:], " ")
@@ -56,10 +61,10 @@ func (f *SetSrc) Parse(parts []string, parserType types.ParserType, comment stri
 	return fmt.Errorf("not enough params")
 }
 
-func (f *SetSrc) String() string {
+func (f *SetTos) String() string {
 	var result strings.Builder
-	result.WriteString("set-src ")
-	result.WriteString(f.Expr.String())
+	result.WriteString("set-tos ")
+	result.WriteString(f.Value)
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)
@@ -69,6 +74,6 @@ func (f *SetSrc) String() string {
 	return result.String()
 }
 
-func (f *SetSrc) GetComment() string {
+func (f *SetTos) GetComment() string {
 	return f.Comment
 }

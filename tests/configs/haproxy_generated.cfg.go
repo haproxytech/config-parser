@@ -1146,6 +1146,25 @@ backend test
   tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
   tcp-request content set-bandwidth-limit my-limit period 10s
   tcp-request content set-bandwidth-limit my-limit limit 1m
+  tcp-request content set-log-level silent
+  tcp-request content set-log-level silent if FALSE
+  tcp-request content set-mark 20
+  tcp-request content set-mark 0x1Ab if FALSE
+  tcp-request connection set-mark 20
+  tcp-request connection set-mark 0x1Ab if FALSE
+  tcp-request connection set-src-port hdr(port)
+  tcp-request connection set-src-port hdr(port) if FALSE
+  tcp-request content set-src-port hdr(port)
+  tcp-request content set-src-port hdr(port) if FALSE
+  tcp-request content set-tos 0 if FALSE
+  tcp-request content set-tos 0
+  tcp-request connection set-tos 0 if FALSE
+  tcp-request connection set-tos 0
+  tcp-request content set-nice 0 if FALSE
+  tcp-request content set-nice 0
+  tcp-request content switch-mode http
+  tcp-request content switch-mode http if FALSE
+  tcp-request content switch-mode http proto my-proto
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
@@ -1155,6 +1174,16 @@ backend test
   tcp-response content set-bandwidth-limit my-limit limit 1m period 10s
   tcp-response content set-bandwidth-limit my-limit period 10s
   tcp-response content set-bandwidth-limit my-limit limit 1m
+  tcp-response content set-log-level silent
+  tcp-response content set-log-level silent if FALSE
+  tcp-response content set-mark 20
+  tcp-response content set-mark 0x1Ab if FALSE
+  tcp-response content set-tos 0 if FALSE
+  tcp-response content set-tos 0
+  tcp-response content set-nice 0 if FALSE
+  tcp-response content set-nice 0
+  tcp-response content close
+  tcp-response content close if !HTTP
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -1757,6 +1786,25 @@ frontend test
   tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
   tcp-request content set-bandwidth-limit my-limit period 10s
   tcp-request content set-bandwidth-limit my-limit limit 1m
+  tcp-request content set-log-level silent
+  tcp-request content set-log-level silent if FALSE
+  tcp-request content set-mark 20
+  tcp-request content set-mark 0x1Ab if FALSE
+  tcp-request connection set-mark 20
+  tcp-request connection set-mark 0x1Ab if FALSE
+  tcp-request connection set-src-port hdr(port)
+  tcp-request connection set-src-port hdr(port) if FALSE
+  tcp-request content set-src-port hdr(port)
+  tcp-request content set-src-port hdr(port) if FALSE
+  tcp-request content set-tos 0 if FALSE
+  tcp-request content set-tos 0
+  tcp-request connection set-tos 0 if FALSE
+  tcp-request connection set-tos 0
+  tcp-request content set-nice 0 if FALSE
+  tcp-request content set-nice 0
+  tcp-request content switch-mode http
+  tcp-request content switch-mode http if FALSE
+  tcp-request content switch-mode http proto my-proto
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
@@ -1766,6 +1814,16 @@ frontend test
   tcp-response content set-bandwidth-limit my-limit limit 1m period 10s
   tcp-response content set-bandwidth-limit my-limit period 10s
   tcp-response content set-bandwidth-limit my-limit limit 1m
+  tcp-response content set-log-level silent
+  tcp-response content set-log-level silent if FALSE
+  tcp-response content set-mark 20
+  tcp-response content set-mark 0x1Ab if FALSE
+  tcp-response content set-tos 0 if FALSE
+  tcp-response content set-tos 0
+  tcp-response content set-nice 0 if FALSE
+  tcp-response content set-nice 0
+  tcp-response content close
+  tcp-response content close if !HTTP
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -3701,6 +3759,44 @@ var configTests = []configTest{{`  set-param name fmt if acl
 `, 2},
 	{`  tcp-request content set-bandwidth-limit my-limit limit 1m
 `, 2},
+	{`  tcp-request content set-log-level silent
+`, 2},
+	{`  tcp-request content set-log-level silent if FALSE
+`, 2},
+	{`  tcp-request content set-mark 20
+`, 2},
+	{`  tcp-request content set-mark 0x1Ab if FALSE
+`, 2},
+	{`  tcp-request connection set-mark 20
+`, 2},
+	{`  tcp-request connection set-mark 0x1Ab if FALSE
+`, 2},
+	{`  tcp-request connection set-src-port hdr(port)
+`, 2},
+	{`  tcp-request connection set-src-port hdr(port) if FALSE
+`, 2},
+	{`  tcp-request content set-src-port hdr(port)
+`, 2},
+	{`  tcp-request content set-src-port hdr(port) if FALSE
+`, 2},
+	{`  tcp-request content set-tos 0 if FALSE
+`, 2},
+	{`  tcp-request content set-tos 0
+`, 2},
+	{`  tcp-request connection set-tos 0 if FALSE
+`, 2},
+	{`  tcp-request connection set-tos 0
+`, 2},
+	{`  tcp-request content set-nice 0 if FALSE
+`, 2},
+	{`  tcp-request content set-nice 0
+`, 2},
+	{`  tcp-request content switch-mode http
+`, 2},
+	{`  tcp-request content switch-mode http if FALSE
+`, 2},
+	{`  tcp-request content switch-mode http proto my-proto
+`, 2},
 	{`  tcp-response content lua.foo
 `, 2},
 	{`  tcp-response content lua.foo param if !HTTP
@@ -3718,6 +3814,26 @@ var configTests = []configTest{{`  set-param name fmt if acl
 	{`  tcp-response content set-bandwidth-limit my-limit period 10s
 `, 2},
 	{`  tcp-response content set-bandwidth-limit my-limit limit 1m
+`, 2},
+	{`  tcp-response content set-log-level silent
+`, 2},
+	{`  tcp-response content set-log-level silent if FALSE
+`, 2},
+	{`  tcp-response content set-mark 20
+`, 2},
+	{`  tcp-response content set-mark 0x1Ab if FALSE
+`, 2},
+	{`  tcp-response content set-tos 0 if FALSE
+`, 2},
+	{`  tcp-response content set-tos 0
+`, 2},
+	{`  tcp-response content set-nice 0 if FALSE
+`, 2},
+	{`  tcp-response content set-nice 0
+`, 2},
+	{`  tcp-response content close
+`, 2},
+	{`  tcp-response content close if !HTTP
 `, 2},
 	{`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 `, 2},

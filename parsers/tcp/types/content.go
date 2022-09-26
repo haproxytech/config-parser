@@ -40,7 +40,7 @@ func (f *Content) ParseAction(action types.Action, parts []string) error {
 	return nil
 }
 
-func (f *Content) Parse(parts []string, comment string) error {
+func (f *Content) Parse(parts []string, comment string) error { //nolint:gocyclo,cyclop
 	if comment != "" {
 		f.Comment = comment
 	}
@@ -77,6 +77,20 @@ func (f *Content) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.UseService{}, parts)
 	case "set-bandwidth-limit":
 		err = f.ParseAction(&actions.SetBandwidthLimit{}, parts)
+	case "set-log-level":
+		err = f.ParseAction(&actions.SetLogLevel{}, parts)
+	case "set-mark":
+		err = f.ParseAction(&actions.SetMark{}, parts)
+	case "set-nice":
+		err = f.ParseAction(&actions.SetNice{}, parts)
+	case "set-tos":
+		err = f.ParseAction(&actions.SetTos{}, parts)
+	case "set-src-port":
+		err = f.ParseAction(&actions.SetSrcPort{}, parts)
+	case "switch-mode":
+		err = f.ParseAction(&tcp_actions.SwitchMode{}, parts)
+	case "close":
+		err = f.ParseAction(&tcp_actions.Close{}, parts)
 	default:
 		switch {
 		case strings.HasPrefix(parts[2], "lua."):
