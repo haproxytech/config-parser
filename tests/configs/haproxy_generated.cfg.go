@@ -231,6 +231,7 @@ defaults test
   load-server-state-from-file global
   monitor-uri /haproxy_test
   persist rdp-cookie
+  http-send-name-header
   http-error status 400
   http-error status 400 default-errorfiles
   http-error status 400 errorfile /my/fancy/errorfile
@@ -682,6 +683,7 @@ backend test
   force-persist if acl-name
   ignore-persist if acl-name
   persist rdp-cookie
+  http-send-name-header
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -2910,6 +2912,8 @@ var configTests = []configTest{{`  set-param name fmt if acl
 	{`  set-var proc.threshold int(200),sub(proc.prio)
 `, 1},
 	{`  persist rdp-cookie
+`, 2},
+	{`  http-send-name-header
 `, 2},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},

@@ -30,7 +30,7 @@ type PersistRdpCookie struct {
 }
 
 func (f *PersistRdpCookie) Parse(line string, parts []string, comment string) (changeState string, err error) {
-	if len(parts) < 2 {
+	if len(parts) != 2 {
 		return "", &errors.ParseError{Parser: "PersistRDPCookie", Line: line}
 	}
 	if parts[0] != "persist" {

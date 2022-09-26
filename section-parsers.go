@@ -185,7 +185,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.UniqueIDFormat{})
 	addParser(parser, &sequence, &parsers.UniqueIDHeader{})
 	addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
-	addParser(parser, &sequence, &simple.Word{Name: "http-send-name-header"})
+	addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 	addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
 	addParser(parser, &sequence, &parsers.PersistRdpCookie{})
 	addParser(parser, &sequence, &simple.String{Name: "retry-on"})
@@ -555,10 +555,10 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.UseFcgiApp{})
 	addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
 	addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
-	addParser(parser, &sequence, &simple.Word{Name: "http-send-name-header"})
 	addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
 	addParser(parser, &sequence, &parsers.PersistRdpCookie{})
 	addParser(parser, &sequence, &simple.String{Name: "retry-on"})
+	addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 	return p.createParsers(parser, sequence)
 }
 
@@ -703,10 +703,10 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 		addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
 		addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
-		addParser(parser, &sequence, &simple.Word{Name: "http-send-name-header"})
 		addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
 		addParser(parser, &sequence, &parsers.PersistRdpCookie{})
 		addParser(parser, &sequence, &simple.String{Name: "retry-on"})
+		addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 	}
 	return p.createParsers(parser, sequence)
 }

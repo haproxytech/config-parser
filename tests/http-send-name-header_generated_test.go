@@ -25,18 +25,14 @@ import (
 	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
-func TestPersistRdpCookie(t *testing.T) {
+func TestHTTPSendNameHeader(t *testing.T) {
 	tests := map[string]bool{
-		"persist rdp-cookie":                          true,
-		"persist rdp-cookie(cookies)":                 true,
-		"persist rdp-cookie (cookie-name)":            false,
-		"persist rdp-cookie cookie-name":              false,
-		"persist rdp-cookie cookie-name second":       false,
-		"persist rdp-cookie cookie-name second third": false,
+		"http-send-name-header":                     true,
+		"http-send-name-header X-My-Awesome-Header": true,
 		"---":     false,
 		"--- ---": false,
 	}
-	parser := &parsers.PersistRdpCookie{}
+	parser := &parsers.HTTPSendNameHeader{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
 			line := strings.TrimSpace(command)

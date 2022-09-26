@@ -1378,7 +1378,20 @@ type SetVarFmt struct {
 //name:persist rdp-cookie
 //test:ok:persist rdp-cookie
 //test:ok:persist rdp-cookie(cookies)
+//test:fail:persist rdp-cookie (cookie-name)
+//test:fail:persist rdp-cookie cookie-name
+//test:fail:persist rdp-cookie cookie-name second
+//test:fail:persist rdp-cookie cookie-name second third
 type PersistRdpCookie struct {
+	Name    string
+	Comment string
+}
+
+//sections:defaults,backend
+//name:http-send-name-header
+//test:ok:http-send-name-header
+//test:ok:http-send-name-header X-My-Awesome-Header
+type HTTPSendNameHeader struct {
 	Name    string
 	Comment string
 }
