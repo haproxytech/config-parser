@@ -731,6 +731,31 @@ type HTTPResponses struct{}
 //test:fail:http-after-response unset-var()
 type HTTPAfterResponse struct{}
 
+//name:http-error
+//sections:defaults,frontend,backend
+//struct:name:HTTPErrors
+//dir:http
+//is:multiple
+//parser:type:Action
+//is:interface
+//no:init
+//no:parse
+//test:fail:http-error
+//test:ok:http-error status 400
+//test:fail:http-error status 402
+//test:fail:http-error status
+//test:quote_ok:http-error status 200 content-type "text/plain" string "My content"
+//test:fail:http-error status 200 content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+//test:quote_ok:http-error status 400 content-type "text/plain" lf-string "Hello, you are: %[src]"
+//test:quote_ok:http-error status 400 content-type "text/plain" file /my/fancy/response/file
+//test:quote_ok:http-error status 400 content-type "text/plain" lf-file /my/fancy/lof/format/response/file
+//test:quote_ok:http-error status 400 content-type "text/plain" string "My content" hdr X-value value
+//test:quote_ok:http-error status 400 content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value
+//test:ok:http-error status 400 default-errorfiles
+//test:ok:http-error status 400 errorfile /my/fancy/errorfile
+//test:ok:http-error status 400 errorfiles myerror
+type HTTPErrors struct{}
+
 //name:http-check
 //sections:defaults,backend
 //struct:name:Checks

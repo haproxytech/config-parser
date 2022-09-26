@@ -226,6 +226,16 @@ defaults test
   load-server-state-from-file global
   monitor-uri /haproxy_test
   persist rdp-cookie
+  http-error status 400
+  http-error status 400 default-errorfiles
+  http-error status 400 errorfile /my/fancy/errorfile
+  http-error status 400 errorfiles myerror
+  http-error status 200 content-type "text/plain" string "My content"
+  http-error status 400 content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-error status 400 content-type "text/plain" file /my/fancy/response/file
+  http-error status 400 content-type "text/plain" lf-file /my/fancy/lof/format/response/file
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value value
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value
   http-check comment testcomment
   http-check connect
   http-check connect default
@@ -946,6 +956,16 @@ backend test
   http-after-response unset-var(sess.last_redir)
   http-after-response unset-var(sess.last_redir) if acl
   http-after-response unset-var(sess.last_redir) unless acl
+  http-error status 400
+  http-error status 400 default-errorfiles
+  http-error status 400 errorfile /my/fancy/errorfile
+  http-error status 400 errorfiles myerror
+  http-error status 200 content-type "text/plain" string "My content"
+  http-error status 400 content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-error status 400 content-type "text/plain" file /my/fancy/response/file
+  http-error status 400 content-type "text/plain" lf-file /my/fancy/lof/format/response/file
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value value
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value
   http-check comment testcomment
   http-check connect
   http-check connect default
@@ -1604,6 +1624,16 @@ frontend test
   http-after-response unset-var(sess.last_redir)
   http-after-response unset-var(sess.last_redir) if acl
   http-after-response unset-var(sess.last_redir) unless acl
+  http-error status 400
+  http-error status 400 default-errorfiles
+  http-error status 400 errorfile /my/fancy/errorfile
+  http-error status 400 errorfiles myerror
+  http-error status 200 content-type "text/plain" string "My content"
+  http-error status 400 content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-error status 400 content-type "text/plain" file /my/fancy/response/file
+  http-error status 400 content-type "text/plain" lf-file /my/fancy/lof/format/response/file
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value value
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value
   tcp-request content accept
   tcp-request content accept if !HTTP
   tcp-request content reject
@@ -3324,6 +3354,14 @@ var configTests = []configTest{{`  set-param name fmt if acl
 `, 2},
 	{`  http-after-response unset-var(sess.last_redir) unless acl
 `, 2},
+	{`  http-error status 400
+`, 3},
+	{`  http-error status 400 default-errorfiles
+`, 3},
+	{`  http-error status 400 errorfile /my/fancy/errorfile
+`, 3},
+	{`  http-error status 400 errorfiles myerror
+`, 3},
 	{`  http-check comment testcomment
 `, 2},
 	{`  http-check connect

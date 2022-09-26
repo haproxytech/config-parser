@@ -185,6 +185,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
 	addParser(parser, &sequence, &parsers.PersistRdpCookie{})
 	addParser(parser, &sequence, &simple.String{Name: "retry-on"})
+	addParser(parser, &sequence, &http.HTTPErrors{})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
@@ -435,6 +436,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "frontend"})
 	addParser(parser, &sequence, &http.AfterResponses{})
+	addParser(parser, &sequence, &http.HTTPErrors{})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
 	return p.createParsers(parser, sequence)
 }
@@ -536,6 +538,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &tcp.Responses{})
 	addParser(parser, &sequence, &http.Responses{Mode: "backend"})
 	addParser(parser, &sequence, &http.AfterResponses{})
+	addParser(parser, &sequence, &http.HTTPErrors{})
 	addParser(parser, &sequence, &parsers.ServerTemplate{})
 	addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 	addParser(parser, &sequence, &parsers.UseFcgiApp{})
@@ -681,6 +684,7 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &tcp.Responses{})
 		addParser(parser, &sequence, &http.Responses{Mode: "listen"})
 		addParser(parser, &sequence, &http.AfterResponses{})
+		addParser(parser, &sequence, &http.HTTPErrors{})
 		addParser(parser, &sequence, &parsers.DeclareCapture{})
 		addParser(parser, &sequence, &parsers.LoadServerStateFromFile{})
 		addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
