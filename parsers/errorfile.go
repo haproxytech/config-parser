@@ -24,15 +24,23 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
+// 200, 400, 401, 403, 404, 405, 407, 408, 410,
+// 413, 425, 429, 500, 501, 502, 503, and 504
 var errorFileAllowedCode = map[string]struct{}{
 	"200": {},
 	"400": {},
+	"401": {},
 	"403": {},
+	"404": {},
 	"405": {},
+	"407": {},
 	"408": {},
+	"410": {},
+	"413": {},
 	"425": {},
 	"429": {},
 	"500": {},
+	"501": {},
 	"502": {},
 	"503": {},
 	"504": {},
@@ -58,7 +66,7 @@ func (l *ErrorFile) parse(line string, parts []string, comment string) (*types.E
 	}
 	code := parts[1]
 	if _, ok := errorFileAllowedCode[code]; !ok {
-		return errorfile, nil
+		return nil, &errors.ParseError{Parser: "ErrorFile", Line: line}
 	}
 	errorfile.Code = code
 	return errorfile, nil

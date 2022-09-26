@@ -525,6 +525,24 @@ type ErrorFile struct {
 	Comment string
 }
 
+//sections:defaults,frontend,backend
+//name:errorfiles
+//no:init
+//is:multiple
+//test:ok:errorfiles errors_section 400
+//test:ok:errorfiles errors_section 400 401 500
+//test:ok:errorfiles errors_section
+//test:fail:errorfiles
+//test:fail:errorfiles errors_section 201
+//test:fail:errorfiles errors_section test
+//test:fail:errorfiles errors_section 400 201
+//test:fail:errorfiles errors_section 400 test
+type ErrorFiles struct {
+	Name    string
+	Codes   []int64
+	Comment string
+}
+
 //sections:userlist
 //name:group
 //is:multiple

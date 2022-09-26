@@ -205,6 +205,9 @@ defaults test
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  errorfiles errors_section 400
+  errorfiles errors_section 400 401 500
+  errorfiles errors_section
   hash-type map-based
   http-reuse never
   log global
@@ -490,6 +493,9 @@ backend test
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  errorfiles errors_section 400
+  errorfiles errors_section 400 401 500
+  errorfiles errors_section
   hash-type map-based
   http-reuse never
   log global
@@ -1313,6 +1319,9 @@ frontend test
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  errorfiles errors_section 400
+  errorfiles errors_section 400 401 500
+  errorfiles errors_section
   log global
   no log
   log stdout format short daemon # send log to systemd
@@ -2385,6 +2394,12 @@ var configTests = []configTest{{`  set-param name fmt if acl
 	{`  errorfile 403 /etc/haproxy/errorfiles/403forbid.http
 `, 3},
 	{`  errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+`, 3},
+	{`  errorfiles errors_section 400
+`, 3},
+	{`  errorfiles errors_section 400 401 500
+`, 3},
+	{`  errorfiles errors_section
 `, 3},
 	{`  group G1 users tiger,scott
 `, 1},
