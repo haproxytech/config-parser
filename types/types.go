@@ -526,6 +526,36 @@ type ErrorFile struct {
 }
 
 //sections:defaults,frontend,backend
+//name:errorloc302
+//test:ok:errorloc302 400 http://www.myawesomesite.com/error_page
+//test:ok:errorloc302 404 http://www.myawesomesite.com/not_found
+//test:ok:errorloc302 501 /error_page
+//test:fail:errorloc302
+//test:fail:errorloc302 500
+//test:fail:errorloc302 /error_page
+//test:fail:errorloc302 201 /error_page
+type ErrorLoc302 struct {
+	Code    string
+	URL     string
+	Comment string
+}
+
+//sections:defaults,frontend,backend
+//name:errorloc303
+//test:ok:errorloc303 400 http://www.myawesomesite.com/error_page
+//test:ok:errorloc303 404 http://www.myawesomesite.com/not_found
+//test:ok:errorloc303 501 /error_page
+//test:fail:errorloc303
+//test:fail:errorloc303 500
+//test:fail:errorloc303 /error_page
+//test:fail:errorloc303 201 /error_page
+type ErrorLoc303 struct {
+	Code    string
+	URL     string
+	Comment string
+}
+
+//sections:defaults,frontend,backend
 //name:errorfiles
 //no:init
 //is:multiple

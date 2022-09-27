@@ -205,6 +205,8 @@ defaults test
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  errorloc302 400 http://www.myawesomesite.com/error_page
+  errorloc303 400 http://www.myawesomesite.com/error_page
   errorfiles errors_section 400
   errorfiles errors_section 400 401 500
   errorfiles errors_section
@@ -493,6 +495,8 @@ backend test
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  errorloc302 400 http://www.myawesomesite.com/error_page
+  errorloc303 400 http://www.myawesomesite.com/error_page
   errorfiles errors_section 400
   errorfiles errors_section 400 401 500
   errorfiles errors_section
@@ -1319,6 +1323,8 @@ frontend test
   errorfile 408 /dev/null # work around Chrome pre-connect bug
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  errorloc302 400 http://www.myawesomesite.com/error_page
+  errorloc303 400 http://www.myawesomesite.com/error_page
   errorfiles errors_section 400
   errorfiles errors_section 400 401 500
   errorfiles errors_section
@@ -2394,6 +2400,10 @@ var configTests = []configTest{{`  set-param name fmt if acl
 	{`  errorfile 403 /etc/haproxy/errorfiles/403forbid.http
 `, 3},
 	{`  errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+`, 3},
+	{`  errorloc302 400 http://www.myawesomesite.com/error_page
+`, 3},
+	{`  errorloc303 400 http://www.myawesomesite.com/error_page
 `, 3},
 	{`  errorfiles errors_section 400
 `, 3},
