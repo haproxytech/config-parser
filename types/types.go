@@ -282,11 +282,15 @@ type BindProcess struct {
 //test:ok:balance random(15)
 //test:ok:balance rdp-cookie
 //test:ok:balance rdp-cookie(something)
+//test:ok:balance hash req.cookie(clientid)
+//test:ok:balance hash req.hdr_ip(x-forwarded-for,-1),ipmask(24)
+//test:ok:balance hash req.hdr_ip(x-forwarded-for ,-1),ipmask(24)
 //test:fails:balance something
 //test:fail:balance
 //test:fail:balance uri len notInteger
 //test:fail:balance uri depth notInteger
 //test:fail:balance url_param check_post notInteger
+//test:fail:balance hash
 type Balance struct {
 	Algorithm string
 	Params    params.BalanceParams

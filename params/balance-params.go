@@ -214,3 +214,22 @@ func (r *BalanceRdpCookie) Parse(parts []string) (bp BalanceParams, err error) {
 	}
 	return r, nil
 }
+
+type BalanceHash struct {
+	Expression string
+}
+
+func (r *BalanceHash) String() string {
+	var result strings.Builder
+	result.WriteString(" ")
+	result.WriteString(r.Expression)
+	return result.String()
+}
+
+func (r *BalanceHash) Parse(parts []string) (bp BalanceParams, err error) {
+	if len(parts) < 2 {
+		return nil, &errors.ParseError{Parser: "Balance", Message: "hash missing expression"}
+	}
+	r.Expression = strings.Join(parts[1:], " ")
+	return r, nil
+}

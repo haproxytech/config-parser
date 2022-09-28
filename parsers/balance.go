@@ -70,6 +70,9 @@ func (p *Balance) Parse(line string, parts []string, comment string) (changeStat
 			data.Algorithm = parts[1]
 		default:
 			switch {
+			case parts[1] == "hash":
+				pb, err = p.parseBalanceParams(&params.BalanceHash{}, line, parts)
+				data.Algorithm = parts[1]
 			case strings.HasPrefix(parts[1], "random(") && strings.HasSuffix(parts[1], ")"):
 				pb, err = p.parseBalanceParams(&params.BalanceRandom{}, line, parts)
 				data.Algorithm = "random"
