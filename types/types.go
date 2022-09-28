@@ -342,7 +342,7 @@ type CPUMap struct {
 	Comment string
 }
 
-//sections:defaults,backend
+//sections:defaults,backend,peers
 //name:default-server
 //is:multiple
 //test:ok:default-server addr 127.0.0.1
@@ -1408,5 +1408,16 @@ type HTTPSendNameHeader struct {
 //test:fail:option http-restrict-req-hdr-names
 type OptionHTTPRestrictReqHdrNames struct {
 	Policy  string
+	Comment string
+}
+
+//sections:peers
+//name:default-bind
+//test:fail:default-bind
+//test:ok:default-bind user root mode 600 accept-proxy
+//test:ok:default-bind v4v6 ssl crt /etc/haproxy/site.pem alpn h2,http/1.1
+//test:ok:default-bind tls-ticket-keys /tmp/tls_ticket_keys
+type DefaultBind struct {
+	Params  []params.BindOption
 	Comment string
 }

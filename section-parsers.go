@@ -766,6 +766,11 @@ func (p *configParser) getPeersParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	addParser(parser, &sequence, &parsers.Peer{})
+	addParser(parser, &sequence, &parsers.DefaultServer{})
+	addParser(parser, &sequence, &parsers.DefaultBind{})
+	addParser(parser, &sequence, &parsers.StickTable{})
+	addParser(parser, &sequence, &simple.Enabled{Name: "enabled"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "disabled"})
 	return p.createParsers(parser, sequence)
 }
 
