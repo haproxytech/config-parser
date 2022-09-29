@@ -189,10 +189,10 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
 	addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 	addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
-	addParser(parser, &sequence, &parsers.PersistRdpCookie{})
 	addParser(parser, &sequence, &simple.String{Name: "retry-on"})
 	addParser(parser, &sequence, &http.HTTPErrors{})
 	addParser(parser, &sequence, &parsers.Source{})
+	addParser(parser, &sequence, &parsers.Persist{})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
@@ -563,10 +563,10 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
 	addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
 	addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
-	addParser(parser, &sequence, &parsers.PersistRdpCookie{})
 	addParser(parser, &sequence, &simple.String{Name: "retry-on"})
 	addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 	addParser(parser, &sequence, &parsers.Source{})
+	addParser(parser, &sequence, &parsers.Persist{})
 	return p.createParsers(parser, sequence)
 }
 
@@ -714,10 +714,10 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &simple.Word{Name: "server-state-file-name"})
 		addParser(parser, &sequence, &simple.Number{Name: "fullconn"})
 		addParser(parser, &sequence, &simple.Number{Name: "max-keep-alive-queue"})
-		addParser(parser, &sequence, &parsers.PersistRdpCookie{})
 		addParser(parser, &sequence, &simple.String{Name: "retry-on"})
 		addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 		addParser(parser, &sequence, &parsers.Source{})
+		addParser(parser, &sequence, &parsers.Persist{})
 	}
 	return p.createParsers(parser, sequence)
 }

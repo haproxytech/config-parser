@@ -25,7 +25,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/parsers"
 )
 
-func TestPersistRdpCookie(t *testing.T) {
+func TestPersist(t *testing.T) {
 	tests := map[string]bool{
 		"persist rdp-cookie":                          true,
 		"persist rdp-cookie(cookies)":                 true,
@@ -36,7 +36,7 @@ func TestPersistRdpCookie(t *testing.T) {
 		"---":     false,
 		"--- ---": false,
 	}
-	parser := &parsers.PersistRdpCookie{}
+	parser := &parsers.Persist{}
 	for command, shouldPass := range tests {
 		t.Run(command, func(t *testing.T) {
 			line := strings.TrimSpace(command)

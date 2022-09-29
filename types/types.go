@@ -308,6 +308,20 @@ type Balance struct {
 }
 
 //sections:defaults,backend
+//name:persist
+//test:ok:persist rdp-cookie
+//test:ok:persist rdp-cookie(cookies)
+//test:fail:persist rdp-cookie (cookie-name)
+//test:fail:persist rdp-cookie cookie-name
+//test:fail:persist rdp-cookie cookie-name second
+//test:fail:persist rdp-cookie cookie-name second third
+type Persist struct {
+	Type    string
+	Params  params.PersistParams
+	Comment string
+}
+
+//sections:defaults,backend
 //name:cookie
 //test:ok:cookie test
 //test:ok:cookie myCookie domain dom1 indirect postonly
@@ -1385,19 +1399,6 @@ type SetVar struct {
 type SetVarFmt struct {
 	Name    string
 	Format  string
-	Comment string
-}
-
-//sections:defaults,backend
-//name:persist rdp-cookie
-//test:ok:persist rdp-cookie
-//test:ok:persist rdp-cookie(cookies)
-//test:fail:persist rdp-cookie (cookie-name)
-//test:fail:persist rdp-cookie cookie-name
-//test:fail:persist rdp-cookie cookie-name second
-//test:fail:persist rdp-cookie cookie-name second third
-type PersistRdpCookie struct {
-	Name    string
 	Comment string
 }
 

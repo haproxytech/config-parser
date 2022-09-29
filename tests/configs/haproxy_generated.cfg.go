@@ -49,6 +49,7 @@ global test
 
 defaults test
   balance roundrobin
+  persist rdp-cookie
   cookie test
   default-server addr 127.0.0.1
   default-server addr ::1
@@ -230,7 +231,6 @@ defaults test
   unique-id-header X-Unique-ID
   load-server-state-from-file global
   monitor-uri /haproxy_test
-  persist rdp-cookie
   http-send-name-header
   option http-restrict-req-hdr-names preserve
   source 192.168.1.200
@@ -352,6 +352,7 @@ backend test
   acl uid_given url_reg /login?userid=[^&]+
   acl cookie_set hdr_sub(cookie) SEEN=1
   balance roundrobin
+  persist rdp-cookie
   cookie test
   default-server addr 127.0.0.1
   default-server addr ::1
@@ -694,7 +695,6 @@ backend test
   server-template srv 3 google.com
   force-persist if acl-name
   ignore-persist if acl-name
-  persist rdp-cookie
   http-send-name-header
   option http-restrict-req-hdr-names preserve
   source 192.168.1.200
@@ -2318,6 +2318,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  balance roundrobin
 `, 2},
+	{`  persist rdp-cookie
+`, 2},
 	{`  cookie test
 `, 2},
 	{`  cpu-map 1-4 0-3
@@ -3086,8 +3088,6 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  set-var proc.threshold int(200),sub(proc.prio)
 `, 1},
-	{`  persist rdp-cookie
-`, 2},
 	{`  http-send-name-header
 `, 2},
 	{`  option http-restrict-req-hdr-names preserve

@@ -22,19 +22,19 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-func (p *PersistRdpCookie) Init() {
+func (p *Persist) Init() {
 	p.data = nil
 	p.preComments = []string{}
 }
 
-func (p *PersistRdpCookie) GetParserName() string {
-	return "persist rdp-cookie"
+func (p *Persist) GetParserName() string {
+	return "persist"
 }
 
-func (p *PersistRdpCookie) Get(createIfNotExist bool) (common.ParserData, error) {
+func (p *Persist) Get(createIfNotExist bool) (common.ParserData, error) {
 	if p.data == nil {
 		if createIfNotExist {
-			p.data = &types.PersistRdpCookie{}
+			p.data = &types.Persist{}
 			return p.data, nil
 		}
 		return nil, errors.ErrFetch
@@ -42,15 +42,15 @@ func (p *PersistRdpCookie) Get(createIfNotExist bool) (common.ParserData, error)
 	return p.data, nil
 }
 
-func (p *PersistRdpCookie) GetPreComments() ([]string, error) {
+func (p *Persist) GetPreComments() ([]string, error) {
 	return p.preComments, nil
 }
 
-func (p *PersistRdpCookie) SetPreComments(preComments []string) {
+func (p *Persist) SetPreComments(preComments []string) {
 	p.preComments = preComments
 }
 
-func (p *PersistRdpCookie) GetOne(index int) (common.ParserData, error) {
+func (p *Persist) GetOne(index int) (common.ParserData, error) {
 	if index > 0 {
 		return nil, errors.ErrFetch
 	}
@@ -60,24 +60,24 @@ func (p *PersistRdpCookie) GetOne(index int) (common.ParserData, error) {
 	return p.data, nil
 }
 
-func (p *PersistRdpCookie) Delete(index int) error {
+func (p *Persist) Delete(index int) error {
 	p.Init()
 	return nil
 }
 
-func (p *PersistRdpCookie) Insert(data common.ParserData, index int) error {
+func (p *Persist) Insert(data common.ParserData, index int) error {
 	return p.Set(data, index)
 }
 
-func (p *PersistRdpCookie) Set(data common.ParserData, index int) error {
+func (p *Persist) Set(data common.ParserData, index int) error {
 	if data == nil {
 		p.Init()
 		return nil
 	}
 	switch newValue := data.(type) {
-	case *types.PersistRdpCookie:
+	case *types.Persist:
 		p.data = newValue
-	case types.PersistRdpCookie:
+	case types.Persist:
 		p.data = &newValue
 	default:
 		return errors.ErrInvalidData
@@ -85,7 +85,7 @@ func (p *PersistRdpCookie) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *PersistRdpCookie) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
+func (p *Persist) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
 	changeState, err = p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
@@ -93,7 +93,7 @@ func (p *PersistRdpCookie) PreParse(line string, parts []string, preComments []s
 	return changeState, err
 }
 
-func (p *PersistRdpCookie) ResultAll() ([]common.ReturnResultLine, []string, error) {
+func (p *Persist) ResultAll() ([]common.ReturnResultLine, []string, error) {
 	res, err := p.Result()
 	return res, p.preComments, err
 }
