@@ -1399,3 +1399,14 @@ type HTTPSendNameHeader struct {
 	Name    string
 	Comment string
 }
+
+//sections:defaults,frontend,backend
+//name:option http-restrict-req-hdr-names
+//test:ok:option http-restrict-req-hdr-names preserve
+//test:ok:option http-restrict-req-hdr-names delete
+//test:ok:option http-restrict-req-hdr-names reject
+//test:fail:option http-restrict-req-hdr-names
+type OptionHTTPRestrictReqHdrNames struct {
+	Policy  string
+	Comment string
+}

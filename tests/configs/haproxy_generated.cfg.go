@@ -232,6 +232,7 @@ defaults test
   monitor-uri /haproxy_test
   persist rdp-cookie
   http-send-name-header
+  option http-restrict-req-hdr-names preserve
   http-error status 400
   http-error status 400 default-errorfiles
   http-error status 400 errorfile /my/fancy/errorfile
@@ -684,6 +685,7 @@ backend test
   ignore-persist if acl-name
   persist rdp-cookie
   http-send-name-header
+  option http-restrict-req-hdr-names preserve
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -1384,6 +1386,7 @@ frontend test
   monitor fail if no_db01 no_db02
   declare capture request len 1
   declare capture response len 2
+  option http-restrict-req-hdr-names preserve
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -2915,6 +2918,8 @@ var configTests = []configTest{{`  set-param name fmt if acl
 `, 2},
 	{`  http-send-name-header
 `, 2},
+	{`  option http-restrict-req-hdr-names preserve
+`, 3},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
