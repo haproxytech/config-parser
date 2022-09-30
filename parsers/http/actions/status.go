@@ -53,6 +53,11 @@ var allowedErrorStatusCodes = map[int64]struct{}{ //nolint:gochecknoglobals
 	504: {},
 }
 
+func AllowedErrorStatusCode(code int64) bool {
+	_, ok := allowedErrorStatusCodes[code]
+	return ok
+}
+
 // Parse parses http-error status <code> [content-type <type>] [ { default-errorfiles | errorfile <file> | errorfiles <name> | file <file> | lf-file <file> | string <str> | lf-string <fmt> } ] [ hdr <name> <fmt> ]*
 func (f *Status) Parse(parts []string, parserType types.ParserType, comment string) error {
 	f.Hdrs = []*Hdr{}
@@ -74,7 +79,7 @@ func (f *Status) Parse(parts []string, parserType types.ParserType, comment stri
 	if err != nil {
 		return fmt.Errorf("failed to parse status code")
 	}
-	if _, ok := allowedErrorStatusCodes[code]; !ok {
+	if !AllowedErrorStatusCode(code) {
 		return fmt.Errorf("unsupported status code %d", code)
 	}
 	f.Status = &code
