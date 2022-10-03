@@ -796,7 +796,7 @@ func (p *configParser) getCacheParser() *Parsers {
 func (p *configParser) getProgramParser() *Parsers {
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
-	addParser(parser, &sequence, &simple.String{Name: "command"})
+	addParser(parser, &sequence, &parsers.Command{})
 	addParser(parser, &sequence, &simple.String{Name: "user"})
 	addParser(parser, &sequence, &simple.String{Name: "group"})
 	addParser(parser, &sequence, &simple.Option{Name: "start-on-reload"})

@@ -2011,6 +2011,9 @@ peers test
   peer name 127.0.0.1:8080
   default-bind user root mode 600 accept-proxy
 
+program test
+  command spoa-mirror --runtime 0 --mirror-url http://test.local
+
 resolvers test
   nameserver dns1 10.0.0.1:53
   nameserver dns1 10.0.0.1:53 # comment
@@ -2023,7 +2026,9 @@ userlist test
   user bear insecure-password hello groups G2
 `
 
-var configTests = []configTest{{`  set-param name fmt if acl
+var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url http://test.local
+`, 1},
+	{`  set-param name fmt if acl
 `, 1},
 	{`  set-param name fmt unless acl
 `, 1},
