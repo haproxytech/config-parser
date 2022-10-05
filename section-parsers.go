@@ -807,7 +807,10 @@ func (p *configParser) getProgramParser() *Parsers {
 }
 
 func (p *configParser) getHTTPErrorsParser() *Parsers {
-	return p.createParsers(map[string]ParserInterface{}, []Section{})
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &parsers.ErrorFile{})
+	return p.createParsers(parser, sequence)
 }
 
 func (p *configParser) getRingParser() *Parsers {
