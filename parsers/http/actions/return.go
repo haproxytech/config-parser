@@ -47,6 +47,7 @@ var payloadTypes = map[string]struct{}{ //nolint:gochecknoglobals
 	"lf-string": {},
 	"file":      {},
 	"lf-file":   {},
+	"":          {},
 }
 
 func IsPayload(in string) bool {
