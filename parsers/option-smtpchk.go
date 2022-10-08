@@ -32,7 +32,7 @@ type OptionSmtpchk struct {
 /*
 option smtpchk <hello> <domain>
 */
-func (s *OptionSmtpchk) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (s *OptionSmtpchk) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == "smtpchk" {
 		data := &types.OptionSmtpchk{
 			Comment: comment,

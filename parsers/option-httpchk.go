@@ -34,7 +34,7 @@ option httpchk <uri>
 option httpchk <method> <uri>
 option httpchk <method> <uri> <version>
 */
-func (s *OptionHttpchk) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (s *OptionHttpchk) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == "httpchk" {
 		switch len(parts) {
 		case 2:

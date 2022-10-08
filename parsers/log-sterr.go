@@ -38,7 +38,8 @@ func (p *LogStdErr) parse(parts []string) (*types.LogStdErr, error) {
 		"len":    "",
 	}
 
-	getValue := func(part []string, index *int) (value string, err error) {
+	getValue := func(part []string, index *int) (string, error) {
+		var value string
 		if *index+1 == len(parts) {
 			return "", fmt.Errorf("missing attribute value")
 		}
@@ -119,7 +120,8 @@ func (p *LogStdErr) parse(parts []string) (*types.LogStdErr, error) {
 	return data, nil
 }
 
-func (p *LogStdErr) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *LogStdErr) Parse(line string, parts []string, comment string) (string, error) {
+	var err error
 	if len(parts) < 2 {
 		return "", &errors.ParseError{Parser: "LogStdErr", Line: line, Message: "Missing required attributes"}
 	}

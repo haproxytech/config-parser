@@ -31,7 +31,7 @@ type Persist struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *Persist) parsePersistParams(pb params.PersistParams, line string, parts []string) (b *types.Persist, err error) {
+func (p *Persist) parsePersistParams(pb params.PersistParams, line string, parts []string) (*types.Persist, error) {
 	if len(parts) >= 2 {
 		b, err := pb.Parse(parts[1:])
 		if err != nil {
@@ -46,7 +46,8 @@ func (p *Persist) parsePersistParams(pb params.PersistParams, line string, parts
 	return nil, &errors.ParseError{Parser: "Persist", Line: line}
 }
 
-func (p *Persist) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *Persist) Parse(line string, parts []string, comment string) (string, error) {
+	var err error
 	if parts[0] != "persist" {
 		return "", &errors.ParseError{Parser: "Persist", Line: line}
 	}

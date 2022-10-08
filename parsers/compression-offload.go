@@ -27,7 +27,7 @@ type CompressionOffload struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (c *CompressionOffload) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (c *CompressionOffload) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) == 2 && parts[0] == "compression" && parts[1] == "offload" {
 		c.data = &types.Enabled{
 			Comment: comment,

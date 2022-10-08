@@ -47,7 +47,7 @@ func (h *Responses) ParseHTTPResponse(response types.Action, parts []string, com
 	return nil
 }
 
-func (h *Responses) Parse(line string, parts []string, comment string) (changeState string, err error) { //nolint:gocyclo,cyclop,cyclop
+func (h *Responses) Parse(line string, parts []string, comment string) (string, error) { //nolint:gocyclo,cyclop,cyclop
 	if len(parts) >= 2 && parts[0] == "http-response" {
 		var err error
 		switch parts[1] {

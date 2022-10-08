@@ -30,7 +30,7 @@ type UnixBind struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *UnixBind) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *UnixBind) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) < 3 {
 		return "", &errors.ParseError{Parser: "UnixBind", Line: line}
 	}

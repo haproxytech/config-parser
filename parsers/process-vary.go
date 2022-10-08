@@ -44,7 +44,7 @@ func (p *ProcessVary) parse(line string, parts []string, comment string) (*types
 	return processVary, nil
 }
 
-func (p *ProcessVary) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *ProcessVary) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "process-vary" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {

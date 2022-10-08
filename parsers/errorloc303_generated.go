@@ -85,8 +85,8 @@ func (p *ErrorLoc303) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *ErrorLoc303) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, comment)
+func (p *ErrorLoc303) PreParse(line string, parts []string, preComments []string, comment string) (string, error) {
+	changeState, err := p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}

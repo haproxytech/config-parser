@@ -29,7 +29,7 @@ type ArrayKeyValue struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *ArrayKeyValue) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *ArrayKeyValue) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == p.Name {
 		p.data = append(p.data, types.StringKeyValueC{
 			Key:     parts[1],

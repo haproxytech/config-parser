@@ -27,7 +27,7 @@ type NoSplice struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (m *NoSplice) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (m *NoSplice) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "nosplice" {
 		m.data = &types.Enabled{
 			Comment: comment,

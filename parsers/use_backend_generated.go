@@ -128,15 +128,15 @@ func (p *UseBackend) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *UseBackend) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, comment)
+func (p *UseBackend) PreParse(line string, parts []string, preComments []string, comment string) (string, error) {
+	changeState, err := p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}
 	return changeState, err
 }
 
-func (p *UseBackend) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *UseBackend) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "use_backend" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {

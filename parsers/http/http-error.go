@@ -45,7 +45,7 @@ func (h *HTTPErrors) ParseHTTPError(httpErr types.Action, parts []string, commen
 	return nil
 }
 
-func (h *HTTPErrors) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (h *HTTPErrors) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) < 3 || parts[0] != "http-error" {
 		return "", &errors.ParseError{Parser: "HTTPErrorLines", Line: line}
 	}

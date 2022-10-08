@@ -37,7 +37,6 @@ linters:
 
     - goconst
     - exhaustruct
-    - nonamedreturns
     - dupword
 
 run:

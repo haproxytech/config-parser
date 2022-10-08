@@ -85,8 +85,8 @@ func (p *Size) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *Size) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, comment)
+func (p *Size) PreParse(line string, parts []string, preComments []string, comment string) (string, error) {
+	changeState, err := p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}

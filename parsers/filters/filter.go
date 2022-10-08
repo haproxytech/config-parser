@@ -41,7 +41,7 @@ func (h *Filters) ParseFilter(filter types.Filter, parts []string, comment strin
 	return nil
 }
 
-func (h *Filters) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (h *Filters) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) >= 2 && parts[0] == "filter" {
 		var err error
 		switch parts[1] {

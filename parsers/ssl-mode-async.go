@@ -27,7 +27,7 @@ type SslModeAsync struct {
 	preComments []string
 }
 
-func (p *SslModeAsync) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *SslModeAsync) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) == 1 && parts[0] == "ssl-mode-async" {
 		p.data = &types.SslModeAsync{}
 		return "", nil

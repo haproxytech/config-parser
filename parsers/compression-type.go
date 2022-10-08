@@ -29,7 +29,7 @@ type CompressionType struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (c *CompressionType) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (c *CompressionType) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) < 3 {
 		return "", &errors.ParseError{Parser: "CompressionType", Line: line, Message: "Parse error"}
 	}

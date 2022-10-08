@@ -41,7 +41,7 @@ func (o *Option) Init() {
 	o.preComments = nil
 }
 
-func (o *Option) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (o *Option) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) > 1 && parts[0] == "option" && parts[1] == o.name {
 		o.data = &types.SimpleOption{
 			Comment: comment,

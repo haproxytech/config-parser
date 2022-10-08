@@ -29,7 +29,7 @@ type UniqueIDHeader struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (s *UniqueIDHeader) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (s *UniqueIDHeader) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) != 2 {
 		return "", &errors.ParseError{Parser: "unique-id-header", Line: line}
 	}

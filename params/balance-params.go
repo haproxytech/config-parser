@@ -95,7 +95,8 @@ func (u *BalanceURLParam) String() string {
 	return result.String()
 }
 
-func (u *BalanceURLParam) Parse(parts []string) (bp BalanceParams, err error) {
+func (u *BalanceURLParam) Parse(parts []string) (BalanceParams, error) {
+	var err error
 	if len(parts) > 0 {
 
 		for index := 1; index < len(parts); index++ {
@@ -145,7 +146,7 @@ func (h *BalanceHdr) String() string {
 	return result.String()
 }
 
-func (h *BalanceHdr) Parse(parts []string) (bp BalanceParams, err error) {
+func (h *BalanceHdr) Parse(parts []string) (BalanceParams, error) {
 	if len(parts) > 0 {
 		split := common.StringSplitIgnoreEmpty(parts[0], '(', ')')
 		if len(split) < 2 {
@@ -176,7 +177,8 @@ func (h *BalanceRandom) String() string {
 	return result.String()
 }
 
-func (h *BalanceRandom) Parse(parts []string) (bp BalanceParams, err error) {
+func (h *BalanceRandom) Parse(parts []string) (BalanceParams, error) {
+	var err error
 	if len(parts) > 0 {
 		split := common.StringSplitIgnoreEmpty(parts[0], '(', ')')
 		if len(split) < 2 {
@@ -204,7 +206,7 @@ func (r *BalanceRdpCookie) String() string {
 	return result.String()
 }
 
-func (r *BalanceRdpCookie) Parse(parts []string) (bp BalanceParams, err error) {
+func (r *BalanceRdpCookie) Parse(parts []string) (BalanceParams, error) {
 	if len(parts) > 0 {
 		split := common.StringSplitIgnoreEmpty(parts[0], '(', ')')
 		if len(split) < 2 {
@@ -227,7 +229,7 @@ func (r *BalanceHash) String() string {
 	return result.String()
 }
 
-func (r *BalanceHash) Parse(parts []string) (bp BalanceParams, err error) {
+func (r *BalanceHash) Parse(parts []string) (BalanceParams, error) {
 	if len(parts) < 2 {
 		return nil, &errors.ParseError{Parser: "Balance", Message: "hash missing expression"}
 	}

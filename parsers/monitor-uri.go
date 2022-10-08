@@ -29,7 +29,7 @@ type MonitorURI struct {
 	preComments []string
 }
 
-func (p *MonitorURI) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *MonitorURI) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) == 2 && parts[0] == "monitor-uri" {
 		if _, err := url.Parse(parts[1]); err != nil {
 			return "", &errors.ParseError{Parser: "monitor-uri", Line: line, Message: err.Error()}

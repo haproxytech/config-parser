@@ -28,7 +28,7 @@ type Enabled struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (e *Enabled) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (e *Enabled) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == e.Name {
 		e.data = &types.Enabled{
 			Comment: comment,

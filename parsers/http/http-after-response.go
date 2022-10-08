@@ -40,7 +40,8 @@ func (p *AfterResponses) Init() {
 	p.preComments = []string{}
 }
 
-func (h *AfterResponses) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (h *AfterResponses) Parse(line string, parts []string, comment string) (string, error) {
+	var err error
 	if len(parts) == 0 {
 		return "", &errors.ParseError{Parser: parseErrorLines(h.Name), Line: line, Message: "missing attribute"}
 	}

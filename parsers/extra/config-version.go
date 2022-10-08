@@ -50,7 +50,7 @@ func (p *ConfigVersion) Get(createIfNotExist bool) (common.ParserData, error) {
 }
 
 // Parse see if we have version, since it is not haproxy keyword, it's in comments
-func (p *ConfigVersion) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *ConfigVersion) Parse(line string, parts []string, comment string) (string, error) {
 	if strings.HasPrefix(comment, "_version") {
 		data := common.StringSplitIgnoreEmpty(comment, '=')
 		if len(data) < 2 {

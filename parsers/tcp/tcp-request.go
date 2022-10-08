@@ -45,7 +45,8 @@ func (h *Requests) ParseTCPRequest(request types.TCPType, parts []string, commen
 	return nil
 }
 
-func (h *Requests) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (h *Requests) Parse(line string, parts []string, comment string) (string, error) {
+	var err error
 	if parts[0] != "tcp-request" {
 		return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 	}

@@ -128,15 +128,15 @@ func (p *DeclareCapture) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *DeclareCapture) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, comment)
+func (p *DeclareCapture) PreParse(line string, parts []string, preComments []string, comment string) (string, error) {
+	changeState, err := p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}
 	return changeState, err
 }
 
-func (p *DeclareCapture) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *DeclareCapture) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) > 1 && parts[0] == "declare" && parts[1] == "capture" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {

@@ -29,7 +29,7 @@ type MonitorFail struct {
 	preComments []string
 }
 
-func (p *MonitorFail) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *MonitorFail) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) > 3 && parts[0] == "monitor" && parts[1] == "fail" {
 		if op := parts[2]; op == "if" || op == "unless" {
 			p.data = &types.MonitorFail{

@@ -30,7 +30,7 @@ type ConfigSnippet struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *ConfigSnippet) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *ConfigSnippet) Parse(line string, parts []string, comment string) (string, error) {
 	if comment != "" {
 		commentParts := strings.Fields(comment)
 		if len(commentParts) > 1 || commentParts[0] == "##_config-snippet_###" {

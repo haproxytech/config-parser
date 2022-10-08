@@ -32,7 +32,7 @@ type OptionPgsqlCheck struct {
 /*
 option pgsql-check [ user <username> ]
 */
-func (s *OptionPgsqlCheck) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (s *OptionPgsqlCheck) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) != 4 {
 		return "", errors.ErrInvalidData
 	}

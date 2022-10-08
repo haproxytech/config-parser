@@ -29,7 +29,7 @@ type HTTPReuse struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *HTTPReuse) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *HTTPReuse) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "http-reuse" {
 		switch parts[1] {
 		case "aggressive", "always", "never", "safe":

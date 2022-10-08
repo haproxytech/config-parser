@@ -29,7 +29,7 @@ type CompressionAlgo struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (c *CompressionAlgo) Parse(line string, parts []string, comment string) (changeState string, err error) { //nolint:nonamedreturns
+func (c *CompressionAlgo) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) < 3 {
 		return "", &errors.ParseError{Parser: "CompressionAlgo", Line: line, Message: "Parse error"}
 	}

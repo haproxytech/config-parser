@@ -786,7 +786,7 @@ func (p *{{ .StructName }}) Init() {
 }
 {{- end }}
 
-func (h *{{ .StructName }} ) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (h *{{ .StructName }} ) Parse(line string, parts []string, comment string) (string, error) {
         return "", &errors.ParseError{Parser: parseErrorLines("{{ .ParserName }}"), Line: line}
 
         // Following line forces compilation to fail:
@@ -1034,8 +1034,8 @@ func (p *{{ .StructName }}) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *{{ .StructName }}) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, comment)
+func (p *{{ .StructName }}) PreParse(line string, parts []string, preComments []string, comment string) (string, error) {
+	changeState, err := p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}
@@ -1044,7 +1044,7 @@ func (p *{{ .StructName }}) PreParse(line string, parts []string, preComments []
 
 {{- if and .ParserMultiple (not .NoParse) }}
 
-func (p *{{ .StructName }}) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *{{ .StructName }}) Parse(line string, parts []string, comment string) (string, error) {
 {{- if eq .ParserSecondName "" }}
 	if parts[0] == "{{ .ParserName }}" {
 {{- else }}

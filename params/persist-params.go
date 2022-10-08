@@ -26,7 +26,7 @@ func (r *PersistRdpCookie) String() string {
 	return result.String()
 }
 
-func (r *PersistRdpCookie) Parse(parts []string) (bp PersistParams, err error) {
+func (r *PersistRdpCookie) Parse(parts []string) (PersistParams, error) {
 	if len(parts) > 0 {
 		split := common.StringSplitIgnoreEmpty(parts[0], '(', ')')
 		if len(split) < 2 {

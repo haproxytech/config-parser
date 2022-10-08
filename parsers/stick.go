@@ -29,7 +29,7 @@ type Stick struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (h *Stick) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (h *Stick) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) >= 2 && parts[0] == "stick" {
 		command, condition := common.SplitRequest(parts[2:])
 		data := types.Stick{

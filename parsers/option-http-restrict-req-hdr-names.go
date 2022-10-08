@@ -29,7 +29,7 @@ type OptionHTTPRestrictReqHdrNames struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (o *OptionHTTPRestrictReqHdrNames) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (o *OptionHTTPRestrictReqHdrNames) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) != 3 {
 		return "", &errors.ParseError{Parser: "option http-restrict-req-hdr-names", Line: line}
 	}

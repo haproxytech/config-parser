@@ -32,7 +32,8 @@ type Cookie struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *Cookie) Parse(line string, parts []string, comment string) (changeState string, err error) { //nolint:gocognit
+func (p *Cookie) Parse(line string, parts []string, comment string) (string, error) { //nolint:gocognit
+	var err error
 	if parts[0] == CookieKeyword {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Cookie", Line: line, Message: "Parse error"}

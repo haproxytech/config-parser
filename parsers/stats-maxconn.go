@@ -30,7 +30,7 @@ type StatsMaxconn struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (s *StatsMaxconn) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (s *StatsMaxconn) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) > 1 && parts[0] == "stats" && parts[1] == "maxconn" {
 		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: "StatsMaxconn", Line: line, Message: "Parse error"}

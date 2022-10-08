@@ -29,7 +29,7 @@ type ErrorLoc303 struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (l *ErrorLoc303) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (l *ErrorLoc303) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) < 3 {
 		return "", &errors.ParseError{Parser: "ErrorLoc303", Line: line}
 	}

@@ -28,7 +28,7 @@ type HTTPSendNameHeader struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (m *HTTPSendNameHeader) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (m *HTTPSendNameHeader) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] != "http-send-name-header" {
 		return "", &errors.ParseError{Parser: "HTTPSendNameHeader", Line: line}
 	}

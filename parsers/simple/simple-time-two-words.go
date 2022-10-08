@@ -38,7 +38,7 @@ func (s *TimeTwoWords) Init() {
 	s.preComments = nil
 }
 
-func (s *TimeTwoWords) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (s *TimeTwoWords) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) >= 2 && parts[0] == s.Keywords[0] && parts[1] == s.Keywords[1] {
 		if len(parts) < 3 {
 			return "", &errors.ParseError{Parser: "TimeTwoWords", Line: line, Message: "Parse error"}

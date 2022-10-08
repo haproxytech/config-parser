@@ -85,8 +85,8 @@ func (p *OptionHTTPRestrictReqHdrNames) Set(data common.ParserData, index int) e
 	return nil
 }
 
-func (p *OptionHTTPRestrictReqHdrNames) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, comment)
+func (p *OptionHTTPRestrictReqHdrNames) PreParse(line string, parts []string, preComments []string, comment string) (string, error) {
+	changeState, err := p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}

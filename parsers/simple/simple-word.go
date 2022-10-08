@@ -30,7 +30,7 @@ type Word struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (s *Word) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (s *Word) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == s.Name {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Word", Line: line, Message: "Parse error"}

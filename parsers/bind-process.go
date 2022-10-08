@@ -31,7 +31,7 @@ type BindProcess struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *BindProcess) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *BindProcess) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] != "bind-process" || len(parts) < 2 {
 		return "", &errors.ParseError{Parser: "BindProcess", Line: line, Message: "Parse error"}
 	}

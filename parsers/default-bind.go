@@ -30,7 +30,7 @@ type DefaultBind struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (d *DefaultBind) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (d *DefaultBind) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "default-bind" && len(parts) > 1 {
 		d.data = &types.DefaultBind{
 			Params:  params.ParseBindOptions(parts[1:]),

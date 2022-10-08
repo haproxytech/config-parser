@@ -27,7 +27,7 @@ type ExternalCheck struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (m *ExternalCheck) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (m *ExternalCheck) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "external-check" {
 		m.data = &types.Enabled{
 			Comment: comment,

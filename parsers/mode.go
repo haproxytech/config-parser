@@ -29,7 +29,7 @@ type Mode struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *Mode) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *Mode) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "mode" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Mode", Line: line, Message: "Parse error"}

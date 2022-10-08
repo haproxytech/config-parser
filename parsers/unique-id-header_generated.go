@@ -85,8 +85,8 @@ func (p *UniqueIDHeader) Set(data common.ParserData, index int) error {
 	return nil
 }
 
-func (p *UniqueIDHeader) PreParse(line string, parts []string, preComments []string, comment string) (changeState string, err error) {
-	changeState, err = p.Parse(line, parts, comment)
+func (p *UniqueIDHeader) PreParse(line string, parts []string, preComments []string, comment string) (string, error) {
+	changeState, err := p.Parse(line, parts, comment)
 	if err == nil && preComments != nil {
 		p.preComments = append(p.preComments, preComments...)
 	}

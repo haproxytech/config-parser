@@ -31,7 +31,7 @@ type Balance struct {
 	preComments []string // comments that appear before the the actual line
 }
 
-func (p *Balance) parseBalanceParams(pb params.BalanceParams, line string, parts []string) (b *types.Balance, err error) {
+func (p *Balance) parseBalanceParams(pb params.BalanceParams, line string, parts []string) (*types.Balance, error) {
 	if len(parts) >= 2 {
 		b, err := pb.Parse(parts[1:])
 		if err != nil {
@@ -46,7 +46,7 @@ func (p *Balance) parseBalanceParams(pb params.BalanceParams, line string, parts
 	return nil, &errors.ParseError{Parser: "Balance", Line: line}
 }
 
-func (p *Balance) Parse(line string, parts []string, comment string) (changeState string, err error) {
+func (p *Balance) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == "balance" {
 		if len(parts) < 2 {
 			return "", &errors.ParseError{Parser: "Balance", Line: line}
