@@ -20,7 +20,7 @@ import (
 	"bufio"
 	"bytes"
 	"io"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
@@ -33,7 +33,7 @@ func (p *configParser) LoadData(path string) error {
 		p.Options.Logger.Debugf("%sreading data from %s", p.Options.LogPrefix, path)
 	}
 	p.Options.Path = path
-	dat, err := ioutil.ReadFile(p.Options.Path)
+	dat, err := os.ReadFile(p.Options.Path)
 	if err != nil {
 		return err
 	}

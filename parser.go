@@ -19,7 +19,7 @@ package parser
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
+	"os"
 	"strings"
 	"sync"
 
@@ -58,6 +58,7 @@ const (
 	DefaultSectionName  = "data"
 )
 
+//nolint:interfacebloat
 type Parser interface {
 	LoadData(path string) error
 	Process(reader io.Reader) error
@@ -107,7 +108,7 @@ func New(opt ...options.ParserOption) (Parser, error) {
 		if p.Options.Log {
 			p.Options.Logger.Infof("%sreading configuration from file: %s", p.Options.LogPrefix, p.Options.Path)
 		}
-		dat, err := ioutil.ReadFile(p.Options.Path)
+		dat, err := os.ReadFile(p.Options.Path)
 		if err != nil {
 			return nil, err
 		}

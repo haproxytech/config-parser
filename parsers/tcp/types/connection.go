@@ -22,7 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	tcp_actions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
+	tcpActions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -50,15 +50,15 @@ func (f *Connection) Parse(parts []string, comment string) error {
 	var err error
 	switch parts[2] {
 	case "accept":
-		err = f.ParseAction(&tcp_actions.Accept{}, parts)
+		err = f.ParseAction(&tcpActions.Accept{}, parts)
 	case "reject":
 		err = f.ParseAction(&actions.Reject{}, parts)
 	case "expect-proxy":
-		err = f.ParseAction(&tcp_actions.ExpectProxy{}, parts)
+		err = f.ParseAction(&tcpActions.ExpectProxy{}, parts)
 	case "expect-netscaler-cip":
-		err = f.ParseAction(&tcp_actions.ExpectNetscalerCip{}, parts)
+		err = f.ParseAction(&tcpActions.ExpectNetscalerCip{}, parts)
 	case "capture":
-		err = f.ParseAction(&tcp_actions.Capture{}, parts)
+		err = f.ParseAction(&tcpActions.Capture{}, parts)
 	case "track-sc0":
 		err = f.ParseAction(&actions.TrackSc{}, parts)
 	case "track-sc1":
@@ -66,7 +66,7 @@ func (f *Connection) Parse(parts []string, comment string) error {
 	case "track-sc2":
 		err = f.ParseAction(&actions.TrackSc{}, parts)
 	case "set-src":
-		err = f.ParseAction(&tcp_actions.SetSrc{}, parts)
+		err = f.ParseAction(&tcpActions.SetSrc{}, parts)
 	case "silent-drop":
 		err = f.ParseAction(&actions.SilentDrop{}, parts)
 	case "set-mark":

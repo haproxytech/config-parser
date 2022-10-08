@@ -22,7 +22,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	http_actions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
+	httpActions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -64,17 +64,17 @@ func (h *Checks) Parse(line string, parts []string, comment string) (string, err
 
 	switch {
 	case parts[1] == "comment":
-		err = h.parseHTTPCheck(&http_actions.CheckComment{}, parts, comment)
+		err = h.parseHTTPCheck(&httpActions.CheckComment{}, parts, comment)
 	case parts[1] == "connect":
 		err = h.parseHTTPCheck(&actions.CheckConnect{}, parts, comment)
 	case parts[1] == "disable-on-404":
-		err = h.parseHTTPCheck(&http_actions.CheckDisableOn404{}, parts, comment)
+		err = h.parseHTTPCheck(&httpActions.CheckDisableOn404{}, parts, comment)
 	case parts[1] == "expect":
 		err = h.parseHTTPCheck(&actions.CheckExpect{}, parts, comment)
 	case parts[1] == "send":
-		err = h.parseHTTPCheck(&http_actions.CheckSend{}, parts, comment)
+		err = h.parseHTTPCheck(&httpActions.CheckSend{}, parts, comment)
 	case parts[1] == "send-state":
-		err = h.parseHTTPCheck(&http_actions.CheckSendState{}, parts, comment)
+		err = h.parseHTTPCheck(&httpActions.CheckSendState{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var("):
 		err = h.parseHTTPCheck(&actions.SetVarCheck{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var-fmt("):

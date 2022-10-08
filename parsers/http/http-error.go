@@ -19,7 +19,7 @@ package http
 import (
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
-	http_actions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
+	httpActions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -49,7 +49,7 @@ func (h *HTTPErrors) Parse(line string, parts []string, comment string) (changeS
 	if len(parts) < 3 || parts[0] != "http-error" {
 		return "", &errors.ParseError{Parser: "HTTPErrorLines", Line: line}
 	}
-	return "", h.ParseHTTPError(&http_actions.Status{}, parts, comment)
+	return "", h.ParseHTTPError(&httpActions.Status{}, parts, comment)
 }
 
 func (h *HTTPErrors) Result() ([]common.ReturnResultLine, error) {

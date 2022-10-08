@@ -20,7 +20,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -271,7 +270,7 @@ func fileExists(filePath string) bool {
 }
 
 func generateTypesOther(dir string) { //nolint:gocognit,gocyclo,cyclop
-	dat, err := ioutil.ReadFile("types/types-other.go")
+	dat, err := os.ReadFile("types/types-other.go")
 	if err != nil {
 		log.Println(err)
 	}
@@ -446,7 +445,7 @@ func generateTypesOther(dir string) { //nolint:gocognit,gocyclo,cyclop
 }
 
 func generateTypesGeneric(dir string) { //nolint:gocognit
-	dat, err := ioutil.ReadFile("types/types-generic.go")
+	dat, err := os.ReadFile("types/types-generic.go")
 	if err != nil {
 		log.Println(err)
 	}
@@ -582,7 +581,7 @@ func generateTypesGeneric(dir string) { //nolint:gocognit
 }
 
 func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo,cyclop
-	dat, err := ioutil.ReadFile(dataDir + "types/types.go")
+	dat, err := os.ReadFile(dataDir + "types/types.go")
 	if err != nil {
 		log.Println(err)
 	}

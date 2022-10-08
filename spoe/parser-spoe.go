@@ -19,7 +19,7 @@ package spoe
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -456,7 +456,7 @@ func (p *Parser) ProcessLine(line string, parts []string, comment string, config
 }
 
 func (p *Parser) LoadData(filename string) error {
-	dat, err := ioutil.ReadFile(filename)
+	dat, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}

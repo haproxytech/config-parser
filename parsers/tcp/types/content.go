@@ -22,7 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	tcp_actions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
+	tcpActions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -50,11 +50,11 @@ func (f *Content) Parse(parts []string, comment string) error { //nolint:gocyclo
 	var err error
 	switch parts[2] {
 	case "accept":
-		err = f.ParseAction(&tcp_actions.Accept{}, parts)
+		err = f.ParseAction(&tcpActions.Accept{}, parts)
 	case "reject":
 		err = f.ParseAction(&actions.Reject{}, parts)
 	case "capture":
-		err = f.ParseAction(&tcp_actions.Capture{}, parts)
+		err = f.ParseAction(&tcpActions.Capture{}, parts)
 	case "set-priority-class":
 		err = f.ParseAction(&actions.SetPriorityClass{}, parts)
 	case "set-priority-offset":
@@ -88,9 +88,9 @@ func (f *Content) Parse(parts []string, comment string) error { //nolint:gocyclo
 	case "set-src-port":
 		err = f.ParseAction(&actions.SetSrcPort{}, parts)
 	case "switch-mode":
-		err = f.ParseAction(&tcp_actions.SwitchMode{}, parts)
+		err = f.ParseAction(&tcpActions.SwitchMode{}, parts)
 	case "close":
-		err = f.ParseAction(&tcp_actions.Close{}, parts)
+		err = f.ParseAction(&tcpActions.Close{}, parts)
 	default:
 		switch {
 		case strings.HasPrefix(parts[2], "lua."):

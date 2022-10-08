@@ -22,7 +22,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	tcp_actions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
+	tcpActions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -64,19 +64,19 @@ func (h *Checks) Parse(line string, parts []string, comment string) (string, err
 
 	switch {
 	case parts[1] == "comment":
-		err = h.parseTCPCheck(&tcp_actions.CheckComment{}, parts, comment)
+		err = h.parseTCPCheck(&tcpActions.CheckComment{}, parts, comment)
 	case parts[1] == "connect":
 		err = h.parseTCPCheck(&actions.CheckConnect{}, parts, comment)
 	case parts[1] == "expect":
 		err = h.parseTCPCheck(&actions.CheckExpect{}, parts, comment)
 	case parts[1] == "send":
-		err = h.parseTCPCheck(&tcp_actions.CheckSend{}, parts, comment)
+		err = h.parseTCPCheck(&tcpActions.CheckSend{}, parts, comment)
 	case parts[1] == "send-lf":
-		err = h.parseTCPCheck(&tcp_actions.CheckSendLf{}, parts, comment)
+		err = h.parseTCPCheck(&tcpActions.CheckSendLf{}, parts, comment)
 	case parts[1] == "send-binary":
-		err = h.parseTCPCheck(&tcp_actions.CheckSendBinary{}, parts, comment)
+		err = h.parseTCPCheck(&tcpActions.CheckSendBinary{}, parts, comment)
 	case parts[1] == "send-binary-lf":
-		err = h.parseTCPCheck(&tcp_actions.CheckSendBinaryLf{}, parts, comment)
+		err = h.parseTCPCheck(&tcpActions.CheckSendBinaryLf{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var("):
 		err = h.parseTCPCheck(&actions.SetVarCheck{}, parts, comment)
 	case strings.HasPrefix(parts[1], "set-var-fmt("):

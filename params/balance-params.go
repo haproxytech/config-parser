@@ -39,7 +39,8 @@ func (b *BalanceURI) String() string {
 	return result.String()
 }
 
-func (b *BalanceURI) Parse(parts []string) (bp BalanceParams, err error) {
+func (b *BalanceURI) Parse(parts []string) (BalanceParams, error) {
+	var err error
 	if len(parts) > 0 {
 
 		for i := 0; i < len(parts); i++ {

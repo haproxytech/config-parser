@@ -21,7 +21,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/errors"
 )
 
-//nolint:golint,revive
+//nolint:golint,revive,interfacebloat
 type ParserInterface interface {
 	Init()
 	Parse(line string, parts []string, comment string) (changeState string, err error)

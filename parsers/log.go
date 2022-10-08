@@ -26,7 +26,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-// nolint:gochecknoglobals
+//nolint:gochecknoglobals
 var logAllowedFacilities = map[string]struct{}{
 	"kern": {}, "user": {}, "mail": {}, "daemon": {},
 	"auth": {}, "syslog": {}, "lpr": {}, "news": {},
@@ -36,7 +36,7 @@ var logAllowedFacilities = map[string]struct{}{
 	"local4": {}, "local5": {}, "local6": {}, "local7": {},
 }
 
-// nolint:gochecknoglobals
+//nolint:gochecknoglobals
 var logAllowedLevels = map[string]struct{}{
 	"emerg":   {},
 	"alert":   {},

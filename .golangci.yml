@@ -38,6 +38,7 @@ linters:
     - goconst
     - exhaustruct
     - nonamedreturns
+    - dupword
 
 run:
   skip-dirs:

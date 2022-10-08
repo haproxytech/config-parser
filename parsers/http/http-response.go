@@ -22,7 +22,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	http_actions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
+	httpActions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -52,29 +52,29 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 		var err error
 		switch parts[1] {
 		case "add-header":
-			err = h.ParseHTTPResponse(&http_actions.AddHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.AddHeader{}, parts, comment)
 		case "allow":
-			err = h.ParseHTTPResponse(&http_actions.Allow{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.Allow{}, parts, comment)
 		case "cache-store":
-			err = h.ParseHTTPResponse(&http_actions.CacheStore{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.CacheStore{}, parts, comment)
 		case "capture":
-			err = h.ParseHTTPResponse(&http_actions.Capture{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.Capture{}, parts, comment)
 		case "del-header":
-			err = h.ParseHTTPResponse(&http_actions.DelHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.DelHeader{}, parts, comment)
 		case "deny":
-			err = h.ParseHTTPResponse(&http_actions.Deny{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.Deny{}, parts, comment)
 		case "redirect":
-			err = h.ParseHTTPResponse(&http_actions.Redirect{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.Redirect{}, parts, comment)
 		case "replace-header":
-			err = h.ParseHTTPResponse(&http_actions.ReplaceHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.ReplaceHeader{}, parts, comment)
 		case "replace-value":
-			err = h.ParseHTTPResponse(&http_actions.ReplaceValue{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.ReplaceValue{}, parts, comment)
 		case "return":
-			err = h.ParseHTTPResponse(&http_actions.Return{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.Return{}, parts, comment)
 		case "send-spoe-group":
 			err = h.ParseHTTPResponse(&actions.SendSpoeGroup{}, parts, comment)
 		case "set-header":
-			err = h.ParseHTTPResponse(&http_actions.SetHeader{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.SetHeader{}, parts, comment)
 		case "set-log-level":
 			err = h.ParseHTTPResponse(&actions.SetLogLevel{}, parts, comment)
 		case "set-mark":
@@ -82,13 +82,13 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 		case "set-nice":
 			err = h.ParseHTTPResponse(&actions.SetNice{}, parts, comment)
 		case "set-status":
-			err = h.ParseHTTPResponse(&http_actions.SetStatus{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.SetStatus{}, parts, comment)
 		case "set-tos":
 			err = h.ParseHTTPResponse(&actions.SetTos{}, parts, comment)
 		case "silent-drop":
 			err = h.ParseHTTPResponse(&actions.SilentDrop{}, parts, comment)
 		case "strict-mode":
-			err = h.ParseHTTPResponse(&http_actions.StrictMode{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.StrictMode{}, parts, comment)
 		case "track-sc0":
 			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "track-sc1":
@@ -96,15 +96,15 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 		case "track-sc2":
 			err = h.ParseHTTPResponse(&actions.TrackSc{}, parts, comment)
 		case "wait-for-body":
-			err = h.ParseHTTPResponse(&http_actions.WaitForBody{}, parts, comment)
+			err = h.ParseHTTPResponse(&httpActions.WaitForBody{}, parts, comment)
 		case "set-bandwidth-limit":
 			err = h.ParseHTTPResponse(&actions.SetBandwidthLimit{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "add-acl("):
-				err = h.ParseHTTPResponse(&http_actions.AddACL{}, parts, comment)
+				err = h.ParseHTTPResponse(&httpActions.AddACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-acl("):
-				err = h.ParseHTTPResponse(&http_actions.DelACL{}, parts, comment)
+				err = h.ParseHTTPResponse(&httpActions.DelACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "lua."):
 				err = h.ParseHTTPResponse(&actions.Lua{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc0("):
@@ -114,9 +114,9 @@ func (h *Responses) Parse(line string, parts []string, comment string) (changeSt
 			case strings.HasPrefix(parts[1], "sc-set-gpt0("):
 				err = h.ParseHTTPResponse(&actions.ScSetGpt0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-map("):
-				err = h.ParseHTTPResponse(&http_actions.SetMap{}, parts, comment)
+				err = h.ParseHTTPResponse(&httpActions.SetMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-map("):
-				err = h.ParseHTTPResponse(&http_actions.DelMap{}, parts, comment)
+				err = h.ParseHTTPResponse(&httpActions.DelMap{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
 				err = h.ParseHTTPResponse(&actions.SetVar{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var-fmt("):

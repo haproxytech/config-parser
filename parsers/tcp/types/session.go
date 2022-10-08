@@ -22,7 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	tcp_actions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
+	tcpActions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -50,7 +50,7 @@ func (f *Session) Parse(parts []string, comment string) error {
 	var err error
 	switch parts[2] {
 	case "accept":
-		err = f.ParseAction(&tcp_actions.Accept{}, parts)
+		err = f.ParseAction(&tcpActions.Accept{}, parts)
 	case "reject":
 		err = f.ParseAction(&actions.Reject{}, parts)
 	case "track-sc0":
