@@ -34,7 +34,7 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
       - name: golangci-lint
-        uses: docker://ghcr.io/haproxytech/go-linter:1.46.2
+        uses: docker://ghcr.io/haproxytech/go-linter:1.50.0
   tidy:
     name: go mod tidy
     needs: ["generate"]
@@ -45,7 +45,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.18
+          go-version: 1.19
       - name: tidy
         run: go mod tidy
       - name: changes
@@ -55,10 +55,10 @@ jobs:
     needs: ["lint","tidy"]
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Go 1.18
+    - name: Set up Go 1.19
       uses: actions/setup-go@v1
       with:
-        go-version: 1.18
+        go-version: 1.19
       id: go
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
