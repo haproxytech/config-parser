@@ -54,8 +54,8 @@ func main() {
 	generateTypes(dir, "spoe/")
 
 	filePath := path.Join(dir, "tests", "configs", "haproxy_generated.cfg.go")
-	err = maybe.WriteFile(filePath, []byte(configFile.String()), 0o644)
-	if err != nil {
-		log.Println(err)
-	}
+	res, err := GoFmt([]byte(configFile.String()))
+	CheckErr(err)
+	err = maybe.WriteFile(filePath, res, 0o644)
+	CheckErr(err)
 }
