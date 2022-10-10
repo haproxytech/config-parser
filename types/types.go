@@ -1435,7 +1435,6 @@ type DefaultBind struct {
 
 //sections:defaults,backend
 //name:source
-//is:multiple
 //test:ok:source 192.168.1.200
 //test:ok:source 192.168.1.200 usesrc clientip
 //test:ok:source 192.168.1.200:80 usesrc clientip

@@ -26,134 +26,127 @@ import (
 )
 
 type Source struct {
-	data        []types.Source
+	data        *types.Source
 	preComments []string // comments that appear before the the actual line
 }
 
-func (s *Source) parse(line string, parts []string, comment string) (*types.Source, error) { //nolint:gocognit
+func (s *Source) Parse(line string, parts []string, comment string) (string, error) { //nolint: gocognit
 	if len(parts) < 2 {
-		return nil, &errors.ParseError{Parser: "Source", Line: line}
+		return "", &errors.ParseError{Parser: "Source", Line: line}
 	}
 	if parts[0] != "source" {
-		return nil, &errors.ParseError{Parser: "Source", Line: line}
+		return "", &errors.ParseError{Parser: "Source", Line: line}
 	}
-
-	data := &types.Source{
+	s.data = &types.Source{
 		Comment: comment,
 	}
-
 	if strings.Contains(parts[1], ":") {
 		addressAndPort := strings.Split(parts[1], ":")
-		data.Address = addressAndPort[0]
+		s.data.Address = addressAndPort[0]
 		if port, err := strconv.ParseInt(addressAndPort[1], 10, 64); err == nil {
-			data.Port = port
+			s.data.Port = port
 		}
 	} else {
-		data.Address = parts[1]
+		s.data.Address = parts[1]
 	}
-
 	for i := 2; i < len(parts); i++ {
 		element := parts[i]
 		switch element {
 		case "usesrc":
-			data.UseSrc = true
+			s.data.UseSrc = true
 			i++
 			if i >= len(parts) {
-				return nil, &errors.ParseError{Parser: "Source", Line: line}
+				s.data = nil
+				return "", &errors.ParseError{Parser: "Source", Line: line}
 			}
 			switch {
 			case strings.HasPrefix(parts[i], "clientip"):
-				data.ClientIP = true
+				s.data.ClientIP = true
 			case strings.HasPrefix(parts[i], "client"):
-				data.Client = true
+				s.data.Client = true
 			case strings.HasPrefix(parts[i], "hdr_ip"):
-				data.HdrIP = true
+				s.data.HdrIP = true
 				param := strings.TrimPrefix(parts[i], "hdr_ip(")
 				param = strings.TrimRight(param, ")")
 				if strings.Contains(param, ":") {
 					HdrAndOcc := strings.Split(param, ",")
-					data.Hdr = HdrAndOcc[0]
-					data.Occ = HdrAndOcc[1]
+					s.data.Hdr = HdrAndOcc[0]
+					s.data.Occ = HdrAndOcc[1]
 				} else {
-					data.Hdr = param
+					s.data.Hdr = param
 				}
-
 			default:
 				if strings.Contains(parts[i], ":") {
 					addressAndPort := strings.Split(parts[i], ":")
-					data.AddressSecond = addressAndPort[0]
+					s.data.AddressSecond = addressAndPort[0]
 					if port, err := strconv.ParseInt(addressAndPort[1], 10, 64); err == nil {
-						data.PortSecond = port
+						s.data.PortSecond = port
 					}
 				} else {
-					data.AddressSecond = parts[i]
+					s.data.AddressSecond = parts[i]
 				}
-
 			}
 		case "interface":
 			i++
 			if i >= len(parts) {
-				return nil, &errors.ParseError{Parser: "Source", Line: line}
+				s.data = nil
+				return "", &errors.ParseError{Parser: "Source", Line: line}
 			}
-			data.Interface = parts[i]
+			s.data.Interface = parts[i]
 		}
 	}
-
-	return data, nil
+	return "", nil
 }
 
 func (s *Source) Result() ([]common.ReturnResultLine, error) {
-	if len(s.data) == 0 {
+	if s.data == nil {
 		return nil, errors.ErrFetch
 	}
-	result := make([]common.ReturnResultLine, len(s.data))
-	for index, line := range s.data {
-		var sb strings.Builder
-		sb.WriteString("source")
+	var sb strings.Builder
+	sb.WriteString("source")
+	sb.WriteString(" ")
+	sb.WriteString(s.data.Address)
+	if s.data.Port > 0 {
+		sb.WriteString(":")
+		sb.WriteString(strconv.FormatInt(s.data.Port, 10))
+	}
+	if s.data.UseSrc {
 		sb.WriteString(" ")
-		sb.WriteString(line.Address)
-		if line.Port > 0 {
-			sb.WriteString(":")
-			sb.WriteString(strconv.FormatInt(line.Port, 10))
+		sb.WriteString("usesrc")
+		sb.WriteString(" ")
+		if s.data.Client {
+			sb.WriteString("client")
 		}
-		if line.UseSrc {
-			sb.WriteString(" ")
-			sb.WriteString("usesrc")
-			sb.WriteString(" ")
-			if line.Client {
-				sb.WriteString("client")
-			}
-			if line.ClientIP {
-				sb.WriteString("clientip")
-			}
-			if line.HdrIP {
-				sb.WriteString("hdr_ip(")
-				sb.WriteString(line.Hdr)
-				if line.Occ != "" {
-					sb.WriteString(",")
-					sb.WriteString(line.Occ)
-				}
-				sb.WriteString(")")
-			}
-			if line.AddressSecond != "" {
-				sb.WriteString(line.AddressSecond)
-				if line.PortSecond > 0 {
-					sb.WriteString(":")
-					sb.WriteString(strconv.FormatInt(line.PortSecond, 10))
-				}
-			}
+		if s.data.ClientIP {
+			sb.WriteString("clientip")
 		}
-		if line.Interface != "" {
-			sb.WriteString(" ")
-			sb.WriteString("interface")
-			sb.WriteString(" ")
-			sb.WriteString(line.Interface)
+		if s.data.HdrIP {
+			sb.WriteString("hdr_ip(")
+			sb.WriteString(s.data.Hdr)
+			if s.data.Occ != "" {
+				sb.WriteString(",")
+				sb.WriteString(s.data.Occ)
+			}
+			sb.WriteString(")")
 		}
-		result[index] = common.ReturnResultLine{
-			Data:    sb.String(),
-			Comment: line.Comment,
+		if s.data.AddressSecond != "" {
+			sb.WriteString(s.data.AddressSecond)
+			if s.data.PortSecond > 0 {
+				sb.WriteString(":")
+				sb.WriteString(strconv.FormatInt(s.data.PortSecond, 10))
+			}
 		}
 	}
-
-	return result, nil
+	if s.data.Interface != "" {
+		sb.WriteString(" ")
+		sb.WriteString("interface")
+		sb.WriteString(" ")
+		sb.WriteString(s.data.Interface)
+	}
+	return []common.ReturnResultLine{
+		{
+			Data:    sb.String(),
+			Comment: s.data.Comment,
+		},
+	}, nil
 }

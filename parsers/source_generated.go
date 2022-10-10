@@ -23,7 +23,7 @@ import (
 )
 
 func (p *Source) Init() {
-	p.data = []types.Source{}
+	p.data = nil
 	p.preComments = []string{}
 }
 
@@ -32,7 +32,11 @@ func (p *Source) GetParserName() string {
 }
 
 func (p *Source) Get(createIfNotExist bool) (common.ParserData, error) {
-	if len(p.data) == 0 && !createIfNotExist {
+	if p.data == nil {
+		if createIfNotExist {
+			p.data = &types.Source{}
+			return p.data, nil
+		}
 		return nil, errors.ErrFetch
 	}
 	return p.data, nil
@@ -47,55 +51,22 @@ func (p *Source) SetPreComments(preComments []string) {
 }
 
 func (p *Source) GetOne(index int) (common.ParserData, error) {
-	if index < 0 || index >= len(p.data) {
+	if index > 0 {
 		return nil, errors.ErrFetch
 	}
-	return p.data[index], nil
+	if p.data == nil {
+		return nil, errors.ErrFetch
+	}
+	return p.data, nil
 }
 
 func (p *Source) Delete(index int) error {
-	if index < 0 || index >= len(p.data) {
-		return errors.ErrFetch
-	}
-	copy(p.data[index:], p.data[index+1:])
-	p.data[len(p.data)-1] = types.Source{}
-	p.data = p.data[:len(p.data)-1]
+	p.Init()
 	return nil
 }
 
 func (p *Source) Insert(data common.ParserData, index int) error {
-	if data == nil {
-		return errors.ErrInvalidData
-	}
-	switch newValue := data.(type) {
-	case []types.Source:
-		p.data = newValue
-	case *types.Source:
-		if index > -1 {
-			if index > len(p.data) {
-				return errors.ErrIndexOutOfRange
-			}
-			p.data = append(p.data, types.Source{})
-			copy(p.data[index+1:], p.data[index:])
-			p.data[index] = *newValue
-		} else {
-			p.data = append(p.data, *newValue)
-		}
-	case types.Source:
-		if index > -1 {
-			if index > len(p.data) {
-				return errors.ErrIndexOutOfRange
-			}
-			p.data = append(p.data, types.Source{})
-			copy(p.data[index+1:], p.data[index:])
-			p.data[index] = newValue
-		} else {
-			p.data = append(p.data, newValue)
-		}
-	default:
-		return errors.ErrInvalidData
-	}
-	return nil
+	return p.Set(data, index)
 }
 
 func (p *Source) Set(data common.ParserData, index int) error {
@@ -104,24 +75,10 @@ func (p *Source) Set(data common.ParserData, index int) error {
 		return nil
 	}
 	switch newValue := data.(type) {
-	case []types.Source:
-		p.data = newValue
 	case *types.Source:
-		if index > -1 && index < len(p.data) {
-			p.data[index] = *newValue
-		} else if index == -1 {
-			p.data = append(p.data, *newValue)
-		} else {
-			return errors.ErrIndexOutOfRange
-		}
+		p.data = newValue
 	case types.Source:
-		if index > -1 && index < len(p.data) {
-			p.data[index] = newValue
-		} else if index == -1 {
-			p.data = append(p.data, newValue)
-		} else {
-			return errors.ErrIndexOutOfRange
-		}
+		p.data = &newValue
 	default:
 		return errors.ErrInvalidData
 	}
@@ -134,21 +91,6 @@ func (p *Source) PreParse(line string, parts []string, preComments []string, com
 		p.preComments = append(p.preComments, preComments...)
 	}
 	return changeState, err
-}
-
-func (p *Source) Parse(line string, parts []string, comment string) (string, error) {
-	if parts[0] == "source" {
-		data, err := p.parse(line, parts, comment)
-		if err != nil {
-			if _, ok := err.(*errors.ParseError); ok {
-				return "", err
-			}
-			return "", &errors.ParseError{Parser: "Source", Line: line}
-		}
-		p.data = append(p.data, *data)
-		return "", nil
-	}
-	return "", &errors.ParseError{Parser: "Source", Line: line}
 }
 
 func (p *Source) ResultAll() ([]common.ReturnResultLine, []string, error) {
