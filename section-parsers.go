@@ -193,6 +193,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &http.HTTPErrors{})
 	addParser(parser, &sequence, &parsers.Source{})
 	addParser(parser, &sequence, &parsers.Persist{})
+	addParser(parser, &sequence, &simple.Number{Name: "rate-limit sessions"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
@@ -451,6 +452,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &http.AfterResponses{})
 	addParser(parser, &sequence, &http.HTTPErrors{})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
+	addParser(parser, &sequence, &simple.Number{Name: "rate-limit sessions"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -718,6 +720,7 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 		addParser(parser, &sequence, &parsers.Source{})
 		addParser(parser, &sequence, &parsers.Persist{})
+		addParser(parser, &sequence, &simple.Number{Name: "rate-limit sessions"})
 	}
 	return p.createParsers(parser, sequence)
 }
