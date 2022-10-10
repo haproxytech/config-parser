@@ -4,7 +4,7 @@ PROJECT_PATH=${PWD}
 generate:
 	go install mvdan.cc/gofumpt@latest
 	echo ${PROJECT_PATH}
-	go run generate/go-generate.go ${PROJECT_PATH}
+	go run generate/*.go ${PROJECT_PATH}
 	gofumpt -l -w .
 
 .PHONY: format
