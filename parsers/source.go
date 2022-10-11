@@ -68,7 +68,7 @@ func (s *Source) Parse(line string, parts []string, comment string) (string, err
 				s.data.HdrIP = true
 				param := strings.TrimPrefix(parts[i], "hdr_ip(")
 				param = strings.TrimRight(param, ")")
-				if strings.Contains(param, ":") {
+				if strings.Contains(param, ",") {
 					HdrAndOcc := strings.Split(param, ",")
 					s.data.Hdr = HdrAndOcc[0]
 					s.data.Occ = HdrAndOcc[1]
