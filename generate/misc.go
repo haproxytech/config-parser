@@ -25,6 +25,7 @@ import (
 	"os"
 	"strings"
 	"text/template"
+	"unicode"
 
 	"github.com/google/renameio"
 )
@@ -112,4 +113,20 @@ func GoFmt(input []byte) ([]byte, error) {
 		return nil, fmt.Errorf("cmd.Run() failed with %w", err)
 	}
 	return res, nil
+}
+
+func getNiceName(str string) string {
+	var res strings.Builder
+	for _, c := range str {
+		if unicode.IsLetter(c) || unicode.IsNumber(c) {
+			res.WriteRune(c)
+		}
+	}
+	strRes := res.String()
+	size := len(strRes)
+	if size > 32 {
+		size = 32
+	}
+	strRes = strRes[0:size]
+	return strRes
 }

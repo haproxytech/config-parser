@@ -19,8 +19,13 @@ package main
 import (
 	"fmt"
 	"log"
+	"path"
 	"sort"
 	"strings"
+
+	"github.com/google/renameio/maybe"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type AliasTestData struct {
@@ -60,8 +65,9 @@ type Data struct { //nolint:maligned
 }
 
 type ConfigFile struct {
-	Section map[string][]string
-	Tests   strings.Builder
+	Section    map[string][]string
+	SectionAll map[string][]string
+	Tests      strings.Builder
 }
 
 func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cyclop
@@ -83,6 +89,10 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cycl
 		_, ok := c.Section[section]
 		if !ok {
 			c.Section[section] = []string{}
+			if c.SectionAll == nil {
+				c.SectionAll = make(map[string][]string)
+			}
+			c.SectionAll[section] = []string{}
 		}
 		// line = testOK[0]
 		if parser.ParserMultiple {
@@ -96,6 +106,7 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cycl
 			lines = []string{testOK[0]}
 			c.Section[section] = append(c.Section[section], testOK[0])
 		}
+		c.SectionAll[section] = append(c.SectionAll[section], testOK...)
 		if section == "defaults" {
 			if parser.ParserMultiple {
 				linesDefaults = testOKDefaults
@@ -107,6 +118,7 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cycl
 				linesDefaults = []string{testOKDefaults[0]}
 				c.Section[section] = append(c.Section[section], testOKDefaults[0])
 			}
+			c.SectionAll[section] = append(c.SectionAll[section], testOKDefaults...)
 		}
 		if section == "frontend" {
 			if parser.ParserMultiple {
@@ -119,6 +131,7 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cycl
 				linesFrontend = []string{testOKFrontend[0]}
 				c.Section[section] = append(c.Section[section], testOKFrontend[0])
 			}
+			c.SectionAll[section] = append(c.SectionAll[section], testOKFrontend...)
 		}
 		if section == "backend" {
 			if parser.ParserMultiple {
@@ -131,6 +144,7 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cycl
 				linesBackend = []string{testOKBackend[0]}
 				c.Section[section] = append(c.Section[section], testOKBackend[0])
 			}
+			c.SectionAll[section] = append(c.SectionAll[section], testOKBackend...)
 		}
 		if parser.ParserMultiple {
 			lines2 = TestOKEscaped
@@ -143,6 +157,7 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cycl
 			lines2 = []string{TestOKEscaped[0]}
 			c.Section[section] = append(c.Section[section], TestOKEscaped[0])
 		}
+		c.SectionAll[section] = append(c.SectionAll[section], TestOKEscaped...)
 	}
 	if len(lines) == 0 && len(lines2) == 0 {
 		if parser.NoSections {
@@ -216,3 +231,126 @@ func (c *ConfigFile) String() string {
 	result.WriteString("\n")
 	return result.String()
 }
+
+func (c *ConfigFile) StringFiles(baseFolder string) { //nolint:gocognit
+	files := map[string][]byte{}
+
+	header := license + "\npackage integration_test\n\n"
+
+	// result.WriteString("const generatedConfig = ")
+
+	sectionTypes := make([]string, len(c.SectionAll)-2)
+	index := 0
+	for sectionName := range c.SectionAll {
+		if sectionName == "global" || sectionName == "defaults" {
+			continue
+		}
+		sectionTypes[index] = sectionName
+		index++
+	}
+	sort.Strings(sectionTypes)
+	usedNiceNames := map[string]struct{}{}
+
+	writeSection := func(sectionType string) {
+		lines := c.SectionAll[sectionType]
+		file := files[sectionType]
+		if len(file) < 1 {
+			file = append(file, []byte(header)...)
+		}
+		for _, line := range lines {
+			niceName := getNiceName(sectionType) + "_" + getNiceName(line)
+			exists := true
+			for exists {
+				_, exists = usedNiceNames[niceName]
+				if exists {
+					niceName += "_"
+				}
+			}
+			usedNiceNames[niceName] = struct{}{}
+			sectionName := " test"
+			if sectionType == "defaults" || sectionType == "global" {
+				sectionName = ""
+			}
+			oneTest := "const " + niceName + " = `\n" + sectionType + sectionName + "\n" + "  " + line + "\n`" + "\n"
+			file = append(file, []byte(oneTest)...)
+			files[sectionType] = file
+		}
+	}
+
+	sectionTypes = append(sectionTypes, "global", "defaults") //nolint:makezero
+	for _, sectionName := range sectionTypes {
+		writeSection(sectionName)
+		for name, data := range files {
+			filePath := path.Join(baseFolder, name+"_data_test.go")
+			log.Println(filePath)
+			saveFile(filePath, string(data))
+		}
+		files = map[string][]byte{}
+
+		var testFile strings.Builder
+		testName := cases.Title(language.Und, cases.NoLower).String(getNiceName(sectionName))
+		testFile.WriteString(strings.Replace(testHeader, "TestWholeConfigsSections", "TestWholeConfigsSections"+testName, 1))
+		sortedNames := []string{}
+		for name := range usedNiceNames {
+			if strings.HasPrefix(name, sectionName) {
+				sortedNames = append(sortedNames, name)
+			}
+		}
+		sort.Strings(sortedNames)
+		for _, name := range sortedNames {
+			testFile.WriteString(fmt.Sprintf("		{\"%s\", %s},\n", name, name))
+		}
+		testFile.WriteString(testFooter)
+		saveFile(path.Join(baseFolder, sectionName+"_test.go"), testFile.String())
+	}
+}
+
+func saveFile(pathFile, data string) {
+	err := maybe.WriteFile(pathFile, []byte(data), 0o644)
+	CheckErr(err)
+}
+
+//nolint:gochecknoglobals
+var testHeader = license + `
+package integration_test
+
+import (
+	"bytes"
+	"testing"
+
+	parser "github.com/haproxytech/config-parser/v4"
+	"github.com/haproxytech/config-parser/v4/options"
+)
+
+func TestWholeConfigsSections(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		Name, Config string
+	}{
+`
+
+//nolint:gochecknoglobals
+var testFooter = `	}
+	for _, config := range tests {
+		t.Run(config.Name, func(t *testing.T) {
+			t.Parallel()
+			var buffer bytes.Buffer
+			buffer.WriteString(config.Config)
+			p, err := parser.New(options.Reader(&buffer))
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
+			result := p.String()
+			if result != config.Config {
+				compare(t, config.Config, result)
+				t.Error("======== ORIGINAL =========")
+				t.Error(config.Config)
+				t.Error("======== RESULT ===========")
+				t.Error(result)
+				t.Error("===========================")
+				t.Fatalf("configurations does not match")
+			}
+		})
+	}
+}
+`

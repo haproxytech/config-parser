@@ -58,4 +58,6 @@ func main() {
 	CheckErr(err)
 	err = maybe.WriteFile(filePath, res, 0o644)
 	CheckErr(err)
+
+	configFile.StringFiles(path.Join(dir, "tests", "integration"))
 }
