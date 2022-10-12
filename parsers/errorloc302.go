@@ -39,7 +39,7 @@ func (l *ErrorLoc302) Parse(line string, parts []string, comment string) (string
 	}
 	code := parts[1]
 	if _, ok := errorFileAllowedCode[code]; !ok {
-		return "", &errors.ParseError{Parser: "ErrorFile", Line: line}
+		return "", &errors.ParseError{Parser: "ErrorLoc302", Line: line}
 	}
 	errorLoc.Code = code
 	l.data = errorLoc

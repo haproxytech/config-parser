@@ -48,12 +48,12 @@ func (p *ProcessVary) Parse(line string, parts []string, comment string) (string
 	if parts[0] == "process-vary" {
 		data, err := p.parse(line, parts, comment)
 		if err != nil {
-			return "", &errors.ParseError{Parser: "StickTable", Line: line}
+			return "", &errors.ParseError{Parser: "ProcessVary", Line: line}
 		}
 		p.data = data
 		return "", nil
 	}
-	return "", &errors.ParseError{Parser: "StickTable", Line: line}
+	return "", &errors.ParseError{Parser: "ProcessVary", Line: line}
 }
 
 func (p *ProcessVary) Result() ([]common.ReturnResultLine, error) {

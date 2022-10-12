@@ -33,7 +33,7 @@ type OnOff struct {
 func (s *OnOff) Parse(line string, parts []string, comment string) (string, error) {
 	if parts[0] == s.Name {
 		if len(parts) < 2 {
-			return "", &errors.ParseError{Parser: "String", Line: line, Message: "Parse error"}
+			return "", &errors.ParseError{Parser: "OnOff", Line: line, Message: "Parse error"}
 		}
 		switch parts[1] {
 		case "on":
