@@ -71,6 +71,8 @@ type Parser interface {
 	SectionsGet(sectionType Section) ([]string, error)
 	SectionsDelete(sectionType Section, sectionName string) error
 	SectionsCreate(sectionType Section, sectionName string) error
+	SectionsDefaultsFromGet(sectionType Section, sectionName string) (string, error)
+	SectionsDefaultsFromSet(sectionType Section, sectionName, defaultsSection string) error
 	Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error
 	SetPreComments(sectionType Section, sectionName string, attribute string, preComment []string) error
 	Delete(sectionType Section, sectionName string, attribute string, index ...int) error

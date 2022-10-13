@@ -46,6 +46,10 @@ var ErrSectionAlreadyExists = errors.New("section already exists")
 
 var ErrSectionMissing = errors.New("section missing")
 
+var ErrSectionTypeMissing = errors.New("section type missing")
+
+var ErrSectionTypeNotAllowed = errors.New("section type not allowed")
+
 var ErrScopeMissing = errors.New("scope missing")
 
 var ErrScopeAlreadyExists = errors.New("scope already exists")

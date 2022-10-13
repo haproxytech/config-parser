@@ -139,6 +139,77 @@ func (p *configParser) SectionsCreate(sectionType Section, sectionName string) e
 	return nil
 }
 
+// SectionsDefaultsFromGet returns dedicated defaults section for particular section.
+// in configuration:
+//
+//	defaults DefaultsName
+//	  mode tcp
+//
+//	frontend FrontendName from DefaultsName
+//	  ...
+//
+//	SectionsDefaultsFromGet(Frontends,"FrontendName") => "DefaultsName",nil
+func (p *configParser) SectionsDefaultsFromGet(sectionType Section, sectionName string) (string, error) {
+	p.lock()
+	defer p.unLock()
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return "", errors.ErrSectionTypeMissing
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return "", errors.ErrSectionMissing
+	}
+
+	return section.DefaultSectionName, nil
+}
+
+// SectionsDefaultsFromSet set default section for section.
+// in configuration:
+//
+//	defaults DefaultsName1
+//	  mode tcp
+//
+//	defaults DefaultsName2
+//	  mode tcp
+//
+//	frontend FrontendName from DefaultsName1
+//	  ...
+//
+//	SectionsDefaultsFromSet(Frontends,"FrontendName", "DefaultsName2") => nil
+//
+// ONLY defaults, frontend, backend and listen sections can be used here
+func (p *configParser) SectionsDefaultsFromSet(sectionType Section, sectionName, defaultsSection string) error {
+	p.lock()
+	defer p.unLock()
+	switch sectionType { //nolint:exhaustive
+	case Defaults, Frontends, Backends, Listen:
+	default:
+		// catch all other sections
+		return errors.ErrSectionTypeNotAllowed
+	}
+
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return errors.ErrSectionTypeMissing
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return errors.ErrSectionMissing
+	}
+	stDef, ok := p.Parsers[Defaults]
+	if !ok {
+		return errors.ErrSectionTypeMissing
+	}
+	_, ok = stDef[defaultsSection]
+	if !ok {
+		return errors.ErrSectionMissing
+	}
+
+	section.DefaultSectionName = defaultsSection
+	return nil
+}
+
 // Set sets attribute from section, can be nil to disable/remove
 func (p *configParser) Set(sectionType Section, sectionName string, attribute string, data common.ParserData, index ...int) error {
 	p.lock()
