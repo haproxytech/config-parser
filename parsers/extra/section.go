@@ -40,6 +40,9 @@ func (s *Section) Parse(line string, parts []string, comment string) (string, er
 		if len(parts) > 1 {
 			s.data.Name = parts[1]
 		}
+		if len(parts) > 3 && parts[2] == "from" {
+			s.data.FromDefaults = parts[3]
+		}
 		return s.Name, nil
 	}
 	return "", &errors.ParseError{Parser: "Section", Line: line}

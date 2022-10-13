@@ -47,284 +47,6 @@ global test
   set-var-fmt proc.current_state "primary"
   set-var-fmt proc.bootid "%pid|%t"
 
-defaults test
-  balance roundrobin
-  persist rdp-cookie
-  cookie test
-  default-server addr 127.0.0.1
-  default-server addr ::1
-  default-server agent-check
-  default-server agent-send name
-  default-server agent-inter 1000ms
-  default-server agent-addr 127.0.0.1
-  default-server agent-addr site.com
-  default-server agent-port 1
-  default-server agent-port 65535
-  default-server allow-0rtt
-  default-server alpn h2
-  default-server alpn http/1.1
-  default-server alpn h2,http/1.1
-  default-server backup
-  default-server ca-file cert.crt
-  default-server check
-  default-server check-send-proxy
-  default-server check-alpn http/1.0
-  default-server check-alpn http/1.1,http/1.0
-  default-server check-proto h2
-  default-server check-ssl
-  default-server check-via-socks4
-  default-server ciphers ECDHE-RSA-AES128-GCM-SHA256
-  default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
-  default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
-  default-server cookie value
-  default-server crl-file file.pem
-  default-server crt cert.pem
-  default-server disabled
-  default-server enabled
-  default-server error-limit 50
-  default-server fall 30
-  default-server fall 1 rise 2 inter 3s port 4444
-  default-server force-sslv3
-  default-server force-tlsv10
-  default-server force-tlsv11
-  default-server force-tlsv12
-  default-server force-tlsv13
-  default-server init-addr last,libc,none
-  default-server init-addr last,libc,none,127.0.0.1
-  default-server inter 1500ms
-  default-server inter 1000 weight 13
-  default-server fastinter 2500ms
-  default-server fastinter unknown
-  default-server downinter 3500ms
-  default-server log-proto legacy
-  default-server log-proto octet-count
-  default-server maxconn 1
-  default-server maxconn 50
-  default-server maxqueue 0
-  default-server maxqueue 1000
-  default-server max-reuse -1
-  default-server max-reuse 0
-  default-server max-reuse 1
-  default-server minconn 1
-  default-server minconn 50
-  default-server namespace test
-  default-server no-agent-check
-  default-server no-backup
-  default-server no-check
-  default-server no-check-ssl
-  default-server no-send-proxy-v2
-  default-server no-send-proxy-v2-ssl
-  default-server no-send-proxy-v2-ssl-cn
-  default-server no-ssl
-  default-server no-ssl-reuse
-  default-server no-sslv3
-  default-server no-tls-tickets
-  default-server no-tlsv10
-  default-server no-tlsv11
-  default-server no-tlsv12
-  default-server no-tlsv13
-  default-server no-verifyhost
-  default-server no-tfo
-  default-server non-stick
-  default-server npn http/1.1,http/1.0
-  default-server observe layer4
-  default-server observe layer7
-  default-server on-error fastinter
-  default-server on-error fail-check
-  default-server on-error sudden-death
-  default-server on-error mark-down
-  default-server on-marked-down shutdown-sessions
-  default-server on-marked-up shutdown-backup-session
-  default-server pool-max-conn -1
-  default-server pool-max-conn 0
-  default-server pool-max-conn 100
-  default-server pool-purge-delay 0
-  default-server pool-purge-delay 5
-  default-server pool-purge-delay 500
-  default-server port 27015
-  default-server port 27016
-  default-server proto h2
-  default-server redir http://image1.mydomain.com
-  default-server redir https://image1.mydomain.com
-  default-server rise 2
-  default-server rise 200
-  default-server resolve-opts allow-dup-ip
-  default-server resolve-opts ignore-weight
-  default-server resolve-opts allow-dup-ip,ignore-weight
-  default-server resolve-opts prevent-dup-ip,ignore-weight
-  default-server resolve-prefer ipv4
-  default-server resolve-prefer ipv6
-  default-server resolve-net 10.0.0.0/8
-  default-server resolve-net 10.0.0.0/8,10.0.0.0/16
-  default-server resolvers mydns
-  default-server send-proxy
-  default-server send-proxy-v2
-  default-server proxy-v2-options ssl
-  default-server proxy-v2-options ssl,cert-cn
-  default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
-  default-server send-proxy-v2-ssl
-  default-server send-proxy-v2-ssl-cn
-  default-server slowstart 2000ms
-  default-server sni TODO
-  default-server source TODO
-  default-server ssl
-  default-server ssl-max-ver SSLv3
-  default-server ssl-max-ver TLSv1.0
-  default-server ssl-max-ver TLSv1.1
-  default-server ssl-max-ver TLSv1.2
-  default-server ssl-max-ver TLSv1.3
-  default-server ssl-min-ver SSLv3
-  default-server ssl-min-ver TLSv1.0
-  default-server ssl-min-ver TLSv1.1
-  default-server ssl-min-ver TLSv1.2
-  default-server ssl-min-ver TLSv1.3
-  default-server ssl-reuse
-  default-server stick
-  default-server socks4 127.0.0.1:81
-  default-server tcp-ut 20ms
-  default-server tfo
-  default-server track TODO
-  default-server tls-tickets
-  default-server verify none
-  default-server verify required
-  default-server verifyhost site.com
-  default-server weight 1
-  default-server weight 128
-  default-server weight 256
-  default-server pool-low-conn 384
-  default-server ws h1
-  default-server ws h2
-  default-server ws auto
-  email-alert from admin@example.com
-  email-alert to a@z,x@y
-  email-alert level warning
-  email-alert mailers local-mailers
-  email-alert myhostname srv01.example.com
-  email-alert to support@example.com
-  email-alert to "a@b, c@d"
-  errorfile 400 /etc/haproxy/errorfiles/400badreq.http
-  errorfile 408 /dev/null # work around Chrome pre-connect bug
-  errorfile 403 /etc/haproxy/errorfiles/403forbid.http
-  errorfile 503 /etc/haproxy/errorfiles/503sorry.http
-  errorloc302 400 http://www.myawesomesite.com/error_page
-  errorloc303 400 http://www.myawesomesite.com/error_page
-  errorfiles errors_section 400
-  errorfiles errors_section 400 401 500
-  errorfiles errors_section
-  hash-type map-based
-  http-reuse never
-  log global
-  no log
-  log stdout format short daemon # send log to systemd
-  log stdout format raw daemon # send everything to stdout
-  log stderr format raw daemon notice # send important events to stderr
-  log 127.0.0.1:514 local0 notice # only send important events
-  log 127.0.0.1:514 local0 notice notice # same but limit output level
-  log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
-  log 127.0.0.1:1515 sample 1:2 local0
-  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
-  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
-  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
-  log 127.0.0.1:1515 sample 1:6 local2
-  option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
-  unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
-  unique-id-header X-Unique-ID
-  load-server-state-from-file global
-  monitor-uri /haproxy_test
-  http-send-name-header
-  option http-restrict-req-hdr-names preserve
-  source 192.168.1.200
-  http-error status 400
-  http-error status 400 default-errorfiles
-  http-error status 400 errorfile /my/fancy/errorfile
-  http-error status 400 errorfiles myerror
-  http-error status 200 content-type "text/plain" string "My content"
-  http-error status 400 content-type "text/plain" lf-string "Hello, you are: %[src]"
-  http-error status 400 content-type "text/plain" file /my/fancy/response/file
-  http-error status 400 content-type "text/plain" lf-file /my/fancy/lof/format/response/file
-  http-error status 400 content-type "text/plain" string "My content" hdr X-value value
-  http-error status 400 content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value
-  http-check comment testcomment
-  http-check connect
-  http-check connect default
-  http-check connect port 8080
-  http-check connect addr 8.8.8.8
-  http-check connect send-proxy
-  http-check connect via-socks4
-  http-check connect ssl
-  http-check connect sni haproxy.1wt.eu
-  http-check connect alpn h2,http/1.1
-  http-check connect proto h2
-  http-check connect linger
-  http-check connect comment testcomment
-  http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
-  http-check disable-on-404
-  http-check expect status 200
-  http-check expect min-recv 50 status 200
-  http-check expect comment testcomment status 200
-  http-check expect ok-status L7OK status 200
-  http-check expect error-status L7RSP status 200
-  http-check expect tout-status L7TOUT status 200
-  http-check expect on-success \"my-log-format\" status 200
-  http-check expect on-error \"my-log-format\" status 200
-  http-check expect status-code \"500\" status 200
-  http-check expect ! string SQL\\ Error
-  http-check expect ! rstatus ^5
-  http-check expect rstring <!--tag:[0-9a-f]*--></html>
-  http-check send meth GET
-  http-check send uri /health
-  http-check send ver \"HTTP/1.1\"
-  http-check send comment testcomment
-  http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
-  http-check send uri-lf my-log-format body-lf 'my-log-format'
-  http-check send-state
-  http-check set-var(check.port) int(1234)
-  http-check set-var-fmt(check.port) int(1234)
-  http-check unset-var(txn.from)
-  tcp-check comment testcomment
-  tcp-check connect
-  tcp-check connect port 443 ssl
-  tcp-check connect port 110 linger
-  tcp-check connect port 143
-  tcp-check expect string +PONG
-  tcp-check expect string role:master
-  tcp-check expect string +OK
-  tcp-check send-lf testfmt
-  tcp-check send-lf testfmt comment testcomment
-  tcp-check send-binary testhexstring
-  tcp-check send-binary testhexstring comment testcomment
-  tcp-check send-binary-lf testhexfmt
-  tcp-check send-binary-lf testhexfmt comment testcomment
-  tcp-check set-var(check.port) int(1234)
-  tcp-check expect string +OK\ POP3\ ready
-  tcp-check expect string *\ OK\ IMAP4\ ready
-  tcp-check send PING\r\n
-  tcp-check send PING\r\n comment testcomment
-  tcp-check send QUIT\r\n
-  tcp-check send QUIT\r\n comment testcomment
-  tcp-check send info\ replication\r\n
-  tcp-check set-var-fmt(check.name) "%H"
-  tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
-  tcp-check unset-var(txn.from)
-  stats auth admin1:AdMiN123
-  stats enable
-  stats hide-version
-  stats show-legends
-  stats show-modules
-  stats maxconn 10
-  stats realm HAProxy\\ Statistics
-  stats refresh 10s
-  stats scope .
-  stats show-desc Master node for Europe, Asia, Africa
-  stats show-node
-  stats show-node Europe-1
-  stats uri /admin?stats
-  stats bind-process all
-  stats bind-process odd
-  stats bind-process even
-  stats bind-process 1 2 3 4
-  stats bind-process 1-4
-
 backend test
   acl url_stats path_beg /stats
   acl url_static path_beg -i /static /images /javascript /stylesheets
@@ -1217,6 +939,284 @@ backend test
 
 cache test
   process-vary on
+
+defaults test
+  balance roundrobin
+  persist rdp-cookie
+  cookie test
+  default-server addr 127.0.0.1
+  default-server addr ::1
+  default-server agent-check
+  default-server agent-send name
+  default-server agent-inter 1000ms
+  default-server agent-addr 127.0.0.1
+  default-server agent-addr site.com
+  default-server agent-port 1
+  default-server agent-port 65535
+  default-server allow-0rtt
+  default-server alpn h2
+  default-server alpn http/1.1
+  default-server alpn h2,http/1.1
+  default-server backup
+  default-server ca-file cert.crt
+  default-server check
+  default-server check-send-proxy
+  default-server check-alpn http/1.0
+  default-server check-alpn http/1.1,http/1.0
+  default-server check-proto h2
+  default-server check-ssl
+  default-server check-via-socks4
+  default-server ciphers ECDHE-RSA-AES128-GCM-SHA256
+  default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+  default-server cookie value
+  default-server crl-file file.pem
+  default-server crt cert.pem
+  default-server disabled
+  default-server enabled
+  default-server error-limit 50
+  default-server fall 30
+  default-server fall 1 rise 2 inter 3s port 4444
+  default-server force-sslv3
+  default-server force-tlsv10
+  default-server force-tlsv11
+  default-server force-tlsv12
+  default-server force-tlsv13
+  default-server init-addr last,libc,none
+  default-server init-addr last,libc,none,127.0.0.1
+  default-server inter 1500ms
+  default-server inter 1000 weight 13
+  default-server fastinter 2500ms
+  default-server fastinter unknown
+  default-server downinter 3500ms
+  default-server log-proto legacy
+  default-server log-proto octet-count
+  default-server maxconn 1
+  default-server maxconn 50
+  default-server maxqueue 0
+  default-server maxqueue 1000
+  default-server max-reuse -1
+  default-server max-reuse 0
+  default-server max-reuse 1
+  default-server minconn 1
+  default-server minconn 50
+  default-server namespace test
+  default-server no-agent-check
+  default-server no-backup
+  default-server no-check
+  default-server no-check-ssl
+  default-server no-send-proxy-v2
+  default-server no-send-proxy-v2-ssl
+  default-server no-send-proxy-v2-ssl-cn
+  default-server no-ssl
+  default-server no-ssl-reuse
+  default-server no-sslv3
+  default-server no-tls-tickets
+  default-server no-tlsv10
+  default-server no-tlsv11
+  default-server no-tlsv12
+  default-server no-tlsv13
+  default-server no-verifyhost
+  default-server no-tfo
+  default-server non-stick
+  default-server npn http/1.1,http/1.0
+  default-server observe layer4
+  default-server observe layer7
+  default-server on-error fastinter
+  default-server on-error fail-check
+  default-server on-error sudden-death
+  default-server on-error mark-down
+  default-server on-marked-down shutdown-sessions
+  default-server on-marked-up shutdown-backup-session
+  default-server pool-max-conn -1
+  default-server pool-max-conn 0
+  default-server pool-max-conn 100
+  default-server pool-purge-delay 0
+  default-server pool-purge-delay 5
+  default-server pool-purge-delay 500
+  default-server port 27015
+  default-server port 27016
+  default-server proto h2
+  default-server redir http://image1.mydomain.com
+  default-server redir https://image1.mydomain.com
+  default-server rise 2
+  default-server rise 200
+  default-server resolve-opts allow-dup-ip
+  default-server resolve-opts ignore-weight
+  default-server resolve-opts allow-dup-ip,ignore-weight
+  default-server resolve-opts prevent-dup-ip,ignore-weight
+  default-server resolve-prefer ipv4
+  default-server resolve-prefer ipv6
+  default-server resolve-net 10.0.0.0/8
+  default-server resolve-net 10.0.0.0/8,10.0.0.0/16
+  default-server resolvers mydns
+  default-server send-proxy
+  default-server send-proxy-v2
+  default-server proxy-v2-options ssl
+  default-server proxy-v2-options ssl,cert-cn
+  default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
+  default-server send-proxy-v2-ssl
+  default-server send-proxy-v2-ssl-cn
+  default-server slowstart 2000ms
+  default-server sni TODO
+  default-server source TODO
+  default-server ssl
+  default-server ssl-max-ver SSLv3
+  default-server ssl-max-ver TLSv1.0
+  default-server ssl-max-ver TLSv1.1
+  default-server ssl-max-ver TLSv1.2
+  default-server ssl-max-ver TLSv1.3
+  default-server ssl-min-ver SSLv3
+  default-server ssl-min-ver TLSv1.0
+  default-server ssl-min-ver TLSv1.1
+  default-server ssl-min-ver TLSv1.2
+  default-server ssl-min-ver TLSv1.3
+  default-server ssl-reuse
+  default-server stick
+  default-server socks4 127.0.0.1:81
+  default-server tcp-ut 20ms
+  default-server tfo
+  default-server track TODO
+  default-server tls-tickets
+  default-server verify none
+  default-server verify required
+  default-server verifyhost site.com
+  default-server weight 1
+  default-server weight 128
+  default-server weight 256
+  default-server pool-low-conn 384
+  default-server ws h1
+  default-server ws h2
+  default-server ws auto
+  email-alert from admin@example.com
+  email-alert to a@z,x@y
+  email-alert level warning
+  email-alert mailers local-mailers
+  email-alert myhostname srv01.example.com
+  email-alert to support@example.com
+  email-alert to "a@b, c@d"
+  errorfile 400 /etc/haproxy/errorfiles/400badreq.http
+  errorfile 408 /dev/null # work around Chrome pre-connect bug
+  errorfile 403 /etc/haproxy/errorfiles/403forbid.http
+  errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  errorloc302 400 http://www.myawesomesite.com/error_page
+  errorloc303 400 http://www.myawesomesite.com/error_page
+  errorfiles errors_section 400
+  errorfiles errors_section 400 401 500
+  errorfiles errors_section
+  hash-type map-based
+  http-reuse never
+  log global
+  no log
+  log stdout format short daemon # send log to systemd
+  log stdout format raw daemon # send everything to stdout
+  log stderr format raw daemon notice # send important events to stderr
+  log 127.0.0.1:514 local0 notice # only send important events
+  log 127.0.0.1:514 local0 notice notice # same but limit output level
+  log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
+  log 127.0.0.1:1515 sample 1:2 local0
+  log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
+  log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
+  log 127.0.0.1:1515 sample 1:6 local2
+  option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
+  unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
+  unique-id-header X-Unique-ID
+  load-server-state-from-file global
+  monitor-uri /haproxy_test
+  http-send-name-header
+  option http-restrict-req-hdr-names preserve
+  source 192.168.1.200
+  http-error status 400
+  http-error status 400 default-errorfiles
+  http-error status 400 errorfile /my/fancy/errorfile
+  http-error status 400 errorfiles myerror
+  http-error status 200 content-type "text/plain" string "My content"
+  http-error status 400 content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-error status 400 content-type "text/plain" file /my/fancy/response/file
+  http-error status 400 content-type "text/plain" lf-file /my/fancy/lof/format/response/file
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value value
+  http-error status 400 content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value
+  http-check comment testcomment
+  http-check connect
+  http-check connect default
+  http-check connect port 8080
+  http-check connect addr 8.8.8.8
+  http-check connect send-proxy
+  http-check connect via-socks4
+  http-check connect ssl
+  http-check connect sni haproxy.1wt.eu
+  http-check connect alpn h2,http/1.1
+  http-check connect proto h2
+  http-check connect linger
+  http-check connect comment testcomment
+  http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
+  http-check disable-on-404
+  http-check expect status 200
+  http-check expect min-recv 50 status 200
+  http-check expect comment testcomment status 200
+  http-check expect ok-status L7OK status 200
+  http-check expect error-status L7RSP status 200
+  http-check expect tout-status L7TOUT status 200
+  http-check expect on-success \"my-log-format\" status 200
+  http-check expect on-error \"my-log-format\" status 200
+  http-check expect status-code \"500\" status 200
+  http-check expect ! string SQL\\ Error
+  http-check expect ! rstatus ^5
+  http-check expect rstring <!--tag:[0-9a-f]*--></html>
+  http-check send meth GET
+  http-check send uri /health
+  http-check send ver \"HTTP/1.1\"
+  http-check send comment testcomment
+  http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
+  http-check send uri-lf my-log-format body-lf 'my-log-format'
+  http-check send-state
+  http-check set-var(check.port) int(1234)
+  http-check set-var-fmt(check.port) int(1234)
+  http-check unset-var(txn.from)
+  tcp-check comment testcomment
+  tcp-check connect
+  tcp-check connect port 443 ssl
+  tcp-check connect port 110 linger
+  tcp-check connect port 143
+  tcp-check expect string +PONG
+  tcp-check expect string role:master
+  tcp-check expect string +OK
+  tcp-check send-lf testfmt
+  tcp-check send-lf testfmt comment testcomment
+  tcp-check send-binary testhexstring
+  tcp-check send-binary testhexstring comment testcomment
+  tcp-check send-binary-lf testhexfmt
+  tcp-check send-binary-lf testhexfmt comment testcomment
+  tcp-check set-var(check.port) int(1234)
+  tcp-check expect string +OK\ POP3\ ready
+  tcp-check expect string *\ OK\ IMAP4\ ready
+  tcp-check send PING\r\n
+  tcp-check send PING\r\n comment testcomment
+  tcp-check send QUIT\r\n
+  tcp-check send QUIT\r\n comment testcomment
+  tcp-check send info\ replication\r\n
+  tcp-check set-var-fmt(check.name) "%H"
+  tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
+  tcp-check unset-var(txn.from)
+  stats auth admin1:AdMiN123
+  stats enable
+  stats hide-version
+  stats show-legends
+  stats show-modules
+  stats maxconn 10
+  stats realm HAProxy\\ Statistics
+  stats refresh 10s
+  stats scope .
+  stats show-desc Master node for Europe, Asia, Africa
+  stats show-node
+  stats show-node Europe-1
+  stats uri /admin?stats
+  stats bind-process all
+  stats bind-process odd
+  stats bind-process even
+  stats bind-process 1 2 3 4
+  stats bind-process 1-4
 
 fcgi-app test
   set-param name fmt if acl

@@ -38,10 +38,11 @@ type ParserInterface interface {
 }
 
 type Parsers struct {
-	Parsers        map[string]ParserInterface
-	ParserSequence []Section
-	PreComments    []string
-	PostComments   []string
+	Parsers            map[string]ParserInterface
+	ParserSequence     []Section
+	PreComments        []string
+	PostComments       []string
+	DefaultSectionName string
 }
 
 func (p *Parsers) Get(attribute string, createIfNotExist ...bool) (common.ParserData, error) {

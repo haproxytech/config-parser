@@ -21,6 +21,7 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
@@ -48,7 +49,6 @@ func (p *configParser) Process(reader io.Reader) error {
 		ActiveComments: nil,
 		Active:         p.Parsers[Comments][CommentsSectionName],
 		Comments:       p.Parsers[Comments][CommentsSectionName],
-		Defaults:       p.Parsers[Defaults][DefaultSectionName],
 		Global:         p.Parsers[Global][GlobalSectionName],
 	}
 
@@ -168,7 +168,30 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 				case "":
 					config.Active = config.Comments
 				case "defaults":
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
+					if data.Name == "" {
+						var name string
+						for i := 1; ; i++ {
+							name = "unnamed_defaults_" + strconv.Itoa(i)
+							_, exists := p.Parsers[Defaults][name]
+							if !exists {
+								break
+							}
+						}
+						data.Name = name
+					}
+					config.Defaults = p.getDefaultParser()
+					if data.FromDefaults != "" {
+						config.Defaults.DefaultSectionName = data.FromDefaults
+					}
+					p.Parsers[Defaults][data.Name] = config.Defaults
 					config.Active = config.Defaults
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%defaults section %s active", p.Options.LogPrefix, data.Name)
+					}
+					p.lastDefaultsSectionName = data.Name
 				case "global":
 					config.Active = config.Global
 				case "frontend":
@@ -176,6 +199,11 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Frontend = p.getFrontendParser()
+					if data.FromDefaults != "" {
+						config.Frontend.DefaultSectionName = data.FromDefaults
+					} else {
+						config.Frontend.DefaultSectionName = p.lastDefaultsSectionName
+					}
 					p.Parsers[Frontends][data.Name] = config.Frontend
 					config.Active = config.Frontend
 					if p.Options.Log {
@@ -186,6 +214,11 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Backend = p.getBackendParser()
+					if data.FromDefaults != "" {
+						config.Backend.DefaultSectionName = data.FromDefaults
+					} else {
+						config.Backend.DefaultSectionName = p.lastDefaultsSectionName
+					}
 					p.Parsers[Backends][data.Name] = config.Backend
 					config.Active = config.Backend
 					if p.Options.Log {
@@ -196,6 +229,11 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					rawData, _ := parserSectionName.Get(false)
 					data := rawData.(*types.Section) //nolint:forcetypeassert
 					config.Listen = p.getListenParser()
+					if data.FromDefaults != "" {
+						config.Listen.DefaultSectionName = data.FromDefaults
+					} else {
+						config.Listen.DefaultSectionName = p.lastDefaultsSectionName
+					}
 					p.Parsers[Listen][data.Name] = config.Listen
 					config.Active = config.Listen
 					if p.Options.Log {

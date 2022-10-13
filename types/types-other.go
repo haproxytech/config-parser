@@ -24,8 +24,9 @@ import "github.com/haproxytech/config-parser/v4/common"
 //dir:extra
 //no:init
 type Section struct {
-	Name    string
-	Comment string
+	Name         string
+	FromDefaults string
+	Comment      string
 }
 
 //name:config-version

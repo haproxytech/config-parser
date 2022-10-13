@@ -55,7 +55,7 @@ const (
 const (
 	CommentsSectionName = "data"
 	GlobalSectionName   = "data"
-	DefaultSectionName  = "data"
+	DefaultSectionName  = ""
 )
 
 //nolint:interfacebloat
@@ -87,14 +87,16 @@ func (e UnlockError) Error() string {
 
 // configParser reads and writes configuration on given file
 type configParser struct {
-	Parsers map[Section]map[string]*Parsers
-	Options options.Parser
-	mutex   *sync.Mutex
+	Parsers                 map[Section]map[string]*Parsers
+	Options                 options.Parser
+	lastDefaultsSectionName string
+	mutex                   *sync.Mutex
 }
 
 func New(opt ...options.ParserOption) (Parser, error) {
 	p := &configParser{
-		Options: options.Parser{},
+		Options:                 options.Parser{},
+		lastDefaultsSectionName: "",
 	}
 	var err error
 

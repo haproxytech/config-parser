@@ -66,6 +66,7 @@ func (p *configParser) Init() {
 
 func (p *configParser) initParserMaps() {
 	p.mutex = &sync.Mutex{}
+	p.lastDefaultsSectionName = ""
 
 	p.Parsers = map[Section]map[string]*Parsers{}
 
@@ -73,9 +74,7 @@ func (p *configParser) initParserMaps() {
 		CommentsSectionName: p.getStartParser(),
 	}
 
-	p.Parsers[Defaults] = map[string]*Parsers{
-		DefaultSectionName: p.getDefaultParser(),
-	}
+	p.Parsers[Defaults] = map[string]*Parsers{}
 
 	p.Parsers[Global] = map[string]*Parsers{
 		GlobalSectionName: p.getGlobalParser(),

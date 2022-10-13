@@ -18,1406 +18,1406 @@ limitations under the License.
 package integration_test
 
 const defaults_balanceroundrobin = `
-defaults
+defaults test
   balance roundrobin
 `
 const defaults_balanceuri = `
-defaults
+defaults test
   balance uri
 `
 const defaults_balanceuriwhole = `
-defaults
+defaults test
   balance uri whole
 `
 const defaults_balanceurilen12 = `
-defaults
+defaults test
   balance uri len 12
 `
 const defaults_balanceuridepth8 = `
-defaults
+defaults test
   balance uri depth 8
 `
 const defaults_balanceuridepth8whole = `
-defaults
+defaults test
   balance uri depth 8 whole
 `
 const defaults_balanceuridepth8len12whole = `
-defaults
+defaults test
   balance uri depth 8 len 12 whole
 `
 const defaults_balanceurlparam = `
-defaults
+defaults test
   balance url_param
 `
 const defaults_balanceurlparamsessionid = `
-defaults
+defaults test
   balance url_param session_id
 `
 const defaults_balanceurlparamcheckpost10 = `
-defaults
+defaults test
   balance url_param check_post 10
 `
 const defaults_balanceurlparamcheckpost10maxwai = `
-defaults
+defaults test
   balance url_param check_post 10 max_wait 20
 `
 const defaults_balanceurlparamsessionidcheckpos = `
-defaults
+defaults test
   balance url_param session_id check_post 10 max_wait 20
 `
 const defaults_balancehdrhdrName = `
-defaults
+defaults test
   balance hdr(hdrName)
 `
 const defaults_balancehdrhdrNameusedomainonly = `
-defaults
+defaults test
   balance hdr(hdrName) use_domain_only
 `
 const defaults_balancerandom = `
-defaults
+defaults test
   balance random
 `
 const defaults_balancerandom15 = `
-defaults
+defaults test
   balance random(15)
 `
 const defaults_balancerdpcookie = `
-defaults
+defaults test
   balance rdp-cookie
 `
 const defaults_balancerdpcookiesomething = `
-defaults
+defaults test
   balance rdp-cookie(something)
 `
 const defaults_balancehashreqcookieclientid = `
-defaults
+defaults test
   balance hash req.cookie(clientid)
 `
 const defaults_balancehashreqhdripxforwardedfor = `
-defaults
+defaults test
   balance hash req.hdr_ip(x-forwarded-for,-1),ipmask(24)
 `
 const defaults_balancehashreqhdripxforwardedfor_ = `
-defaults
+defaults test
   balance hash req.hdr_ip(x-forwarded-for ,-1),ipmask(24)
 `
 const defaults_persistrdpcookie = `
-defaults
+defaults test
   persist rdp-cookie
 `
 const defaults_persistrdpcookiecookies = `
-defaults
+defaults test
   persist rdp-cookie(cookies)
 `
 const defaults_cookietest = `
-defaults
+defaults test
   cookie test
 `
 const defaults_cookiemyCookiedomaindom1indirect = `
-defaults
+defaults test
   cookie myCookie domain dom1 indirect postonly
 `
 const defaults_cookiemyCookiedomaindom1domaindo = `
-defaults
+defaults test
   cookie myCookie domain dom1 domain dom2 indirect postonly
 `
 const defaults_cookiemyCookieindirectmaxidle10m = `
-defaults
+defaults test
   cookie myCookie indirect maxidle 10 maxlife 5 postonly
 `
 const defaults_cookiemyCookieindirectmaxidle10 = `
-defaults
+defaults test
   cookie myCookie indirect maxidle 10
 `
 const defaults_cookiemyCookieindirectmaxlife10 = `
-defaults
+defaults test
   cookie myCookie indirect maxlife 10
 `
 const defaults_cookiemyCookiedomaindom1domaindo_ = `
-defaults
+defaults test
   cookie myCookie domain dom1 domain dom2 httponly indirect maxidle 10 maxlife 5 nocache postonly preserve rewrite secure
 `
 const defaults_cookiemyCookieattrSameSiteStrict = `
-defaults
+defaults test
   cookie myCookie attr \"SameSite=Strict\" attr \"mykey=myvalue\" insert
 `
 const defaults_defaultserveraddr127001 = `
-defaults
+defaults test
   default-server addr 127.0.0.1
 `
 const defaults_defaultserveraddr1 = `
-defaults
+defaults test
   default-server addr ::1
 `
 const defaults_defaultserveragentcheck = `
-defaults
+defaults test
   default-server agent-check
 `
 const defaults_defaultserveragentsendname = `
-defaults
+defaults test
   default-server agent-send name
 `
 const defaults_defaultserveragentinter1000ms = `
-defaults
+defaults test
   default-server agent-inter 1000ms
 `
 const defaults_defaultserveragentaddr127001 = `
-defaults
+defaults test
   default-server agent-addr 127.0.0.1
 `
 const defaults_defaultserveragentaddrsitecom = `
-defaults
+defaults test
   default-server agent-addr site.com
 `
 const defaults_defaultserveragentport1 = `
-defaults
+defaults test
   default-server agent-port 1
 `
 const defaults_defaultserveragentport65535 = `
-defaults
+defaults test
   default-server agent-port 65535
 `
 const defaults_defaultserverallow0rtt = `
-defaults
+defaults test
   default-server allow-0rtt
 `
 const defaults_defaultserveralpnh2 = `
-defaults
+defaults test
   default-server alpn h2
 `
 const defaults_defaultserveralpnhttp11 = `
-defaults
+defaults test
   default-server alpn http/1.1
 `
 const defaults_defaultserveralpnh2http11 = `
-defaults
+defaults test
   default-server alpn h2,http/1.1
 `
 const defaults_defaultserverbackup = `
-defaults
+defaults test
   default-server backup
 `
 const defaults_defaultservercafilecertcrt = `
-defaults
+defaults test
   default-server ca-file cert.crt
 `
 const defaults_defaultservercheck = `
-defaults
+defaults test
   default-server check
 `
 const defaults_defaultserverchecksendproxy = `
-defaults
+defaults test
   default-server check-send-proxy
 `
 const defaults_defaultservercheckalpnhttp10 = `
-defaults
+defaults test
   default-server check-alpn http/1.0
 `
 const defaults_defaultservercheckalpnhttp11http = `
-defaults
+defaults test
   default-server check-alpn http/1.1,http/1.0
 `
 const defaults_defaultservercheckprotoh2 = `
-defaults
+defaults test
   default-server check-proto h2
 `
 const defaults_defaultservercheckssl = `
-defaults
+defaults test
   default-server check-ssl
 `
 const defaults_defaultservercheckviasocks4 = `
-defaults
+defaults test
   default-server check-via-socks4
 `
 const defaults_defaultserverciphersECDHERSAAES1 = `
-defaults
+defaults test
   default-server ciphers ECDHE-RSA-AES128-GCM-SHA256
 `
 const defaults_defaultserverciphersECDHEECDSACH = `
-defaults
+defaults test
   default-server ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
 `
 const defaults_defaultserverciphersuitesECDHEEC = `
-defaults
+defaults test
   default-server ciphersuites ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
 `
 const defaults_defaultservercookievalue = `
-defaults
+defaults test
   default-server cookie value
 `
 const defaults_defaultservercrlfilefilepem = `
-defaults
+defaults test
   default-server crl-file file.pem
 `
 const defaults_defaultservercrtcertpem = `
-defaults
+defaults test
   default-server crt cert.pem
 `
 const defaults_defaultserverdisabled = `
-defaults
+defaults test
   default-server disabled
 `
 const defaults_defaultserverenabled = `
-defaults
+defaults test
   default-server enabled
 `
 const defaults_defaultservererrorlimit50 = `
-defaults
+defaults test
   default-server error-limit 50
 `
 const defaults_defaultserverfall30 = `
-defaults
+defaults test
   default-server fall 30
 `
 const defaults_defaultserverfall1rise2inter3spo = `
-defaults
+defaults test
   default-server fall 1 rise 2 inter 3s port 4444
 `
 const defaults_defaultserverforcesslv3 = `
-defaults
+defaults test
   default-server force-sslv3
 `
 const defaults_defaultserverforcetlsv10 = `
-defaults
+defaults test
   default-server force-tlsv10
 `
 const defaults_defaultserverforcetlsv11 = `
-defaults
+defaults test
   default-server force-tlsv11
 `
 const defaults_defaultserverforcetlsv12 = `
-defaults
+defaults test
   default-server force-tlsv12
 `
 const defaults_defaultserverforcetlsv13 = `
-defaults
+defaults test
   default-server force-tlsv13
 `
 const defaults_defaultserverinitaddrlastlibcnon = `
-defaults
+defaults test
   default-server init-addr last,libc,none
 `
 const defaults_defaultserverinitaddrlastlibcnon_ = `
-defaults
+defaults test
   default-server init-addr last,libc,none,127.0.0.1
 `
 const defaults_defaultserverinter1500ms = `
-defaults
+defaults test
   default-server inter 1500ms
 `
 const defaults_defaultserverinter1000weight13 = `
-defaults
+defaults test
   default-server inter 1000 weight 13
 `
 const defaults_defaultserverfastinter2500ms = `
-defaults
+defaults test
   default-server fastinter 2500ms
 `
 const defaults_defaultserverfastinterunknown = `
-defaults
+defaults test
   default-server fastinter unknown
 `
 const defaults_defaultserverdowninter3500ms = `
-defaults
+defaults test
   default-server downinter 3500ms
 `
 const defaults_defaultserverlogprotolegacy = `
-defaults
+defaults test
   default-server log-proto legacy
 `
 const defaults_defaultserverlogprotooctetcount = `
-defaults
+defaults test
   default-server log-proto octet-count
 `
 const defaults_defaultservermaxconn1 = `
-defaults
+defaults test
   default-server maxconn 1
 `
 const defaults_defaultservermaxconn50 = `
-defaults
+defaults test
   default-server maxconn 50
 `
 const defaults_defaultservermaxqueue0 = `
-defaults
+defaults test
   default-server maxqueue 0
 `
 const defaults_defaultservermaxqueue1000 = `
-defaults
+defaults test
   default-server maxqueue 1000
 `
 const defaults_defaultservermaxreuse1 = `
-defaults
+defaults test
   default-server max-reuse -1
 `
 const defaults_defaultservermaxreuse0 = `
-defaults
+defaults test
   default-server max-reuse 0
 `
 const defaults_defaultservermaxreuse1_ = `
-defaults
+defaults test
   default-server max-reuse 1
 `
 const defaults_defaultserverminconn1 = `
-defaults
+defaults test
   default-server minconn 1
 `
 const defaults_defaultserverminconn50 = `
-defaults
+defaults test
   default-server minconn 50
 `
 const defaults_defaultservernamespacetest = `
-defaults
+defaults test
   default-server namespace test
 `
 const defaults_defaultservernoagentcheck = `
-defaults
+defaults test
   default-server no-agent-check
 `
 const defaults_defaultservernobackup = `
-defaults
+defaults test
   default-server no-backup
 `
 const defaults_defaultservernocheck = `
-defaults
+defaults test
   default-server no-check
 `
 const defaults_defaultservernocheckssl = `
-defaults
+defaults test
   default-server no-check-ssl
 `
 const defaults_defaultservernosendproxyv2 = `
-defaults
+defaults test
   default-server no-send-proxy-v2
 `
 const defaults_defaultservernosendproxyv2ssl = `
-defaults
+defaults test
   default-server no-send-proxy-v2-ssl
 `
 const defaults_defaultservernosendproxyv2sslcn = `
-defaults
+defaults test
   default-server no-send-proxy-v2-ssl-cn
 `
 const defaults_defaultservernossl = `
-defaults
+defaults test
   default-server no-ssl
 `
 const defaults_defaultservernosslreuse = `
-defaults
+defaults test
   default-server no-ssl-reuse
 `
 const defaults_defaultservernosslv3 = `
-defaults
+defaults test
   default-server no-sslv3
 `
 const defaults_defaultservernotlstickets = `
-defaults
+defaults test
   default-server no-tls-tickets
 `
 const defaults_defaultservernotlsv10 = `
-defaults
+defaults test
   default-server no-tlsv10
 `
 const defaults_defaultservernotlsv11 = `
-defaults
+defaults test
   default-server no-tlsv11
 `
 const defaults_defaultservernotlsv12 = `
-defaults
+defaults test
   default-server no-tlsv12
 `
 const defaults_defaultservernotlsv13 = `
-defaults
+defaults test
   default-server no-tlsv13
 `
 const defaults_defaultservernoverifyhost = `
-defaults
+defaults test
   default-server no-verifyhost
 `
 const defaults_defaultservernotfo = `
-defaults
+defaults test
   default-server no-tfo
 `
 const defaults_defaultservernonstick = `
-defaults
+defaults test
   default-server non-stick
 `
 const defaults_defaultservernpnhttp11http10 = `
-defaults
+defaults test
   default-server npn http/1.1,http/1.0
 `
 const defaults_defaultserverobservelayer4 = `
-defaults
+defaults test
   default-server observe layer4
 `
 const defaults_defaultserverobservelayer7 = `
-defaults
+defaults test
   default-server observe layer7
 `
 const defaults_defaultserveronerrorfastinter = `
-defaults
+defaults test
   default-server on-error fastinter
 `
 const defaults_defaultserveronerrorfailcheck = `
-defaults
+defaults test
   default-server on-error fail-check
 `
 const defaults_defaultserveronerrorsuddendeath = `
-defaults
+defaults test
   default-server on-error sudden-death
 `
 const defaults_defaultserveronerrormarkdown = `
-defaults
+defaults test
   default-server on-error mark-down
 `
 const defaults_defaultserveronmarkeddownshutdow = `
-defaults
+defaults test
   default-server on-marked-down shutdown-sessions
 `
 const defaults_defaultserveronmarkedupshutdownb = `
-defaults
+defaults test
   default-server on-marked-up shutdown-backup-session
 `
 const defaults_defaultserverpoolmaxconn1 = `
-defaults
+defaults test
   default-server pool-max-conn -1
 `
 const defaults_defaultserverpoolmaxconn0 = `
-defaults
+defaults test
   default-server pool-max-conn 0
 `
 const defaults_defaultserverpoolmaxconn100 = `
-defaults
+defaults test
   default-server pool-max-conn 100
 `
 const defaults_defaultserverpoolpurgedelay0 = `
-defaults
+defaults test
   default-server pool-purge-delay 0
 `
 const defaults_defaultserverpoolpurgedelay5 = `
-defaults
+defaults test
   default-server pool-purge-delay 5
 `
 const defaults_defaultserverpoolpurgedelay500 = `
-defaults
+defaults test
   default-server pool-purge-delay 500
 `
 const defaults_defaultserverport27015 = `
-defaults
+defaults test
   default-server port 27015
 `
 const defaults_defaultserverport27016 = `
-defaults
+defaults test
   default-server port 27016
 `
 const defaults_defaultserverprotoh2 = `
-defaults
+defaults test
   default-server proto h2
 `
 const defaults_defaultserverredirhttpimage1mydo = `
-defaults
+defaults test
   default-server redir http://image1.mydomain.com
 `
 const defaults_defaultserverredirhttpsimage1myd = `
-defaults
+defaults test
   default-server redir https://image1.mydomain.com
 `
 const defaults_defaultserverrise2 = `
-defaults
+defaults test
   default-server rise 2
 `
 const defaults_defaultserverrise200 = `
-defaults
+defaults test
   default-server rise 200
 `
 const defaults_defaultserverresolveoptsallowdup = `
-defaults
+defaults test
   default-server resolve-opts allow-dup-ip
 `
 const defaults_defaultserverresolveoptsignorewe = `
-defaults
+defaults test
   default-server resolve-opts ignore-weight
 `
 const defaults_defaultserverresolveoptsallowdup_ = `
-defaults
+defaults test
   default-server resolve-opts allow-dup-ip,ignore-weight
 `
 const defaults_defaultserverresolveoptspreventd = `
-defaults
+defaults test
   default-server resolve-opts prevent-dup-ip,ignore-weight
 `
 const defaults_defaultserverresolvepreferipv4 = `
-defaults
+defaults test
   default-server resolve-prefer ipv4
 `
 const defaults_defaultserverresolvepreferipv6 = `
-defaults
+defaults test
   default-server resolve-prefer ipv6
 `
 const defaults_defaultserverresolvenet100008 = `
-defaults
+defaults test
   default-server resolve-net 10.0.0.0/8
 `
 const defaults_defaultserverresolvenet100008100 = `
-defaults
+defaults test
   default-server resolve-net 10.0.0.0/8,10.0.0.0/16
 `
 const defaults_defaultserverresolversmydns = `
-defaults
+defaults test
   default-server resolvers mydns
 `
 const defaults_defaultserversendproxy = `
-defaults
+defaults test
   default-server send-proxy
 `
 const defaults_defaultserversendproxyv2 = `
-defaults
+defaults test
   default-server send-proxy-v2
 `
 const defaults_defaultserverproxyv2optionsssl = `
-defaults
+defaults test
   default-server proxy-v2-options ssl
 `
 const defaults_defaultserverproxyv2optionssslce = `
-defaults
+defaults test
   default-server proxy-v2-options ssl,cert-cn
 `
 const defaults_defaultserverproxyv2optionssslce_ = `
-defaults
+defaults test
   default-server proxy-v2-options ssl,cert-cn,ssl-cipher,cert-sig,cert-key,authority,crc32c,unique-id
 `
 const defaults_defaultserversendproxyv2ssl = `
-defaults
+defaults test
   default-server send-proxy-v2-ssl
 `
 const defaults_defaultserversendproxyv2sslcn = `
-defaults
+defaults test
   default-server send-proxy-v2-ssl-cn
 `
 const defaults_defaultserverslowstart2000ms = `
-defaults
+defaults test
   default-server slowstart 2000ms
 `
 const defaults_defaultserversniTODO = `
-defaults
+defaults test
   default-server sni TODO
 `
 const defaults_defaultserversourceTODO = `
-defaults
+defaults test
   default-server source TODO
 `
 const defaults_defaultserverssl = `
-defaults
+defaults test
   default-server ssl
 `
 const defaults_defaultserversslmaxverSSLv3 = `
-defaults
+defaults test
   default-server ssl-max-ver SSLv3
 `
 const defaults_defaultserversslmaxverTLSv10 = `
-defaults
+defaults test
   default-server ssl-max-ver TLSv1.0
 `
 const defaults_defaultserversslmaxverTLSv11 = `
-defaults
+defaults test
   default-server ssl-max-ver TLSv1.1
 `
 const defaults_defaultserversslmaxverTLSv12 = `
-defaults
+defaults test
   default-server ssl-max-ver TLSv1.2
 `
 const defaults_defaultserversslmaxverTLSv13 = `
-defaults
+defaults test
   default-server ssl-max-ver TLSv1.3
 `
 const defaults_defaultserversslminverSSLv3 = `
-defaults
+defaults test
   default-server ssl-min-ver SSLv3
 `
 const defaults_defaultserversslminverTLSv10 = `
-defaults
+defaults test
   default-server ssl-min-ver TLSv1.0
 `
 const defaults_defaultserversslminverTLSv11 = `
-defaults
+defaults test
   default-server ssl-min-ver TLSv1.1
 `
 const defaults_defaultserversslminverTLSv12 = `
-defaults
+defaults test
   default-server ssl-min-ver TLSv1.2
 `
 const defaults_defaultserversslminverTLSv13 = `
-defaults
+defaults test
   default-server ssl-min-ver TLSv1.3
 `
 const defaults_defaultserversslreuse = `
-defaults
+defaults test
   default-server ssl-reuse
 `
 const defaults_defaultserverstick = `
-defaults
+defaults test
   default-server stick
 `
 const defaults_defaultserversocks412700181 = `
-defaults
+defaults test
   default-server socks4 127.0.0.1:81
 `
 const defaults_defaultservertcput20ms = `
-defaults
+defaults test
   default-server tcp-ut 20ms
 `
 const defaults_defaultservertfo = `
-defaults
+defaults test
   default-server tfo
 `
 const defaults_defaultservertrackTODO = `
-defaults
+defaults test
   default-server track TODO
 `
 const defaults_defaultservertlstickets = `
-defaults
+defaults test
   default-server tls-tickets
 `
 const defaults_defaultserververifynone = `
-defaults
+defaults test
   default-server verify none
 `
 const defaults_defaultserververifyrequired = `
-defaults
+defaults test
   default-server verify required
 `
 const defaults_defaultserververifyhostsitecom = `
-defaults
+defaults test
   default-server verifyhost site.com
 `
 const defaults_defaultserverweight1 = `
-defaults
+defaults test
   default-server weight 1
 `
 const defaults_defaultserverweight128 = `
-defaults
+defaults test
   default-server weight 128
 `
 const defaults_defaultserverweight256 = `
-defaults
+defaults test
   default-server weight 256
 `
 const defaults_defaultserverpoollowconn384 = `
-defaults
+defaults test
   default-server pool-low-conn 384
 `
 const defaults_defaultserverwsh1 = `
-defaults
+defaults test
   default-server ws h1
 `
 const defaults_defaultserverwsh2 = `
-defaults
+defaults test
   default-server ws h2
 `
 const defaults_defaultserverwsauto = `
-defaults
+defaults test
   default-server ws auto
 `
 const defaults_emailalertfromadminexamplecom = `
-defaults
+defaults test
   email-alert from admin@example.com
 `
 const defaults_emailalerttoazxy = `
-defaults
+defaults test
   email-alert to a@z,x@y
 `
 const defaults_emailalertlevelwarning = `
-defaults
+defaults test
   email-alert level warning
 `
 const defaults_emailalertmailerslocalmailers = `
-defaults
+defaults test
   email-alert mailers local-mailers
 `
 const defaults_emailalertmyhostnamesrv01example = `
-defaults
+defaults test
   email-alert myhostname srv01.example.com
 `
 const defaults_emailalerttosupportexamplecom = `
-defaults
+defaults test
   email-alert to support@example.com
 `
 const defaults_emailalerttoabcd = `
-defaults
+defaults test
   email-alert to "a@b, c@d"
 `
 const defaults_errorfile400etchaproxyerrorfiles = `
-defaults
+defaults test
   errorfile 400 /etc/haproxy/errorfiles/400badreq.http
 `
 const defaults_errorfile408devnullworkaroundChr = `
-defaults
+defaults test
   errorfile 408 /dev/null # work around Chrome pre-connect bug
 `
 const defaults_errorfile403etchaproxyerrorfiles = `
-defaults
+defaults test
   errorfile 403 /etc/haproxy/errorfiles/403forbid.http
 `
 const defaults_errorfile503etchaproxyerrorfiles = `
-defaults
+defaults test
   errorfile 503 /etc/haproxy/errorfiles/503sorry.http
 `
 const defaults_errorloc302400httpwwwmyawesomesi = `
-defaults
+defaults test
   errorloc302 400 http://www.myawesomesite.com/error_page
 `
 const defaults_errorloc302404httpwwwmyawesomesi = `
-defaults
+defaults test
   errorloc302 404 http://www.myawesomesite.com/not_found
 `
 const defaults_errorloc302501errorpage = `
-defaults
+defaults test
   errorloc302 501 /error_page
 `
 const defaults_errorloc303400httpwwwmyawesomesi = `
-defaults
+defaults test
   errorloc303 400 http://www.myawesomesite.com/error_page
 `
 const defaults_errorloc303404httpwwwmyawesomesi = `
-defaults
+defaults test
   errorloc303 404 http://www.myawesomesite.com/not_found
 `
 const defaults_errorloc303501errorpage = `
-defaults
+defaults test
   errorloc303 501 /error_page
 `
 const defaults_errorfileserrorssection400 = `
-defaults
+defaults test
   errorfiles errors_section 400
 `
 const defaults_errorfileserrorssection400401500 = `
-defaults
+defaults test
   errorfiles errors_section 400 401 500
 `
 const defaults_errorfileserrorssection = `
-defaults
+defaults test
   errorfiles errors_section
 `
 const defaults_hashtypemapbased = `
-defaults
+defaults test
   hash-type map-based
 `
 const defaults_hashtypemapbasedavalanche = `
-defaults
+defaults test
   hash-type map-based avalanche
 `
 const defaults_hashtypeconsistent = `
-defaults
+defaults test
   hash-type consistent
 `
 const defaults_hashtypeconsistentavalanche = `
-defaults
+defaults test
   hash-type consistent avalanche
 `
 const defaults_hashtypeavalanche = `
-defaults
+defaults test
   hash-type avalanche
 `
 const defaults_hashtypemapbasedsdbm = `
-defaults
+defaults test
   hash-type map-based sdbm
 `
 const defaults_hashtypemapbaseddjb2 = `
-defaults
+defaults test
   hash-type map-based djb2
 `
 const defaults_hashtypemapbasedwt6 = `
-defaults
+defaults test
   hash-type map-based wt6
 `
 const defaults_hashtypemapbasedcrc32 = `
-defaults
+defaults test
   hash-type map-based crc32
 `
 const defaults_hashtypeconsistentsdbm = `
-defaults
+defaults test
   hash-type consistent sdbm
 `
 const defaults_hashtypeconsistentdjb2 = `
-defaults
+defaults test
   hash-type consistent djb2
 `
 const defaults_hashtypeconsistentwt6 = `
-defaults
+defaults test
   hash-type consistent wt6
 `
 const defaults_hashtypeconsistentcrc32 = `
-defaults
+defaults test
   hash-type consistent crc32
 `
 const defaults_hashtypemapbasedsdbmavalanche = `
-defaults
+defaults test
   hash-type map-based sdbm avalanche
 `
 const defaults_hashtypemapbaseddjb2avalanche = `
-defaults
+defaults test
   hash-type map-based djb2 avalanche
 `
 const defaults_hashtypemapbasedwt6avalanche = `
-defaults
+defaults test
   hash-type map-based wt6 avalanche
 `
 const defaults_hashtypemapbasedcrc32avalanche = `
-defaults
+defaults test
   hash-type map-based crc32 avalanche
 `
 const defaults_hashtypeconsistentsdbmavalanche = `
-defaults
+defaults test
   hash-type consistent sdbm avalanche
 `
 const defaults_hashtypeconsistentdjb2avalanche = `
-defaults
+defaults test
   hash-type consistent djb2 avalanche
 `
 const defaults_hashtypeconsistentwt6avalanche = `
-defaults
+defaults test
   hash-type consistent wt6 avalanche
 `
 const defaults_hashtypeconsistentcrc32avalanche = `
-defaults
+defaults test
   hash-type consistent crc32 avalanche
 `
 const defaults_httpreusenever = `
-defaults
+defaults test
   http-reuse never
 `
 const defaults_httpreusesafe = `
-defaults
+defaults test
   http-reuse safe
 `
 const defaults_httpreuseaggressive = `
-defaults
+defaults test
   http-reuse aggressive
 `
 const defaults_httpreusealways = `
-defaults
+defaults test
   http-reuse always
 `
 const defaults_logglobal = `
-defaults
+defaults test
   log global
 `
 const defaults_nolog = `
-defaults
+defaults test
   no log
 `
 const defaults_logstdoutformatshortdaemonsendlo = `
-defaults
+defaults test
   log stdout format short daemon # send log to systemd
 `
 const defaults_logstdoutformatrawdaemonsendever = `
-defaults
+defaults test
   log stdout format raw daemon # send everything to stdout
 `
 const defaults_logstderrformatrawdaemonnoticese = `
-defaults
+defaults test
   log stderr format raw daemon notice # send important events to stderr
 `
 const defaults_log127001514local0noticeonlysend = `
-defaults
+defaults test
   log 127.0.0.1:514 local0 notice # only send important events
 `
 const defaults_log127001514local0noticenoticesa = `
-defaults
+defaults test
   log 127.0.0.1:514 local0 notice notice # same but limit output level
 `
 const defaults_log1270011515len8192formatrfc542 = `
-defaults
+defaults test
   log 127.0.0.1:1515 len 8192 format rfc5424 local2 info
 `
 const defaults_log1270011515sample12local0 = `
-defaults
+defaults test
   log 127.0.0.1:1515 sample 1:2 local0
 `
 const defaults_log1270011515len8192formatrfc542_ = `
-defaults
+defaults test
   log 127.0.0.1:1515 len 8192 format rfc5424 sample 1,2-5:6 local2 info
 `
 const defaults_log1270011515formatrfc5424sample = `
-defaults
+defaults test
   log 127.0.0.1:1515 format rfc5424 sample 1,2-5:6 local2 info
 `
 const defaults_log1270011515formatrfc5424sample_ = `
-defaults
+defaults test
   log 127.0.0.1:1515 format rfc5424 sample 1-5:6 local2
 `
 const defaults_log1270011515sample16local2 = `
-defaults
+defaults test
   log 127.0.0.1:1515 sample 1:6 local2
 `
 const defaults_optionhttpchkOPTIONSHTTP11rnHost = `
-defaults
+defaults test
   option httpchk OPTIONS * HTTP/1.1\\r\\nHost:\\ www
 `
 const defaults_optionhttpchkuri = `
-defaults
+defaults test
   option httpchk <uri>
 `
 const defaults_optionhttpchkmethoduri = `
-defaults
+defaults test
   option httpchk <method> <uri>
 `
 const defaults_optionhttpchkmethoduriversion = `
-defaults
+defaults test
   option httpchk <method> <uri> <version>
 `
 const defaults_uniqueidformatXocicpfifpTsrtpid = `
-defaults
+defaults test
   unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
 `
 const defaults_uniqueidformatXocpfifpTsrtpid = `
-defaults
+defaults test
   unique-id-format %{+X}o_%cp_%fi:%fp_%Ts_%rt:%pid
 `
 const defaults_uniqueidformatXofifpTsrtpid = `
-defaults
+defaults test
   unique-id-format %{+X}o_%fi:%fp_%Ts_%rt:%pid
 `
 const defaults_uniqueidheaderXUniqueID = `
-defaults
+defaults test
   unique-id-header X-Unique-ID
 `
 const defaults_loadserverstatefromfileglobal = `
-defaults
+defaults test
   load-server-state-from-file global
 `
 const defaults_loadserverstatefromfilelocal = `
-defaults
+defaults test
   load-server-state-from-file local
 `
 const defaults_loadserverstatefromfilenone = `
-defaults
+defaults test
   load-server-state-from-file none
 `
 const defaults_monitorurihaproxytest = `
-defaults
+defaults test
   monitor-uri /haproxy_test
 `
 const defaults_httpsendnameheader = `
-defaults
+defaults test
   http-send-name-header
 `
 const defaults_httpsendnameheaderXMyAwesomeHead = `
-defaults
+defaults test
   http-send-name-header X-My-Awesome-Header
 `
 const defaults_optionhttprestrictreqhdrnamespre = `
-defaults
+defaults test
   option http-restrict-req-hdr-names preserve
 `
 const defaults_optionhttprestrictreqhdrnamesdel = `
-defaults
+defaults test
   option http-restrict-req-hdr-names delete
 `
 const defaults_optionhttprestrictreqhdrnamesrej = `
-defaults
+defaults test
   option http-restrict-req-hdr-names reject
 `
 const defaults_source1921681200 = `
-defaults
+defaults test
   source 192.168.1.200
 `
 const defaults_source1921681200usesrcclientip = `
-defaults
+defaults test
   source 192.168.1.200 usesrc clientip
 `
 const defaults_source192168120080usesrcclientip = `
-defaults
+defaults test
   source 192.168.1.200:80 usesrc clientip
 `
 const defaults_source1921681200usesrcclient = `
-defaults
+defaults test
   source 192.168.1.200 usesrc client
 `
 const defaults_source192168120080usesrcclient = `
-defaults
+defaults test
   source 192.168.1.200:80 usesrc client
 `
 const defaults_source0000usesrcclientip = `
-defaults
+defaults test
   source 0.0.0.0 usesrc clientip
 `
 const defaults_source0000usesrchdripxforwardedf = `
-defaults
+defaults test
   source 0.0.0.0 usesrc hdr_ip(x-forwarded-for,-1)
 `
 const defaults_source1921681200interfacename = `
-defaults
+defaults test
   source 192.168.1.200 interface name
 `
 const defaults_source1921681200usesrc1921681201 = `
-defaults
+defaults test
   source 192.168.1.200 usesrc 192.168.1.201
 `
 const defaults_source1921681200usesrchdriphdr = `
-defaults
+defaults test
   source 192.168.1.200 usesrc hdr_ip(hdr)
 `
 const defaults_source1921681200usesrchdriphdroc = `
-defaults
+defaults test
   source 192.168.1.200 usesrc hdr_ip(hdr,occ)
 `
 const defaults_httperrorstatus400 = `
-defaults
+defaults test
   http-error status 400
 `
 const defaults_httperrorstatus400defaulterrorfi = `
-defaults
+defaults test
   http-error status 400 default-errorfiles
 `
 const defaults_httperrorstatus400errorfilemyfan = `
-defaults
+defaults test
   http-error status 400 errorfile /my/fancy/errorfile
 `
 const defaults_httperrorstatus400errorfilesmyer = `
-defaults
+defaults test
   http-error status 400 errorfiles myerror
 `
 const defaults_httperrorstatus200contenttypetex = `
-defaults
+defaults test
   http-error status 200 content-type "text/plain" string "My content"
 `
 const defaults_httperrorstatus400contenttypetex = `
-defaults
+defaults test
   http-error status 400 content-type "text/plain" lf-string "Hello, you are: %[src]"
 `
 const defaults_httperrorstatus400contenttypetex_ = `
-defaults
+defaults test
   http-error status 400 content-type "text/plain" file /my/fancy/response/file
 `
 const defaults_httperrorstatus400contenttypetex__ = `
-defaults
+defaults test
   http-error status 400 content-type "text/plain" lf-file /my/fancy/lof/format/response/file
 `
 const defaults_httperrorstatus400contenttypetex___ = `
-defaults
+defaults test
   http-error status 400 content-type "text/plain" string "My content" hdr X-value value
 `
 const defaults_httperrorstatus400contenttypetex____ = `
-defaults
+defaults test
   http-error status 400 content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value
 `
 const defaults_httpcheckcommenttestcomment = `
-defaults
+defaults test
   http-check comment testcomment
 `
 const defaults_httpcheckconnect = `
-defaults
+defaults test
   http-check connect
 `
 const defaults_httpcheckconnectdefault = `
-defaults
+defaults test
   http-check connect default
 `
 const defaults_httpcheckconnectport8080 = `
-defaults
+defaults test
   http-check connect port 8080
 `
 const defaults_httpcheckconnectaddr8888 = `
-defaults
+defaults test
   http-check connect addr 8.8.8.8
 `
 const defaults_httpcheckconnectsendproxy = `
-defaults
+defaults test
   http-check connect send-proxy
 `
 const defaults_httpcheckconnectviasocks4 = `
-defaults
+defaults test
   http-check connect via-socks4
 `
 const defaults_httpcheckconnectssl = `
-defaults
+defaults test
   http-check connect ssl
 `
 const defaults_httpcheckconnectsnihaproxy1wteu = `
-defaults
+defaults test
   http-check connect sni haproxy.1wt.eu
 `
 const defaults_httpcheckconnectalpnh2http11 = `
-defaults
+defaults test
   http-check connect alpn h2,http/1.1
 `
 const defaults_httpcheckconnectprotoh2 = `
-defaults
+defaults test
   http-check connect proto h2
 `
 const defaults_httpcheckconnectlinger = `
-defaults
+defaults test
   http-check connect linger
 `
 const defaults_httpcheckconnectcommenttestcomme = `
-defaults
+defaults test
   http-check connect comment testcomment
 `
 const defaults_httpcheckconnectport443addr8888s = `
-defaults
+defaults test
   http-check connect port 443 addr 8.8.8.8 send-proxy via-socks4 ssl sni haproxy.1wt.eu alpn h2,http/1.1 linger proto h2 comment testcomment
 `
 const defaults_httpcheckdisableon404 = `
-defaults
+defaults test
   http-check disable-on-404
 `
 const defaults_httpcheckexpectstatus200 = `
-defaults
+defaults test
   http-check expect status 200
 `
 const defaults_httpcheckexpectminrecv50status20 = `
-defaults
+defaults test
   http-check expect min-recv 50 status 200
 `
 const defaults_httpcheckexpectcommenttestcommen = `
-defaults
+defaults test
   http-check expect comment testcomment status 200
 `
 const defaults_httpcheckexpectokstatusL7OKstatu = `
-defaults
+defaults test
   http-check expect ok-status L7OK status 200
 `
 const defaults_httpcheckexpecterrorstatusL7RSPs = `
-defaults
+defaults test
   http-check expect error-status L7RSP status 200
 `
 const defaults_httpcheckexpecttoutstatusL7TOUTs = `
-defaults
+defaults test
   http-check expect tout-status L7TOUT status 200
 `
 const defaults_httpcheckexpectonsuccessmylogfor = `
-defaults
+defaults test
   http-check expect on-success \"my-log-format\" status 200
 `
 const defaults_httpcheckexpectonerrormylogforma = `
-defaults
+defaults test
   http-check expect on-error \"my-log-format\" status 200
 `
 const defaults_httpcheckexpectstatuscode500stat = `
-defaults
+defaults test
   http-check expect status-code \"500\" status 200
 `
 const defaults_httpcheckexpectstringSQLError = `
-defaults
+defaults test
   http-check expect ! string SQL\\ Error
 `
 const defaults_httpcheckexpectrstatus5 = `
-defaults
+defaults test
   http-check expect ! rstatus ^5
 `
 const defaults_httpcheckexpectrstringtag09afhtm = `
-defaults
+defaults test
   http-check expect rstring <!--tag:[0-9a-f]*--></html>
 `
 const defaults_httpchecksendmethGET = `
-defaults
+defaults test
   http-check send meth GET
 `
 const defaults_httpchecksendurihealth = `
-defaults
+defaults test
   http-check send uri /health
 `
 const defaults_httpchecksendverHTTP11 = `
-defaults
+defaults test
   http-check send ver \"HTTP/1.1\"
 `
 const defaults_httpchecksendcommenttestcomment = `
-defaults
+defaults test
   http-check send comment testcomment
 `
 const defaults_httpchecksendmethGETurihealthver = `
-defaults
+defaults test
   http-check send meth GET uri /health ver \"HTTP/1.1\" hdr Host example.com hdr Accept-Encoding gzip body '{\"key\":\"value\"}'
 `
 const defaults_httpchecksendurilfmylogformatbod = `
-defaults
+defaults test
   http-check send uri-lf my-log-format body-lf 'my-log-format'
 `
 const defaults_httpchecksendstate = `
-defaults
+defaults test
   http-check send-state
 `
 const defaults_httpchecksetvarcheckportint1234 = `
-defaults
+defaults test
   http-check set-var(check.port) int(1234)
 `
 const defaults_httpchecksetvarfmtcheckportint12 = `
-defaults
+defaults test
   http-check set-var-fmt(check.port) int(1234)
 `
 const defaults_httpcheckunsetvartxnfrom = `
-defaults
+defaults test
   http-check unset-var(txn.from)
 `
 const defaults_tcpcheckcommenttestcomment = `
-defaults
+defaults test
   tcp-check comment testcomment
 `
 const defaults_tcpcheckconnect = `
-defaults
+defaults test
   tcp-check connect
 `
 const defaults_tcpcheckconnectport443ssl = `
-defaults
+defaults test
   tcp-check connect port 443 ssl
 `
 const defaults_tcpcheckconnectport110linger = `
-defaults
+defaults test
   tcp-check connect port 110 linger
 `
 const defaults_tcpcheckconnectport143 = `
-defaults
+defaults test
   tcp-check connect port 143
 `
 const defaults_tcpcheckexpectstringPONG = `
-defaults
+defaults test
   tcp-check expect string +PONG
 `
 const defaults_tcpcheckexpectstringrolemaster = `
-defaults
+defaults test
   tcp-check expect string role:master
 `
 const defaults_tcpcheckexpectstringOK = `
-defaults
+defaults test
   tcp-check expect string +OK
 `
 const defaults_tcpchecksendlftestfmt = `
-defaults
+defaults test
   tcp-check send-lf testfmt
 `
 const defaults_tcpchecksendlftestfmtcommenttest = `
-defaults
+defaults test
   tcp-check send-lf testfmt comment testcomment
 `
 const defaults_tcpchecksendbinarytesthexstring = `
-defaults
+defaults test
   tcp-check send-binary testhexstring
 `
 const defaults_tcpchecksendbinarytesthexstringc = `
-defaults
+defaults test
   tcp-check send-binary testhexstring comment testcomment
 `
 const defaults_tcpchecksendbinarylftesthexfmt = `
-defaults
+defaults test
   tcp-check send-binary-lf testhexfmt
 `
 const defaults_tcpchecksendbinarylftesthexfmtco = `
-defaults
+defaults test
   tcp-check send-binary-lf testhexfmt comment testcomment
 `
 const defaults_tcpchecksetvarcheckportint1234 = `
-defaults
+defaults test
   tcp-check set-var(check.port) int(1234)
 `
 const defaults_tcpcheckexpectstringOKPOP3ready = `
-defaults
+defaults test
   tcp-check expect string +OK\ POP3\ ready
 `
 const defaults_tcpcheckexpectstringOKIMAP4ready = `
-defaults
+defaults test
   tcp-check expect string *\ OK\ IMAP4\ ready
 `
 const defaults_tcpchecksendPINGrn = `
-defaults
+defaults test
   tcp-check send PING\r\n
 `
 const defaults_tcpchecksendPINGrncommenttestcom = `
-defaults
+defaults test
   tcp-check send PING\r\n comment testcomment
 `
 const defaults_tcpchecksendQUITrn = `
-defaults
+defaults test
   tcp-check send QUIT\r\n
 `
 const defaults_tcpchecksendQUITrncommenttestcom = `
-defaults
+defaults test
   tcp-check send QUIT\r\n comment testcomment
 `
 const defaults_tcpchecksendinforeplicationrn = `
-defaults
+defaults test
   tcp-check send info\ replication\r\n
 `
 const defaults_tcpchecksetvarfmtchecknameH = `
-defaults
+defaults test
   tcp-check set-var-fmt(check.name) "%H"
 `
 const defaults_tcpchecksetvarfmttxnfromaddrsrcs = `
-defaults
+defaults test
   tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
 `
 const defaults_tcpcheckunsetvartxnfrom = `
-defaults
+defaults test
   tcp-check unset-var(txn.from)
 `
 const defaults_statsauthadmin1AdMiN123 = `
-defaults
+defaults test
   stats auth admin1:AdMiN123
 `
 const defaults_statsenable = `
-defaults
+defaults test
   stats enable
 `
 const defaults_statshideversion = `
-defaults
+defaults test
   stats hide-version
 `
 const defaults_statsshowlegends = `
-defaults
+defaults test
   stats show-legends
 `
 const defaults_statsshowmodules = `
-defaults
+defaults test
   stats show-modules
 `
 const defaults_statsmaxconn10 = `
-defaults
+defaults test
   stats maxconn 10
 `
 const defaults_statsrealmHAProxyStatistics = `
-defaults
+defaults test
   stats realm HAProxy\\ Statistics
 `
 const defaults_statsrefresh10s = `
-defaults
+defaults test
   stats refresh 10s
 `
 const defaults_statsscope = `
-defaults
+defaults test
   stats scope .
 `
 const defaults_statsshowdescMasternodeforEurope = `
-defaults
+defaults test
   stats show-desc Master node for Europe, Asia, Africa
 `
 const defaults_statsshownode = `
-defaults
+defaults test
   stats show-node
 `
 const defaults_statsshownodeEurope1 = `
-defaults
+defaults test
   stats show-node Europe-1
 `
 const defaults_statsuriadminstats = `
-defaults
+defaults test
   stats uri /admin?stats
 `
 const defaults_statsbindprocessall = `
-defaults
+defaults test
   stats bind-process all
 `
 const defaults_statsbindprocessodd = `
-defaults
+defaults test
   stats bind-process odd
 `
 const defaults_statsbindprocesseven = `
-defaults
+defaults test
   stats bind-process even
 `
 const defaults_statsbindprocess1234 = `
-defaults
+defaults test
   stats bind-process 1 2 3 4
 `
 const defaults_statsbindprocess14 = `
-defaults
+defaults test
   stats bind-process 1-4
 `

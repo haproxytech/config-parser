@@ -15,7 +15,7 @@ limitations under the License.
 */
 package configs
 
-const configBasic1 = `# _version=1
+const configDefaults = `# _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
 
@@ -36,7 +36,7 @@ backend default_backend from A
   http-request deny deny_status 400 # deny
 `
 
-const configBasicMissingNewLineOnEnd = `# _version=1
+const configDefaultsTwo = `# _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
 
@@ -44,6 +44,36 @@ global
   master-worker
 
 defaults A
+  log global
+
+defaults withName
+  log global
+
+frontend http from A
+  mode http
+  bind 0.0.0.0:80 name bind_1
+  bind :::80 v4v6 name bind_2
+  default_backend default_backend
+
+backend default_backend from withName
+  mode http
+  http-request deny deny_status 400 # deny
+`
+
+const configDefaultsThree = `# _version=1
+# HAProxy Technologies
+# https://www.haproxy.com/
+
+global
+  master-worker
+
+defaults A
+  log global
+
+defaults withName
+  log global
+
+defaults withName2
   log global
 
 frontend http from A
@@ -54,33 +84,10 @@ frontend http from A
 
 backend default_backend from A
   mode http
-  http-request deny deny_status 400 # deny`
-
-const configBasicWithComments = `# _version=1
-# HAProxy Technologies
-# https://www.haproxy.com/
-
-global
-  master-worker
-
-defaults A
-  # line comment 1
-  log global
-
-frontend http from A
-  mode http # inline comment #1
-  # line comment 2
-  bind 0.0.0.0:80 name bind_1
-  bind :::80 v4v6 name bind_2 # inline comment #2
-  default_backend default_backend
-
-backend default_backend from A
-  # line comment 3
-  mode http
   http-request deny deny_status 400 # deny
 `
 
-const configBasicWithLineComments = `# _version=1
+const configDefaultsTwoSecond = `# _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
 
@@ -88,23 +95,33 @@ global
   master-worker
 
 defaults A
-  # line comment 1
   log global
 
-frontend http from A
+defaults B
+  log global
+
+frontend http1 from A
   mode http
-  # line comment 2
   bind 0.0.0.0:80 name bind_1
   bind :::80 v4v6 name bind_2
-  default_backend default_backend
+  default_backend default_backend1
 
-backend default_backend from A
-  # line comment 3
+frontend http2 from B
+  mode http
+  bind 0.0.0.0:81 name bind_1
+  bind :::81 v4v6 name bind_2
+  default_backend default_backend2
+
+backend default_backend1 from B
+  mode http
+  http-request deny deny_status 400 # deny
+
+backend default_backend2 from A
   mode http
   http-request deny deny_status 400 # deny
 `
 
-const configSnippet = `# _version=1
+const configDefaultsWithFrom = `# _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
 
@@ -112,21 +129,28 @@ global
   master-worker
 
 defaults A
-  # line comment 1
   log global
 
-frontend http from A
-  mode http
-  ###_config-snippet_### BEGIN
-  ### origin:ingress:haproxy-controller/openspeedtest ###
-  ### a comment
-  tune.ssl.default-dh-param 2048 # inline a long comment
-  tune.bufsize 32768
-  ###_config-snippet_### END
-  default_backend default_backend
+defaults B from A
+  log global
 
-backend default_backend from A
-  # line comment 3
+frontend http1 from A
+  mode http
+  bind 0.0.0.0:80 name bind_1
+  bind :::80 v4v6 name bind_2
+  default_backend default_backend1
+
+frontend http2 from B
+  mode http
+  bind 0.0.0.0:81 name bind_1
+  bind :::81 v4v6 name bind_2
+  default_backend default_backend2
+
+backend default_backend1 from B
+  mode http
+  http-request deny deny_status 400 # deny
+
+backend default_backend2 from A
   mode http
   http-request deny deny_status 400 # deny
 `

@@ -76,7 +76,7 @@ func TestWholeConfigsFail(t *testing.T) {
 	}
 }
 
-func compare(t *testing.T, configOriginal, configResult string) {
+func compare(t *testing.T, configOriginal, configResult string) { //nolint:thelper
 	original := strings.Split(configOriginal, "\n")
 	result := strings.Split(configResult, "\n")
 	if len(original) != len(result) {
@@ -130,7 +130,7 @@ func TestConfigUseV2HTTPCheck(t *testing.T) {
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
-	result := p.String()
+	result := p.String() //nolint:ifshort
 	if result != configBasicUseV2HTTPCheck {
 		compare(t, configBasicUseV2HTTPCheck, result)
 		t.Fatalf("configurations does not match")
@@ -145,7 +145,7 @@ func TestListenSectionParsers(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	result := p.String()
+	result := p.String() //nolint:ifshort
 	if result != configFull {
 		compare(t, configFull, result)
 		t.Fatalf("configurations does not match")

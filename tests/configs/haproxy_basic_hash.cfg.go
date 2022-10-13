@@ -15,7 +15,7 @@ limitations under the License.
 */
 package configs
 
-const configBasicHash = `# _md5hash=4cadde7159beea87ba17ba043201d3ad
+const configBasicHash = `# _md5hash=3787160d98b2d8936dba348fa98b12d5
 # _version=1
 # HAProxy Technologies
 # https://www.haproxy.com/
@@ -23,16 +23,16 @@ const configBasicHash = `# _md5hash=4cadde7159beea87ba17ba043201d3ad
 global
   master-worker
 
-defaults
+defaults A
   log global
 
-frontend http
+frontend http from A
   mode http
   bind 0.0.0.0:80 name bind_1
   bind :::80 v4v6 name bind_2
   default_backend default_backend
 
-backend default_backend
+backend default_backend from A
   mode http
   http-request deny deny_status 400 # deny
 `

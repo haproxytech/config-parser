@@ -23,40 +23,14 @@ import (
 	"github.com/haproxytech/config-parser/v4/options"
 )
 
-const configSetEnv = `# _version=1
-# HAProxy Technologies
-# https://www.haproxy.com/
-
-global
-  presetenv processor1 "AMD Ryzen 7 1700 Eight-Core Processor"
-  presetenv processor2 "AMD Ryzen 7 1700 Eight-Core Processor"
-  presetenv custom "something 1"
-  presetenv custom "something 2" # with comment
-  setenv processor1 "AMD Ryzen 7 1700 Eight-Core Processor"
-  setenv processor2 "AMD Ryzen 7 1700 Eight-Core Processor"
-  setenv custom "something 1"
-  setenv custom "something 2" # with comment
-  master-worker
-
-defaults A
-  log global
-
-frontend http from A
-  mode http
-  bind 0.0.0.0:80 name bind_1
-  bind :::80 v4v6 name bind_2
-  default_backend default_backend
-
-backend default_backend from A
-  mode http
-  http-request deny deny_status 400 # deny
-`
-
-func TestSetEnv(t *testing.T) {
+func TestDefaultsConfigsNoName(t *testing.T) {
 	tests := []struct {
-		Name, Config string
+		Name, Config, Result string
 	}{
-		{"configBasic1", configSetEnv},
+		{"configDefaultsNoName1", configDefaultsNoName1, configDefaultsNoName1Result},
+		{"configDefaultsNoName2", configDefaultsNoName2, configDefaultsNoName2Result},
+		{"configDefaultsNoName3", configDefaultsNoName3, configDefaultsNoName3Result},
+		{"configDefaultsNoName4", configDefaultsNoName4, configDefaultsNoName4Result},
 	}
 	for _, config := range tests {
 		t.Run(config.Name, func(t *testing.T) {
@@ -67,9 +41,8 @@ func TestSetEnv(t *testing.T) {
 				t.Fatalf(err.Error())
 			}
 			result := p.String()
-			// fmt.Println(result)
-			if result != config.Config {
-				compare(t, config.Config, result)
+			if result != config.Result {
+				compare(t, config.Result, result)
 				t.Fatalf("configurations does not match")
 			}
 		})

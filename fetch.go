@@ -130,7 +130,6 @@ func (p *configParser) SectionsCreate(sectionType Section, sectionName string) e
 		State:    "",
 		Active:   p.Parsers[Comments][CommentsSectionName],
 		Comments: p.Parsers[Comments][CommentsSectionName],
-		Defaults: p.Parsers[Defaults][DefaultSectionName],
 		Global:   p.Parsers[Global][GlobalSectionName],
 	}
 

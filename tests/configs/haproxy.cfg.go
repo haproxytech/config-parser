@@ -47,7 +47,7 @@ global
   # random comment after snippet
 
 # some random defaults comment
-defaults
+defaults A
   maxconn 2000
   log global
   log 127.0.0.1:514 local0 notice
@@ -138,18 +138,18 @@ cache foobar
   total-max-size 4
   max-age 240
 
-frontend healthz
+frontend healthz from A
   mode http
   monitor-uri /healthz
   no log
 
-frontend http
+frontend http from A
   mode http
   bind 0.0.0.0:80 name bind_1
   bind :::80 v4v6 name bind_2
   default_backend default_backend
 
-frontend https
+frontend https from A
   mode http
   bind 0.0.0.0:443 name bind_1
   bind :::443 v4v6 name bind_2
@@ -157,7 +157,7 @@ frontend https
   http-request set-header X-Forwarded-Proto https if { ssl_fc }
   default_backend default_backend
 
-frontend xyz
+frontend xyz from A
   id 1024
   enabled
   disabled
@@ -170,7 +170,7 @@ frontend xyz
   http-request deny if !network_allowed
   default_backend default_backend
 
-frontend xyz2
+frontend xyz2 from A
   mode http
   maxconn 2000
   bind 0.0.0.0:9981 name http2
@@ -192,7 +192,7 @@ frontend xyz2
   default_backend default_backend2
   http-response set-status some_status if !{ ssl_fc }
 
-frontend xyz3
+frontend xyz3 from A
   acl network_allowed src 20.30.40.50 8.9.9.0/27
   acl network_allowed src 20.30.40.51 8.9.9.0/27
   acl other acl src 20.30.40.52 8.9.9.0/27
@@ -207,7 +207,7 @@ frontend xyz3
   http-response set-header X-SSL1 %[ssl_fc]
   http-response set-var(req.my_var1) req.fhdr(user-agent),lower
 
-frontend xyz4
+frontend xyz4 from A
   mode http
   no option http-ignore-probes
   no option http-use-proxy-header
@@ -222,7 +222,7 @@ frontend xyz4
   http-request allow if something
   http-request allow
 
-frontend xyz5
+frontend xyz5 from A
   mode http
   maxconn 2000
   bind 192.168.1.1:80 name webserv
@@ -266,7 +266,7 @@ frontend xyz5
   http-response set-header X-SSL %[ssl_fc]
   http-response set-var(req.my_var) req.fhdr(user-agent),lower
 
-backend default_backend
+backend default_backend from A
   mode http
   option checkcache
   option independent-streams
@@ -279,7 +279,7 @@ backend default_backend
   option transparent
   http-request deny deny_status 400 # deny
 
-backend default_backend2
+backend default_backend2 from A
   mode http
   balance uri
   no option checkcache
@@ -298,7 +298,7 @@ backend default_backend2
   server THE_NEW_GUY 127.0.0.5:9345 # Newly added
   # server SRV_LkIZw 127.0.0.1:5853 maxconn 1000 weight 1 check disabled #alctl: server SRV_LkIZ9 configuration.
 
-backend test
+backend test from A
   mode http
   balance roundrobin
   option http-keep-alive
@@ -334,7 +334,7 @@ backend test
   option contstats
   option contstats
 
-listen stats
+listen stats from A
   mode http
   bind *:1024 process 1
   no log

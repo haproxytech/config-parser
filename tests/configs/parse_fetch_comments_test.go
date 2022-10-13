@@ -16,7 +16,6 @@ limitations under the License.
 package configs //nolint:testpackage
 
 import (
-	"fmt"
 	"testing"
 
 	parser "github.com/haproxytech/config-parser/v4"
@@ -24,7 +23,7 @@ import (
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
-func TestParseFecthCommentLines(t *testing.T) {
+func TestParseFecthCommentLines(t *testing.T) { //nolint:gocognit
 	tests := []struct {
 		Name, Config string
 	}{
@@ -42,7 +41,7 @@ func TestParseFecthCommentLines(t *testing.T) {
 				t.Fatalf("configurations does not match")
 			}
 
-			data, err := p.GetPreComments(parser.Defaults, parser.DefaultSectionName, "log")
+			data, err := p.GetPreComments(parser.Defaults, "A", "log")
 			if err != nil {
 				t.Fatalf("err should be nil %v", err)
 			}
@@ -91,14 +90,14 @@ func TestParseFecthCommentLinesWrite(t *testing.T) {
 				t.Fatalf(err.Error())
 			}
 			result := p.String()
-			fmt.Println(config.Config)
-			fmt.Println(result)
+			// fmt.Println(config.Config)
+			// fmt.Println(result)
 			if result != config.Config {
 				compare(t, config.Config, result)
 				t.Fatalf("configurations does not match")
 			}
 
-			err = p.SetPreComments(parser.Defaults, parser.DefaultSectionName, "log", []string{"line comment 1"})
+			err = p.SetPreComments(parser.Defaults, "A", "log", []string{"line comment 1"})
 			if err != nil {
 				t.Fatalf("err should be nil %v", err)
 			}
@@ -113,7 +112,7 @@ func TestParseFecthCommentLinesWrite(t *testing.T) {
 			}
 
 			result = p.String()
-			fmt.Println(result)
+			// fmt.Println(result)
 			if result != config.EndConfig {
 				compare(t, config.Config, result)
 				t.Fatalf("configurations does not match")
@@ -141,6 +140,9 @@ func TestParseFetchCommentInline(t *testing.T) {
 			}
 
 			rawData, err := p.Get(parser.Frontends, "http", "mode")
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
 			mode, ok := rawData.(*types.StringC)
 			if !ok {
 				t.Fatalf("wrong type %v", rawData)
@@ -150,6 +152,9 @@ func TestParseFetchCommentInline(t *testing.T) {
 			}
 
 			rawData, err = p.Get(parser.Frontends, "http", "bind")
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
 			bindList, ok := rawData.([]types.Bind)
 			if !ok {
 				t.Fatalf("wrong type %v", rawData)

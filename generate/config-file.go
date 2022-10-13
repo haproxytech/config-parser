@@ -190,10 +190,10 @@ func (c *ConfigFile) String() string {
 	result.WriteString("const generatedConfig = `# _version=1\n# HAProxy Technologies\n# https://www.haproxy.com/\n# sections are in alphabetical order (except global & default) for code generation\n\n")
 
 	first := true
-	sectionNames := make([]string, len(c.Section)-2)
+	sectionNames := make([]string, len(c.Section)-1)
 	index := 0
 	for sectionName := range c.Section {
-		if sectionName == "global" || sectionName == "defaults" {
+		if sectionName == "global" {
 			continue
 		}
 		sectionNames[index] = sectionName
@@ -218,7 +218,6 @@ func (c *ConfigFile) String() string {
 	}
 
 	writeSection("global")
-	writeSection("defaults")
 	for _, sectionName := range sectionNames {
 		writeSection(sectionName)
 	}
@@ -232,17 +231,15 @@ func (c *ConfigFile) String() string {
 	return result.String()
 }
 
-func (c *ConfigFile) StringFiles(baseFolder string) { //nolint:gocognit
+func (c *ConfigFile) StringFiles(baseFolder string) {
 	files := map[string][]byte{}
 
 	header := license + "\npackage integration_test\n\n"
 
-	// result.WriteString("const generatedConfig = ")
-
-	sectionTypes := make([]string, len(c.SectionAll)-2)
+	sectionTypes := make([]string, len(c.SectionAll)-1)
 	index := 0
 	for sectionName := range c.SectionAll {
-		if sectionName == "global" || sectionName == "defaults" {
+		if sectionName == "global" {
 			continue
 		}
 		sectionTypes[index] = sectionName
@@ -268,7 +265,7 @@ func (c *ConfigFile) StringFiles(baseFolder string) { //nolint:gocognit
 			}
 			usedNiceNames[niceName] = struct{}{}
 			sectionName := " test"
-			if sectionType == "defaults" || sectionType == "global" {
+			if sectionType == "global" {
 				sectionName = ""
 			}
 			oneTest := "const " + niceName + " = `\n" + sectionType + sectionName + "\n" + "  " + line + "\n`" + "\n"
@@ -277,7 +274,7 @@ func (c *ConfigFile) StringFiles(baseFolder string) { //nolint:gocognit
 		}
 	}
 
-	sectionTypes = append(sectionTypes, "global", "defaults") //nolint:makezero
+	sectionTypes = append(sectionTypes, "global") //nolint:makezero
 	for _, sectionName := range sectionTypes {
 		writeSection(sectionName)
 		for name, data := range files {
