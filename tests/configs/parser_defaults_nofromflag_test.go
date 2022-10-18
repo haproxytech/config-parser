@@ -23,18 +23,20 @@ import (
 	"github.com/haproxytech/config-parser/v4/options"
 )
 
-func TestDefaultsConfigsNoFromFlag(t *testing.T) {
+func TestDefaultsConfigsNoName(t *testing.T) {
 	tests := []struct {
 		Name, Config, Result string
 	}{
-		{"configDefaultsNoName1", configDefaultsNoFlag1, configDefaultsNoFlag1Result},
-		{"configDefaultsNoName1", configDefaultsNoFlag2, configDefaultsNoFlag2Result},
+		{"configDefaultsNoName1", configDefaultsNoName1, configDefaultsNoName1Result},
+		{"configDefaultsNoName2", configDefaultsNoName2, configDefaultsNoName2Result},
+		{"configDefaultsNoName3", configDefaultsNoName3, configDefaultsNoName3Result},
+		{"configDefaultsNoName4", configDefaultsNoName4, configDefaultsNoName4Result},
 	}
 	for _, config := range tests {
 		t.Run(config.Name, func(t *testing.T) {
 			var buffer bytes.Buffer
 			buffer.WriteString(config.Config)
-			p, err := parser.New(options.Reader(&buffer), options.NoNamedDefaultsFrom)
+			p, err := parser.New(options.Reader(&buffer))
 			if err != nil {
 				t.Fatalf(err.Error())
 			}

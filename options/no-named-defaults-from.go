@@ -16,25 +16,12 @@ limitations under the License.
 
 package options
 
-import (
-	"io"
+type noNamedDefaultsFrom struct{}
 
-	"github.com/haproxytech/go-logger"
-)
-
-type Parser struct {
-	Path                    string
-	Reader                  io.Reader
-	Logger                  logger.Format // we always will have p.Options.LogPrefix
-	UseV2HTTPCheck          bool
-	UseMd5Hash              bool
-	UseListenSectionParsers bool
-	DisableUnProcessed      bool
-	Log                     bool
-	LogPrefix               string
-	NoNamedDefaultsFrom     bool
+func (u noNamedDefaultsFrom) Set(p *Parser) error {
+	p.NoNamedDefaultsFrom = true
+	return nil
 }
 
-type ParserOption interface {
-	Set(p *Parser) error
-}
+// NoNamedDefaultsFrom sets flag to disable named defaults from in section
+var NoNamedDefaultsFrom = noNamedDefaultsFrom{} //nolint:gochecknoglobals

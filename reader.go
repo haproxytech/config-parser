@@ -191,7 +191,9 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					if p.Options.Log {
 						p.Options.Logger.Tracef("%defaults section %s active", p.Options.LogPrefix, data.Name)
 					}
-					p.lastDefaultsSectionName = data.Name
+					if !p.Options.NoNamedDefaultsFrom {
+						p.lastDefaultsSectionName = data.Name
+					}
 				case "global":
 					config.Active = config.Global
 				case "frontend":
