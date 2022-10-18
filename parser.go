@@ -55,8 +55,9 @@ const (
 const (
 	CommentsSectionName = "data"
 	GlobalSectionName   = "data"
-	DefaultSectionName  = ""
 )
+
+var DefaultSectionName = "" //nolint:gochecknoglobals
 
 //nolint:interfacebloat
 type Parser interface {
