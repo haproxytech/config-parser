@@ -197,15 +197,17 @@ func (p *configParser) SectionsDefaultsFromSet(sectionType Section, sectionName,
 	if !ok {
 		return errors.ErrSectionMissing
 	}
-	stDef, ok := p.Parsers[Defaults]
-	if !ok {
-		return errors.ErrSectionTypeMissing
+	// if not set to empty, do extra validation
+	if defaultsSection != "" {
+		stDef, ok := p.Parsers[Defaults]
+		if !ok {
+			return errors.ErrSectionTypeMissing
+		}
+		_, ok = stDef[defaultsSection]
+		if !ok {
+			return errors.ErrSectionMissing
+		}
 	}
-	_, ok = stDef[defaultsSection]
-	if !ok {
-		return errors.ErrSectionMissing
-	}
-
 	section.DefaultSectionName = defaultsSection
 	return nil
 }
