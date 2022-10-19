@@ -53,3 +53,5 @@ var ErrSectionTypeNotAllowed = errors.New("section type not allowed")
 var ErrScopeMissing = errors.New("scope missing")
 
 var ErrScopeAlreadyExists = errors.New("scope already exists")
+
+var ErrFromDefaultsSectionMissing = errors.New("defaults section specified in from does not exist")

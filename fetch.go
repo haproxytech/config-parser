@@ -205,7 +205,7 @@ func (p *configParser) SectionsDefaultsFromSet(sectionType Section, sectionName,
 		}
 		_, ok = stDef[defaultsSection]
 		if !ok {
-			return errors.ErrSectionMissing
+			return errors.ErrFromDefaultsSectionMissing
 		}
 	}
 	section.DefaultSectionName = defaultsSection
