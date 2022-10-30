@@ -42,7 +42,17 @@ func (p *configParser) String() string {
 	sections := []Section{Defaults, UserList, Peers, Mailers, Resolvers, Cache, Ring, LogForward, HTTPErrors, Frontends, Backends, Listen, Program, FCGIApp}
 
 	for _, section := range sections {
-		sortedSections := p.getSortedList(p.Parsers[section])
+		var sortedSections []string
+		if section == Defaults {
+			var err error
+			sortedSections, err = getSortedListWithFrom(p.Parsers[section])
+			if err != nil && p.Options.Log {
+				p.Options.Logger.Errorf("%s", err.Error())
+			}
+		} else {
+			sortedSections = p.getSortedList(p.Parsers[section])
+		}
+
 		for _, sectionName := range sortedSections {
 			var sName string
 			if sectionName != "" {

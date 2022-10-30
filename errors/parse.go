@@ -55,3 +55,5 @@ var ErrScopeMissing = errors.New("scope missing")
 var ErrScopeAlreadyExists = errors.New("scope already exists")
 
 var ErrFromDefaultsSectionMissing = errors.New("defaults section specified in from does not exist")
+
+var ErrCircularDependency = errors.New("circular dependency detected")

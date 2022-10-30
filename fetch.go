@@ -22,6 +22,7 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v4/sorter"
 )
 
 func (p *configParser) lock() {
@@ -183,7 +184,26 @@ func (p *configParser) SectionsDefaultsFromSet(sectionType Section, sectionName,
 	p.lock()
 	defer p.unLock()
 	switch sectionType { //nolint:exhaustive
-	case Defaults, Frontends, Backends, Listen:
+	case Defaults:
+		// for defaults we need to check for circular dependencies
+		// and whether that section exists or not due to sorting method
+		sections := p.Parsers[Defaults]
+		listDefaults := []sorter.Section{}
+		for k, v := range sections {
+			s := sorter.Section{
+				Name: k,
+				From: v.DefaultSectionName,
+			}
+			if s.Name == sectionName {
+				s.From = defaultsSection
+			}
+			listDefaults = append(listDefaults, s)
+		}
+		err := sorter.Sort(listDefaults)
+		if err != nil {
+			return err
+		}
+	case Frontends, Backends, Listen:
 	default:
 		// catch all other sections
 		return errors.ErrSectionTypeNotAllowed
@@ -314,4 +334,25 @@ func (p *configParser) getSortedList(data map[string]*Parsers) []string {
 	}
 	sort.Strings(result)
 	return result
+}
+
+// getSortedListWithFrom returns list of parses sorted,
+// since every section can have a from that might depend on,
+// we take that into account
+func getSortedListWithFrom(data map[string]*Parsers) ([]string, error) {
+	sortedSections := make([]sorter.Section, len(data))
+	index := 0
+	for parserSectionName := range data {
+		sortedSections[index] = sorter.Section{
+			Name: parserSectionName,
+			From: data[parserSectionName].DefaultSectionName,
+		}
+		index++
+	}
+	err := sorter.Sort(sortedSections)
+	result := make([]string, len(data))
+	for index, value := range sortedSections {
+		result[index] = value.Name
+	}
+	return result, err
 }
