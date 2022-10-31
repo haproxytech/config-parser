@@ -27,7 +27,7 @@ import (
 
 type Server struct {
 	data        []types.Server
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (h *Server) parse(line string, parts []string, comment string) (*types.Server, error) {

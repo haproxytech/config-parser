@@ -26,7 +26,7 @@ import (
 
 type UniqueIDHeader struct {
 	data        *types.UniqueIDHeader
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (s *UniqueIDHeader) Parse(line string, parts []string, comment string) (string, error) {

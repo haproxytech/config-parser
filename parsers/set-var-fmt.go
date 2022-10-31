@@ -26,7 +26,7 @@ import (
 
 type SetVarFmt struct {
 	data        []types.SetVarFmt
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (t *SetVarFmt) parse(line string, parts []string, comment string) (*types.SetVarFmt, error) {

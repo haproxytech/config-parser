@@ -27,7 +27,7 @@ import (
 type SPOESection struct {
 	Name        string
 	data        *types.SPOESection
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (s *SPOESection) Init() {

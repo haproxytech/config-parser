@@ -14,7 +14,7 @@ type {{ .StructName }} struct {
 	Name string
 	// Mode string
 	data        []types.{{ .ParserType }}
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 {{- if not .NoInit }}

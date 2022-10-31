@@ -31,7 +31,7 @@ type AfterResponses struct {
 	Name string
 	// Mode string
 	data        []types.Action
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (p *AfterResponses) Init() {

@@ -29,7 +29,7 @@ type TimeTwoWords struct {
 	Keywords    []string
 	Name        string
 	data        *types.StringC
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (s *TimeTwoWords) Init() {

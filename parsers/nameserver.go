@@ -26,7 +26,7 @@ import (
 
 type Nameserver struct {
 	data        []types.Nameserver
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (l *Nameserver) parse(line string, parts []string, comment string) (*types.Nameserver, error) {

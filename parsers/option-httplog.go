@@ -26,7 +26,7 @@ import (
 
 type OptionHTTPLog struct {
 	data        *types.OptionHTTPLog
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (o *OptionHTTPLog) Parse(line string, parts []string, comment string) (string, error) { //nolint:gocognit

@@ -29,7 +29,7 @@ type Option struct {
 	Name        string
 	name        string
 	data        *types.SimpleOption
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (o *Option) Init() {

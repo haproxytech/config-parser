@@ -27,7 +27,7 @@ type Responses struct {
 	Name        string
 	Mode        string // frontent, backend
 	data        []types.TCPType
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (h *Responses) Init() {

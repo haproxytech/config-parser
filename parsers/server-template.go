@@ -13,7 +13,7 @@ import (
 
 type ServerTemplate struct {
 	data        []types.ServerTemplate
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (h *ServerTemplate) parse(line string, parts []string, comment string) (*types.ServerTemplate, error) {

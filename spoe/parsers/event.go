@@ -26,7 +26,7 @@ import (
 
 type Event struct {
 	data        *types.Event
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (e *Event) Parse(line string, parts []string, comment string) (string, error) {

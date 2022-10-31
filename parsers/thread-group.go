@@ -26,7 +26,7 @@ import (
 
 type ThreadGroup struct {
 	data        []types.ThreadGroup
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (t *ThreadGroup) parse(line string, parts []string, comment string) (*types.ThreadGroup, error) {

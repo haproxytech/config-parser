@@ -27,7 +27,7 @@ import (
 
 type DefaultBind struct {
 	data        *types.DefaultBind
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (d *DefaultBind) Parse(line string, parts []string, comment string) (string, error) {

@@ -27,7 +27,7 @@ import (
 
 type DeclareCapture struct {
 	data        []types.DeclareCapture
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (dc *DeclareCapture) parse(line string, parts []string, comment string) (*types.DeclareCapture, error) {

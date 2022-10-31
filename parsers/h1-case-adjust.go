@@ -26,7 +26,7 @@ import (
 
 type H1CaseAdjust struct {
 	data        []types.H1CaseAdjust
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (ca *H1CaseAdjust) parse(line string, parts []string, comment string) (*types.H1CaseAdjust, error) {

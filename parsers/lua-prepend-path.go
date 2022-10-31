@@ -26,7 +26,7 @@ import (
 
 type LuaPrependPath struct {
 	data        []types.LuaPrependPath
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (l *LuaPrependPath) parse(line string, parts []string, comment string) (*types.LuaPrependPath, error) {

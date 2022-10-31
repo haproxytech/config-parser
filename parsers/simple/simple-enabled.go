@@ -25,7 +25,7 @@ import (
 type Enabled struct {
 	Name        string
 	data        *types.Enabled
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (e *Enabled) Parse(line string, parts []string, comment string) (string, error) {

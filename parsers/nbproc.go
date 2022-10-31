@@ -27,7 +27,7 @@ import (
 
 type NbProc struct {
 	data        *types.Int64C
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (n *NbProc) Parse(line string, parts []string, comment string) (string, error) {

@@ -26,7 +26,7 @@ import (
 
 type CompressionAlgo struct {
 	data        *types.StringSliceC
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (c *CompressionAlgo) Parse(line string, parts []string, comment string) (string, error) {

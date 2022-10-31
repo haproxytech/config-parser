@@ -48,7 +48,7 @@ var errorFileAllowedCode = map[string]struct{}{
 
 type ErrorFile struct {
 	data        []types.ErrorFile
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (l *ErrorFile) Init() {

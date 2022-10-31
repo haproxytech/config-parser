@@ -26,7 +26,7 @@ import (
 
 type UseFcgiApp struct {
 	data        *types.UseFcgiApp
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (s *UseFcgiApp) Parse(line string, parts []string, comment string) (string, error) {

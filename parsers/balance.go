@@ -28,7 +28,7 @@ import (
 
 type Balance struct {
 	data        *types.Balance
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (p *Balance) parseBalanceParams(pb params.BalanceParams, line string, parts []string) (*types.Balance, error) {

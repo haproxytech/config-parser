@@ -28,7 +28,7 @@ import (
 
 type Persist struct {
 	data        *types.Persist
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (p *Persist) parsePersistParams(pb params.PersistParams, line string, parts []string) (*types.Persist, error) {

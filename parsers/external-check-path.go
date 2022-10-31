@@ -26,7 +26,7 @@ import (
 
 type ExternalCheckPath struct {
 	data        *types.ExternalCheckPath
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 /*

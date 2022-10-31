@@ -28,7 +28,7 @@ import (
 
 type BindProcess struct {
 	data        *types.BindProcess
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (p *BindProcess) Parse(line string, parts []string, comment string) (string, error) {

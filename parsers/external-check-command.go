@@ -28,7 +28,7 @@ const ExternalCheckKeyword = "external-check"
 
 type ExternalCheckCommand struct {
 	data        *types.ExternalCheckCommand
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 // external-check command <command>

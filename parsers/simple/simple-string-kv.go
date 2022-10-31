@@ -27,7 +27,7 @@ import (
 type StringKeyValue struct {
 	Name        string
 	data        *types.StringKeyValueC
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (s *StringKeyValue) Parse(line string, parts []string, comment string) (string, error) {

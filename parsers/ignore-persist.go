@@ -25,7 +25,7 @@ import (
 
 type IgnorePersist struct {
 	data        *types.IgnorePersist
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (m *IgnorePersist) Parse(line string, parts []string, comment string) (string, error) {

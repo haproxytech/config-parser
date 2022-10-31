@@ -26,7 +26,7 @@ import (
 type Redirect struct {
 	Name        string
 	data        []types.Action
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (h *Redirect) Init() {

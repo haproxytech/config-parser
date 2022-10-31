@@ -27,7 +27,7 @@ import (
 
 type Socket struct {
 	data        []types.Socket
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (l *Socket) parse(line string, parts []string, comment string) (*types.Socket, error) {

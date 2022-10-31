@@ -27,7 +27,7 @@ import (
 
 type EmailAlert struct {
 	data        []types.EmailAlert
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (e *EmailAlert) parse(line string, parts []string, comment string) (*types.EmailAlert, error) {

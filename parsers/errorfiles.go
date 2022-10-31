@@ -27,7 +27,7 @@ import (
 
 type ErrorFiles struct {
 	data        []types.ErrorFiles
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (e *ErrorFiles) Init() {

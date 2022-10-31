@@ -26,7 +26,7 @@ import (
 
 type ErrorLoc302 struct {
 	data        *types.ErrorLoc302
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (l *ErrorLoc302) Parse(line string, parts []string, comment string) (string, error) {

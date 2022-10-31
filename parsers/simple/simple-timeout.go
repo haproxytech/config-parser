@@ -29,7 +29,7 @@ type Timeout struct {
 	Name        string
 	name        string
 	data        *types.SimpleTimeout
-	preComments []string // comments that appear before the the actual line
+	preComments []string // comments that appear before the actual line
 }
 
 func (t *Timeout) Init() {
