@@ -280,7 +280,7 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					p.Parsers[Peers][data.Name] = config.Peers
 					config.Active = config.Peers
 					if p.Options.Log {
-						p.Options.Logger.Tracef("%spers section %s active", p.Options.LogPrefix, data.Name)
+						p.Options.Logger.Tracef("%speers section %s active", p.Options.LogPrefix, data.Name)
 					}
 				case "mailers":
 					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
