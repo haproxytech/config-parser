@@ -339,7 +339,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.String{Name: "lua-load-per-thread"})
 	addParser(parser, &sequence, &simple.Number{Name: "mworker-max-reloads"})
 	addParser(parser, &sequence, &simple.String{Name: "node"})
-	addParser(parser, &sequence, &simple.Enabled{Name: "numa-cpu-mapping"})
+	addParser(parser, &sequence, &parsers.NumaCPUMapping{})
 	addParser(parser, &sequence, &simple.Enabled{Name: "pp2-never-send-local"})
 	addParser(parser, &sequence, &simple.Number{Name: "ulimit-n"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "set-dumpable"})

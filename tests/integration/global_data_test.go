@@ -133,3 +133,11 @@ const global_setvarfmtprocbootidpidt = `
 global
   set-var-fmt proc.bootid "%pid|%t"
 `
+const global_numacpumapping = `
+global
+  numa-cpu-mapping
+`
+const global_nonumacpumapping = `
+global
+  no numa-cpu-mapping
+`

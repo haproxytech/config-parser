@@ -46,6 +46,7 @@ global test
   set-var proc.threshold int(200),sub(proc.prio)
   set-var-fmt proc.current_state "primary"
   set-var-fmt proc.bootid "%pid|%t"
+  numa-cpu-mapping
 
 backend test
   acl url_stats path_beg /stats
@@ -3076,6 +3077,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  source 192.168.1.200
 `, 2},
+	{`  numa-cpu-mapping
+`, 1},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]

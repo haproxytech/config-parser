@@ -1463,3 +1463,12 @@ type Source struct {
 	Interface     string
 	Comment       string
 }
+
+//sections:global
+//name:numa-cpu-mapping
+//test:ok:numa-cpu-mapping
+//test:ok:no numa-cpu-mapping
+type NumaCPUMapping struct {
+	NoOption bool
+	Comment  string
+}

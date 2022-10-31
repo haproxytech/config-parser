@@ -38,6 +38,8 @@ func TestWholeConfigsSectionsGlobal(t *testing.T) {
 		{"global_lualoadetchaproxyluafoolua", global_lualoadetchaproxyluafoolua},
 		{"global_luaprependpathusrsharehaproxylua", global_luaprependpathusrsharehaproxylua},
 		{"global_luaprependpathusrsharehaproxylua_", global_luaprependpathusrsharehaproxylua_},
+		{"global_nonumacpumapping", global_nonumacpumapping},
+		{"global_numacpumapping", global_numacpumapping},
 		{"global_setvarfmtprocbootidpidt", global_setvarfmtprocbootidpidt},
 		{"global_setvarfmtproccurrentstateprimary", global_setvarfmtproccurrentstateprimary},
 		{"global_setvarproccurrentstatestrprimary", global_setvarproccurrentstatestrprimary},
