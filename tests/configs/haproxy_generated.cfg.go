@@ -2012,6 +2012,7 @@ peers test
   default-server ws h2
   default-server ws auto
   peer name 127.0.0.1:8080
+  peer name 127.0.0.1:8080 shard 1
   default-bind user root mode 600 accept-proxy
 
 program test
@@ -2686,6 +2687,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  external-check command /bin/true
 `, 1},
 	{`  peer name 127.0.0.1:8080
+`, 1},
+	{`  peer name 127.0.0.1:8080 shard 1
 `, 1},
 	{`  server name 127.0.0.1:8080
 `, 1},

@@ -597,6 +597,10 @@ const peers_peername1270018080 = `
 peers test
   peer name 127.0.0.1:8080
 `
+const peers_peername1270018080shard1 = `
+peers test
+  peer name 127.0.0.1:8080 shard 1
+`
 const peers_defaultbinduserrootmode600accept = `
 peers test
   default-bind user root mode 600 accept-proxy

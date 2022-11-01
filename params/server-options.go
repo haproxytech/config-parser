@@ -206,6 +206,7 @@ func getServerOptions() []ServerOption {
 		&ServerOptionValue{Name: "resolve-net"},
 		&ServerOptionValue{Name: "resolvers"},
 		&ServerOptionValue{Name: "proxy-v2-options"},
+		&ServerOptionValue{Name: "shard"},
 		&ServerOptionValue{Name: "slowstart"},
 		&ServerOptionValue{Name: "sni"},
 		&ServerOptionValue{Name: "source"},

@@ -27,13 +27,14 @@ import (
 
 func TestPeer(t *testing.T) {
 	tests := map[string]bool{
-		"peer name 127.0.0.1:8080": true,
-		"peer name 127.0.0.1":      false,
-		"peer name :8080":          false,
-		"peer":                     false,
-		"peer 0":                   false,
-		"---":                      false,
-		"--- ---":                  false,
+		"peer name 127.0.0.1:8080":         true,
+		"peer name 127.0.0.1:8080 shard 1": true,
+		"peer name 127.0.0.1":              false,
+		"peer name :8080":                  false,
+		"peer":                             false,
+		"peer 0":                           false,
+		"---":                              false,
+		"--- ---":                          false,
 	}
 	parser := &parsers.Peer{}
 	for command, shouldPass := range tests {

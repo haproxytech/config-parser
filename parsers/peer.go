@@ -35,12 +35,16 @@ func (l *Peer) parse(line string, parts []string, comment string) (*types.Peer, 
 		adr, p, found := common.CutRight(parts[2], ":")
 		if found && len(adr) > 0 {
 			if port, err := strconv.ParseInt(p, 10, 64); err == nil {
-				return &types.Peer{
+				peer := &types.Peer{
 					Name:    parts[1],
 					IP:      adr,
 					Port:    port,
 					Comment: comment,
-				}, nil
+				}
+				if len(parts) > 4 && parts[3] == "shard" {
+					peer.Shard = parts[4]
+				}
+				return peer, nil
 			}
 		}
 	}
@@ -53,8 +57,12 @@ func (l *Peer) Result() ([]common.ReturnResultLine, error) {
 	}
 	result := make([]common.ReturnResultLine, len(l.data))
 	for index, peer := range l.data {
+		str := fmt.Sprintf("peer %s %s:%d", peer.Name, peer.IP, peer.Port)
+		if peer.Shard != "" {
+			str = fmt.Sprintf("%s shard %s", str, peer.Shard)
+		}
 		result[index] = common.ReturnResultLine{
-			Data:    fmt.Sprintf("peer %s %s:%d", peer.Name, peer.IP, peer.Port),
+			Data:    str,
 			Comment: peer.Comment,
 		}
 	}

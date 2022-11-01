@@ -178,6 +178,7 @@ func TestWholeConfigsSectionsPeers(t *testing.T) {
 		{"peers_defaultserverwsh1", peers_defaultserverwsh1},
 		{"peers_defaultserverwsh2", peers_defaultserverwsh2},
 		{"peers_peername1270018080", peers_peername1270018080},
+		{"peers_peername1270018080shard1", peers_peername1270018080shard1},
 	}
 	for _, config := range tests {
 		t.Run(config.Name, func(t *testing.T) {

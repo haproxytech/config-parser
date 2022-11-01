@@ -861,6 +861,7 @@ type ExternalCheckCommand struct {
 //name:peer
 //is:multiple
 //test:ok:peer name 127.0.0.1:8080
+//test:ok:peer name 127.0.0.1:8080 shard 1
 //test:fail:peer name 127.0.0.1
 //test:fail:peer name :8080
 //test:fail:peer
@@ -869,6 +870,7 @@ type Peer struct {
 	Name    string
 	IP      string
 	Port    int64
+	Shard   string
 	Comment string
 }
 
