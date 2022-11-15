@@ -1853,6 +1853,30 @@ const backend_source1921681200usesrchdriphdroc = `
 backend test
   source 192.168.1.200 usesrc hdr_ip(hdr,occ)
 `
+const backend_optionoriginalto = `
+backend test
+  option originalto
+`
+const backend_optionoriginaltoexcept127001 = `
+backend test
+  option originalto except 127.0.0.1
+`
+const backend_optionoriginaltoheaderXClientDst = `
+backend test
+  option originalto header X-Client-Dst
+`
+const backend_optionoriginaltoexcept127001head = `
+backend test
+  option originalto except 127.0.0.1 header X-Client-Dst
+`
+const backend_optionoriginaltocomment = `
+backend test
+  option originalto # comment
+`
+const backend_optionoriginaltoexcept127001comm = `
+backend test
+  option originalto except 127.0.0.1 # comment
+`
 const backend_httprequestsetmapmaplstsrcreqhdr = `
 backend test
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value

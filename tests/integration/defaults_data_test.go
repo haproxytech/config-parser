@@ -1061,6 +1061,30 @@ const defaults_source1921681200usesrchdriphdroc = `
 defaults test
   source 192.168.1.200 usesrc hdr_ip(hdr,occ)
 `
+const defaults_optionoriginalto = `
+defaults test
+  option originalto
+`
+const defaults_optionoriginaltoexcept127001 = `
+defaults test
+  option originalto except 127.0.0.1
+`
+const defaults_optionoriginaltoheaderXClientDst = `
+defaults test
+  option originalto header X-Client-Dst
+`
+const defaults_optionoriginaltoexcept127001head = `
+defaults test
+  option originalto except 127.0.0.1 header X-Client-Dst
+`
+const defaults_optionoriginaltocomment = `
+defaults test
+  option originalto # comment
+`
+const defaults_optionoriginaltoexcept127001comm = `
+defaults test
+  option originalto except 127.0.0.1 # comment
+`
 const defaults_httperrorstatus400 = `
 defaults test
   http-error status 400

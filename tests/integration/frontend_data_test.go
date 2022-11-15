@@ -753,6 +753,30 @@ const frontend_optionhttprestrictreqhdrnamesrej = `
 frontend test
   option http-restrict-req-hdr-names reject
 `
+const frontend_optionoriginalto = `
+frontend test
+  option originalto
+`
+const frontend_optionoriginaltoexcept127001 = `
+frontend test
+  option originalto except 127.0.0.1
+`
+const frontend_optionoriginaltoheaderXClientDst = `
+frontend test
+  option originalto header X-Client-Dst
+`
+const frontend_optionoriginaltoexcept127001head = `
+frontend test
+  option originalto except 127.0.0.1 header X-Client-Dst
+`
+const frontend_optionoriginaltocomment = `
+frontend test
+  option originalto # comment
+`
+const frontend_optionoriginaltoexcept127001comm = `
+frontend test
+  option originalto except 127.0.0.1 # comment
+`
 const frontend_httprequestsetmapmaplstsrcreqhdr = `
 frontend test
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value

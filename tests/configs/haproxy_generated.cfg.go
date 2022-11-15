@@ -412,6 +412,7 @@ backend test
   http-send-name-header
   option http-restrict-req-hdr-names preserve
   source 192.168.1.200
+  option originalto
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -1129,6 +1130,7 @@ defaults test
   http-send-name-header
   option http-restrict-req-hdr-names preserve
   source 192.168.1.200
+  option originalto
   http-error status 400
   http-error status 400 default-errorfiles
   http-error status 400 errorfile /my/fancy/errorfile
@@ -1391,6 +1393,7 @@ frontend test
   declare capture request len 1
   declare capture response len 2
   option http-restrict-req-hdr-names preserve
+  option originalto
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
   http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
   http-request add-acl(map.lst) [src]
@@ -3085,6 +3088,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  default-path current
 `, 1},
+	{`  option originalto
+`, 3},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]

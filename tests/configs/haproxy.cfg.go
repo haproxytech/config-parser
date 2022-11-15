@@ -62,7 +62,7 @@ defaults A
   no option httpslog
   no option independent-streams
   no option nolinger
-  no option originalto
+  option originalto
   option persist
   option prefer-last-server
   option socket-stats
@@ -214,7 +214,7 @@ frontend xyz4 from A
   no option httpslog
   no option independent-streams
   no option nolinger
-  no option originalto
+  option originalto except 127.0.0.1
   no option socket-stats
   no option tcp-smart-accept
   no option idle-close-on-response
@@ -239,7 +239,7 @@ frontend xyz5 from A
   option httpslog
   option independent-streams
   option nolinger
-  option originalto
+  option originalto header X-Client-Dst
   option socket-stats
   option tcp-smart-accept
   option idle-close-on-response
@@ -271,7 +271,7 @@ backend default_backend from A
   option checkcache
   option independent-streams
   option nolinger
-  option originalto
+  option originalto header X-Client-Dst
   option persist
   option prefer-last-server
   option spop-check
@@ -285,7 +285,7 @@ backend default_backend2 from A
   no option checkcache
   no option independent-streams
   no option nolinger
-  no option originalto
+  option originalto except 127.0.0.1 header X-Client-Dst
   no option persist
   no option prefer-last-server
   no option spop-check

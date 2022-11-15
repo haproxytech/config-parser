@@ -1493,3 +1493,22 @@ type DefaultPath struct {
 	Path    string
 	Comment string
 }
+
+//sections:defaults,frontend,backend
+//name:option originalto
+//no:parse
+//test:ok:option originalto
+//test:ok:option originalto except 127.0.0.1
+//test:ok:option originalto header X-Client-Dst
+//test:ok:option originalto except 127.0.0.1 header X-Client-Dst
+//test:ok:option originalto # comment
+//test:ok:option originalto except 127.0.0.1 # comment
+//test:fail:option originalto except
+//test:fail:option originalto header
+//test:fail:option originalto except header X-Client-Dst
+//test:fail:option originalto except 127.1.0.1 header
+type OptionOriginalTo struct {
+	Except  string
+	Header  string
+	Comment string
+}
