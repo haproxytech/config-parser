@@ -1474,3 +1474,22 @@ type NumaCPUMapping struct {
 	NoOption bool
 	Comment  string
 }
+
+//sections:global
+//name:default-path
+//no:parse
+//test:ok:default-path current
+//test:ok:default-path config
+//test:ok:default-path parent
+//test:ok:default-path origin /some/path
+//test:ok:default-path current # comment
+//test:ok:default-path origin /some/path # comment
+//test:fail:default-path
+//test:fail:option default-path unrecognized
+//test:fail:option default-path origin
+//test:fail:option default-path origin # comment
+type DefaultPath struct {
+	Type    string
+	Path    string
+	Comment string
+}

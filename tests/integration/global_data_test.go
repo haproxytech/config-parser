@@ -141,3 +141,27 @@ const global_nonumacpumapping = `
 global
   no numa-cpu-mapping
 `
+const global_defaultpathcurrent = `
+global
+  default-path current
+`
+const global_defaultpathconfig = `
+global
+  default-path config
+`
+const global_defaultpathparent = `
+global
+  default-path parent
+`
+const global_defaultpathoriginsomepath = `
+global
+  default-path origin /some/path
+`
+const global_defaultpathcurrentcomment = `
+global
+  default-path current # comment
+`
+const global_defaultpathoriginsomepathcomment = `
+global
+  default-path origin /some/path # comment
+`
