@@ -109,6 +109,8 @@ func (f *Content) Parse(parts []string, comment string) error { //nolint:gocyclo
 			err = f.ParseAction(&actions.UnsetVar{}, parts)
 		case strings.HasPrefix(parts[2], "do-resolve"):
 			err = f.ParseAction(&actions.DoResolve{}, parts)
+		default:
+			return fmt.Errorf("unsupported action %s", parts[2])
 		}
 	}
 	return err

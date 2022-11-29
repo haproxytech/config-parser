@@ -2,7 +2,7 @@
 Copyright 2019 HAProxy Technologies
 
 Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
+you may not use this file 1cept in compliance with the License.
 You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
@@ -67,6 +67,8 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.TrackSc{}, parts)
 	case "set-src":
 		err = f.ParseAction(&tcpActions.SetSrc{}, parts)
+	case "set-dst":
+		err = f.ParseAction(&actions.SetDst{}, parts)
 	case "silent-drop":
 		err = f.ParseAction(&actions.SilentDrop{}, parts)
 	case "set-mark":
@@ -75,6 +77,8 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.SetTos{}, parts)
 	case "set-src-port":
 		err = f.ParseAction(&actions.SetSrcPort{}, parts)
+	case "set-dst-port":
+		err = f.ParseAction(&actions.SetDstPort{}, parts)
 	default:
 		switch {
 		case strings.HasPrefix(parts[2], "lua."):
@@ -85,8 +89,10 @@ func (f *Connection) Parse(parts []string, comment string) error {
 			err = f.ParseAction(&actions.ScIncGpc1{}, parts)
 		case strings.HasPrefix(parts[2], "sc-set-gpt0"):
 			err = f.ParseAction(&actions.ScSetGpt0{}, parts)
-		case strings.HasPrefix(parts[2], "set-var-fmt"):
-			err = f.ParseAction(&actions.SetVarFmt{}, parts)
+		case strings.HasPrefix(parts[2], "unset-var"):
+			err = f.ParseAction(&actions.UnsetVar{}, parts)
+		default:
+			return fmt.Errorf("unsupported action %s", parts[2])
 		}
 	}
 	return err

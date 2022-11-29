@@ -75,6 +75,8 @@ func (f *Session) Parse(parts []string, comment string) error {
 			err = f.ParseAction(&actions.SetVarFmt{}, parts)
 		case strings.HasPrefix(parts[2], "unset-var"):
 			err = f.ParseAction(&actions.UnsetVar{}, parts)
+		default:
+			return fmt.Errorf("unsupported action %s", parts[2])
 		}
 	}
 	return err
