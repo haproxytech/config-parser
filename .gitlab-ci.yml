@@ -43,7 +43,7 @@ lint-commit-msg:
 tidy:
   stage: lint
   image:
-    name: $CI_REGISTRY_GO/golang:1.18
+    name: $CI_REGISTRY_GO/golang:1.19
     entrypoint: [""]
   tags:
     - go
@@ -56,7 +56,7 @@ tidy:
 test:
   stage: test
   image:
-    name: $CI_REGISTRY_GO/golang:1.18
+    name: $CI_REGISTRY_GO/golang:1.19
     entrypoint: [""]
   tags:
     - go
