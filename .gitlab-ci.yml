@@ -14,9 +14,9 @@ diff:
     - git diff
     - test -z "$(git diff 2> /dev/null)" || exit 'Files are not generated or formatted with gofumpt, issue `make generate` and commit the result'
     - test -z "$(git ls-files --others --exclude-standard 2> /dev/null)" || exit 'Generation created untracked files, cannot proceed'
-  only:
-    - merge_requests
-    - branches
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'push'
 golangci_lint:
   stage: lint
   image:
@@ -26,9 +26,9 @@ golangci_lint:
     - go
   script:
     - golangci-lint run --enable-all
-  only:
-    - merge_requests
-    - branches
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'push'
 lint-commit-msg:
   stage: lint
   image:
@@ -38,8 +38,8 @@ lint-commit-msg:
     - go
   script:
     - /check
-  only:
-    - merge_requests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 tidy:
   stage: lint
   image:
@@ -50,9 +50,9 @@ tidy:
   script:
     - go mod tidy
     - test -z "$(git diff 2> /dev/null)" || exit 'Go modules not tidied, issue \`go mod tidy\` and commit the result'
-  only:
-    - merge_requests
-    - branches
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'push'
 test:
   stage: test
   image:
@@ -63,6 +63,6 @@ test:
   script:
     - go build -v .
     - make test
-  only:
-    - merge_requests
-    - branches
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'push'
