@@ -34,6 +34,7 @@ func TestWholeConfigsSectionsUserlist(t *testing.T) {
 		{"userlist_groupG1userstigerscott", userlist_groupG1userstigerscott},
 		{"userlist_userbearinsecurepasswordhellogro", userlist_userbearinsecurepasswordhellogro},
 		{"userlist_userpandainsecurepasswordelgatog", userlist_userpandainsecurepasswordelgatog},
+		{"userlist_userplatipusinsecurepasswordsalu", userlist_userplatipusinsecurepasswordsalu},
 		{"userlist_usertigerpassword6k6y3oePJlKBxxH", userlist_usertigerpassword6k6y3oePJlKBxxH},
 	}
 	for _, config := range tests {

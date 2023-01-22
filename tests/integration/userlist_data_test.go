@@ -37,3 +37,7 @@ const userlist_userbearinsecurepasswordhellogro = `
 userlist test
   user bear insecure-password hello groups G2
 `
+const userlist_userplatipusinsecurepasswordsalu = `
+userlist test
+  user platipus insecure-password saludos
+`

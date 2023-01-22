@@ -2032,6 +2032,7 @@ userlist test
   user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
   user panda insecure-password elgato groups G1,G2
   user bear insecure-password hello groups G2
+  user platipus insecure-password saludos
 `
 
 var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url http://test.local
@@ -3013,6 +3014,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  user panda insecure-password elgato groups G1,G2
 `, 1},
 	{`  user bear insecure-password hello groups G2
+`, 1},
+	{`  user platipus insecure-password saludos
 `, 1},
 	{`  unique-id-format %{+X}o_%ci:%cp_%fi:%fp_%Ts_%rt:%pid
 `, 2},

@@ -30,6 +30,7 @@ func TestUser(t *testing.T) {
 		"user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1": true,
 		"user panda insecure-password elgato groups G1,G2":                       true,
 		"user bear insecure-password hello groups G2":                            true,
+		"user platipus insecure-password saludos":                                true,
 		"user":    false,
 		"---":     false,
 		"--- ---": false,

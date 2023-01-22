@@ -1115,6 +1115,7 @@ type UseBackend struct {
 //test:ok:user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
 //test:ok:user panda insecure-password elgato groups G1,G2
 //test:ok:user bear insecure-password hello groups G2
+//test:ok:user platipus insecure-password saludos
 //test:fail:user
 type User struct {
 	Name       string
