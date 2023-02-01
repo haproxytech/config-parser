@@ -129,10 +129,18 @@ mailers mymailers2
 resolvers mirko
   nameserver ns_1_new_name_for_0 0.0.0.0:8080
   nameserver ns_2_new_name 0.0.0.0:8081
-  hold obsolete 5s
-  hold valid 5s
-  timeout retry 5s
-  accepted_payload_size 323
+  nameserver dns3 tcp@10.0.0.3:53
+  hold nx 30s
+  hold obsolete 30s
+  hold other 30s
+  hold refused 30s
+  hold timeout 30s
+  hold valid 10s
+  timeout resolve 1s
+  timeout retry 1s
+  accepted_payload_size 4096
+  parse-resolv-conf
+  resolve_retries 3
 
 cache foobar
   total-max-size 4

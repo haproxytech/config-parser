@@ -738,7 +738,7 @@ func (p *configParser) getResolverParser() *Parsers {
 	addParser(parser, &sequence, &simple.Timeout{Name: "resolve"})
 	addParser(parser, &sequence, &simple.Timeout{Name: "retry"})
 	addParser(parser, &sequence, &simple.Word{Name: "accepted_payload_size"})
-	addParser(parser, &sequence, &simple.Word{Name: "parse-resolv-conf"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "parse-resolv-conf"})
 	addParser(parser, &sequence, &simple.Word{Name: "resolve_retries"})
 	return p.createParsers(parser, sequence)
 }
