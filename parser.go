@@ -59,7 +59,6 @@ const (
 
 var DefaultSectionName = "" //nolint:gochecknoglobals
 
-//nolint:interfacebloat
 type Parser interface {
 	LoadData(path string) error
 	Process(reader io.Reader) error

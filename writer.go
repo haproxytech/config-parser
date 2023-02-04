@@ -17,7 +17,8 @@ limitations under the License.
 package parser
 
 import (
-	"crypto/md5"
+	//nolint:gosec
+	"crypto/md5" // G501: Blocklisted import crypto/md5: weak cryptographic primitive
 	"fmt"
 	"io"
 	"strings"

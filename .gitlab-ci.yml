@@ -1,3 +1,5 @@
+variables:
+ GO_VERSION: "1.20"
 stages:
   - diff
   - lint
@@ -5,7 +7,7 @@ stages:
 diff:
   stage: diff
   image:
-    name: $CI_REGISTRY_GO/golang:1.19
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
     entrypoint: [""]
   tags:
     - go
@@ -17,15 +19,15 @@ diff:
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_PIPELINE_SOURCE == 'push'
-golangci_lint:
+lint:
   stage: lint
   image:
-    name: $CI_REGISTRY_GO/lint:1.50.0
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
     entrypoint: [""]
   tags:
     - go
   script:
-    - golangci-lint run --enable-all
+    - make lint
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_PIPELINE_SOURCE == 'push'
@@ -43,7 +45,7 @@ lint-commit-msg:
 tidy:
   stage: lint
   image:
-    name: $CI_REGISTRY_GO/golang:1.19
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
     entrypoint: [""]
   tags:
     - go
@@ -56,7 +58,7 @@ tidy:
 test:
   stage: test
   image:
-    name: $CI_REGISTRY_GO/golang:1.19
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
     entrypoint: [""]
   tags:
     - go

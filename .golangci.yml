@@ -16,9 +16,6 @@ linters-settings:
 linters:
   enable-all: true
   disable:
-    - golint # deprecated, replaced with revive
-    - interfacer # deprecated
-    - maligned # deprecated
     - wrapcheck
     - nlreturn
     - gomnd
@@ -38,13 +35,21 @@ linters:
     - goconst
     - exhaustruct
     - dupword
+    - interfacebloat
+    - gci
+
+    - ifshort # deprecated
+    - structcheck # deprecated
+    - deadcode # deprecated
+    - nosnakecase # deprecated
+    - varcheck # deprecated
+    - rowserrcheck # deprecated
+    - sqlclosecheck # deprecated
+    - wastedassign # deprecated
+    - golint # deprecated
+    - interfacer # deprecated
+    - maligned # deprecated
 
 run:
   skip-dirs:
     - test
-
-issues:
-  exclude-rules:
-    - linters:
-        - gosec
-      text: "G[501]"

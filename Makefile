@@ -1,4 +1,5 @@
 PROJECT_PATH=${PWD}
+GOLANGCI_LINT_VERSION=1.51.0
 
 .PHONY: generate
 generate:
@@ -17,8 +18,5 @@ test:
 
 .PHONY: lint
 lint:
-	docker run --rm -v ${PROJECT_PATH}:/app -w /app ghcr.io/haproxytech/go-linter:1.50.0 -v --timeout 5m --color always --max-issues-per-linter 0 --max-same-issues 0
-
-.PHONY: lint-local
-lint-local:
-	golangci-lint run
+	cd bin;GOLANGCI_LINT_VERSION=${GOLANGCI_LINT_VERSION} sh lint-check.sh
+	bin/golangci-lint run --timeout 5m --color always --max-issues-per-linter 0 --max-same-issues 0

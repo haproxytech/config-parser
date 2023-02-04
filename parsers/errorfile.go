@@ -26,7 +26,7 @@ import (
 
 // 200, 400, 401, 403, 404, 405, 407, 408, 410,
 // 413, 425, 429, 500, 501, 502, 503, and 504
-var errorFileAllowedCode = map[string]struct{}{
+var errorFileAllowedCode = map[string]struct{}{ //nolint:gochecknoglobals
 	"200": {},
 	"400": {},
 	"401": {},
