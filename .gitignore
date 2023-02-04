@@ -6,3 +6,4 @@ test/main.go
 test/*
 .idea/
 tests/pprof/
+bin/golangci-lint
