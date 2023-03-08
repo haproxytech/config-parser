@@ -473,6 +473,18 @@ const frontend_bind443verifyrequired = `
 frontend test
   bind :443 verify required
 `
+const frontend_bind443quicccalgocubic = `
+frontend test
+  bind :443 quic-cc-algo cubic
+`
+const frontend_bind443quicccalgonewreno = `
+frontend test
+  bind :443 quic-cc-algo newreno
+`
+const frontend_bind443quicforceretry = `
+frontend test
+  bind :443 quic-force-retry
+`
 const frontend_bindprocessall = `
 frontend test
   bind-process all

@@ -48,6 +48,7 @@ global test
   set-var-fmt proc.bootid "%pid|%t"
   numa-cpu-mapping
   default-path current
+  tune.quic.socket-owner listener
 
 backend test
   acl url_stats path_beg /stats
@@ -1350,6 +1351,9 @@ frontend test
   bind :443 verify none
   bind :443 verify optional
   bind :443 verify required
+  bind :443 quic-cc-algo cubic
+  bind :443 quic-cc-algo newreno
+  bind :443 quic-force-retry
   bind-process all
   email-alert from admin@example.com
   email-alert to a@z,x@y
@@ -2286,6 +2290,12 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  bind :443 verify required
 `, 1},
+	{`  bind :443 quic-cc-algo cubic
+`, 1},
+	{`  bind :443 quic-cc-algo newreno
+`, 1},
+	{`  bind :443 quic-force-retry
+`, 1},
 	{`  dgram-bind :80,:443
 `, 1},
 	{`  dgram-bind 10.0.0.1:10080,10.0.0.1:10443
@@ -3090,6 +3100,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  option originalto
 `, 3},
+	{`  tune.quic.socket-owner listener
+`, 1},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]

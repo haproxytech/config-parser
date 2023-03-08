@@ -61,6 +61,8 @@ func TestWholeConfigsSectionsGlobal(t *testing.T) {
 		{"global_statssocketsomepathtosocketmodea", global_statssocketsomepathtosocketmodea},
 		{"global_threadgroupname10", global_threadgroupname10},
 		{"global_threadgroupname110", global_threadgroupname110},
+		{"global_tunequicsocketownerconnection", global_tunequicsocketownerconnection},
+		{"global_tunequicsocketownerlistener", global_tunequicsocketownerlistener},
 		{"global_unixbindprefixpre", global_unixbindprefixpre},
 		{"global_unixbindprefixpremodetest", global_unixbindprefixpremodetest},
 		{"global_unixbindprefixpremodetestusergga", global_unixbindprefixpremodetestusergga},

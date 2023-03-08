@@ -142,6 +142,7 @@ func getBindOptions() []BindOption {
 		&BindOptionWord{Name: "transparent"},
 		&BindOptionWord{Name: "v4v6"},
 		&BindOptionWord{Name: "v6only"},
+		&BindOptionWord{Name: "quic-force-retry"},
 
 		&BindOptionDoubleWord{Name: "expose-fd", Value: "listeners"},
 
@@ -183,6 +184,7 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "uid"},
 		&BindOptionValue{Name: "user"},
 		&BindOptionValue{Name: "verify"},
+		&BindOptionValue{Name: "quic-cc-algo"},
 	}
 }
 
