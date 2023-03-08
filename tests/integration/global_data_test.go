@@ -165,3 +165,11 @@ const global_defaultpathoriginsomepathcomment = `
 global
   default-path origin /some/path # comment
 `
+const global_tunequicsocketownerlistener = `
+global
+  tune.quic.socket-owner listener
+`
+const global_tunequicsocketownerconnection = `
+global
+  tune.quic.socket-owner connection
+`

@@ -233,6 +233,9 @@ type ACL struct {
 //test:ok:bind :443 verify none
 //test:ok:bind :443 verify optional
 //test:ok:bind :443 verify required
+//test:ok:bind :443 quic-cc-algo cubic
+//test:ok:bind :443 quic-cc-algo newreno
+//test:ok:bind :443 quic-force-retry
 type Bind struct {
 	Path    string // can be address:port or socket path
 	Params  []params.BindOption
@@ -1512,4 +1515,14 @@ type OptionOriginalTo struct {
 	Except  string
 	Header  string
 	Comment string
+}
+
+//sections:global
+//name:tune.quic.socket-owner
+//test:ok:tune.quic.socket-owner listener
+//test:ok:tune.quic.socket-owner connection
+//test:fail:tune.quic.socket-owner somethingelse
+//test:fail:tune.quic.socket-owner
+type QuicSocketOwner struct {
+	Owner string
 }
