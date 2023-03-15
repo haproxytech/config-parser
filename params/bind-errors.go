@@ -42,3 +42,13 @@ type NotEnoughParamsError struct{}
 func (e *NotEnoughParamsError) Error() string {
 	return "error: not enough params"
 }
+
+// NotAllowedValuesError struct for allowed values errors
+type NotAllowedValuesError struct {
+	Have string
+	Want []string
+}
+
+func (e *NotAllowedValuesError) Error() string {
+	return "error: values not allowed"
+}

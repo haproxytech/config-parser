@@ -246,6 +246,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "tune.bufsize"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.comp.maxlevel"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "tune.fail-alloc"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "tune.fd.edge-triggered"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.header-table-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.initial-window-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.max-concurrent-streams"})
@@ -284,6 +285,8 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "tune.ssl.default-dh-param"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.ssl.ssl-ctx-cache-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.ssl.capture-buffer-size"})
+	addParser(parser, &sequence, &simple.Number{Name: "tune.ssl.ocsp-update.maxdelay"})
+	addParser(parser, &sequence, &simple.Number{Name: "tune.ssl.ocsp-update.mindelay"})
 	addParser(parser, &sequence, &simple.Size{Name: "tune.vars.global-max-size"})
 	addParser(parser, &sequence, &simple.Size{Name: "tune.vars.proc-max-size"})
 	addParser(parser, &sequence, &simple.Size{Name: "tune.vars.reqres-max-size"})
@@ -367,7 +370,6 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &parsers.ThreadGroup{})
 	addParser(parser, &sequence, &simple.Enabled{Name: "quiet"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "zero-warning"})
-	addParser(parser, &sequence, &simple.OnOff{Name: "tune.fd.edge-triggered"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})

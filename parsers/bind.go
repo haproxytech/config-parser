@@ -37,7 +37,11 @@ func (h *Bind) parse(line string, parts []string, comment string) (*types.Bind, 
 			Comment: comment,
 		}
 		if len(parts) > 2 {
-			data.Params = params.ParseBindOptions(parts[2:])
+			paramsBindOptions, err := params.ParseBindOptions(parts[2:])
+			if err != nil {
+				return nil, &errors.ParseError{Parser: "BindLines", Line: line}
+			}
+			data.Params = paramsBindOptions
 		}
 		return data, nil
 	}

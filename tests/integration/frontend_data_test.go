@@ -485,6 +485,14 @@ const frontend_bind443quicforceretry = `
 frontend test
   bind :443 quic-force-retry
 `
+const frontend_bind443sslocspupdateoff = `
+frontend test
+  bind :443 ssl ocsp-update off
+`
+const frontend_bind443sslocspupdateon = `
+frontend test
+  bind :443 ssl ocsp-update on
+`
 const frontend_bindprocessall = `
 frontend test
   bind-process all

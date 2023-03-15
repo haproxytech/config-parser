@@ -1354,6 +1354,8 @@ frontend test
   bind :443 quic-cc-algo cubic
   bind :443 quic-cc-algo newreno
   bind :443 quic-force-retry
+  bind :443 ssl ocsp-update off
+  bind :443 ssl ocsp-update on
   bind-process all
   email-alert from admin@example.com
   email-alert to a@z,x@y
@@ -2296,6 +2298,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  bind :443 quic-cc-algo newreno
 `, 1},
 	{`  bind :443 quic-force-retry
+`, 1},
+	{`  bind :443 ssl ocsp-update off
+`, 1},
+	{`  bind :443 ssl ocsp-update on
 `, 1},
 	{`  dgram-bind :80,:443
 `, 1},

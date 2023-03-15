@@ -33,6 +33,11 @@ type AliasTestData struct {
 	Test  string
 }
 
+type DefaultTestData struct {
+	Test    string
+	Default string
+}
+
 type Data struct { //nolint:maligned
 	ParserMultiple     bool
 	ParserSections     []string
@@ -58,10 +63,12 @@ type Data struct { //nolint:maligned
 	TestFailEscaped    []string
 	TestAliasOK        []AliasTestData
 	TestAliasFail      []AliasTestData
+	TestDefault        []DefaultTestData
 	TestSkip           bool
 	DataDir            string
 	Deprecated         bool
 	HasAlias           bool
+	HasDefault         bool
 }
 
 type ConfigFile struct {

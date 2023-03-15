@@ -19,6 +19,8 @@ package params
 import (
 	"fmt"
 	"strings"
+
+	"golang.org/x/exp/slices"
 )
 
 // BindOption ...
@@ -93,14 +95,46 @@ type BindOptionValue struct {
 	Value string
 }
 
+// BindOptionValueValidation ...
+type BindOptionValueValidation struct {
+	AllowedValues []string
+	DefaultValue  string
+}
+
+//nolint:gochecknoglobals
+var bindOptionValuesValidation = map[string]BindOptionValueValidation{
+	"quic-cc-algo": {
+		AllowedValues: []string{"cubic", "newreno"},
+		DefaultValue:  "cubic",
+	},
+	"ocsp-update": {
+		AllowedValues: []string{"off", "on"},
+		DefaultValue:  "off",
+	},
+}
+
 // Parse ...
 func (b *BindOptionValue) Parse(options []string, currentIndex int) (int, error) {
 	if currentIndex+1 < len(options) {
 		if options[currentIndex] == b.Name {
 			b.Value = options[currentIndex+1]
+			if optionValuesValidation, ok := bindOptionValuesValidation[options[currentIndex]]; ok {
+				if !slices.Contains(optionValuesValidation.AllowedValues, b.Value) {
+					return 0, &NotAllowedValuesError{
+						Have: options[currentIndex+1],
+						Want: optionValuesValidation.AllowedValues,
+					}
+				}
+			}
 			return 2, nil
 		}
 		return 0, &NotFoundError{Have: options[currentIndex], Want: b.Name}
+	}
+	if currentIndex < len(options) && options[currentIndex] == b.Name {
+		if optionValuesValidation, ok := bindOptionValuesValidation[options[currentIndex]]; ok {
+			b.Value = optionValuesValidation.DefaultValue
+			return 1, nil
+		}
 	}
 	return 0, &NotEnoughParamsError{}
 }
@@ -185,11 +219,12 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "user"},
 		&BindOptionValue{Name: "verify"},
 		&BindOptionValue{Name: "quic-cc-algo"},
+		&BindOptionValue{Name: "ocsp-update"},
 	}
 }
 
 // Parse ...
-func ParseBindOptions(options []string) []BindOption {
+func ParseBindOptions(options []string) ([]BindOption, error) {
 	result := []BindOption{}
 	currentIndex := 0
 	for currentIndex < len(options) {
@@ -199,13 +234,15 @@ func ParseBindOptions(options []string) []BindOption {
 				result = append(result, parser)
 				found = true
 				currentIndex += size
+			} else if err.Error() == "error: values not allowed" {
+				return nil, err
 			}
 		}
 		if !found {
 			currentIndex++
 		}
 	}
-	return result
+	return result, nil
 }
 
 func BindOptionsString(options []BindOption) string {

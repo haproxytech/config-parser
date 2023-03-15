@@ -34,9 +34,10 @@ func (l *Socket) parse(line string, parts []string, comment string) (*types.Sock
 	if len(parts) < 3 {
 		return nil, &errors.ParseError{Parser: "SocketSingle", Line: line, Message: "Parse error"}
 	}
+	paramsBindOptions, _ := params.ParseBindOptions(parts[3:])
 	socket := &types.Socket{
 		Path:    parts[2],
-		Params:  params.ParseBindOptions(parts[3:]),
+		Params:  paramsBindOptions,
 		Comment: comment,
 	}
 	// s.value = elements[1:]

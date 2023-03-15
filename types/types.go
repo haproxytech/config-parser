@@ -235,7 +235,13 @@ type ACL struct {
 //test:ok:bind :443 verify required
 //test:ok:bind :443 quic-cc-algo cubic
 //test:ok:bind :443 quic-cc-algo newreno
+//test:default_value_ok:cubic:bind :443 quic-cc-algo
+//test:fail:bind :443 quic-cc-algo something
 //test:ok:bind :443 quic-force-retry
+//test:ok:bind :443 ssl ocsp-update off
+//test:ok:bind :443 ssl ocsp-update on
+//test:default_value_ok:off:bind :443 ssl ocsp-update
+//test:fail:bind :443 ssl ocsp-update something
 type Bind struct {
 	Path    string // can be address:port or socket path
 	Params  []params.BindOption

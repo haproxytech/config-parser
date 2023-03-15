@@ -128,6 +128,8 @@ func TestWholeConfigsSectionsFrontend(t *testing.T) {
 		{"frontend_bind443sslminverTLSv11", frontend_bind443sslminverTLSv11},
 		{"frontend_bind443sslminverTLSv12", frontend_bind443sslminverTLSv12},
 		{"frontend_bind443sslminverTLSv13", frontend_bind443sslminverTLSv13},
+		{"frontend_bind443sslocspupdateoff", frontend_bind443sslocspupdateoff},
+		{"frontend_bind443sslocspupdateon", frontend_bind443sslocspupdateon},
 		{"frontend_bind443strictsni", frontend_bind443strictsni},
 		{"frontend_bind443tcput30s", frontend_bind443tcput30s},
 		{"frontend_bind443tfo", frontend_bind443tfo},
