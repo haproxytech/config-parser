@@ -2157,6 +2157,22 @@ const backend_httprequestreplacevalueXForwarde = `
 backend test
   http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 `
+const backend_httprequestscaddgpc121 = `
+backend test
+  http-request sc-add-gpc(1,2) 1
+`
+const backend_httprequestscaddgpc121ifiserror = `
+backend test
+  http-request sc-add-gpc(1,2) 1 if is-error
+`
+const backend_httprequestscincgpc12 = `
+backend test
+  http-request sc-inc-gpc(1,2)
+`
+const backend_httprequestscincgpc12ifFALSE = `
+backend test
+  http-request sc-inc-gpc(1,2) if FALSE
+`
 const backend_httprequestscincgpc01 = `
 backend test
   http-request sc-inc-gpc0(1)
@@ -2697,6 +2713,14 @@ const backend_httpresponsereturnstatus400error_ = `
 backend test
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `
+const backend_httpresponsescincgpc12 = `
+backend test
+  http-response sc-inc-gpc(1,2)
+`
+const backend_httpresponsescincgpc12ifFALSE = `
+backend test
+  http-response sc-inc-gpc(1,2) if FALSE
+`
 const backend_httpresponsescincgpc01 = `
 backend test
   http-response sc-inc-gpc0(1)
@@ -3012,6 +3036,70 @@ backend test
 const backend_httpafterresponseunsetvarsesslas__ = `
 backend test
   http-after-response unset-var(sess.last_redir) unless acl
+`
+const backend_httpafterresponsesetmapmaplstsrc = `
+backend test
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+`
+const backend_httpafterresponsesetmapmaplstsrc_ = `
+backend test
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+`
+const backend_httpafterresponsedelaclmaplstsrc = `
+backend test
+  http-after-response del-acl(map.lst) [src]
+`
+const backend_httpafterresponsedelmapmaplstsrc = `
+backend test
+  http-after-response del-map(map.lst) %[src] if ! value
+`
+const backend_httpafterresponsedelmapmaplstsrc_ = `
+backend test
+  http-after-response del-map(map.lst) %[src]
+`
+const backend_httpafterresponsescaddgpc121 = `
+backend test
+  http-after-response sc-add-gpc(1,2) 1
+`
+const backend_httpafterresponsescaddgpc121ifis = `
+backend test
+  http-after-response sc-add-gpc(1,2) 1 if is-error
+`
+const backend_httpafterresponsescincgpc12 = `
+backend test
+  http-after-response sc-inc-gpc(1,2)
+`
+const backend_httpafterresponsescincgpc12ifise = `
+backend test
+  http-after-response sc-inc-gpc(1,2) if is-error
+`
+const backend_httpafterresponsescincgpc01 = `
+backend test
+  http-after-response sc-inc-gpc0(1)
+`
+const backend_httpafterresponsescincgpc01ifFAL = `
+backend test
+  http-after-response sc-inc-gpc0(1) if FALSE
+`
+const backend_httpafterresponsescincgpc11 = `
+backend test
+  http-after-response sc-inc-gpc1(1)
+`
+const backend_httpafterresponsescincgpc11ifFAL = `
+backend test
+  http-after-response sc-inc-gpc1(1) if FALSE
+`
+const backend_httpafterresponsescsetgpt01hdrHo = `
+backend test
+  http-after-response sc-set-gpt0(1) hdr(Host),lower
+`
+const backend_httpafterresponsescsetgpt0110 = `
+backend test
+  http-after-response sc-set-gpt0(1) 10
+`
+const backend_httpafterresponsescsetgpt01hdrHo_ = `
+backend test
+  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
 `
 const backend_httperrorstatus400 = `
 backend test
@@ -3397,6 +3485,46 @@ const backend_tcprequestcontenttracksc2srctabl_ = `
 backend test
   tcp-request content track-sc2 src table foo if some_check
 `
+const backend_tcprequestcontentscincgpc12 = `
+backend test
+  tcp-request content sc-inc-gpc(1,2)
+`
+const backend_tcprequestcontentscincgpc12ifise = `
+backend test
+  tcp-request content sc-inc-gpc(1,2) if is-error
+`
+const backend_tcprequestcontentscincgpc02 = `
+backend test
+  tcp-request content sc-inc-gpc0(2)
+`
+const backend_tcprequestcontentscincgpc02ifise = `
+backend test
+  tcp-request content sc-inc-gpc0(2) if is-error
+`
+const backend_tcprequestcontentscincgpc12_ = `
+backend test
+  tcp-request content sc-inc-gpc1(2)
+`
+const backend_tcprequestcontentscincgpc12ifise_ = `
+backend test
+  tcp-request content sc-inc-gpc1(2) if is-error
+`
+const backend_tcprequestcontentscsetgpt001337 = `
+backend test
+  tcp-request content sc-set-gpt0(0) 1337
+`
+const backend_tcprequestcontentscsetgpt001337i = `
+backend test
+  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+`
+const backend_tcprequestcontentscaddgpc121 = `
+backend test
+  tcp-request content sc-add-gpc(1,2) 1
+`
+const backend_tcprequestcontentscaddgpc121ifis = `
+backend test
+  tcp-request content sc-add-gpc(1,2) 1 if is-error
+`
 const backend_tcprequestcontentsetdstipv410001 = `
 backend test
   tcp-request content set-dst ipv4(10.0.0.1)
@@ -3537,6 +3665,22 @@ const backend_tcprequestconnectiontracksc2srct_ = `
 backend test
   tcp-request connection track-sc2 src table foo if some_check
 `
+const backend_tcprequestconnectionscaddgpc121 = `
+backend test
+  tcp-request connection sc-add-gpc(1,2) 1
+`
+const backend_tcprequestconnectionscaddgpc121i = `
+backend test
+  tcp-request connection sc-add-gpc(1,2) 1 if is-error
+`
+const backend_tcprequestconnectionscincgpc12 = `
+backend test
+  tcp-request connection sc-inc-gpc(1,2)
+`
+const backend_tcprequestconnectionscincgpc12if = `
+backend test
+  tcp-request connection sc-inc-gpc(1,2) if is-error
+`
 const backend_tcprequestconnectionscincgpc02 = `
 backend test
   tcp-request connection sc-inc-gpc0(2)
@@ -3545,11 +3689,11 @@ const backend_tcprequestconnectionscincgpc02if = `
 backend test
   tcp-request connection sc-inc-gpc0(2) if is-error
 `
-const backend_tcprequestconnectionscincgpc12 = `
+const backend_tcprequestconnectionscincgpc12_ = `
 backend test
   tcp-request connection sc-inc-gpc1(2)
 `
-const backend_tcprequestconnectionscincgpc12if = `
+const backend_tcprequestconnectionscincgpc12if_ = `
 backend test
   tcp-request connection sc-inc-gpc1(2) if is-error
 `
@@ -3661,6 +3805,22 @@ const backend_tcprequestsessiontracksc2srctabl_ = `
 backend test
   tcp-request session track-sc2 src table foo if some_check
 `
+const backend_tcprequestsessionscaddgpc121 = `
+backend test
+  tcp-request session sc-add-gpc(1,2) 1
+`
+const backend_tcprequestsessionscaddgpc121ifis = `
+backend test
+  tcp-request session sc-add-gpc(1,2) 1 if is-error
+`
+const backend_tcprequestsessionscincgpc12 = `
+backend test
+  tcp-request session sc-inc-gpc(1,2)
+`
+const backend_tcprequestsessionscincgpc12ifise = `
+backend test
+  tcp-request session sc-inc-gpc(1,2) if is-error
+`
 const backend_tcprequestsessionscincgpc02 = `
 backend test
   tcp-request session sc-inc-gpc0(2)
@@ -3669,11 +3829,11 @@ const backend_tcprequestsessionscincgpc02ifise = `
 backend test
   tcp-request session sc-inc-gpc0(2) if is-error
 `
-const backend_tcprequestsessionscincgpc12 = `
+const backend_tcprequestsessionscincgpc12_ = `
 backend test
   tcp-request session sc-inc-gpc1(2)
 `
-const backend_tcprequestsessionscincgpc12ifise = `
+const backend_tcprequestsessionscincgpc12ifise_ = `
 backend test
   tcp-request session sc-inc-gpc1(2) if is-error
 `
@@ -3884,6 +4044,30 @@ backend test
 const backend_tcpresponsecontentcloseifHTTP = `
 backend test
   tcp-response content close if !HTTP
+`
+const backend_tcpresponsecontentscincgpc12 = `
+backend test
+  tcp-response content sc-inc-gpc(1,2)
+`
+const backend_tcpresponsecontentscincgpc12ifis = `
+backend test
+  tcp-response content sc-inc-gpc(1,2) if is-error
+`
+const backend_tcpresponsecontentscincgpc02 = `
+backend test
+  tcp-response content sc-inc-gpc0(2)
+`
+const backend_tcpresponsecontentscincgpc02ifis = `
+backend test
+  tcp-response content sc-inc-gpc0(2) if is-error
+`
+const backend_tcpresponsecontentscincgpc12_ = `
+backend test
+  tcp-response content sc-inc-gpc1(2)
+`
+const backend_tcpresponsecontentscincgpc12ifis_ = `
+backend test
+  tcp-response content sc-inc-gpc1(2) if is-error
 `
 const backend_redirectprefixhttpwwwbarcomcode3 = `
 backend test

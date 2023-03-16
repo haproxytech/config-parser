@@ -73,11 +73,7 @@ func (h *Requests) Parse(line string, parts []string, comment string) (string, e
 		return "", &errors.ParseError{Parser: "TCPRequest", Line: line}
 	}
 
-	if err != nil {
-		return "", err
-	}
-
-	return "", nil
+	return "", err
 }
 
 func (h *Requests) Result() ([]common.ReturnResultLine, error) {

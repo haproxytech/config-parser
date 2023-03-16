@@ -107,6 +107,8 @@ func (h *Responses) Parse(line string, parts []string, comment string) (string, 
 				err = h.ParseHTTPResponse(&httpActions.DelACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "lua."):
 				err = h.ParseHTTPResponse(&actions.Lua{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-inc-gpc("):
+				err = h.ParseHTTPResponse(&actions.ScIncGpc{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc0("):
 				err = h.ParseHTTPResponse(&actions.ScIncGpc0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc1("):
@@ -127,10 +129,7 @@ func (h *Responses) Parse(line string, parts []string, comment string) (string, 
 				return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 			}
 		}
-		if err != nil {
-			return "", err
-		}
-		return "", nil
+		return "", err
 	}
 	return "", &errors.ParseError{Parser: "HTTPResponseLines", Line: line}
 }

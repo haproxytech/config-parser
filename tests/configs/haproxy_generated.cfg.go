@@ -484,6 +484,10 @@ backend test
   http-request replace-uri ^http://(.*) https://1
   http-request replace-uri ^http://(.*) https://1 if FALSE
   http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+  http-request sc-add-gpc(1,2) 1
+  http-request sc-add-gpc(1,2) 1 if is-error
+  http-request sc-inc-gpc(1,2)
+  http-request sc-inc-gpc(1,2) if FALSE
   http-request sc-inc-gpc0(1)
   http-request sc-inc-gpc0(1) if FALSE
   http-request sc-inc-gpc1(1)
@@ -619,6 +623,8 @@ backend test
   http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
   http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-response sc-inc-gpc(1,2)
+  http-response sc-inc-gpc(1,2) if FALSE
   http-response sc-inc-gpc0(1)
   http-response sc-inc-gpc0(1) if FALSE
   http-response sc-inc-gpc1(1)
@@ -698,6 +704,22 @@ backend test
   http-after-response unset-var(sess.last_redir)
   http-after-response unset-var(sess.last_redir) if acl
   http-after-response unset-var(sess.last_redir) unless acl
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+  http-after-response del-acl(map.lst) [src]
+  http-after-response del-map(map.lst) %[src] if ! value
+  http-after-response del-map(map.lst) %[src]
+  http-after-response sc-add-gpc(1,2) 1
+  http-after-response sc-add-gpc(1,2) 1 if is-error
+  http-after-response sc-inc-gpc(1,2)
+  http-after-response sc-inc-gpc(1,2) if is-error
+  http-after-response sc-inc-gpc0(1)
+  http-after-response sc-inc-gpc0(1) if FALSE
+  http-after-response sc-inc-gpc1(1)
+  http-after-response sc-inc-gpc1(1) if FALSE
+  http-after-response sc-set-gpt0(1) hdr(Host),lower
+  http-after-response sc-set-gpt0(1) 10
+  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
   http-error status 400
   http-error status 400 default-errorfiles
   http-error status 400 errorfile /my/fancy/errorfile
@@ -794,6 +816,16 @@ backend test
   tcp-request content track-sc1 src table foo if some_check
   tcp-request content track-sc2 src table foo
   tcp-request content track-sc2 src table foo if some_check
+  tcp-request content sc-inc-gpc(1,2)
+  tcp-request content sc-inc-gpc(1,2) if is-error
+  tcp-request content sc-inc-gpc0(2)
+  tcp-request content sc-inc-gpc0(2) if is-error
+  tcp-request content sc-inc-gpc1(2)
+  tcp-request content sc-inc-gpc1(2) if is-error
+  tcp-request content sc-set-gpt0(0) 1337
+  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+  tcp-request content sc-add-gpc(1,2) 1
+  tcp-request content sc-add-gpc(1,2) 1 if is-error
   tcp-request content set-dst ipv4(10.0.0.1)
   tcp-request content set-var(sess.src) src
   tcp-request content set-var(sess.dn) ssl_c_s_dn
@@ -829,6 +861,10 @@ backend test
   tcp-request connection track-sc1 src table foo if some_check
   tcp-request connection track-sc2 src table foo
   tcp-request connection track-sc2 src table foo if some_check
+  tcp-request connection sc-add-gpc(1,2) 1
+  tcp-request connection sc-add-gpc(1,2) 1 if is-error
+  tcp-request connection sc-inc-gpc(1,2)
+  tcp-request connection sc-inc-gpc(1,2) if is-error
   tcp-request connection sc-inc-gpc0(2)
   tcp-request connection sc-inc-gpc0(2) if is-error
   tcp-request connection sc-inc-gpc1(2)
@@ -860,6 +896,10 @@ backend test
   tcp-request session track-sc1 src table foo if some_check
   tcp-request session track-sc2 src table foo
   tcp-request session track-sc2 src table foo if some_check
+  tcp-request session sc-add-gpc(1,2) 1
+  tcp-request session sc-add-gpc(1,2) 1 if is-error
+  tcp-request session sc-inc-gpc(1,2)
+  tcp-request session sc-inc-gpc(1,2) if is-error
   tcp-request session sc-inc-gpc0(2)
   tcp-request session sc-inc-gpc0(2) if is-error
   tcp-request session sc-inc-gpc1(2)
@@ -916,6 +956,12 @@ backend test
   tcp-response content set-nice 0
   tcp-response content close
   tcp-response content close if !HTTP
+  tcp-response content sc-inc-gpc(1,2)
+  tcp-response content sc-inc-gpc(1,2) if is-error
+  tcp-response content sc-inc-gpc0(2)
+  tcp-response content sc-inc-gpc0(2) if is-error
+  tcp-response content sc-inc-gpc1(2)
+  tcp-response content sc-inc-gpc1(2) if is-error
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -1470,6 +1516,10 @@ frontend test
   http-request replace-uri ^http://(.*) https://1
   http-request replace-uri ^http://(.*) https://1 if FALSE
   http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+  http-request sc-add-gpc(1,2) 1
+  http-request sc-add-gpc(1,2) 1 if is-error
+  http-request sc-inc-gpc(1,2)
+  http-request sc-inc-gpc(1,2) if FALSE
   http-request sc-inc-gpc0(1)
   http-request sc-inc-gpc0(1) if FALSE
   http-request sc-inc-gpc1(1)
@@ -1606,6 +1656,8 @@ frontend test
   http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
   http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-response sc-inc-gpc(1,2)
+  http-response sc-inc-gpc(1,2) if FALSE
   http-response sc-inc-gpc0(1)
   http-response sc-inc-gpc0(1) if FALSE
   http-response sc-inc-gpc1(1)
@@ -1686,6 +1738,22 @@ frontend test
   http-after-response unset-var(sess.last_redir)
   http-after-response unset-var(sess.last_redir) if acl
   http-after-response unset-var(sess.last_redir) unless acl
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+  http-after-response del-acl(map.lst) [src]
+  http-after-response del-map(map.lst) %[src] if ! value
+  http-after-response del-map(map.lst) %[src]
+  http-after-response sc-add-gpc(1,2) 1
+  http-after-response sc-add-gpc(1,2) 1 if is-error
+  http-after-response sc-inc-gpc(1,2)
+  http-after-response sc-inc-gpc(1,2) if is-error
+  http-after-response sc-inc-gpc0(1)
+  http-after-response sc-inc-gpc0(1) if FALSE
+  http-after-response sc-inc-gpc1(1)
+  http-after-response sc-inc-gpc1(1) if FALSE
+  http-after-response sc-set-gpt0(1) hdr(Host),lower
+  http-after-response sc-set-gpt0(1) 10
+  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
   http-error status 400
   http-error status 400 default-errorfiles
   http-error status 400 errorfile /my/fancy/errorfile
@@ -1720,6 +1788,16 @@ frontend test
   tcp-request content track-sc1 src table foo if some_check
   tcp-request content track-sc2 src table foo
   tcp-request content track-sc2 src table foo if some_check
+  tcp-request content sc-inc-gpc(1,2)
+  tcp-request content sc-inc-gpc(1,2) if is-error
+  tcp-request content sc-inc-gpc0(2)
+  tcp-request content sc-inc-gpc0(2) if is-error
+  tcp-request content sc-inc-gpc1(2)
+  tcp-request content sc-inc-gpc1(2) if is-error
+  tcp-request content sc-set-gpt0(0) 1337
+  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+  tcp-request content sc-add-gpc(1,2) 1
+  tcp-request content sc-add-gpc(1,2) 1 if is-error
   tcp-request content set-dst ipv4(10.0.0.1)
   tcp-request content set-var(sess.src) src
   tcp-request content set-var(sess.dn) ssl_c_s_dn
@@ -1755,6 +1833,10 @@ frontend test
   tcp-request connection track-sc1 src table foo if some_check
   tcp-request connection track-sc2 src table foo
   tcp-request connection track-sc2 src table foo if some_check
+  tcp-request connection sc-add-gpc(1,2) 1
+  tcp-request connection sc-add-gpc(1,2) 1 if is-error
+  tcp-request connection sc-inc-gpc(1,2)
+  tcp-request connection sc-inc-gpc(1,2) if is-error
   tcp-request connection sc-inc-gpc0(2)
   tcp-request connection sc-inc-gpc0(2) if is-error
   tcp-request connection sc-inc-gpc1(2)
@@ -1786,6 +1868,10 @@ frontend test
   tcp-request session track-sc1 src table foo if some_check
   tcp-request session track-sc2 src table foo
   tcp-request session track-sc2 src table foo if some_check
+  tcp-request session sc-add-gpc(1,2) 1
+  tcp-request session sc-add-gpc(1,2) 1 if is-error
+  tcp-request session sc-inc-gpc(1,2)
+  tcp-request session sc-inc-gpc(1,2) if is-error
   tcp-request session sc-inc-gpc0(2)
   tcp-request session sc-inc-gpc0(2) if is-error
   tcp-request session sc-inc-gpc1(2)
@@ -1842,6 +1928,12 @@ frontend test
   tcp-response content set-nice 0
   tcp-response content close
   tcp-response content close if !HTTP
+  tcp-response content sc-inc-gpc(1,2)
+  tcp-response content sc-inc-gpc(1,2) if is-error
+  tcp-response content sc-inc-gpc0(2)
+  tcp-response content sc-inc-gpc0(2) if is-error
+  tcp-response content sc-inc-gpc1(2)
+  tcp-response content sc-inc-gpc1(2) if is-error
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -3251,6 +3343,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 `, 2},
+	{`  http-request sc-add-gpc(1,2) 1
+`, 2},
+	{`  http-request sc-add-gpc(1,2) 1 if is-error
+`, 2},
+	{`  http-request sc-inc-gpc(1,2)
+`, 2},
+	{`  http-request sc-inc-gpc(1,2) if FALSE
+`, 2},
 	{`  http-request sc-inc-gpc0(1)
 `, 2},
 	{`  http-request sc-inc-gpc0(1) if FALSE
@@ -3497,6 +3597,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `, 2},
+	{`  http-response sc-inc-gpc(1,2)
+`, 2},
+	{`  http-response sc-inc-gpc(1,2) if FALSE
+`, 2},
 	{`  http-response sc-inc-gpc0(1)
 `, 2},
 	{`  http-response sc-inc-gpc0(1) if FALSE
@@ -3636,6 +3740,38 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-after-response unset-var(sess.last_redir) if acl
 `, 2},
 	{`  http-after-response unset-var(sess.last_redir) unless acl
+`, 2},
+	{`  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+`, 2},
+	{`  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+`, 2},
+	{`  http-after-response del-acl(map.lst) [src]
+`, 2},
+	{`  http-after-response del-map(map.lst) %[src] if ! value
+`, 2},
+	{`  http-after-response del-map(map.lst) %[src]
+`, 2},
+	{`  http-after-response sc-add-gpc(1,2) 1
+`, 2},
+	{`  http-after-response sc-add-gpc(1,2) 1 if is-error
+`, 2},
+	{`  http-after-response sc-inc-gpc(1,2)
+`, 2},
+	{`  http-after-response sc-inc-gpc(1,2) if is-error
+`, 2},
+	{`  http-after-response sc-inc-gpc0(1)
+`, 2},
+	{`  http-after-response sc-inc-gpc0(1) if FALSE
+`, 2},
+	{`  http-after-response sc-inc-gpc1(1)
+`, 2},
+	{`  http-after-response sc-inc-gpc1(1) if FALSE
+`, 2},
+	{`  http-after-response sc-set-gpt0(1) hdr(Host),lower
+`, 2},
+	{`  http-after-response sc-set-gpt0(1) 10
+`, 2},
+	{`  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
 `, 2},
 	{`  http-error status 400
 `, 3},
@@ -3791,6 +3927,26 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  tcp-request content track-sc2 src table foo if some_check
 `, 2},
+	{`  tcp-request content sc-inc-gpc(1,2)
+`, 2},
+	{`  tcp-request content sc-inc-gpc(1,2) if is-error
+`, 2},
+	{`  tcp-request content sc-inc-gpc0(2)
+`, 2},
+	{`  tcp-request content sc-inc-gpc0(2) if is-error
+`, 2},
+	{`  tcp-request content sc-inc-gpc1(2)
+`, 2},
+	{`  tcp-request content sc-inc-gpc1(2) if is-error
+`, 2},
+	{`  tcp-request content sc-set-gpt0(0) 1337
+`, 2},
+	{`  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+`, 2},
+	{`  tcp-request content sc-add-gpc(1,2) 1
+`, 2},
+	{`  tcp-request content sc-add-gpc(1,2) 1 if is-error
+`, 2},
 	{`  tcp-request content set-dst ipv4(10.0.0.1)
 `, 2},
 	{`  tcp-request content set-var(sess.src) src
@@ -3861,6 +4017,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  tcp-request connection track-sc2 src table foo if some_check
 `, 2},
+	{`  tcp-request connection sc-add-gpc(1,2) 1
+`, 2},
+	{`  tcp-request connection sc-add-gpc(1,2) 1 if is-error
+`, 2},
+	{`  tcp-request connection sc-inc-gpc(1,2)
+`, 2},
+	{`  tcp-request connection sc-inc-gpc(1,2) if is-error
+`, 2},
 	{`  tcp-request connection sc-inc-gpc0(2)
 `, 2},
 	{`  tcp-request connection sc-inc-gpc0(2) if is-error
@@ -3922,6 +4086,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-request session track-sc2 src table foo
 `, 2},
 	{`  tcp-request session track-sc2 src table foo if some_check
+`, 2},
+	{`  tcp-request session sc-add-gpc(1,2) 1
+`, 2},
+	{`  tcp-request session sc-add-gpc(1,2) 1 if is-error
+`, 2},
+	{`  tcp-request session sc-inc-gpc(1,2)
+`, 2},
+	{`  tcp-request session sc-inc-gpc(1,2) if is-error
 `, 2},
 	{`  tcp-request session sc-inc-gpc0(2)
 `, 2},
@@ -4034,6 +4206,18 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-response content close
 `, 2},
 	{`  tcp-response content close if !HTTP
+`, 2},
+	{`  tcp-response content sc-inc-gpc(1,2)
+`, 2},
+	{`  tcp-response content sc-inc-gpc(1,2) if is-error
+`, 2},
+	{`  tcp-response content sc-inc-gpc0(2)
+`, 2},
+	{`  tcp-response content sc-inc-gpc0(2) if is-error
+`, 2},
+	{`  tcp-response content sc-inc-gpc1(2)
+`, 2},
+	{`  tcp-response content sc-inc-gpc1(2) if is-error
 `, 2},
 	{`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 `, 2},

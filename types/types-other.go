@@ -375,6 +375,12 @@ type Action interface {
 //test:fail:http-request replace-uri ^http://(.*) if FALSE
 //test:ok:http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 //test:fail:http-request replace-value X-Forwarded-For ^192.168.(.*)$
+//test:ok:http-request sc-add-gpc(1,2) 1
+//test:ok:http-request sc-add-gpc(1,2) 1 if is-error
+//test:fail:http-request sc-add-gpc
+//test:ok:http-request sc-inc-gpc(1,2)
+//test:ok:http-request sc-inc-gpc(1,2) if FALSE
+//test:fail:http-request sc-inc-gpc
 //test:ok:http-request sc-inc-gpc0(1)
 //test:ok:http-request sc-inc-gpc0(1) if FALSE
 //test:fail:http-request sc-inc-gpc0
@@ -607,6 +613,9 @@ type HTTPRequests struct{}
 //test:fail:http-response return 0 hdr
 //test:fail:http-response return 0 0 hdr 0
 //test:fail:http-response return e r s n s c m	t e r  s c t e s t e r s c v e hdr ï
+//test:ok:http-response sc-inc-gpc(1,2)
+//test:ok:http-response sc-inc-gpc(1,2) if FALSE
+//test:fail:http-response sc-inc-gpc
 //test:ok:http-response sc-inc-gpc0(1)
 //test:ok:http-response sc-inc-gpc0(1) if FALSE
 //test:fail:http-response sc-inc-gpc0
@@ -730,6 +739,32 @@ type HTTPResponses struct{}
 //test:ok:http-after-response unset-var(sess.last_redir) if acl
 //test:ok:http-after-response unset-var(sess.last_redir) unless acl
 //test:fail:http-after-response unset-var()
+//test:ok:http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+//test:ok:http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+//test:fail:http-after-response set-map(map.lst) %[src]
+//test:ok:http-after-response del-acl(map.lst) [src]
+//test:fail:http-after-response del-acl(map.lst)
+//test:ok:http-after-response del-map(map.lst) %[src] if ! value
+//test:ok:http-after-response del-map(map.lst) %[src]
+//test:fail:http-after-response del-map(map.lst)
+//test:ok:http-after-response sc-add-gpc(1,2) 1
+//test:ok:http-after-response sc-add-gpc(1,2) 1 if is-error
+//test:fail:http-after-response sc-add-gpc
+//test:ok:http-after-response sc-inc-gpc(1,2)
+//test:ok:http-after-response sc-inc-gpc(1,2) if is-error
+//test:fail:http-after-response sc-inc-gpc
+//test:ok:http-after-response sc-inc-gpc0(1)
+//test:ok:http-after-response sc-inc-gpc0(1) if FALSE
+//test:fail:http-after-response sc-inc-gpc0
+//test:ok:http-after-response sc-inc-gpc1(1)
+//test:ok:http-after-response sc-inc-gpc1(1) if FALSE
+//test:fail:http-after-response sc-inc-gpc1
+//test:ok:http-after-response sc-set-gpt0(1) hdr(Host),lower
+//test:ok:http-after-response sc-set-gpt0(1) 10
+//test:ok:http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
+//test:fail:http-after-response sc-set-gpt0(1)
+//test:fail:http-after-response sc-set-gpt0
+//test:fail:http-after-response sc-set-gpt0(1) if FALSE
 type HTTPAfterResponse struct{}
 
 //name:http-error
@@ -894,6 +929,20 @@ type TCPType interface {
 //test:ok:tcp-request content track-sc1 src table foo if some_check
 //test:ok:tcp-request content track-sc2 src table foo
 //test:ok:tcp-request content track-sc2 src table foo if some_check
+//test:ok:tcp-request content sc-inc-gpc(1,2)
+//test:ok:tcp-request content sc-inc-gpc(1,2) if is-error
+//test:fail:tcp-request content sc-inc-gpc
+//test:ok:tcp-request content sc-inc-gpc0(2)
+//test:ok:tcp-request content sc-inc-gpc0(2) if is-error
+//test:fail:tcp-request content sc-inc-gpc0
+//test:ok:tcp-request content sc-inc-gpc1(2)
+//test:ok:tcp-request content sc-inc-gpc1(2) if is-error
+//test:fail:tcp-request content sc-inc-gpc1
+//test:ok:tcp-request content sc-set-gpt0(0) 1337
+//test:ok:tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+//test:ok:tcp-request content sc-add-gpc(1,2) 1
+//test:ok:tcp-request content sc-add-gpc(1,2) 1 if is-error
+//test:fail:tcp-request content sc-add-gpc
 //test:ok:tcp-request content set-dst ipv4(10.0.0.1)
 //test:ok:tcp-request content set-var(sess.src) src
 //test:ok:tcp-request content set-var(sess.dn) ssl_c_s_dn
@@ -929,10 +978,18 @@ type TCPType interface {
 //test:ok:tcp-request connection track-sc1 src table foo if some_check
 //test:ok:tcp-request connection track-sc2 src table foo
 //test:ok:tcp-request connection track-sc2 src table foo if some_check
+//test:ok:tcp-request connection sc-add-gpc(1,2) 1
+//test:ok:tcp-request connection sc-add-gpc(1,2) 1 if is-error
+//test:fail:tcp-request connection sc-add-gpc
+//test:ok:tcp-request connection sc-inc-gpc(1,2)
+//test:ok:tcp-request connection sc-inc-gpc(1,2) if is-error
+//test:fail:tcp-request connection sc-inc-gpc
 //test:ok:tcp-request connection sc-inc-gpc0(2)
 //test:ok:tcp-request connection sc-inc-gpc0(2) if is-error
+//test:fail:tcp-request connection sc-inc-gpc0
 //test:ok:tcp-request connection sc-inc-gpc1(2)
 //test:ok:tcp-request connection sc-inc-gpc1(2) if is-error
+//test:fail:tcp-request connection sc-inc-gpc1
 //test:ok:tcp-request connection sc-set-gpt0(0) 1337
 //test:ok:tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
 //test:ok:tcp-request connection set-src src,ipmask(24)
@@ -961,9 +1018,17 @@ type TCPType interface {
 //test:ok:tcp-request session track-sc1 src table foo if some_check
 //test:ok:tcp-request session track-sc2 src table foo
 //test:ok:tcp-request session track-sc2 src table foo if some_check
+//test:ok:tcp-request session sc-add-gpc(1,2) 1
+//test:ok:tcp-request session sc-add-gpc(1,2) 1 if is-error
+//test:fail:tcp-request session sc-add-gpc
+//test:ok:tcp-request session sc-inc-gpc(1,2)
+//test:ok:tcp-request session sc-inc-gpc(1,2) if is-error
+//test:fail:tcp-request session sc-inc-gpc
 //test:ok:tcp-request session sc-inc-gpc0(2)
 //test:ok:tcp-request session sc-inc-gpc0(2) if is-error
+//test:fail:tcp-request session sc-inc-gpc0
 //test:ok:tcp-request session sc-inc-gpc1(2)
+//test:fail:tcp-request session sc-inc-gpc1
 //test:ok:tcp-request session sc-inc-gpc1(2) if is-error
 //test:ok:tcp-request session sc-set-gpt0(0) 1337
 //test:ok:tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
@@ -1089,6 +1154,13 @@ type TCPRequests struct{}
 //test:fail:tcp-response content set-nice
 //test:ok:tcp-response content close
 //test:ok:tcp-response content close if !HTTP
+//test:ok:tcp-response content sc-inc-gpc(1,2)
+//test:ok:tcp-response content sc-inc-gpc(1,2) if is-error
+//test:fail:tcp-response content sc-inc-gpc
+//test:ok:tcp-response content sc-inc-gpc0(2)
+//test:ok:tcp-response content sc-inc-gpc0(2) if is-error
+//test:ok:tcp-response content sc-inc-gpc1(2)
+//test:ok:tcp-response content sc-inc-gpc1(2) if is-error
 type TCPResponses struct{}
 
 //name:redirect

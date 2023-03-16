@@ -1077,6 +1077,22 @@ const frontend_httprequestreplacevalueXForwarde = `
 frontend test
   http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
 `
+const frontend_httprequestscaddgpc121 = `
+frontend test
+  http-request sc-add-gpc(1,2) 1
+`
+const frontend_httprequestscaddgpc121ifiserror = `
+frontend test
+  http-request sc-add-gpc(1,2) 1 if is-error
+`
+const frontend_httprequestscincgpc12 = `
+frontend test
+  http-request sc-inc-gpc(1,2)
+`
+const frontend_httprequestscincgpc12ifFALSE = `
+frontend test
+  http-request sc-inc-gpc(1,2) if FALSE
+`
 const frontend_httprequestscincgpc01 = `
 frontend test
   http-request sc-inc-gpc0(1)
@@ -1621,6 +1637,14 @@ const frontend_httpresponsereturnstatus400error_ = `
 frontend test
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `
+const frontend_httpresponsescincgpc12 = `
+frontend test
+  http-response sc-inc-gpc(1,2)
+`
+const frontend_httpresponsescincgpc12ifFALSE = `
+frontend test
+  http-response sc-inc-gpc(1,2) if FALSE
+`
 const frontend_httpresponsescincgpc01 = `
 frontend test
   http-response sc-inc-gpc0(1)
@@ -1941,6 +1965,70 @@ const frontend_httpafterresponseunsetvarsesslas__ = `
 frontend test
   http-after-response unset-var(sess.last_redir) unless acl
 `
+const frontend_httpafterresponsesetmapmaplstsrc = `
+frontend test
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+`
+const frontend_httpafterresponsesetmapmaplstsrc_ = `
+frontend test
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+`
+const frontend_httpafterresponsedelaclmaplstsrc = `
+frontend test
+  http-after-response del-acl(map.lst) [src]
+`
+const frontend_httpafterresponsedelmapmaplstsrc = `
+frontend test
+  http-after-response del-map(map.lst) %[src] if ! value
+`
+const frontend_httpafterresponsedelmapmaplstsrc_ = `
+frontend test
+  http-after-response del-map(map.lst) %[src]
+`
+const frontend_httpafterresponsescaddgpc121 = `
+frontend test
+  http-after-response sc-add-gpc(1,2) 1
+`
+const frontend_httpafterresponsescaddgpc121ifis = `
+frontend test
+  http-after-response sc-add-gpc(1,2) 1 if is-error
+`
+const frontend_httpafterresponsescincgpc12 = `
+frontend test
+  http-after-response sc-inc-gpc(1,2)
+`
+const frontend_httpafterresponsescincgpc12ifise = `
+frontend test
+  http-after-response sc-inc-gpc(1,2) if is-error
+`
+const frontend_httpafterresponsescincgpc01 = `
+frontend test
+  http-after-response sc-inc-gpc0(1)
+`
+const frontend_httpafterresponsescincgpc01ifFAL = `
+frontend test
+  http-after-response sc-inc-gpc0(1) if FALSE
+`
+const frontend_httpafterresponsescincgpc11 = `
+frontend test
+  http-after-response sc-inc-gpc1(1)
+`
+const frontend_httpafterresponsescincgpc11ifFAL = `
+frontend test
+  http-after-response sc-inc-gpc1(1) if FALSE
+`
+const frontend_httpafterresponsescsetgpt01hdrHo = `
+frontend test
+  http-after-response sc-set-gpt0(1) hdr(Host),lower
+`
+const frontend_httpafterresponsescsetgpt0110 = `
+frontend test
+  http-after-response sc-set-gpt0(1) 10
+`
+const frontend_httpafterresponsescsetgpt01hdrHo_ = `
+frontend test
+  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
+`
 const frontend_httperrorstatus400 = `
 frontend test
   http-error status 400
@@ -2076,6 +2164,46 @@ frontend test
 const frontend_tcprequestcontenttracksc2srctabl_ = `
 frontend test
   tcp-request content track-sc2 src table foo if some_check
+`
+const frontend_tcprequestcontentscincgpc12 = `
+frontend test
+  tcp-request content sc-inc-gpc(1,2)
+`
+const frontend_tcprequestcontentscincgpc12ifise = `
+frontend test
+  tcp-request content sc-inc-gpc(1,2) if is-error
+`
+const frontend_tcprequestcontentscincgpc02 = `
+frontend test
+  tcp-request content sc-inc-gpc0(2)
+`
+const frontend_tcprequestcontentscincgpc02ifise = `
+frontend test
+  tcp-request content sc-inc-gpc0(2) if is-error
+`
+const frontend_tcprequestcontentscincgpc12_ = `
+frontend test
+  tcp-request content sc-inc-gpc1(2)
+`
+const frontend_tcprequestcontentscincgpc12ifise_ = `
+frontend test
+  tcp-request content sc-inc-gpc1(2) if is-error
+`
+const frontend_tcprequestcontentscsetgpt001337 = `
+frontend test
+  tcp-request content sc-set-gpt0(0) 1337
+`
+const frontend_tcprequestcontentscsetgpt001337i = `
+frontend test
+  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+`
+const frontend_tcprequestcontentscaddgpc121 = `
+frontend test
+  tcp-request content sc-add-gpc(1,2) 1
+`
+const frontend_tcprequestcontentscaddgpc121ifis = `
+frontend test
+  tcp-request content sc-add-gpc(1,2) 1 if is-error
 `
 const frontend_tcprequestcontentsetdstipv410001 = `
 frontend test
@@ -2217,6 +2345,22 @@ const frontend_tcprequestconnectiontracksc2srct_ = `
 frontend test
   tcp-request connection track-sc2 src table foo if some_check
 `
+const frontend_tcprequestconnectionscaddgpc121 = `
+frontend test
+  tcp-request connection sc-add-gpc(1,2) 1
+`
+const frontend_tcprequestconnectionscaddgpc121i = `
+frontend test
+  tcp-request connection sc-add-gpc(1,2) 1 if is-error
+`
+const frontend_tcprequestconnectionscincgpc12 = `
+frontend test
+  tcp-request connection sc-inc-gpc(1,2)
+`
+const frontend_tcprequestconnectionscincgpc12if = `
+frontend test
+  tcp-request connection sc-inc-gpc(1,2) if is-error
+`
 const frontend_tcprequestconnectionscincgpc02 = `
 frontend test
   tcp-request connection sc-inc-gpc0(2)
@@ -2225,11 +2369,11 @@ const frontend_tcprequestconnectionscincgpc02if = `
 frontend test
   tcp-request connection sc-inc-gpc0(2) if is-error
 `
-const frontend_tcprequestconnectionscincgpc12 = `
+const frontend_tcprequestconnectionscincgpc12_ = `
 frontend test
   tcp-request connection sc-inc-gpc1(2)
 `
-const frontend_tcprequestconnectionscincgpc12if = `
+const frontend_tcprequestconnectionscincgpc12if_ = `
 frontend test
   tcp-request connection sc-inc-gpc1(2) if is-error
 `
@@ -2341,6 +2485,22 @@ const frontend_tcprequestsessiontracksc2srctabl_ = `
 frontend test
   tcp-request session track-sc2 src table foo if some_check
 `
+const frontend_tcprequestsessionscaddgpc121 = `
+frontend test
+  tcp-request session sc-add-gpc(1,2) 1
+`
+const frontend_tcprequestsessionscaddgpc121ifis = `
+frontend test
+  tcp-request session sc-add-gpc(1,2) 1 if is-error
+`
+const frontend_tcprequestsessionscincgpc12 = `
+frontend test
+  tcp-request session sc-inc-gpc(1,2)
+`
+const frontend_tcprequestsessionscincgpc12ifise = `
+frontend test
+  tcp-request session sc-inc-gpc(1,2) if is-error
+`
 const frontend_tcprequestsessionscincgpc02 = `
 frontend test
   tcp-request session sc-inc-gpc0(2)
@@ -2349,11 +2509,11 @@ const frontend_tcprequestsessionscincgpc02ifise = `
 frontend test
   tcp-request session sc-inc-gpc0(2) if is-error
 `
-const frontend_tcprequestsessionscincgpc12 = `
+const frontend_tcprequestsessionscincgpc12_ = `
 frontend test
   tcp-request session sc-inc-gpc1(2)
 `
-const frontend_tcprequestsessionscincgpc12ifise = `
+const frontend_tcprequestsessionscincgpc12ifise_ = `
 frontend test
   tcp-request session sc-inc-gpc1(2) if is-error
 `
@@ -2564,6 +2724,30 @@ frontend test
 const frontend_tcpresponsecontentcloseifHTTP = `
 frontend test
   tcp-response content close if !HTTP
+`
+const frontend_tcpresponsecontentscincgpc12 = `
+frontend test
+  tcp-response content sc-inc-gpc(1,2)
+`
+const frontend_tcpresponsecontentscincgpc12ifis = `
+frontend test
+  tcp-response content sc-inc-gpc(1,2) if is-error
+`
+const frontend_tcpresponsecontentscincgpc02 = `
+frontend test
+  tcp-response content sc-inc-gpc0(2)
+`
+const frontend_tcpresponsecontentscincgpc02ifis = `
+frontend test
+  tcp-response content sc-inc-gpc0(2) if is-error
+`
+const frontend_tcpresponsecontentscincgpc12_ = `
+frontend test
+  tcp-response content sc-inc-gpc1(2)
+`
+const frontend_tcpresponsecontentscincgpc12ifis_ = `
+frontend test
+  tcp-response content sc-inc-gpc1(2) if is-error
 `
 const frontend_redirectprefixhttpwwwbarcomcode3 = `
 frontend test

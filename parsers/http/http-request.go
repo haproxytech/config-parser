@@ -157,6 +157,10 @@ func (h *Requests) Parse(line string, parts []string, comment string) (string, e
 				err = h.ParseHTTPRequest(&actions.DoResolve{}, parts, comment)
 			case strings.HasPrefix(parts[1], "lua."):
 				err = h.ParseHTTPRequest(&actions.Lua{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-add-gpc("):
+				err = h.ParseHTTPRequest(&actions.ScAddGpc{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-inc-gpc("):
+				err = h.ParseHTTPRequest(&actions.ScIncGpc{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc0("):
 				err = h.ParseHTTPRequest(&actions.ScIncGpc0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc1("):
@@ -173,10 +177,7 @@ func (h *Requests) Parse(line string, parts []string, comment string) (string, e
 				return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
 			}
 		}
-		if err != nil {
-			return "", err
-		}
-		return "", nil
+		return "", err
 	}
 	return "", &errors.ParseError{Parser: "HTTPRequestLines", Line: line}
 }

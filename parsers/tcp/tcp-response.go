@@ -55,10 +55,7 @@ func (h *Responses) Parse(line string, parts []string, comment string) (string, 
 		default:
 			return "", &errors.ParseError{Parser: "Responses", Line: line}
 		}
-		if err != nil {
-			return "", err
-		}
-		return "", nil
+		return "", err
 	}
 	return "", &errors.ParseError{Parser: "Responses", Line: line}
 }

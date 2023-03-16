@@ -22,8 +22,9 @@ import (
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"
-	parsersactions "github.com/haproxytech/config-parser/v4/parsers/actions"
+	parsersActions "github.com/haproxytech/config-parser/v4/parsers/actions"
 	"github.com/haproxytech/config-parser/v4/parsers/http/actions"
+	httpActions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
@@ -73,19 +74,33 @@ func (h *AfterResponses) Parse(line string, parts []string, comment string) (str
 		err = h.ParseHTTPRequest(&actions.SetStatus{}, parts, comment)
 	case action == "strict-mode":
 		err = h.ParseHTTPRequest(&actions.StrictMode{}, parts, comment)
-	case strings.HasPrefix(parts[1], "unset-var("):
-		err = h.ParseHTTPRequest(&parsersactions.UnsetVar{}, parts, comment)
-	case strings.HasPrefix(parts[1], "set-var("):
-		err = h.ParseHTTPRequest(&parsersactions.SetVar{}, parts, comment)
+	case strings.HasPrefix(action, "unset-var("):
+		err = h.ParseHTTPRequest(&parsersActions.UnsetVar{}, parts, comment)
+	case strings.HasPrefix(action, "set-var("):
+		err = h.ParseHTTPRequest(&parsersActions.SetVar{}, parts, comment)
+	case action == "set-log-level":
+		err = h.ParseHTTPRequest(&parsersActions.SetLogLevel{}, parts, comment)
+	case strings.HasPrefix(action, "del-acl("):
+		err = h.ParseHTTPRequest(&httpActions.DelACL{}, parts, comment)
+	case strings.HasPrefix(action, "set-map("):
+		err = h.ParseHTTPRequest(&httpActions.SetMap{}, parts, comment)
+	case strings.HasPrefix(action, "del-map("):
+		err = h.ParseHTTPRequest(&httpActions.DelMap{}, parts, comment)
+	case strings.HasPrefix(action, "sc-add-gpc("):
+		err = h.ParseHTTPRequest(&parsersActions.ScAddGpc{}, parts, comment)
+	case strings.HasPrefix(action, "sc-inc-gpc("):
+		err = h.ParseHTTPRequest(&parsersActions.ScIncGpc{}, parts, comment)
+	case strings.HasPrefix(action, "sc-inc-gpc0("):
+		err = h.ParseHTTPRequest(&parsersActions.ScIncGpc0{}, parts, comment)
+	case strings.HasPrefix(action, "sc-inc-gpc1("):
+		err = h.ParseHTTPRequest(&parsersActions.ScIncGpc1{}, parts, comment)
+	case strings.HasPrefix(action, "sc-set-gpt0("):
+		err = h.ParseHTTPRequest(&parsersActions.ScSetGpt0{}, parts, comment)
 	default:
-		err = fmt.Errorf("unsupported action %s", action)
+		return "", &errors.ParseError{Parser: "HTTPAfterResponseLines", Line: line}
 	}
 
-	if err != nil {
-		return "", err
-	}
-
-	return "", nil
+	return "", err
 }
 
 func (h *AfterResponses) ParseHTTPRequest(request types.Action, parts []string, comment string) error {

@@ -95,9 +95,13 @@ func (f *Content) Parse(parts []string, comment string) error { //nolint:gocyclo
 		switch {
 		case strings.HasPrefix(parts[2], "lua."):
 			err = f.ParseAction(&actions.Lua{}, parts)
-		case strings.HasPrefix(parts[2], "sc-inc-gpc0"):
+		case strings.HasPrefix(parts[2], "sc-add-gpc("):
+			err = f.ParseAction(&actions.ScAddGpc{}, parts)
+		case strings.HasPrefix(parts[2], "sc-inc-gpc("):
+			err = f.ParseAction(&actions.ScIncGpc{}, parts)
+		case strings.HasPrefix(parts[2], "sc-inc-gpc0("):
 			err = f.ParseAction(&actions.ScIncGpc0{}, parts)
-		case strings.HasPrefix(parts[2], "sc-inc-gpc1"):
+		case strings.HasPrefix(parts[2], "sc-inc-gpc1("):
 			err = f.ParseAction(&actions.ScIncGpc1{}, parts)
 		case strings.HasPrefix(parts[2], "sc-set-gpt0"):
 			err = f.ParseAction(&actions.ScSetGpt0{}, parts)
