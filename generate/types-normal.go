@@ -111,16 +111,6 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo,cyclo
 				log.Fatalf("not able to process line %s", line)
 			}
 		}
-		if strings.HasPrefix(line, "//test:default_value_ok") {
-			data := strings.SplitN(line, ":", 4)
-			defaultTestData := DefaultTestData{
-				Test:    data[3],
-				Default: data[2],
-			}
-			parserData.TestDefault = append(parserData.TestDefault, defaultTestData)
-			parserData.HasDefault = true
-		}
-
 		if strings.HasPrefix(line, "//has-alias:true") {
 			parserData.HasAlias = true
 		}

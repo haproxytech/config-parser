@@ -2713,6 +2713,14 @@ const backend_httpresponsereturnstatus400error_ = `
 backend test
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
 `
+const backend_httpresponsescaddgpc121 = `
+backend test
+  http-response sc-add-gpc(1,2) 1
+`
+const backend_httpresponsescaddgpc121ifiserror = `
+backend test
+  http-response sc-add-gpc(1,2) 1 if is-error
+`
 const backend_httpresponsescincgpc12 = `
 backend test
   http-response sc-inc-gpc(1,2)

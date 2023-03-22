@@ -623,6 +623,8 @@ backend test
   http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
   http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-response sc-add-gpc(1,2) 1
+  http-response sc-add-gpc(1,2) 1 if is-error
   http-response sc-inc-gpc(1,2)
   http-response sc-inc-gpc(1,2) if FALSE
   http-response sc-inc-gpc0(1)
@@ -1400,8 +1402,6 @@ frontend test
   bind :443 quic-cc-algo cubic
   bind :443 quic-cc-algo newreno
   bind :443 quic-force-retry
-  bind :443 ssl ocsp-update off
-  bind :443 ssl ocsp-update on
   bind-process all
   email-alert from admin@example.com
   email-alert to a@z,x@y
@@ -1656,6 +1656,8 @@ frontend test
   http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
   http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-response sc-add-gpc(1,2) 1
+  http-response sc-add-gpc(1,2) 1 if is-error
   http-response sc-inc-gpc(1,2)
   http-response sc-inc-gpc(1,2) if FALSE
   http-response sc-inc-gpc0(1)
@@ -2390,10 +2392,6 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  bind :443 quic-cc-algo newreno
 `, 1},
 	{`  bind :443 quic-force-retry
-`, 1},
-	{`  bind :443 ssl ocsp-update off
-`, 1},
-	{`  bind :443 ssl ocsp-update on
 `, 1},
 	{`  dgram-bind :80,:443
 `, 1},
@@ -3596,6 +3594,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
 `, 2},
 	{`  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+`, 2},
+	{`  http-response sc-add-gpc(1,2) 1
+`, 2},
+	{`  http-response sc-add-gpc(1,2) 1 if is-error
 `, 2},
 	{`  http-response sc-inc-gpc(1,2)
 `, 2},

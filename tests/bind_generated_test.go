@@ -129,11 +129,8 @@ func TestBind(t *testing.T) {
 		"bind :443 quic-cc-algo cubic":                   true,
 		"bind :443 quic-cc-algo newreno":                 true,
 		"bind :443 quic-force-retry":                     true,
-		"bind :443 ssl ocsp-update off":                  true,
-		"bind :443 ssl ocsp-update on":                   true,
 		"bind":                                           false,
 		"bind :443 quic-cc-algo something":               false,
-		"bind :443 ssl ocsp-update something":            false,
 		"---":                                            false,
 		"--- ---":                                        false,
 	}
@@ -181,46 +178,6 @@ func TestBind(t *testing.T) {
 				if parseErr == nil {
 					t.Errorf(fmt.Sprintf("error: did not throw error on result for line [%s]", line))
 				}
-			}
-		})
-	}
-}
-
-func TestDefaultValueBind(t *testing.T) {
-	tests := map[string]string{
-		"bind :443 quic-cc-algo":    "cubic",
-		"bind :443 ssl ocsp-update": "off",
-	}
-	parser := &parsers.Bind{}
-	for command, defaultValue := range tests {
-		t.Run(command, func(t *testing.T) {
-			line := strings.TrimSpace(command)
-			lines := strings.SplitN(line, "\n", -1)
-			var err error
-			parser.Init()
-			if len(lines) > 1 {
-				for _, line = range lines {
-					line = strings.TrimSpace(line)
-					if err = ProcessLine(line, parser); err != nil {
-						break
-					}
-				}
-			} else {
-				err = ProcessLine(line, parser)
-			}
-			result, err := parser.Result()
-			if err != nil {
-				t.Errorf(err.Error())
-				return
-			}
-			var returnLine string
-			if result[0].Comment == "" {
-				returnLine = result[0].Data
-			} else {
-				returnLine = fmt.Sprintf("%s # %s", result[0].Data, result[0].Comment)
-			}
-			if fmt.Sprintf("%s %s", command, defaultValue) != returnLine {
-				t.Errorf(fmt.Sprintf("error: has [%s] expects [%s]", returnLine, command))
 			}
 		})
 	}

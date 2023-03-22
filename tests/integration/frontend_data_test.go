@@ -485,14 +485,6 @@ const frontend_bind443quicforceretry = `
 frontend test
   bind :443 quic-force-retry
 `
-const frontend_bind443sslocspupdateoff = `
-frontend test
-  bind :443 ssl ocsp-update off
-`
-const frontend_bind443sslocspupdateon = `
-frontend test
-  bind :443 ssl ocsp-update on
-`
 const frontend_bindprocessall = `
 frontend test
   bind-process all
@@ -1636,6 +1628,14 @@ frontend test
 const frontend_httpresponsereturnstatus400error_ = `
 frontend test
   http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+`
+const frontend_httpresponsescaddgpc121 = `
+frontend test
+  http-response sc-add-gpc(1,2) 1
+`
+const frontend_httpresponsescaddgpc121ifiserror = `
+frontend test
+  http-response sc-add-gpc(1,2) 1 if is-error
 `
 const frontend_httpresponsescincgpc12 = `
 frontend test

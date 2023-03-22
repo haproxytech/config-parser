@@ -107,6 +107,8 @@ func (h *Responses) Parse(line string, parts []string, comment string) (string, 
 				err = h.ParseHTTPResponse(&httpActions.DelACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "lua."):
 				err = h.ParseHTTPResponse(&actions.Lua{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-add-gpc("):
+				err = h.ParseHTTPResponse(&actions.ScAddGpc{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc("):
 				err = h.ParseHTTPResponse(&actions.ScIncGpc{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc0("):

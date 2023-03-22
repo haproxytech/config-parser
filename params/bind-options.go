@@ -98,18 +98,12 @@ type BindOptionValue struct {
 // BindOptionValueValidation ...
 type BindOptionValueValidation struct {
 	AllowedValues []string
-	DefaultValue  string
 }
 
 //nolint:gochecknoglobals
 var bindOptionValuesValidation = map[string]BindOptionValueValidation{
 	"quic-cc-algo": {
 		AllowedValues: []string{"cubic", "newreno"},
-		DefaultValue:  "cubic",
-	},
-	"ocsp-update": {
-		AllowedValues: []string{"off", "on"},
-		DefaultValue:  "off",
 	},
 }
 
@@ -129,12 +123,6 @@ func (b *BindOptionValue) Parse(options []string, currentIndex int) (int, error)
 			return 2, nil
 		}
 		return 0, &NotFoundError{Have: options[currentIndex], Want: b.Name}
-	}
-	if currentIndex < len(options) && options[currentIndex] == b.Name {
-		if optionValuesValidation, ok := bindOptionValuesValidation[options[currentIndex]]; ok {
-			b.Value = optionValuesValidation.DefaultValue
-			return 1, nil
-		}
 	}
 	return 0, &NotEnoughParamsError{}
 }
@@ -219,7 +207,6 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "user"},
 		&BindOptionValue{Name: "verify"},
 		&BindOptionValue{Name: "quic-cc-algo"},
-		&BindOptionValue{Name: "ocsp-update"},
 	}
 }
 

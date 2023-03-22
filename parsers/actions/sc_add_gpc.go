@@ -18,16 +18,19 @@ package actions
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v4/errors"
 	"github.com/haproxytech/config-parser/v4/types"
 )
 
 type ScAddGpc struct {
 	Idx      string
 	ID       string
-	Integer  string
+	Int      *int64
+	Expr     common.Expression
 	Cond     string
 	CondTest string
 	Comment  string
@@ -39,35 +42,39 @@ func (f *ScAddGpc) Parse(parts []string, parserType types.ParserType, comment st
 	}
 	var data string
 	var command []string
-	var minLen, requiredLen int
+	var minLen int
 	switch parserType {
 	case types.HTTP:
 		data = parts[1]
-		f.Integer = parts[2]
-		command = parts[3:]
+		command = parts[2:]
 		minLen = 3
-		requiredLen = 5
 	case types.TCP:
 		data = parts[2]
-		f.Integer = parts[3]
-		command = parts[4:]
+		command = parts[3:]
 		minLen = 4
-		requiredLen = 6
 	}
 	idIdx := strings.TrimPrefix(data, "sc-add-gpc(")
 	idIdx = strings.TrimRight(idIdx, ")")
 	idIdxValues := strings.SplitN(idIdx, ",", 2)
 	f.Idx, f.ID = idIdxValues[0], idIdxValues[1]
-	if len(parts) == minLen {
-		return nil
-	}
-	if len(parts) < requiredLen {
+	if len(parts) < minLen {
 		return fmt.Errorf("not enough params")
 	}
-	if len(command) == 0 {
-		return fmt.Errorf("no command found")
+	command, condition := common.SplitRequest(command)
+	if len(command) < 1 {
+		return errors.ErrInvalidData
 	}
-	_, condition := common.SplitRequest(command)
+	i, err := strconv.ParseInt(command[0], 10, 64)
+	if err == nil {
+		f.Int = &i
+	} else {
+		expr := common.Expression{}
+		err := expr.Parse(command)
+		if err != nil {
+			return fmt.Errorf("not enough params")
+		}
+		f.Expr = expr
+	}
 	if len(condition) > 1 {
 		f.Cond = condition[0]
 		f.CondTest = strings.Join(condition[1:], " ")
@@ -83,7 +90,11 @@ func (f *ScAddGpc) String() string {
 	result.WriteString(f.ID)
 	result.WriteString(")")
 	result.WriteString(" ")
-	result.WriteString(f.Integer)
+	if f.Int != nil {
+		result.WriteString(strconv.FormatInt(*f.Int, 10))
+	} else {
+		result.WriteString(f.Expr.String())
+	}
 	if f.Cond != "" {
 		result.WriteString(" ")
 		result.WriteString(f.Cond)

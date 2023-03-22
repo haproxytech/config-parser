@@ -570,6 +570,8 @@ func TestWholeConfigsSectionsBackend(t *testing.T) {
 		{"backend_httpresponsereturnstatus400defau", backend_httpresponsereturnstatus400defau},
 		{"backend_httpresponsereturnstatus400error", backend_httpresponsereturnstatus400error},
 		{"backend_httpresponsereturnstatus400error_", backend_httpresponsereturnstatus400error_},
+		{"backend_httpresponsescaddgpc121", backend_httpresponsescaddgpc121},
+		{"backend_httpresponsescaddgpc121ifiserror", backend_httpresponsescaddgpc121ifiserror},
 		{"backend_httpresponsescincgpc01", backend_httpresponsescincgpc01},
 		{"backend_httpresponsescincgpc01ifFALSE", backend_httpresponsescincgpc01ifFALSE},
 		{"backend_httpresponsescincgpc11", backend_httpresponsescincgpc11},

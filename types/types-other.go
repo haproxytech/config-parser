@@ -613,6 +613,9 @@ type HTTPRequests struct{}
 //test:fail:http-response return 0 hdr
 //test:fail:http-response return 0 0 hdr 0
 //test:fail:http-response return e r s n s c m	t e r  s c t e s t e r s c v e hdr ï
+//test:ok:http-response sc-add-gpc(1,2) 1
+//test:ok:http-response sc-add-gpc(1,2) 1 if is-error
+//test:fail:http-response sc-add-gpc
 //test:ok:http-response sc-inc-gpc(1,2)
 //test:ok:http-response sc-inc-gpc(1,2) if FALSE
 //test:fail:http-response sc-inc-gpc
