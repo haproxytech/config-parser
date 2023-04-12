@@ -796,6 +796,7 @@ func (p *configParser) getPeersParser() *Parsers {
 	addParser(parser, &sequence, &parsers.Bind{})
 	addParser(parser, &sequence, &parsers.Server{})
 	addParser(parser, &sequence, &parsers.StickTable{})
+	addParser(parser, &sequence, &parsers.Table{})
 	addParser(parser, &sequence, &simple.Number{Name: "shards"})
 	return p.createParsers(parser, sequence)
 }

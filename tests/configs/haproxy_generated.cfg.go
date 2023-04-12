@@ -2118,6 +2118,12 @@ peers test
   peer name 127.0.0.1:8080
   peer name 127.0.0.1:8080 shard 1
   default-bind user root mode 600 accept-proxy
+  table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s)
+  table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment
+  table t1 type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)
+  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(30s)
+  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(40s)
+  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,gpc1,conn_rate(30s)
 
 program test
   command spoa-mirror --runtime 0 --mirror-url http://test.local
@@ -3200,6 +3206,18 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  option originalto
 `, 3},
 	{`  tune.quic.socket-owner listener
+`, 1},
+	{`  table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s)
+`, 1},
+	{`  table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment
+`, 1},
+	{`  table t1 type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)
+`, 1},
+	{`  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(30s)
+`, 1},
+	{`  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(40s)
+`, 1},
+	{`  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,gpc1,conn_rate(30s)
 `, 1},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},

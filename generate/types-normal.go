@@ -96,6 +96,15 @@ func generateTypes(dir string, dataDir string) { //nolint:gocognit,gocyclo,cyclo
 			data := strings.SplitN(line, ":", 3)
 			parserData.TestFail = append(parserData.TestFail, data[2])
 		}
+		if strings.HasPrefix(line, "//test:expected-ok") && !parserData.Deprecated {
+			data := strings.SplitN(line, ":", 4)
+			tableTestData := TableTestData{
+				Test:  data[2],
+				Table: data[3],
+			}
+			parserData.TestTableOK = append(parserData.TestTableOK, tableTestData)
+			parserData.HasTable = true
+		}
 		if strings.HasPrefix(line, "//test:alias") {
 			data := strings.SplitN(line, ":", 5)
 			aliasTestData := AliasTestData{

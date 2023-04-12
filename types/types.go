@@ -1527,3 +1527,26 @@ type OptionOriginalTo struct {
 type QuicSocketOwner struct {
 	Owner string
 }
+
+//sections:peers
+//name:table
+//is:multiple
+//test:fail:table
+//test:fail:table t1 type
+//test:fail:table t1 type string len 1000 size 1m expire 5m something store gpc0,conn_rate(30s)
+//test:expected-ok:table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s):table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s)
+//test:expected-ok:table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment:table t1 type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment
+//test:expected-ok:table t1 type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s):table t1 type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)
+//test:expected-ok:table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(30s):table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(30s)
+//test:expected-ok:table t1 type string len 1000 size 1m expire 5m nopurge store gpc0 store conn_rate(40s):table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(40s)
+//test:expected-ok:table t1 type string len 1000 size 1m expire 5m nopurge store gpc0 store gpc1,conn_rate(30s):table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,gpc1,conn_rate(30s)
+type Table struct {
+	Name    string
+	Type    string
+	TypeLen int64
+	Size    string
+	Expire  string
+	NoPurge bool
+	Store   string
+	Comment string
+}

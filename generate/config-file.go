@@ -38,6 +38,11 @@ type DefaultTestData struct {
 	Default string
 }
 
+type TableTestData struct {
+	Test  string
+	Table string
+}
+
 type Data struct { //nolint:maligned
 	ParserMultiple     bool
 	ParserSections     []string
@@ -64,11 +69,13 @@ type Data struct { //nolint:maligned
 	TestAliasOK        []AliasTestData
 	TestAliasFail      []AliasTestData
 	TestDefault        []DefaultTestData
+	TestTableOK        []TableTestData
 	TestSkip           bool
 	DataDir            string
 	Deprecated         bool
 	HasAlias           bool
 	HasDefault         bool
+	HasTable           bool
 }
 
 type ConfigFile struct {
@@ -112,6 +119,12 @@ func (c *ConfigFile) AddParserData(parser Data) { //nolint:gocognit,gocyclo,cycl
 		} else {
 			lines = []string{testOK[0]}
 			c.Section[section] = append(c.Section[section], testOK[0])
+		}
+		if len(parser.TestTableOK) > 0 {
+			for _, line := range parser.TestTableOK {
+				lines = append(lines, line.Table)
+				c.Section[section] = append(c.Section[section], line.Table)
+			}
 		}
 		c.SectionAll[section] = append(c.SectionAll[section], testOK...)
 		if section == "defaults" {
