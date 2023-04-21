@@ -88,6 +88,7 @@ func TestBind(t *testing.T) {
 		"bind :443 nice 0":                               true,
 		"bind :443 nice 1024":                            true,
 		"bind :443 nice -1024":                           true,
+		"bind :443 no-alpn":                              true,
 		"bind :443 no-ca-names":                          true,
 		"bind :443 no-sslv3":                             true,
 		"bind :443 no-tlsv10":                            true,

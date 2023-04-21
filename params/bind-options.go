@@ -151,6 +151,7 @@ func getBindOptions() []BindOption {
 		&BindOptionWord{Name: "force-tlsv12"},
 		&BindOptionWord{Name: "force-tlsv13"},
 		&BindOptionWord{Name: "generate-certificates"},
+		&BindOptionWord{Name: "no-alpn"},
 		&BindOptionWord{Name: "no-ca-names"},
 		&BindOptionWord{Name: "no-sslv3"},
 		&BindOptionWord{Name: "no-tlsv10"},

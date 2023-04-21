@@ -321,6 +321,10 @@ const frontend_bind443nice1024_ = `
 frontend test
   bind :443 nice -1024
 `
+const frontend_bind443noalpn = `
+frontend test
+  bind :443 no-alpn
+`
 const frontend_bind443nocanames = `
 frontend test
   bind :443 no-ca-names
