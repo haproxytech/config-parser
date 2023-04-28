@@ -180,6 +180,7 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "ssl-max-ver"},
 		&BindOptionValue{Name: "ssl-min-ver"},
 		&BindOptionValue{Name: "tcp-ut"},
+		&BindOptionValue{Name: "thread"},
 		&BindOptionValue{Name: "tls-ticket-keys"},
 		&BindOptionValue{Name: "uid"},
 		&BindOptionValue{Name: "user"},

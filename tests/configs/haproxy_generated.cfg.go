@@ -1342,6 +1342,16 @@ frontend test
   bind :443 strict-sni
   bind :443 tcp-ut 30s
   bind :443 tfo
+  bind :443 thread all
+  bind :443 thread odd
+  bind :443 thread even
+  bind :443 thread 1
+  bind :443 thread 1-1
+  bind :443 thread 1/all
+  bind :443 thread 1/odd
+  bind :443 thread 1/even
+  bind :443 thread 1/1
+  bind :443 thread 1/1-1
   bind :443 tls-ticket-keys /tmp/tls_ticket_keys
   bind :443 transparent
   bind :443 v4v6
@@ -2277,6 +2287,26 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  bind :443 tcp-ut 30s
 `, 1},
 	{`  bind :443 tfo
+`, 1},
+	{`  bind :443 thread all
+`, 1},
+	{`  bind :443 thread odd
+`, 1},
+	{`  bind :443 thread even
+`, 1},
+	{`  bind :443 thread 1
+`, 1},
+	{`  bind :443 thread 1-1
+`, 1},
+	{`  bind :443 thread 1/all
+`, 1},
+	{`  bind :443 thread 1/odd
+`, 1},
+	{`  bind :443 thread 1/even
+`, 1},
+	{`  bind :443 thread 1/1
+`, 1},
+	{`  bind :443 thread 1/1-1
 `, 1},
 	{`  bind :443 tls-ticket-keys /tmp/tls_ticket_keys
 `, 1},
