@@ -225,6 +225,16 @@ type ACL struct {
 //test:ok:bind :443 strict-sni
 //test:ok:bind :443 tcp-ut 30s
 //test:ok:bind :443 tfo
+//test:ok:bind :443 thread all
+//test:ok:bind :443 thread odd
+//test:ok:bind :443 thread even
+//test:ok:bind :443 thread 1
+//test:ok:bind :443 thread 1-1
+//test:ok:bind :443 thread 1/all
+//test:ok:bind :443 thread 1/odd
+//test:ok:bind :443 thread 1/even
+//test:ok:bind :443 thread 1/1
+//test:ok:bind :443 thread 1/1-1
 //test:ok:bind :443 tls-ticket-keys /tmp/tls_ticket_keys
 //test:ok:bind :443 transparent
 //test:ok:bind :443 v4v6

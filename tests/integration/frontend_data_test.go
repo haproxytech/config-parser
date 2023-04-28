@@ -441,6 +441,46 @@ const frontend_bind443tfo = `
 frontend test
   bind :443 tfo
 `
+const frontend_bind443threadall = `
+frontend test
+  bind :443 thread all
+`
+const frontend_bind443threadodd = `
+frontend test
+  bind :443 thread odd
+`
+const frontend_bind443threadeven = `
+frontend test
+  bind :443 thread even
+`
+const frontend_bind443thread1 = `
+frontend test
+  bind :443 thread 1
+`
+const frontend_bind443thread11 = `
+frontend test
+  bind :443 thread 1-1
+`
+const frontend_bind443thread1all = `
+frontend test
+  bind :443 thread 1/all
+`
+const frontend_bind443thread1odd = `
+frontend test
+  bind :443 thread 1/odd
+`
+const frontend_bind443thread1even = `
+frontend test
+  bind :443 thread 1/even
+`
+const frontend_bind443thread11_ = `
+frontend test
+  bind :443 thread 1/1
+`
+const frontend_bind443thread111 = `
+frontend test
+  bind :443 thread 1/1-1
+`
 const frontend_bind443tlsticketkeystmptlsticket = `
 frontend test
   bind :443 tls-ticket-keys /tmp/tls_ticket_keys
