@@ -36,7 +36,7 @@ func (f *Trace) Parse(parts []string, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) < 3 {
+	if len(parts) < 2 {
 		return errors.ErrInvalidData
 	}
 	index := 2
