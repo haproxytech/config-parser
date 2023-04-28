@@ -209,6 +209,7 @@ type Filter interface {
 //test:ok:filter trace random-parsing random-forwarding hexdump
 //test:ok:filter trace random-forwarding hexdump
 //test:ok:filter trace hexdump
+//test:ok:filter trace
 //test:fail:filter bwlim-in
 //test:fail:filter bwlim-in name
 //test:fail:filter bwlim-in name default-limit
@@ -242,7 +243,6 @@ type Filter interface {
 //test:fail:filter spoe engine config
 //test:fail:filter trace name
 //test:fail:filter trace 0 name
-//test:fail:filter trace
 //test:fail:filter spoe l : d 8 t 8 t t c t t t 8 t 8 t t t 8 t t t 8 t 8 t t 8 t t t 8 8 t config
 //test:fail:filter cache
 type Filters struct{}
