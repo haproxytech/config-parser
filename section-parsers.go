@@ -260,6 +260,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "tune.http.maxhdr"})
 	addParser(parser, &sequence, &simple.OnOff{Name: "tune.idle-pool.shared"})
 	addParser(parser, &sequence, &simple.Time{Name: "tune.idletimer"})
+	addParser(parser, &sequence, &simple.String{Name: "tune.listener.default-shards"})
 	addParser(parser, &sequence, &simple.OnOff{Name: "tune.listener.multi-queue"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.lua.forced-yield"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "tune.lua.maxmem"})
