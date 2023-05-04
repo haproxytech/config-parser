@@ -271,6 +271,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "tune.maxaccept"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.maxpollevents"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.maxrewrite"})
+	addParser(parser, &sequence, &simple.Number{Name: "tune.memory.hot-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.pattern.cache-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.peers.max-updates-at-once"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.pipesize"})
