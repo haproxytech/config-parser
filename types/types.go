@@ -161,6 +161,7 @@ type ACL struct {
 //test:ok:bind :443 ca-verify-file file.test
 //test:ok:bind :443 ciphers ECDHE+aRSA+AES256+GCM+SHA384:ECDHE+aRSA+AES128+GCM+SHA256:ECDHE+aRSA+AES256+SHA384:ECDHE+aRSA+AES128+SHA256:ECDHE+aRSA+RC4+SHA:ECDHE+aRSA+AES256+SHA:ECDHE+aRSA+AES128+SHA:AES256+GCM+SHA384:AES128+GCM+SHA256:AES128+SHA256:AES256+SHA256:DHE+aRSA+AES128+SHA:RC4+SHA:HIGH:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
 //test:ok:bind :443 ciphersuites TODO
+//test:ok:bind :443 client-sigalgs value
 //test:ok:bind :443 crl-file file.test
 //test:ok:bind :443 crt example.pem
 //test:ok:bind :443 crt-ignore-err all
@@ -205,12 +206,15 @@ type ACL struct {
 //test:ok:bind :443 npn http/1.0
 //test:ok:bind :443 npn http/1.1
 //test:ok:bind :443 npn http/1.0,http/1.1
+//test:ok:bind :443 ocsp-update off
+//test:ok:bind :443 ocsp-update on
 //test:ok:bind :443 prefer-client-ciphers
 //test:ok:bind :443 process all
 //test:ok:bind :443 process odd
 //test:ok:bind :443 process even
 //test:ok:bind :443 process 1-4
 //test:ok:bind :443 proto h2
+//test:ok:bind :443 sigalgs value
 //test:ok:bind :443 ssl
 //test:ok:bind :443 ssl-max-ver SSLv3
 //test:ok:bind :443 ssl-max-ver TLSv1.0

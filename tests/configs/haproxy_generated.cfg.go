@@ -1327,6 +1327,7 @@ frontend test
   bind :443 ca-verify-file file.test
   bind :443 ciphers ECDHE+aRSA+AES256+GCM+SHA384:ECDHE+aRSA+AES128+GCM+SHA256:ECDHE+aRSA+AES256+SHA384:ECDHE+aRSA+AES128+SHA256:ECDHE+aRSA+RC4+SHA:ECDHE+aRSA+AES256+SHA:ECDHE+aRSA+AES128+SHA:AES256+GCM+SHA384:AES128+GCM+SHA256:AES128+SHA256:AES256+SHA256:DHE+aRSA+AES128+SHA:RC4+SHA:HIGH:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
   bind :443 ciphersuites TODO
+  bind :443 client-sigalgs value
   bind :443 crl-file file.test
   bind :443 crt example.pem
   bind :443 crt-ignore-err all
@@ -1371,12 +1372,15 @@ frontend test
   bind :443 npn http/1.0
   bind :443 npn http/1.1
   bind :443 npn http/1.0,http/1.1
+  bind :443 ocsp-update off
+  bind :443 ocsp-update on
   bind :443 prefer-client-ciphers
   bind :443 process all
   bind :443 process odd
   bind :443 process even
   bind :443 process 1-4
   bind :443 proto h2
+  bind :443 sigalgs value
   bind :443 ssl
   bind :443 ssl-max-ver SSLv3
   bind :443 ssl-max-ver TLSv1.0
@@ -2260,6 +2264,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  bind :443 ciphersuites TODO
 `, 1},
+	{`  bind :443 client-sigalgs value
+`, 1},
 	{`  bind :443 crl-file file.test
 `, 1},
 	{`  bind :443 crt example.pem
@@ -2348,6 +2354,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  bind :443 npn http/1.0,http/1.1
 `, 1},
+	{`  bind :443 ocsp-update off
+`, 1},
+	{`  bind :443 ocsp-update on
+`, 1},
 	{`  bind :443 prefer-client-ciphers
 `, 1},
 	{`  bind :443 process all
@@ -2359,6 +2369,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  bind :443 process 1-4
 `, 1},
 	{`  bind :443 proto h2
+`, 1},
+	{`  bind :443 sigalgs value
 `, 1},
 	{`  bind :443 ssl
 `, 1},

@@ -185,6 +185,10 @@ const frontend_bind443ciphersuitesTODO = `
 frontend test
   bind :443 ciphersuites TODO
 `
+const frontend_bind443clientsigalgsvalue = `
+frontend test
+  bind :443 client-sigalgs value
+`
 const frontend_bind443crlfilefiletest = `
 frontend test
   bind :443 crl-file file.test
@@ -361,6 +365,14 @@ const frontend_bind443npnhttp10http11 = `
 frontend test
   bind :443 npn http/1.0,http/1.1
 `
+const frontend_bind443ocspupdateoff = `
+frontend test
+  bind :443 ocsp-update off
+`
+const frontend_bind443ocspupdateon = `
+frontend test
+  bind :443 ocsp-update on
+`
 const frontend_bind443preferclientciphers = `
 frontend test
   bind :443 prefer-client-ciphers
@@ -384,6 +396,10 @@ frontend test
 const frontend_bind443protoh2 = `
 frontend test
   bind :443 proto h2
+`
+const frontend_bind443sigalgsvalue = `
+frontend test
+  bind :443 sigalgs value
 `
 const frontend_bind443ssl = `
 frontend test
