@@ -43,6 +43,8 @@ global
   ###_config-snippet_### BEGIN
   tune.ssl.default-dh-param 2048
   tune.bufsize 32768
+  ssl-default-bind-client-sigalgs RSA+SHA256
+  ssl-default-bind-sigalgs ECDSA+SHA256:RSA+SHA256
   ###_config-snippet_### END
   # random comment after snippet
 
