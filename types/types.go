@@ -1565,3 +1565,24 @@ type Table struct {
 	Store   string
 	Comment string
 }
+
+//sections:global
+//name:httpclient.resolvers.prefer
+//test:ok:httpclient.resolvers.prefer ipv4
+//test:ok:httpclient.resolvers.prefer ipv6
+//test:fail:httpclient.resolvers.prefer somethingelse
+//test:fail:httpclient.resolvers.prefer
+type HTTPClientResolversPrefer struct {
+	Type string
+}
+
+//sections:global
+//name:httpclient.ssl.verify
+//test:ok:httpclient.ssl.verify none
+//test:ok:httpclient.ssl.verify required
+//test:ok:httpclient.ssl.verify
+//test:fail:httpclient.ssl.verify somethingelse
+//test:fail:httpclient.ssl.verify none required
+type HTTPClientSSLVerify struct {
+	Type string
+}

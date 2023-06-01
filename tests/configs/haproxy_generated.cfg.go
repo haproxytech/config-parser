@@ -49,6 +49,8 @@ global test
   numa-cpu-mapping
   default-path current
   tune.quic.socket-owner listener
+  httpclient.resolvers.prefer ipv4
+  httpclient.ssl.verify none
 
 backend test
   acl url_stats path_beg /stats
@@ -3263,6 +3265,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(40s)
 `, 1},
 	{`  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,gpc1,conn_rate(30s)
+`, 1},
+	{`  httpclient.resolvers.prefer ipv4
+`, 1},
+	{`  httpclient.ssl.verify none
 `, 1},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 2},

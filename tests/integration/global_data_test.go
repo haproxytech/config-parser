@@ -173,3 +173,23 @@ const global_tunequicsocketownerconnection = `
 global
   tune.quic.socket-owner connection
 `
+const global_httpclientresolverspreferipv4 = `
+global
+  httpclient.resolvers.prefer ipv4
+`
+const global_httpclientresolverspreferipv6 = `
+global
+  httpclient.resolvers.prefer ipv6
+`
+const global_httpclientsslverifynone = `
+global
+  httpclient.ssl.verify none
+`
+const global_httpclientsslverifyrequired = `
+global
+  httpclient.ssl.verify required
+`
+const global_httpclientsslverify = `
+global
+  httpclient.ssl.verify
+`
