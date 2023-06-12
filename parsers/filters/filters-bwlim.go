@@ -18,7 +18,6 @@ package filters
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v4/common"
@@ -77,36 +76,18 @@ func (b *BandwidthLimit) parsePart(parts []string, index int) error {
 	part := parts[index]
 	switch part {
 	case "default-limit":
-		if _, err := strconv.ParseInt(parts[index+1], 10, 64); err != nil {
-			return fmt.Errorf("%s expects a value in milliseconds: %w", part, err)
-		}
-
 		b.DefaultLimit = parts[index+1]
 	case "limit":
-		if _, err := strconv.ParseInt(parts[index+1], 10, 64); err != nil {
-			return fmt.Errorf("%s expects a value in milliseconds: %w", part, err)
-		}
-
 		b.Limit = parts[index+1]
 	case "key":
 		b.Key = parts[index+1]
 	case "default-period":
-		if _, err := strconv.ParseInt(parts[index+1], 10, 64); err != nil {
-			return fmt.Errorf("%s expects a value in milliseconds: %w", part, err)
-		}
-
 		b.DefaultPeriod = parts[index+1]
 	case "min-size":
-		if _, err := strconv.ParseInt(parts[index+1], 10, 64); err != nil {
-			return fmt.Errorf("min-size expects a value in milliseconds: %w", err)
-		}
-
 		v := parts[index+1]
-
 		b.MinSize = &v
 	case "table":
 		v := parts[index+1]
-
 		b.Table = &v
 	default:
 		return fmt.Errorf("unsupported option: %s", part)
