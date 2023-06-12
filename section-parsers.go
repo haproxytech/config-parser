@@ -341,7 +341,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "h1-case-adjust-file"})
 	addParser(parser, &sequence, &parsers.H1CaseAdjust{})
 	addParser(parser, &sequence, &simple.Enabled{Name: "busy-polling"})
-	addParser(parser, &sequence, &simple.Number{Name: "max-spread-checks"})
+	addParser(parser, &sequence, &simple.String{Name: "max-spread-checks"})
 	addParser(parser, &sequence, &simple.String{Name: "close-spread-time"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "noepoll"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "nokqueue"})
