@@ -17,9 +17,9 @@ limitations under the License.
 package simple
 
 import (
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/errors"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 func (p *String) Init() {

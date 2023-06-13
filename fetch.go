@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/sorter"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/errors"
+	"github.com/haproxytech/config-parser/v5/sorter"
 )
 
 func (p *configParser) lock() {

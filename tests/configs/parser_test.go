@@ -20,8 +20,8 @@ import (
 	"strings"
 	"testing"
 
-	parser "github.com/haproxytech/config-parser/v4"
-	"github.com/haproxytech/config-parser/v4/options"
+	parser "github.com/haproxytech/config-parser/v5"
+	"github.com/haproxytech/config-parser/v5/options"
 )
 
 func TestWholeConfigs(t *testing.T) {

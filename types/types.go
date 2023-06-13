@@ -18,8 +18,8 @@ limitations under the License.
 package types
 
 import (
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/params"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/params"
 )
 
 //sections:program

@@ -23,7 +23,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v5/common"
 )
 
 func generateTypesGeneric(dir string) { //nolint:gocognit

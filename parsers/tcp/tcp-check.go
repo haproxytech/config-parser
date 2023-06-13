@@ -19,11 +19,11 @@ package tcp
 import (
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	tcpActions "github.com/haproxytech/config-parser/v4/parsers/tcp/actions"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/errors"
+	"github.com/haproxytech/config-parser/v5/parsers/actions"
+	tcpActions "github.com/haproxytech/config-parser/v5/parsers/tcp/actions"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 type Checks struct {

@@ -20,9 +20,9 @@ import (
 	"errors"
 	"testing"
 
-	parser "github.com/haproxytech/config-parser/v4"
-	parserErrors "github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/options"
+	parser "github.com/haproxytech/config-parser/v5"
+	parserErrors "github.com/haproxytech/config-parser/v5/errors"
+	"github.com/haproxytech/config-parser/v5/options"
 )
 
 func TestDefaultsConfigs(t *testing.T) {

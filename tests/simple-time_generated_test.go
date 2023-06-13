@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/parsers/simple"
+	"github.com/haproxytech/config-parser/v5/parsers/simple"
 )
 
 func TestTimesimple(t *testing.T) {

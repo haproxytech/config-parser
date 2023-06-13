@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/{{ .DataDir }}parsers{{- if .ModeOther}}/{{ .Dir }}{{- end }}"
+	"github.com/haproxytech/config-parser/v5/{{ .DataDir }}parsers{{- if .ModeOther}}/{{ .Dir }}{{- end }}"
 )
 {{ $StructName := .StructName }}
 func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {

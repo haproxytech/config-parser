@@ -19,8 +19,8 @@ package actions
 import (
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 type ExpectProxy struct {

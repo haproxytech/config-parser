@@ -19,7 +19,7 @@ package sorter
 import (
 	"sort"
 
-	parserErrors "github.com/haproxytech/config-parser/v4/errors"
+	parserErrors "github.com/haproxytech/config-parser/v5/errors"
 )
 
 type Section struct {

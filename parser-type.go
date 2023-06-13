@@ -17,8 +17,8 @@ limitations under the License.
 package parser
 
 import (
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/errors"
 )
 
 type ParserInterface interface { //nolint:revive

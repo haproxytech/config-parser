@@ -22,8 +22,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 type Return struct { // http-request return [status <code>] [content-type <type>] [ {default-errorfile | <content-format> <content>} ] [ hdr <name> <fmt> ]* [{if | unless} <condition>]

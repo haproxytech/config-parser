@@ -21,7 +21,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 type Status struct {

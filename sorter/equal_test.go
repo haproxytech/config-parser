@@ -17,7 +17,7 @@ limitations under the License.
 package sorter_test
 
 import (
-	"github.com/haproxytech/config-parser/v4/sorter"
+	"github.com/haproxytech/config-parser/v5/sorter"
 )
 
 func Equal(a, b []sorter.Section) bool {

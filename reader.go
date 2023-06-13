@@ -24,9 +24,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/parsers/extra"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/parsers/extra"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 func (p *configParser) LoadData(path string) error {

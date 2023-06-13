@@ -20,12 +20,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
-	parsersActions "github.com/haproxytech/config-parser/v4/parsers/actions"
-	"github.com/haproxytech/config-parser/v4/parsers/http/actions"
-	httpActions "github.com/haproxytech/config-parser/v4/parsers/http/actions"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/errors"
+	parsersActions "github.com/haproxytech/config-parser/v5/parsers/actions"
+	"github.com/haproxytech/config-parser/v5/parsers/http/actions"
+	httpActions "github.com/haproxytech/config-parser/v5/parsers/http/actions"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 type AfterResponses struct {

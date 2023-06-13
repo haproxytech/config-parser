@@ -19,8 +19,8 @@ package filters
 import (
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/errors"
 )
 
 type Trace struct { // filter trace [name <name>] [random-parsing] [random-forwarding] [hexdump]

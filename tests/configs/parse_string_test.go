@@ -18,8 +18,8 @@ package configs //nolint:testpackage
 import (
 	"testing"
 
-	parser "github.com/haproxytech/config-parser/v4"
-	"github.com/haproxytech/config-parser/v4/options"
+	parser "github.com/haproxytech/config-parser/v5"
+	"github.com/haproxytech/config-parser/v5/options"
 )
 
 func TestParseString(t *testing.T) {

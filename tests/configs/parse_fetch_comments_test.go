@@ -18,9 +18,9 @@ package configs //nolint:testpackage
 import (
 	"testing"
 
-	parser "github.com/haproxytech/config-parser/v4"
-	"github.com/haproxytech/config-parser/v4/options"
-	"github.com/haproxytech/config-parser/v4/types"
+	parser "github.com/haproxytech/config-parser/v5"
+	"github.com/haproxytech/config-parser/v5/options"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 func TestParseFecthCommentLines(t *testing.T) { //nolint:gocognit

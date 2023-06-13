@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/parsers/http"
+	"github.com/haproxytech/config-parser/v5/parsers/http"
 )
 
 func TestAfterResponseshttp(t *testing.T) {

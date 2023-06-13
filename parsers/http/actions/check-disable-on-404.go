@@ -19,7 +19,7 @@ package actions
 import (
 	"fmt"
 
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 // http-check disable-on-404

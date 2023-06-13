@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
-	"github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/params"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/common"
+	"github.com/haproxytech/config-parser/v5/errors"
+	"github.com/haproxytech/config-parser/v5/params"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 type Persist struct {

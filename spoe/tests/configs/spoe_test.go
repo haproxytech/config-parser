@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haproxytech/config-parser/v4/spoe"
+	"github.com/haproxytech/config-parser/v5/spoe"
 )
 
 func TestWholeConfigs(t *testing.T) {

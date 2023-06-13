@@ -19,8 +19,8 @@ package sorter_test
 import (
 	"testing"
 
-	parserErrors "github.com/haproxytech/config-parser/v4/errors"
-	"github.com/haproxytech/config-parser/v4/sorter"
+	parserErrors "github.com/haproxytech/config-parser/v5/errors"
+	"github.com/haproxytech/config-parser/v5/sorter"
 )
 
 func TestSortWithFrom(t *testing.T) {

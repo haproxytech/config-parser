@@ -17,7 +17,7 @@ limitations under the License.
 //nolint:godot
 package types
 
-import "github.com/haproxytech/config-parser/v4/common"
+import "github.com/haproxytech/config-parser/v5/common"
 
 //name:section
 //no:sections

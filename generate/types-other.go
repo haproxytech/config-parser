@@ -23,7 +23,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/common"
+	"github.com/haproxytech/config-parser/v5/common"
 )
 
 func generateTypesOther(dir string) { //nolint:gocognit,gocyclo,cyclop

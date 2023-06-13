@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/haproxytech/config-parser/v4/parsers/actions"
-	"github.com/haproxytech/config-parser/v4/types"
+	"github.com/haproxytech/config-parser/v5/parsers/actions"
+	"github.com/haproxytech/config-parser/v5/types"
 )
 
 // tcp-check send-binary-lf <hexfmt> [comment <msg>]
