@@ -18,6 +18,7 @@ package actions
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/haproxytech/config-parser/v5/common"
@@ -27,48 +28,59 @@ import (
 type TrackScT string
 
 const (
-	TrackSc0 TrackScT = "track-sc0"
-	TrackSc1 TrackScT = "track-sc1"
-	TrackSc2 TrackScT = "track-sc2"
+	TrackScType TrackScT = "track-sc"
 )
 
 type TrackSc struct {
-	Type     TrackScT
-	Key      string
-	Table    string
-	Comment  string
-	Cond     string
-	CondTest string
+	Type         TrackScT
+	StickCounter int64
+	Key          string
+	Table        string
+	Comment      string
+	Cond         string
+	CondTest     string
 }
 
 func (f *TrackSc) Parse(parts []string, parserType types.ParserType, comment string) error {
 	if comment != "" {
 		f.Comment = comment
 	}
-	if len(parts) < 3 {
-		return fmt.Errorf("not enough params")
-	}
 	var data string
 	var command []string
-	var minLen, requiredLen int
 	switch parserType {
 	case types.HTTP:
+		if len(parts) < 3 {
+			return fmt.Errorf("not enough params")
+		}
 		data = parts[1]
 		command = parts[2:]
-		minLen = 3
-		requiredLen = 5
 	case types.TCP:
+		if len(parts) < 4 {
+			return fmt.Errorf("not enough params")
+		}
 		data = parts[2]
 		command = parts[3:]
-		minLen = 4
-		requiredLen = 6
 	}
-	f.Type = TrackScT(data)
-	if len(parts) == minLen {
-		f.Key = parts[minLen-1]
+
+	f.Type = TrackScType
+	counterS := strings.TrimPrefix(data, string(TrackScType))
+	counter, err := strconv.ParseInt(counterS, 10, 64)
+	if err != nil {
+		return fmt.Errorf("failed to parse stick-counter")
+	}
+	f.StickCounter = counter
+
+	return f.parseCommand(command)
+}
+
+func (f *TrackSc) parseCommand(command []string) error {
+	// command contains only <key>
+	if len(command) == 1 {
+		f.Key = command[0]
 		return nil
 	}
-	if len(parts) < requiredLen {
+
+	if len(command) < 3 {
 		return fmt.Errorf("not enough params")
 	}
 	command, condition := common.SplitRequest(command)
@@ -92,6 +104,7 @@ func (f *TrackSc) Parse(parts []string, parserType types.ParserType, comment str
 func (f *TrackSc) String() string {
 	var result strings.Builder
 	result.WriteString(string(f.Type))
+	result.WriteString(strconv.FormatInt(f.StickCounter, 10))
 	result.WriteString(" ")
 	result.WriteString(f.Key)
 	if f.Table != "" {

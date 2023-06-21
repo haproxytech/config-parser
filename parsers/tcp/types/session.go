@@ -53,16 +53,12 @@ func (f *Session) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&tcpActions.Accept{}, parts)
 	case "reject":
 		err = f.ParseAction(&actions.Reject{}, parts)
-	case "track-sc0":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
-	case "track-sc1":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
-	case "track-sc2":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
 	case "silent-drop":
 		err = f.ParseAction(&actions.SilentDrop{}, parts)
 	default:
 		switch {
+		case strings.HasPrefix(parts[2], "track-sc"):
+			err = f.ParseAction(&actions.TrackSc{}, parts)
 		case strings.HasPrefix(parts[2], "sc-add-gpc("):
 			err = f.ParseAction(&actions.ScAddGpc{}, parts)
 		case strings.HasPrefix(parts[2], "sc-inc-gpc("):
