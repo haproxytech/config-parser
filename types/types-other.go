@@ -468,6 +468,16 @@ type Action interface {
 //test:fail:http-request track-sc1
 //test:ok:http-request track-sc2 src
 //test:fail:http-request track-sc2
+//test:ok:http-request track-sc5 src
+//test:ok:http-request track-sc5 src table a_table
+//test:ok:http-request track-sc5 src table a_table if some_cond
+//test:ok:http-request track-sc5 src if some_cond
+//test:fail:http-request track-sc
+//test:fail:http-request track-sc5
+//test:fail:http-request track-sc5 src table
+//test:fail:http-request track-sc5 src if
+//test:fail:http-request track-sc src if some_cond
+//test:fail:http-request track-sc src table a_table if some_cond
 //test:ok:http-request unset-var(req.my_var)
 //test:ok:http-request unset-var(req.my_var) if FALSE
 //test:fail:http-request unset-var(req.)
@@ -670,6 +680,14 @@ type HTTPRequests struct{}
 //test:ok:http-response track-sc2 src table tr if FALSE
 //test:ok:http-response track-sc2 src
 //test:fail:http-response track-sc2
+//test:ok:http-response track-sc5 src
+//test:ok:http-response track-sc5 src table a_table
+//test:ok:http-response track-sc5 src table a_table if some_cond
+//test:ok:http-response track-sc5 src if some_cond
+//test:fail:http-response track-sc
+//test:fail:http-response track-sc5
+//test:fail:http-response track-sc5 src table
+//test:fail:http-response track-sc5 src if
 //test:ok:http-response strict-mode on
 //test:ok:http-response strict-mode on if FALSE
 //test:fail:http-response strict-mode
@@ -932,6 +950,10 @@ type TCPType interface {
 //test:ok:tcp-request content track-sc1 src table foo if some_check
 //test:ok:tcp-request content track-sc2 src table foo
 //test:ok:tcp-request content track-sc2 src table foo if some_check
+//test:ok:tcp-request content track-sc5 src
+//test:ok:tcp-request content track-sc5 src if some_check
+//test:ok:tcp-request content track-sc5 src table foo
+//test:ok:tcp-request content track-sc5 src table foo if some_check
 //test:ok:tcp-request content sc-inc-gpc(1,2)
 //test:ok:tcp-request content sc-inc-gpc(1,2) if is-error
 //test:fail:tcp-request content sc-inc-gpc
@@ -981,6 +1003,10 @@ type TCPType interface {
 //test:ok:tcp-request connection track-sc1 src table foo if some_check
 //test:ok:tcp-request connection track-sc2 src table foo
 //test:ok:tcp-request connection track-sc2 src table foo if some_check
+//test:ok:tcp-request connection track-sc5 src
+//test:ok:tcp-request connection track-sc5 src if some_check
+//test:ok:tcp-request connection track-sc5 src table foo
+//test:ok:tcp-request connection track-sc5 src table foo if some_check
 //test:ok:tcp-request connection sc-add-gpc(1,2) 1
 //test:ok:tcp-request connection sc-add-gpc(1,2) 1 if is-error
 //test:fail:tcp-request connection sc-add-gpc
@@ -1021,6 +1047,10 @@ type TCPType interface {
 //test:ok:tcp-request session track-sc1 src table foo if some_check
 //test:ok:tcp-request session track-sc2 src table foo
 //test:ok:tcp-request session track-sc2 src table foo if some_check
+//test:ok:tcp-request session track-sc5 src
+//test:ok:tcp-request session track-sc5 src if some_check
+//test:ok:tcp-request session track-sc5 src table foo
+//test:ok:tcp-request session track-sc5 src table foo if some_check
 //test:ok:tcp-request session sc-add-gpc(1,2) 1
 //test:ok:tcp-request session sc-add-gpc(1,2) 1 if is-error
 //test:fail:tcp-request session sc-add-gpc
@@ -1093,6 +1123,12 @@ type TCPType interface {
 //test:fail:tcp-request session track-sc1 src table if some_check
 //test:fail:tcp-request session track-sc2 src table
 //test:fail:tcp-request session track-sc2 src table if some_check
+//test:fail:tcp-request content track-sc5 src table
+//test:fail:tcp-request content track-sc5 src table if some_check
+//test:fail:tcp-request connection track-sc5 src table
+//test:fail:tcp-request connection track-sc5 src table if some_check
+//test:fail:tcp-request session track-sc5 src table
+//test:fail:tcp-request session track-sc5 src table if some_check
 //test:fail:tcp-request content set-bandwidth-limit my-limit limit
 //test:fail:tcp-request content set-bandwidth-limit my-limit period
 //test:fail:tcp-request content set-bandwidth-limit my-limit 10s

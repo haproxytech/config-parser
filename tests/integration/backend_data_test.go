@@ -2405,6 +2405,22 @@ const backend_httprequesttracksc2src = `
 backend test
   http-request track-sc2 src
 `
+const backend_httprequesttracksc5src = `
+backend test
+  http-request track-sc5 src
+`
+const backend_httprequesttracksc5srctableatabl = `
+backend test
+  http-request track-sc5 src table a_table
+`
+const backend_httprequesttracksc5srctableatabl_ = `
+backend test
+  http-request track-sc5 src table a_table if some_cond
+`
+const backend_httprequesttracksc5srcifsomecond = `
+backend test
+  http-request track-sc5 src if some_cond
+`
 const backend_httprequestunsetvarreqmyvar = `
 backend test
   http-request unset-var(req.my_var)
@@ -2856,6 +2872,22 @@ backend test
 const backend_httpresponsetracksc2src = `
 backend test
   http-response track-sc2 src
+`
+const backend_httpresponsetracksc5src = `
+backend test
+  http-response track-sc5 src
+`
+const backend_httpresponsetracksc5srctableatab = `
+backend test
+  http-response track-sc5 src table a_table
+`
+const backend_httpresponsetracksc5srctableatab_ = `
+backend test
+  http-response track-sc5 src table a_table if some_cond
+`
+const backend_httpresponsetracksc5srcifsomecon = `
+backend test
+  http-response track-sc5 src if some_cond
 `
 const backend_httpresponsestrictmodeon = `
 backend test
@@ -3493,6 +3525,22 @@ const backend_tcprequestcontenttracksc2srctabl_ = `
 backend test
   tcp-request content track-sc2 src table foo if some_check
 `
+const backend_tcprequestcontenttracksc5src = `
+backend test
+  tcp-request content track-sc5 src
+`
+const backend_tcprequestcontenttracksc5srcifso = `
+backend test
+  tcp-request content track-sc5 src if some_check
+`
+const backend_tcprequestcontenttracksc5srctabl = `
+backend test
+  tcp-request content track-sc5 src table foo
+`
+const backend_tcprequestcontenttracksc5srctabl_ = `
+backend test
+  tcp-request content track-sc5 src table foo if some_check
+`
 const backend_tcprequestcontentscincgpc12 = `
 backend test
   tcp-request content sc-inc-gpc(1,2)
@@ -3673,6 +3721,22 @@ const backend_tcprequestconnectiontracksc2srct_ = `
 backend test
   tcp-request connection track-sc2 src table foo if some_check
 `
+const backend_tcprequestconnectiontracksc5src = `
+backend test
+  tcp-request connection track-sc5 src
+`
+const backend_tcprequestconnectiontracksc5srci = `
+backend test
+  tcp-request connection track-sc5 src if some_check
+`
+const backend_tcprequestconnectiontracksc5srct = `
+backend test
+  tcp-request connection track-sc5 src table foo
+`
+const backend_tcprequestconnectiontracksc5srct_ = `
+backend test
+  tcp-request connection track-sc5 src table foo if some_check
+`
 const backend_tcprequestconnectionscaddgpc121 = `
 backend test
   tcp-request connection sc-add-gpc(1,2) 1
@@ -3812,6 +3876,22 @@ backend test
 const backend_tcprequestsessiontracksc2srctabl_ = `
 backend test
   tcp-request session track-sc2 src table foo if some_check
+`
+const backend_tcprequestsessiontracksc5src = `
+backend test
+  tcp-request session track-sc5 src
+`
+const backend_tcprequestsessiontracksc5srcifso = `
+backend test
+  tcp-request session track-sc5 src if some_check
+`
+const backend_tcprequestsessiontracksc5srctabl = `
+backend test
+  tcp-request session track-sc5 src table foo
+`
+const backend_tcprequestsessiontracksc5srctabl_ = `
+backend test
+  tcp-request session track-sc5 src table foo if some_check
 `
 const backend_tcprequestsessionscaddgpc121 = `
 backend test

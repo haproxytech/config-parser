@@ -129,12 +129,6 @@ func (h *Requests) Parse(line string, parts []string, comment string) (string, e
 			err = h.ParseHTTPRequest(&httpActions.StrictMode{}, parts, comment)
 		case "tarpit":
 			err = h.ParseHTTPRequest(&httpActions.Tarpit{}, parts, comment)
-		case "track-sc0":
-			err = h.ParseHTTPRequest(&actions.TrackSc{}, parts, comment)
-		case "track-sc1":
-			err = h.ParseHTTPRequest(&actions.TrackSc{}, parts, comment)
-		case "track-sc2":
-			err = h.ParseHTTPRequest(&actions.TrackSc{}, parts, comment)
 		case "use-service":
 			err = h.ParseHTTPRequest(&actions.UseService{}, parts, comment)
 		case "wait-for-body":
@@ -145,6 +139,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (string, e
 			err = h.ParseHTTPRequest(&actions.SetBandwidthLimit{}, parts, comment)
 		default:
 			switch {
+			case strings.HasPrefix(parts[1], "track-sc"):
+				err = h.ParseHTTPRequest(&actions.TrackSc{}, parts, comment)
 			case strings.HasPrefix(parts[1], "add-acl("):
 				err = h.ParseHTTPRequest(&httpActions.AddACL{}, parts, comment)
 			case strings.HasPrefix(parts[1], "del-acl("):

@@ -1377,6 +1377,22 @@ const frontend_httprequesttracksc2src = `
 frontend test
   http-request track-sc2 src
 `
+const frontend_httprequesttracksc5src = `
+frontend test
+  http-request track-sc5 src
+`
+const frontend_httprequesttracksc5srctableatabl = `
+frontend test
+  http-request track-sc5 src table a_table
+`
+const frontend_httprequesttracksc5srctableatabl_ = `
+frontend test
+  http-request track-sc5 src table a_table if some_cond
+`
+const frontend_httprequesttracksc5srcifsomecond = `
+frontend test
+  http-request track-sc5 src if some_cond
+`
 const frontend_httprequestunsetvarreqmyvar = `
 frontend test
   http-request unset-var(req.my_var)
@@ -1833,6 +1849,22 @@ const frontend_httpresponsetracksc2src = `
 frontend test
   http-response track-sc2 src
 `
+const frontend_httpresponsetracksc5src = `
+frontend test
+  http-response track-sc5 src
+`
+const frontend_httpresponsetracksc5srctableatab = `
+frontend test
+  http-response track-sc5 src table a_table
+`
+const frontend_httpresponsetracksc5srctableatab_ = `
+frontend test
+  http-response track-sc5 src table a_table if some_cond
+`
+const frontend_httpresponsetracksc5srcifsomecon = `
+frontend test
+  http-response track-sc5 src if some_cond
+`
 const frontend_httpresponsestrictmodeon = `
 frontend test
   http-response strict-mode on
@@ -2225,6 +2257,22 @@ const frontend_tcprequestcontenttracksc2srctabl_ = `
 frontend test
   tcp-request content track-sc2 src table foo if some_check
 `
+const frontend_tcprequestcontenttracksc5src = `
+frontend test
+  tcp-request content track-sc5 src
+`
+const frontend_tcprequestcontenttracksc5srcifso = `
+frontend test
+  tcp-request content track-sc5 src if some_check
+`
+const frontend_tcprequestcontenttracksc5srctabl = `
+frontend test
+  tcp-request content track-sc5 src table foo
+`
+const frontend_tcprequestcontenttracksc5srctabl_ = `
+frontend test
+  tcp-request content track-sc5 src table foo if some_check
+`
 const frontend_tcprequestcontentscincgpc12 = `
 frontend test
   tcp-request content sc-inc-gpc(1,2)
@@ -2405,6 +2453,22 @@ const frontend_tcprequestconnectiontracksc2srct_ = `
 frontend test
   tcp-request connection track-sc2 src table foo if some_check
 `
+const frontend_tcprequestconnectiontracksc5src = `
+frontend test
+  tcp-request connection track-sc5 src
+`
+const frontend_tcprequestconnectiontracksc5srci = `
+frontend test
+  tcp-request connection track-sc5 src if some_check
+`
+const frontend_tcprequestconnectiontracksc5srct = `
+frontend test
+  tcp-request connection track-sc5 src table foo
+`
+const frontend_tcprequestconnectiontracksc5srct_ = `
+frontend test
+  tcp-request connection track-sc5 src table foo if some_check
+`
 const frontend_tcprequestconnectionscaddgpc121 = `
 frontend test
   tcp-request connection sc-add-gpc(1,2) 1
@@ -2544,6 +2608,22 @@ frontend test
 const frontend_tcprequestsessiontracksc2srctabl_ = `
 frontend test
   tcp-request session track-sc2 src table foo if some_check
+`
+const frontend_tcprequestsessiontracksc5src = `
+frontend test
+  tcp-request session track-sc5 src
+`
+const frontend_tcprequestsessiontracksc5srcifso = `
+frontend test
+  tcp-request session track-sc5 src if some_check
+`
+const frontend_tcprequestsessiontracksc5srctabl = `
+frontend test
+  tcp-request session track-sc5 src table foo
+`
+const frontend_tcprequestsessiontracksc5srctabl_ = `
+frontend test
+  tcp-request session track-sc5 src table foo if some_check
 `
 const frontend_tcprequestsessionscaddgpc121 = `
 frontend test

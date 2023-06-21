@@ -59,12 +59,6 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&tcpActions.ExpectNetscalerCip{}, parts)
 	case "capture":
 		err = f.ParseAction(&tcpActions.Capture{}, parts)
-	case "track-sc0":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
-	case "track-sc1":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
-	case "track-sc2":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
 	case "set-src":
 		err = f.ParseAction(&tcpActions.SetSrc{}, parts)
 	case "set-dst":
@@ -81,6 +75,8 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.SetDstPort{}, parts)
 	default:
 		switch {
+		case strings.HasPrefix(parts[2], "track-sc"):
+			err = f.ParseAction(&actions.TrackSc{}, parts)
 		case strings.HasPrefix(parts[2], "lua."):
 			err = f.ParseAction(&actions.Lua{}, parts)
 		case strings.HasPrefix(parts[2], "sc-add-gpc("):

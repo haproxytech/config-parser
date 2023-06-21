@@ -548,6 +548,10 @@ backend test
   http-request track-sc0 src
   http-request track-sc1 src
   http-request track-sc2 src
+  http-request track-sc5 src
+  http-request track-sc5 src table a_table
+  http-request track-sc5 src table a_table if some_cond
+  http-request track-sc5 src if some_cond
   http-request unset-var(req.my_var)
   http-request unset-var(req.my_var) if FALSE
   http-request wait-for-body time 20s
@@ -661,6 +665,10 @@ backend test
   http-response track-sc2 src if FALSE
   http-response track-sc2 src table tr if FALSE
   http-response track-sc2 src
+  http-response track-sc5 src
+  http-response track-sc5 src table a_table
+  http-response track-sc5 src table a_table if some_cond
+  http-response track-sc5 src if some_cond
   http-response strict-mode on
   http-response strict-mode on if FALSE
   http-response wait-for-body time 20s
@@ -820,6 +828,10 @@ backend test
   tcp-request content track-sc1 src table foo if some_check
   tcp-request content track-sc2 src table foo
   tcp-request content track-sc2 src table foo if some_check
+  tcp-request content track-sc5 src
+  tcp-request content track-sc5 src if some_check
+  tcp-request content track-sc5 src table foo
+  tcp-request content track-sc5 src table foo if some_check
   tcp-request content sc-inc-gpc(1,2)
   tcp-request content sc-inc-gpc(1,2) if is-error
   tcp-request content sc-inc-gpc0(2)
@@ -865,6 +877,10 @@ backend test
   tcp-request connection track-sc1 src table foo if some_check
   tcp-request connection track-sc2 src table foo
   tcp-request connection track-sc2 src table foo if some_check
+  tcp-request connection track-sc5 src
+  tcp-request connection track-sc5 src if some_check
+  tcp-request connection track-sc5 src table foo
+  tcp-request connection track-sc5 src table foo if some_check
   tcp-request connection sc-add-gpc(1,2) 1
   tcp-request connection sc-add-gpc(1,2) 1 if is-error
   tcp-request connection sc-inc-gpc(1,2)
@@ -900,6 +916,10 @@ backend test
   tcp-request session track-sc1 src table foo if some_check
   tcp-request session track-sc2 src table foo
   tcp-request session track-sc2 src table foo if some_check
+  tcp-request session track-sc5 src
+  tcp-request session track-sc5 src if some_check
+  tcp-request session track-sc5 src table foo
+  tcp-request session track-sc5 src table foo if some_check
   tcp-request session sc-add-gpc(1,2) 1
   tcp-request session sc-add-gpc(1,2) 1 if is-error
   tcp-request session sc-inc-gpc(1,2)
@@ -1595,6 +1615,10 @@ frontend test
   http-request track-sc0 src
   http-request track-sc1 src
   http-request track-sc2 src
+  http-request track-sc5 src
+  http-request track-sc5 src table a_table
+  http-request track-sc5 src table a_table if some_cond
+  http-request track-sc5 src if some_cond
   http-request unset-var(req.my_var)
   http-request unset-var(req.my_var) if FALSE
   http-request wait-for-body time 20s
@@ -1709,6 +1733,10 @@ frontend test
   http-response track-sc2 src if FALSE
   http-response track-sc2 src table tr if FALSE
   http-response track-sc2 src
+  http-response track-sc5 src
+  http-response track-sc5 src table a_table
+  http-response track-sc5 src table a_table if some_cond
+  http-response track-sc5 src if some_cond
   http-response strict-mode on
   http-response strict-mode on if FALSE
   http-response wait-for-body time 20s
@@ -1807,6 +1835,10 @@ frontend test
   tcp-request content track-sc1 src table foo if some_check
   tcp-request content track-sc2 src table foo
   tcp-request content track-sc2 src table foo if some_check
+  tcp-request content track-sc5 src
+  tcp-request content track-sc5 src if some_check
+  tcp-request content track-sc5 src table foo
+  tcp-request content track-sc5 src table foo if some_check
   tcp-request content sc-inc-gpc(1,2)
   tcp-request content sc-inc-gpc(1,2) if is-error
   tcp-request content sc-inc-gpc0(2)
@@ -1852,6 +1884,10 @@ frontend test
   tcp-request connection track-sc1 src table foo if some_check
   tcp-request connection track-sc2 src table foo
   tcp-request connection track-sc2 src table foo if some_check
+  tcp-request connection track-sc5 src
+  tcp-request connection track-sc5 src if some_check
+  tcp-request connection track-sc5 src table foo
+  tcp-request connection track-sc5 src table foo if some_check
   tcp-request connection sc-add-gpc(1,2) 1
   tcp-request connection sc-add-gpc(1,2) 1 if is-error
   tcp-request connection sc-inc-gpc(1,2)
@@ -1887,6 +1923,10 @@ frontend test
   tcp-request session track-sc1 src table foo if some_check
   tcp-request session track-sc2 src table foo
   tcp-request session track-sc2 src table foo if some_check
+  tcp-request session track-sc5 src
+  tcp-request session track-sc5 src if some_check
+  tcp-request session track-sc5 src table foo
+  tcp-request session track-sc5 src table foo if some_check
   tcp-request session sc-add-gpc(1,2) 1
   tcp-request session sc-add-gpc(1,2) 1 if is-error
   tcp-request session sc-inc-gpc(1,2)
@@ -3534,6 +3574,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  http-request track-sc2 src
 `, 2},
+	{`  http-request track-sc5 src
+`, 2},
+	{`  http-request track-sc5 src table a_table
+`, 2},
+	{`  http-request track-sc5 src table a_table if some_cond
+`, 2},
+	{`  http-request track-sc5 src if some_cond
+`, 2},
 	{`  http-request unset-var(req.my_var)
 `, 2},
 	{`  http-request unset-var(req.my_var) if FALSE
@@ -3735,6 +3783,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-response track-sc2 src table tr if FALSE
 `, 2},
 	{`  http-response track-sc2 src
+`, 2},
+	{`  http-response track-sc5 src
+`, 2},
+	{`  http-response track-sc5 src table a_table
+`, 2},
+	{`  http-response track-sc5 src table a_table if some_cond
+`, 2},
+	{`  http-response track-sc5 src if some_cond
 `, 2},
 	{`  http-response strict-mode on
 `, 2},
@@ -3998,6 +4054,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  tcp-request content track-sc2 src table foo if some_check
 `, 2},
+	{`  tcp-request content track-sc5 src
+`, 2},
+	{`  tcp-request content track-sc5 src if some_check
+`, 2},
+	{`  tcp-request content track-sc5 src table foo
+`, 2},
+	{`  tcp-request content track-sc5 src table foo if some_check
+`, 2},
 	{`  tcp-request content sc-inc-gpc(1,2)
 `, 2},
 	{`  tcp-request content sc-inc-gpc(1,2) if is-error
@@ -4088,6 +4152,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  tcp-request connection track-sc2 src table foo if some_check
 `, 2},
+	{`  tcp-request connection track-sc5 src
+`, 2},
+	{`  tcp-request connection track-sc5 src if some_check
+`, 2},
+	{`  tcp-request connection track-sc5 src table foo
+`, 2},
+	{`  tcp-request connection track-sc5 src table foo if some_check
+`, 2},
 	{`  tcp-request connection sc-add-gpc(1,2) 1
 `, 2},
 	{`  tcp-request connection sc-add-gpc(1,2) 1 if is-error
@@ -4157,6 +4229,14 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-request session track-sc2 src table foo
 `, 2},
 	{`  tcp-request session track-sc2 src table foo if some_check
+`, 2},
+	{`  tcp-request session track-sc5 src
+`, 2},
+	{`  tcp-request session track-sc5 src if some_check
+`, 2},
+	{`  tcp-request session track-sc5 src table foo
+`, 2},
+	{`  tcp-request session track-sc5 src table foo if some_check
 `, 2},
 	{`  tcp-request session sc-add-gpc(1,2) 1
 `, 2},

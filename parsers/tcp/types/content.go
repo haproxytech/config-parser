@@ -59,12 +59,6 @@ func (f *Content) Parse(parts []string, comment string) error { //nolint:gocyclo
 		err = f.ParseAction(&actions.SetPriorityClass{}, parts)
 	case "set-priority-offset":
 		err = f.ParseAction(&actions.SetPriorityOffset{}, parts)
-	case "track-sc0":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
-	case "track-sc1":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
-	case "track-sc2":
-		err = f.ParseAction(&actions.TrackSc{}, parts)
 	case "set-dst":
 		err = f.ParseAction(&actions.SetDst{}, parts)
 	case "set-dst-port":
@@ -93,6 +87,8 @@ func (f *Content) Parse(parts []string, comment string) error { //nolint:gocyclo
 		err = f.ParseAction(&tcpActions.Close{}, parts)
 	default:
 		switch {
+		case strings.HasPrefix(parts[2], "track-sc"):
+			err = f.ParseAction(&actions.TrackSc{}, parts)
 		case strings.HasPrefix(parts[2], "lua."):
 			err = f.ParseAction(&actions.Lua{}, parts)
 		case strings.HasPrefix(parts[2], "sc-add-gpc("):
