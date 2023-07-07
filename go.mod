@@ -6,6 +6,7 @@ require (
 	github.com/gofrs/flock v0.8.1
 	github.com/google/renameio v1.0.1
 	github.com/haproxytech/go-logger v1.1.0
+	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 	golang.org/x/text v0.9.0
 )
 
