@@ -18,9 +18,8 @@ package params
 
 import (
 	"fmt"
+	"slices"
 	"strings"
-
-	"golang.org/x/exp/slices"
 )
 
 // BindOption ...
