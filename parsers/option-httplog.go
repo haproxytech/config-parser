@@ -29,7 +29,7 @@ type OptionHTTPLog struct {
 	preComments []string // comments that appear before the actual line
 }
 
-func (o *OptionHTTPLog) Parse(line string, parts []string, comment string) (string, error) { //nolint:gocognit
+func (o *OptionHTTPLog) Parse(line string, parts []string, comment string) (string, error) {
 	if len(parts) > 2 && parts[0] == "option" && parts[1] == "httplog" && parts[2] == "clf" {
 		o.data = &types.OptionHTTPLog{
 			Comment: comment,
