@@ -37,7 +37,7 @@ linters:
     - dupword
     - interfacebloat
     - gci
-
+    - depguard
     - ifshort # deprecated
     - structcheck # deprecated
     - deadcode # deprecated
@@ -53,3 +53,9 @@ linters:
 run:
   skip-dirs:
     - test
+
+issues:
+  exclude:
+    - "unused-parameter: parameter 'comment' seems to be unused"
+    - "unused-parameter: parameter 'parts' seems to be unused"
+    - "unused-parameter: parameter 'parserType' seems to be unused"
