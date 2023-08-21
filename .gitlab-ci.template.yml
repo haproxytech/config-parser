@@ -1,0 +1,55 @@
+variables:
+ GO_VERSION: "from_go_mod_file"
+stages:
+  - diff
+  - lint
+  - test
+diff:
+  stage: diff
+  image:
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+    - make generate
+    - git diff
+    - test -z "$(git diff 2> /dev/null)" || exit 'Files are not generated or formatted with gofumpt, issue `make generate` and commit the result'
+    - test -z "$(git ls-files --others --exclude-standard 2> /dev/null)" || exit 'Generation created untracked files, cannot proceed'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+lint:
+  stage: lint
+  image:
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+    - make lint
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+tidy:
+  stage: lint
+  image:
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+    - go mod tidy
+    - test -z "$(git diff 2> /dev/null)" || exit 'Go modules not tidied, issue \`go mod tidy\` and commit the result'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+test:
+  stage: test
+  image:
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+    - go build -v .
+    - make test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'

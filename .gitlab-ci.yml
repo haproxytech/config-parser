@@ -1,33 +1,36 @@
-variables:
- GO_VERSION: "1.20"
 stages:
+  - prepare
   - diff
   - lint
   - test
-diff:
-  stage: diff
-  image:
-    name: $CI_REGISTRY_GO/golang:$GO_VERSION
-    entrypoint: [""]
+prepare-jobs:
+  image: $CI_REGISTRY_GO/bash:4.4
+  stage: prepare
   tags:
     - go
   script:
-    - make generate
-    - git diff
-    - test -z "$(git diff 2> /dev/null)" || exit 'Files are not generated or formatted with gofumpt, issue `make generate` and commit the result'
-    - test -z "$(git ls-files --others --exclude-standard 2> /dev/null)" || exit 'Generation created untracked files, cannot proceed'
+    - awk '$1=="go" {print $2}' go.mod
+    - sed -i "s/from_go_mod_file/$(awk '$1=="go" {print $2}' go.mod)/g" .gitlab-ci.template.yml
+    - cat .gitlab-ci.template.yml
+  artifacts:
+    when: on_success
+    paths:
+      - .gitlab-ci.template.yml
+    expire_in: 1 hour
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_PIPELINE_SOURCE == 'push'
-lint:
-  stage: lint
-  image:
-    name: $CI_REGISTRY_GO/golang:$GO_VERSION
-    entrypoint: [""]
-  tags:
-    - go
-  script:
-    - make lint
+generated:
+  variables:
+    PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+  needs:
+    - "prepare-jobs"
+  stage: prepare
+  trigger:
+    include:
+      - artifact: .gitlab-ci.template.yml
+        job: prepare-jobs
+    strategy: depend
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_PIPELINE_SOURCE == 'push'
@@ -42,29 +45,3 @@ lint-commit-msg:
     - /check
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-tidy:
-  stage: lint
-  image:
-    name: $CI_REGISTRY_GO/golang:$GO_VERSION
-    entrypoint: [""]
-  tags:
-    - go
-  script:
-    - go mod tidy
-    - test -z "$(git diff 2> /dev/null)" || exit 'Go modules not tidied, issue \`go mod tidy\` and commit the result'
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-    - if: $CI_PIPELINE_SOURCE == 'push'
-test:
-  stage: test
-  image:
-    name: $CI_REGISTRY_GO/golang:$GO_VERSION
-    entrypoint: [""]
-  tags:
-    - go
-  script:
-    - go build -v .
-    - make test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-    - if: $CI_PIPELINE_SOURCE == 'push'
