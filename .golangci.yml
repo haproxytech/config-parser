@@ -49,7 +49,14 @@ linters:
     - golint # deprecated
     - interfacer # deprecated
     - maligned # deprecated
+    - depguard
 
 run:
   skip-dirs:
     - test
+
+issues:
+  exclude:
+    - "unused-parameter: parameter 'comment' seems to be unused"
+    - "unused-parameter: parameter 'parts' seems to be unused"
+    - "unused-parameter: parameter 'parserType' seems to be unused"

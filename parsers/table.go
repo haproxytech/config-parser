@@ -18,10 +18,9 @@ package parsers
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
-
-	"golang.org/x/exp/slices"
 
 	"github.com/haproxytech/config-parser/v4/common"
 	"github.com/haproxytech/config-parser/v4/errors"

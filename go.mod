@@ -1,12 +1,11 @@
 module github.com/haproxytech/config-parser/v4
 
-go 1.19
+go 1.21
 
 require (
 	github.com/gofrs/flock v0.8.1
 	github.com/google/renameio v1.0.1
 	github.com/haproxytech/go-logger v1.1.0
-	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 	golang.org/x/text v0.9.0
 )
 

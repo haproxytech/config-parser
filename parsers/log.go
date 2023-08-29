@@ -58,7 +58,7 @@ func (l *Log) Init() {
 	l.preComments = []string{}
 }
 
-func (l *Log) parse(line string, parts []string, comment string) (*types.Log, error) { //nolint: gocognit
+func (l *Log) parse(line string, parts []string, comment string) (*types.Log, error) {
 	if len(parts) > 1 && parts[1] == "global" {
 		return &types.Log{
 			Global:  true,
