@@ -324,6 +324,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphers"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-ciphersuites"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-client-sigalgs"})
+	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-curves"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-server-sigalgs"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-bind-client-sigalgs"})
 	addParser(parser, &sequence, &simple.Word{Name: "ssl-default-bind-curves"})

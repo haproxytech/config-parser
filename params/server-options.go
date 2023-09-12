@@ -178,6 +178,7 @@ func getServerOptions() []ServerOption {
 		&ServerOptionValue{Name: "cookie"},
 		&ServerOptionValue{Name: "crl-file"},
 		&ServerOptionValue{Name: "crt"},
+		&ServerOptionValue{Name: "curves"},
 		&ServerOptionValue{Name: "error-limit"},
 		&ServerOptionValue{Name: "fall"},
 		&ServerOptionValue{Name: "id"},
