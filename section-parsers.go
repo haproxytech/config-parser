@@ -246,7 +246,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &parsers.HTTPClientResolversPrefer{})
 	addParser(parser, &sequence, &simple.Number{Name: "httpclient.retries"})
 	addParser(parser, &sequence, &simple.Word{Name: "httpclient.ssl.ca-file"})
-	addParser(parser, &sequence, &simple.Timeout{Name: "httpclient.timeout.connect"})
+	addParser(parser, &sequence, &simple.Time{Name: "httpclient.timeout.connect"})
 	addParser(parser, &sequence, &parsers.HTTPClientSSLVerify{})
 	addParser(parser, &sequence, &simple.Enabled{Name: "prealloc-fd"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.buffers.limit"})
