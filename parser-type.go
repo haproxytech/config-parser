@@ -56,6 +56,17 @@ func (p *Parsers) Get(attribute string, createIfNotExist ...bool) (common.Parser
 	return nil, errors.ErrParserMissing
 }
 
+func (p *Parsers) GetResult(attribute string) ([]common.ReturnResultLine, error) {
+	if parser, ok := p.Parsers[attribute]; ok {
+		lines, _, err := parser.ResultAll()
+		if err != nil {
+			return nil, errors.ErrParserMissing
+		}
+		return lines, nil
+	}
+	return nil, errors.ErrParserMissing
+}
+
 func (p *Parsers) GetPreComments(attribute string) ([]string, error) {
 	if parser, ok := p.Parsers[attribute]; ok {
 		return parser.GetPreComments()

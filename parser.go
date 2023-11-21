@@ -66,6 +66,7 @@ type Parser interface {
 	Save(filename string) error
 	StringWithHash() (string, error)
 	Get(sectionType Section, sectionName string, attribute string, createIfNotExist ...bool) (common.ParserData, error)
+	GetResult(sectionType Section, sectionName string, attribute string) ([]common.ReturnResultLine, error)
 	GetPreComments(sectionType Section, sectionName string, attribute string) ([]string, error)
 	GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error)
 	SectionsGet(sectionType Section) ([]string, error)
