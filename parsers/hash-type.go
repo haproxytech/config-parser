@@ -41,7 +41,7 @@ func (p *HashType) Parse(line string, parts []string, comment string) (string, e
 			switch parts[index] {
 			case "map-based", "consistent":
 				data.Method = parts[index]
-			case "sdbm", "djb2", "wt6", "crc32":
+			case "sdbm", "djb2", "wt6", "crc32", "none":
 				data.Function = parts[index]
 			case "avalanche":
 				data.Modifier = parts[index]

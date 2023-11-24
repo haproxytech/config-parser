@@ -230,6 +230,7 @@ func TestWholeConfigsSectionsDefaults(t *testing.T) {
 		{"defaults_hashtypeconsistentcrc32avalanche", defaults_hashtypeconsistentcrc32avalanche},
 		{"defaults_hashtypeconsistentdjb2", defaults_hashtypeconsistentdjb2},
 		{"defaults_hashtypeconsistentdjb2avalanche", defaults_hashtypeconsistentdjb2avalanche},
+		{"defaults_hashtypeconsistentnone", defaults_hashtypeconsistentnone},
 		{"defaults_hashtypeconsistentsdbm", defaults_hashtypeconsistentsdbm},
 		{"defaults_hashtypeconsistentsdbmavalanche", defaults_hashtypeconsistentsdbmavalanche},
 		{"defaults_hashtypeconsistentwt6", defaults_hashtypeconsistentwt6},

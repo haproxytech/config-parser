@@ -249,6 +249,7 @@ func TestWholeConfigsSectionsBackend(t *testing.T) {
 		{"backend_hashtypeconsistentcrc32avalanche", backend_hashtypeconsistentcrc32avalanche},
 		{"backend_hashtypeconsistentdjb2", backend_hashtypeconsistentdjb2},
 		{"backend_hashtypeconsistentdjb2avalanche", backend_hashtypeconsistentdjb2avalanche},
+		{"backend_hashtypeconsistentnone", backend_hashtypeconsistentnone},
 		{"backend_hashtypeconsistentsdbm", backend_hashtypeconsistentsdbm},
 		{"backend_hashtypeconsistentsdbmavalanche", backend_hashtypeconsistentsdbmavalanche},
 		{"backend_hashtypeconsistentwt6", backend_hashtypeconsistentwt6},

@@ -881,6 +881,10 @@ const defaults_hashtypeconsistentcrc32avalanche = `
 defaults test
   hash-type consistent crc32 avalanche
 `
+const defaults_hashtypeconsistentnone = `
+defaults test
+  hash-type consistent none
+`
 const defaults_httpreusenever = `
 defaults test
   http-reuse never

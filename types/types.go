@@ -655,6 +655,7 @@ type Group struct {
 //test:ok:hash-type consistent djb2 avalanche
 //test:ok:hash-type consistent wt6 avalanche
 //test:ok:hash-type consistent crc32 avalanche
+//test:ok:hash-type consistent none
 //test:fail:hash-type
 type HashType struct {
 	Method   string

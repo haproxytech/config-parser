@@ -48,6 +48,7 @@ func TestHashType(t *testing.T) {
 		"hash-type consistent djb2 avalanche":  true,
 		"hash-type consistent wt6 avalanche":   true,
 		"hash-type consistent crc32 avalanche": true,
+		"hash-type consistent none":            true,
 		"hash-type":                            false,
 		"---":                                  false,
 		"--- ---":                              false,

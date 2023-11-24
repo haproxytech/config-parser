@@ -941,6 +941,10 @@ const backend_hashtypeconsistentcrc32avalanche = `
 backend test
   hash-type consistent crc32 avalanche
 `
+const backend_hashtypeconsistentnone = `
+backend test
+  hash-type consistent none
+`
 const backend_httpreusenever = `
 backend test
   http-reuse never
