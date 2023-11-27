@@ -200,7 +200,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	return p.createParsers(parser, sequence)
 }
 
-func (p *configParser) getGlobalParser() *Parsers {
+func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	parser := map[string]ParserInterface{}
 	sequence := []Section{}
 	// environment directives are placed before the rest,
@@ -248,6 +248,7 @@ func (p *configParser) getGlobalParser() *Parsers {
 	addParser(parser, &sequence, &simple.Word{Name: "httpclient.ssl.ca-file"})
 	addParser(parser, &sequence, &simple.Time{Name: "httpclient.timeout.connect"})
 	addParser(parser, &sequence, &parsers.HTTPClientSSLVerify{})
+	addParser(parser, &sequence, &simple.Enabled{Name: "limited-quic"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "prealloc-fd"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.buffers.limit"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.buffers.reserve"})

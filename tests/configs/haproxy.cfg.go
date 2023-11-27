@@ -34,6 +34,7 @@ global
   stats socket /var/run/haproxy-runtime-api.2.sock level admin mode 777 expose-fd listeners process 2
   stats socket $PWD/haproxy-runtime-api.3.sock level admin mode 777 expose-fd listeners process 3
   stats timeout 120s
+  limited-quic
   tune.disable-zero-copy-forwarding
   tune.ssl.default-dh-param 2048
   ssl-default-bind-options no-sslv3 no-tls-tickets
