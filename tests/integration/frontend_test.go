@@ -116,6 +116,8 @@ func TestWholeConfigsSectionsFrontend(t *testing.T) {
 		{"frontend_bind443quicccalgocubic", frontend_bind443quicccalgocubic},
 		{"frontend_bind443quicccalgonewreno", frontend_bind443quicccalgonewreno},
 		{"frontend_bind443quicforceretry", frontend_bind443quicforceretry},
+		{"frontend_bind443quicsocketconnection", frontend_bind443quicsocketconnection},
+		{"frontend_bind443quicsocketlistener", frontend_bind443quicsocketlistener},
 		{"frontend_bind443severityoutputnone", frontend_bind443severityoutputnone},
 		{"frontend_bind443severityoutputnumber", frontend_bind443severityoutputnumber},
 		{"frontend_bind443severityoutputstring", frontend_bind443severityoutputstring},

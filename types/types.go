@@ -252,6 +252,9 @@ type ACL struct {
 //test:ok:bind :443 quic-cc-algo newreno
 //test:fail:bind :443 quic-cc-algo something
 //test:ok:bind :443 quic-force-retry
+//test:ok:bind :443 quic-socket connection
+//test:ok:bind :443 quic-socket listener
+//test:fail:bind :443 quic-socket something
 type Bind struct {
 	Path    string // can be address:port or socket path
 	Params  []params.BindOption

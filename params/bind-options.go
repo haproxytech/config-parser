@@ -104,6 +104,9 @@ var bindOptionValuesValidation = map[string]BindOptionValueValidation{
 	"quic-cc-algo": {
 		AllowedValues: []string{"cubic", "newreno"},
 	},
+	"quic-socket": {
+		AllowedValues: []string{"connection", "listener"},
+	},
 }
 
 // Parse ...
@@ -211,6 +214,7 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "user"},
 		&BindOptionValue{Name: "verify"},
 		&BindOptionValue{Name: "quic-cc-algo"},
+		&BindOptionValue{Name: "quic-socket"},
 	}
 }
 

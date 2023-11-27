@@ -1439,6 +1439,8 @@ frontend test
   bind :443 quic-cc-algo cubic
   bind :443 quic-cc-algo newreno
   bind :443 quic-force-retry
+  bind :443 quic-socket connection
+  bind :443 quic-socket listener
   bind-process all
   email-alert from admin@example.com
   email-alert to a@z,x@y
@@ -2485,6 +2487,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  bind :443 quic-cc-algo newreno
 `, 1},
 	{`  bind :443 quic-force-retry
+`, 1},
+	{`  bind :443 quic-socket connection
+`, 1},
+	{`  bind :443 quic-socket listener
 `, 1},
 	{`  dgram-bind :80,:443
 `, 1},

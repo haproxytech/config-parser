@@ -144,8 +144,11 @@ func TestBind(t *testing.T) {
 		"bind :443 quic-cc-algo cubic":                   true,
 		"bind :443 quic-cc-algo newreno":                 true,
 		"bind :443 quic-force-retry":                     true,
+		"bind :443 quic-socket connection":               true,
+		"bind :443 quic-socket listener":                 true,
 		"bind":                                           false,
 		"bind :443 quic-cc-algo something":               false,
+		"bind :443 quic-socket something":                false,
 		"---":                                            false,
 		"--- ---":                                        false,
 	}

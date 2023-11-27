@@ -545,6 +545,14 @@ const frontend_bind443quicforceretry = `
 frontend test
   bind :443 quic-force-retry
 `
+const frontend_bind443quicsocketconnection = `
+frontend test
+  bind :443 quic-socket connection
+`
+const frontend_bind443quicsocketlistener = `
+frontend test
+  bind :443 quic-socket listener
+`
 const frontend_bindprocessall = `
 frontend test
   bind-process all
