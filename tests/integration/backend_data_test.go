@@ -1725,6 +1725,10 @@ const backend_sticktabletypestringlen1000size1_ = `
 backend test
   stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)
 `
+const backend_sticktabletypeintegersize1msrvke = `
+backend test
+  stick-table type integer size 1m srvkey addr write-to t2
+`
 const backend_stickonsrctablepopiflocalhost = `
 backend test
   stick on src table pop if !localhost

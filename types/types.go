@@ -1059,9 +1059,12 @@ type Server struct {
 //test:ok:stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment
 //test:ok:stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)
 //test:ok:stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)
+//test:ok:stick-table type integer size 1m srvkey addr write-to t2
 //test:fail:stick-table type string len 1000 size 1m expire 5m something peers aaaaa store gpc0,conn_rate(30s)
 //test:fail:stick-table type
 //test:fail:stick-table
+//test:fail:stick-table type ip size 2m srvkey
+//test:fail:stick-table type ip size 2m srvkey lol
 type StickTable struct {
 	Type   string
 	Length string
@@ -1070,6 +1073,8 @@ type StickTable struct {
 	Expire  string
 	NoPurge bool
 	Peers   string
+	SrvKey  string
+	WriteTo string
 	Store   string
 	Comment string
 }

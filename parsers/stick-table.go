@@ -29,6 +29,7 @@ type StickTable struct {
 	preComments []string // comments that appear before the actual line
 }
 
+//nolint:gocognit
 func (h *StickTable) parse(line string, parts []string, comment string) (*types.StickTable, error) {
 	if len(parts) >= 3 && parts[0] == "stick-table" && parts[1] == "type" {
 		index := 2
@@ -65,6 +66,22 @@ func (h *StickTable) parse(line string, parts []string, comment string) (*types.
 					return nil, &errors.ParseError{Parser: "StickTable", Line: line}
 				}
 				data.Peers = parts[index]
+			case "srvkey":
+				index++
+				if index == len(parts) {
+					return nil, &errors.ParseError{Parser: "StickTable", Line: line}
+				}
+				key := parts[index]
+				if key != "addr" && key != "name" {
+					return nil, &errors.ParseError{Parser: "StickTable", Line: line, Message: "invalid srvkey"}
+				}
+				data.SrvKey = key
+			case "write-to":
+				index++
+				if index == len(parts) {
+					return nil, &errors.ParseError{Parser: "StickTable", Line: line}
+				}
+				data.WriteTo = parts[index]
 			case "store":
 				index++
 				if index == len(parts) {
@@ -121,6 +138,14 @@ func (h *StickTable) Result() ([]common.ReturnResultLine, error) {
 	if req.Peers != "" {
 		data.WriteString(" peers ")
 		data.WriteString(req.Peers)
+	}
+	if req.SrvKey != "" {
+		data.WriteString(" srvkey ")
+		data.WriteString(req.SrvKey)
+	}
+	if req.WriteTo != "" {
+		data.WriteString(" write-to ")
+		data.WriteString(req.WriteTo)
 	}
 	if req.Store != "" {
 		data.WriteString(" store ")

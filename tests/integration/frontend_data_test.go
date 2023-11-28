@@ -765,6 +765,10 @@ const frontend_sticktabletypestringlen1000size1_ = `
 frontend test
   stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)
 `
+const frontend_sticktabletypeintegersize1msrvke = `
+frontend test
+  stick-table type integer size 1m srvkey addr write-to t2
+`
 const frontend_usebackendtestifTRUE = `
 frontend test
   use_backend test if TRUE

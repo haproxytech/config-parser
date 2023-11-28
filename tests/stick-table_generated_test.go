@@ -31,11 +31,14 @@ func TestStickTable(t *testing.T) {
 		"stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s) # comment":                          true,
 		"stick-table type string len 1000 size 1m expire 5m store gpc0,conn_rate(30s)":                       true,
 		"stick-table type string len 1000 size 1m expire 5m nopurge peers aaaaa store gpc0,conn_rate(30s)":   true,
+		"stick-table type integer size 1m srvkey addr write-to t2":                                           true,
 		"stick-table type string len 1000 size 1m expire 5m something peers aaaaa store gpc0,conn_rate(30s)": false,
-		"stick-table type": false,
-		"stick-table":      false,
-		"---":              false,
-		"--- ---":          false,
+		"stick-table type":                       false,
+		"stick-table":                            false,
+		"stick-table type ip size 2m srvkey":     false,
+		"stick-table type ip size 2m srvkey lol": false,
+		"---":                                    false,
+		"--- ---":                                false,
 	}
 	parser := &parsers.StickTable{}
 	for command, shouldPass := range tests {
