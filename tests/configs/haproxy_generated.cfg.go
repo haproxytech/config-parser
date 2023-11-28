@@ -2183,6 +2183,7 @@ peers test
   table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(30s)
   table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(40s)
   table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,gpc1,conn_rate(30s)
+  table t1 type string len 1000 size 1m expire 5m write-to t2
 
 program test
   command spoa-mirror --runtime 0 --mirror-url http://test.local
@@ -3311,6 +3312,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,conn_rate(40s)
 `, 1},
 	{`  table t1 type string len 1000 size 1m expire 5m nopurge store gpc0,gpc1,conn_rate(30s)
+`, 1},
+	{`  table t1 type string len 1000 size 1m expire 5m write-to t2
 `, 1},
 	{`  httpclient.resolvers.prefer ipv4
 `, 1},

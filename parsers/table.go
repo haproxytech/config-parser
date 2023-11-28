@@ -69,6 +69,12 @@ func (t *Table) parse(line string, parts []string, comment string) (*types.Table
 					return nil, &errors.ParseError{Parser: "Table", Line: line}
 				}
 				data.Expire = parts[index]
+			case "write-to":
+				index++
+				if index == len(parts) {
+					return nil, &errors.ParseError{Parser: "Table", Line: line}
+				}
+				data.WriteTo = parts[index]
 			case "nopurge":
 				data.NoPurge = true
 			case "store":
@@ -115,6 +121,10 @@ func (t *Table) Result() ([]common.ReturnResultLine, error) {
 		if table.Expire != "" {
 			data.WriteString(" expire ")
 			data.WriteString(table.Expire)
+		}
+		if table.WriteTo != "" {
+			data.WriteString(" write-to ")
+			data.WriteString(table.WriteTo)
 		}
 		if table.NoPurge {
 			data.WriteString(" nopurge")
