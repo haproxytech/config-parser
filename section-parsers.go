@@ -278,6 +278,8 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Time{Name: "tune.lua.burst-timeout"})
 	addParser(parser, &sequence, &simple.Time{Name: "tune.lua.task-timeout"})
 	addParser(parser, &sequence, &simple.Time{Name: "tune.lua.service-timeout"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "tune.lua.log.loggers"})
+	addParser(parser, &sequence, &simple.AutoOnOff{Name: "tune.lua.log.stderr"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.max-checks-per-thread"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.maxaccept"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.maxpollevents"})
