@@ -1441,6 +1441,8 @@ frontend test
   bind :443 quic-force-retry
   bind :443 quic-socket connection
   bind :443 quic-socket listener
+  bind :443 nbconn 1
+  bind :443 nbconn +2
   bind-process all
   email-alert from admin@example.com
   email-alert to a@z,x@y
@@ -2492,6 +2494,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  bind :443 quic-socket connection
 `, 1},
 	{`  bind :443 quic-socket listener
+`, 1},
+	{`  bind :443 nbconn 1
+`, 1},
+	{`  bind :443 nbconn +2
 `, 1},
 	{`  dgram-bind :80,:443
 `, 1},

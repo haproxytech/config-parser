@@ -553,6 +553,14 @@ const frontend_bind443quicsocketlistener = `
 frontend test
   bind :443 quic-socket listener
 `
+const frontend_bind443nbconn1 = `
+frontend test
+  bind :443 nbconn 1
+`
+const frontend_bind443nbconn2 = `
+frontend test
+  bind :443 nbconn +2
+`
 const frontend_bindprocessall = `
 frontend test
   bind-process all

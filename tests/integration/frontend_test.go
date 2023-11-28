@@ -92,6 +92,8 @@ func TestWholeConfigsSectionsFrontend(t *testing.T) {
 		{"frontend_bind443mss1460_", frontend_bind443mss1460_},
 		{"frontend_bind443namesockets", frontend_bind443namesockets},
 		{"frontend_bind443namespaceexample", frontend_bind443namespaceexample},
+		{"frontend_bind443nbconn1", frontend_bind443nbconn1},
+		{"frontend_bind443nbconn2", frontend_bind443nbconn2},
 		{"frontend_bind443nice0", frontend_bind443nice0},
 		{"frontend_bind443nice1024", frontend_bind443nice1024},
 		{"frontend_bind443nice1024_", frontend_bind443nice1024_},

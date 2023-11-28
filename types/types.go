@@ -255,6 +255,8 @@ type ACL struct {
 //test:ok:bind :443 quic-socket connection
 //test:ok:bind :443 quic-socket listener
 //test:fail:bind :443 quic-socket something
+//test:ok:bind :443 nbconn 1
+//test:ok:bind :443 nbconn +2
 type Bind struct {
 	Path    string // can be address:port or socket path
 	Params  []params.BindOption
