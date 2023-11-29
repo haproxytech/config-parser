@@ -2313,6 +2313,14 @@ const backend_httprequestsettimeoutserver20sif = `
 backend test
   http-request set-timeout server 20s if TRUE
 `
+const backend_httprequestsettimeoutclient20 = `
+backend test
+  http-request set-timeout client 20
+`
+const backend_httprequestsettimeoutclient20sif = `
+backend test
+  http-request set-timeout client 20s if TRUE
+`
 const backend_httprequestsettos0ifFALSE = `
 backend test
   http-request set-tos 0 if FALSE

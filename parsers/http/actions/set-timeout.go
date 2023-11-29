@@ -42,7 +42,7 @@ func (f *SetTimeout) Parse(parts []string, parserType types.ParserType, comment 
 		if len(command) < 2 {
 			return errors.ErrInvalidData
 		}
-		if command[0] != "server" && command[0] != "tunnel" {
+		if command[0] != "server" && command[0] != "tunnel" && command[0] != "client" {
 			return fmt.Errorf("unknown timeout type: %s", command[0])
 		}
 		f.Type = command[0]

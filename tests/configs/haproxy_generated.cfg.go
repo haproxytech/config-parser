@@ -523,6 +523,8 @@ backend test
   http-request set-timeout tunnel 20
   http-request set-timeout tunnel 20s if TRUE
   http-request set-timeout server 20s if TRUE
+  http-request set-timeout client 20
+  http-request set-timeout client 20s if TRUE
   http-request set-tos 0 if FALSE
   http-request set-tos 0
   http-request set-uri /%[hdr(host)]%[path]
@@ -1595,6 +1597,8 @@ frontend test
   http-request set-timeout tunnel 20
   http-request set-timeout tunnel 20s if TRUE
   http-request set-timeout server 20s if TRUE
+  http-request set-timeout client 20
+  http-request set-timeout client 20s if TRUE
   http-request set-tos 0 if FALSE
   http-request set-tos 0
   http-request set-uri /%[hdr(host)]%[path]
@@ -3542,6 +3546,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-request set-timeout tunnel 20s if TRUE
 `, 2},
 	{`  http-request set-timeout server 20s if TRUE
+`, 2},
+	{`  http-request set-timeout client 20
+`, 2},
+	{`  http-request set-timeout client 20s if TRUE
 `, 2},
 	{`  http-request set-tos 0 if FALSE
 `, 2},

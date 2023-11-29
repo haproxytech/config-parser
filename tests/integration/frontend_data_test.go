@@ -1289,6 +1289,14 @@ const frontend_httprequestsettimeoutserver20sif = `
 frontend test
   http-request set-timeout server 20s if TRUE
 `
+const frontend_httprequestsettimeoutclient20 = `
+frontend test
+  http-request set-timeout client 20
+`
+const frontend_httprequestsettimeoutclient20sif = `
+frontend test
+  http-request set-timeout client 20s if TRUE
+`
 const frontend_httprequestsettos0ifFALSE = `
 frontend test
   http-request set-tos 0 if FALSE

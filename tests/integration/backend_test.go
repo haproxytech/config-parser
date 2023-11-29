@@ -489,6 +489,8 @@ func TestWholeConfigsSectionsBackend(t *testing.T) {
 		{"backend_httprequestsetsrchdrsrcifFALSE", backend_httprequestsetsrchdrsrcifFALSE},
 		{"backend_httprequestsetsrcporthdrport", backend_httprequestsetsrcporthdrport},
 		{"backend_httprequestsetsrcporthdrportifFA", backend_httprequestsetsrcporthdrportifFA},
+		{"backend_httprequestsettimeoutclient20", backend_httprequestsettimeoutclient20},
+		{"backend_httprequestsettimeoutclient20sif", backend_httprequestsettimeoutclient20sif},
 		{"backend_httprequestsettimeoutserver20", backend_httprequestsettimeoutserver20},
 		{"backend_httprequestsettimeoutserver20sif", backend_httprequestsettimeoutserver20sif},
 		{"backend_httprequestsettimeouttunnel20", backend_httprequestsettimeouttunnel20},

@@ -430,7 +430,9 @@ type Action interface {
 //test:ok:http-request set-timeout tunnel 20
 //test:ok:http-request set-timeout tunnel 20s if TRUE
 //test:ok:http-request set-timeout server 20s if TRUE
-//test:fail:http-request set-timeout client 20
+//test:ok:http-request set-timeout client 20
+//test:ok:http-request set-timeout client 20s if TRUE
+//test:fail:http-request set-timeout fake-timeout 20s if TRUE
 //test:ok:http-request set-tos 0 if FALSE
 //test:ok:http-request set-tos 0
 //test:fail:http-request set-tos
