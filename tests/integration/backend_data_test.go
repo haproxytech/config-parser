@@ -2829,6 +2829,30 @@ const backend_httpresponsesetstatus503 = `
 backend test
   http-response set-status 503
 `
+const backend_httpresponsesettimeoutserver20 = `
+backend test
+  http-response set-timeout server 20
+`
+const backend_httpresponsesettimeouttunnel20 = `
+backend test
+  http-response set-timeout tunnel 20
+`
+const backend_httpresponsesettimeouttunnel20si = `
+backend test
+  http-response set-timeout tunnel 20s if TRUE
+`
+const backend_httpresponsesettimeoutserver20si = `
+backend test
+  http-response set-timeout server 20s if TRUE
+`
+const backend_httpresponsesettimeoutclient20 = `
+backend test
+  http-response set-timeout client 20
+`
+const backend_httpresponsesettimeoutclient20si = `
+backend test
+  http-response set-timeout client 20s if TRUE
+`
 const backend_httpresponsesettos0ifFALSE = `
 backend test
   http-response set-tos 0 if FALSE

@@ -83,6 +83,8 @@ func (h *Responses) Parse(line string, parts []string, comment string) (string, 
 			err = h.ParseHTTPResponse(&actions.SetNice{}, parts, comment)
 		case "set-status":
 			err = h.ParseHTTPResponse(&httpActions.SetStatus{}, parts, comment)
+		case "set-timeout":
+			err = h.ParseHTTPResponse(&httpActions.SetTimeout{}, parts, comment)
 		case "set-tos":
 			err = h.ParseHTTPResponse(&actions.SetTos{}, parts, comment)
 		case "silent-drop":

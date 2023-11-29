@@ -1809,6 +1809,30 @@ const frontend_httpresponsesetstatus503 = `
 frontend test
   http-response set-status 503
 `
+const frontend_httpresponsesettimeoutserver20 = `
+frontend test
+  http-response set-timeout server 20
+`
+const frontend_httpresponsesettimeouttunnel20 = `
+frontend test
+  http-response set-timeout tunnel 20
+`
+const frontend_httpresponsesettimeouttunnel20si = `
+frontend test
+  http-response set-timeout tunnel 20s if TRUE
+`
+const frontend_httpresponsesettimeoutserver20si = `
+frontend test
+  http-response set-timeout server 20s if TRUE
+`
+const frontend_httpresponsesettimeoutclient20 = `
+frontend test
+  http-response set-timeout client 20
+`
+const frontend_httpresponsesettimeoutclient20si = `
+frontend test
+  http-response set-timeout client 20s if TRUE
+`
 const frontend_httpresponsesettos0ifFALSE = `
 frontend test
   http-response set-tos 0 if FALSE

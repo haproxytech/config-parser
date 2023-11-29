@@ -657,6 +657,13 @@ type HTTPRequests struct{}
 //test:fail:http-response set-nice
 //test:ok:http-response set-status 503
 //test:fail:http-response set-status
+//test:ok:http-response set-timeout server 20
+//test:ok:http-response set-timeout tunnel 20
+//test:ok:http-response set-timeout tunnel 20s if TRUE
+//test:ok:http-response set-timeout server 20s if TRUE
+//test:ok:http-response set-timeout client 20
+//test:ok:http-response set-timeout client 20s if TRUE
+//test:fail:http-response set-timeout fake-timeout 20s if TRUE
 //test:ok:http-response set-tos 0 if FALSE
 //test:ok:http-response set-tos 0
 //test:fail:http-response set-tos

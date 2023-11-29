@@ -652,6 +652,12 @@ backend test
   http-response set-nice 0
   http-response set-nice 0 if FALSE
   http-response set-status 503
+  http-response set-timeout server 20
+  http-response set-timeout tunnel 20
+  http-response set-timeout tunnel 20s if TRUE
+  http-response set-timeout server 20s if TRUE
+  http-response set-timeout client 20
+  http-response set-timeout client 20s if TRUE
   http-response set-tos 0 if FALSE
   http-response set-tos 0
   http-response set-var(req.my_var) res.fhdr(user-agent),lower
@@ -1727,6 +1733,12 @@ frontend test
   http-response set-nice 0
   http-response set-nice 0 if FALSE
   http-response set-status 503
+  http-response set-timeout server 20
+  http-response set-timeout tunnel 20
+  http-response set-timeout tunnel 20s if TRUE
+  http-response set-timeout server 20s if TRUE
+  http-response set-timeout client 20
+  http-response set-timeout client 20s if TRUE
   http-response set-tos 0 if FALSE
   http-response set-tos 0
   http-response set-var(req.my_var) res.fhdr(user-agent),lower
@@ -3780,6 +3792,18 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-response set-nice 0 if FALSE
 `, 2},
 	{`  http-response set-status 503
+`, 2},
+	{`  http-response set-timeout server 20
+`, 2},
+	{`  http-response set-timeout tunnel 20
+`, 2},
+	{`  http-response set-timeout tunnel 20s if TRUE
+`, 2},
+	{`  http-response set-timeout server 20s if TRUE
+`, 2},
+	{`  http-response set-timeout client 20
+`, 2},
+	{`  http-response set-timeout client 20s if TRUE
 `, 2},
 	{`  http-response set-tos 0 if FALSE
 `, 2},
