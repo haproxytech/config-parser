@@ -225,6 +225,7 @@ func getServerOptions() []ServerOption {
 		&ServerOptionValue{Name: "weight"},
 		&ServerOptionValue{Name: "pool-low-conn"},
 		&ServerOptionValue{Name: "ws"},
+		&ServerOptionValue{Name: "log-bufsize"},
 	}
 }
 

@@ -537,6 +537,7 @@ type CPUMap struct {
 //test:ok:default-server ws h1
 //test:ok:default-server ws h2
 //test:ok:default-server ws auto
+//test:ok:default-server log-bufsize 10
 //test:fail:default-server
 type DefaultServer struct {
 	Params  []params.ServerOption
@@ -1047,6 +1048,7 @@ type Peer struct {
 //test:ok:server name 127.0.0.1 ws h1
 //test:ok:server name 127.0.0.1 ws h2
 //test:ok:server name 127.0.0.1 ws auto
+//test:ok:server name 127.0.0.1 log-bufsize 10
 //test:fail:server
 type Server struct {
 	Name    string

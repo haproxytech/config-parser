@@ -593,6 +593,10 @@ const peers_defaultserverwsauto = `
 peers test
   default-server ws auto
 `
+const peers_defaultserverlogbufsize10 = `
+peers test
+  default-server log-bufsize 10
+`
 const peers_peername1270018080 = `
 peers test
   peer name 127.0.0.1:8080

@@ -777,6 +777,10 @@ const backend_defaultserverwsauto = `
 backend test
   default-server ws auto
 `
+const backend_defaultserverlogbufsize10 = `
+backend test
+  default-server log-bufsize 10
+`
 const backend_emailalertfromadminexamplecom = `
 backend test
   email-alert from admin@example.com
@@ -1708,6 +1712,10 @@ backend test
 const backend_servername127001wsauto = `
 backend test
   server name 127.0.0.1 ws auto
+`
+const backend_servername127001logbufsize10 = `
+backend test
+  server name 127.0.0.1 log-bufsize 10
 `
 const backend_sticktabletypeipsize1mexpire5mst = `
 backend test

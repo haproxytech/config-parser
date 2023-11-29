@@ -171,6 +171,7 @@ func TestDefaultServer(t *testing.T) {
 		"default-server ws h1":                true,
 		"default-server ws h2":                true,
 		"default-server ws auto":              true,
+		"default-server log-bufsize 10":       true,
 		"default-server":                      false,
 		"---":                                 false,
 		"--- ---":                             false,

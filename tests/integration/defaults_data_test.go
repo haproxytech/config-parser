@@ -717,6 +717,10 @@ const defaults_defaultserverwsauto = `
 defaults test
   default-server ws auto
 `
+const defaults_defaultserverlogbufsize10 = `
+defaults test
+  default-server log-bufsize 10
+`
 const defaults_emailalertfromadminexamplecom = `
 defaults test
   email-alert from admin@example.com

@@ -171,6 +171,7 @@ func TestServer(t *testing.T) {
 		"server name 127.0.0.1 ws h1":                true,
 		"server name 127.0.0.1 ws h2":                true,
 		"server name 127.0.0.1 ws auto":              true,
+		"server name 127.0.0.1 log-bufsize 10":       true,
 		"server addr":                                false,
 		"server":                                     false,
 		"---":                                        false,
