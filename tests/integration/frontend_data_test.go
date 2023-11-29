@@ -2749,6 +2749,18 @@ const frontend_tcprequestsessionsilentdropifHTT = `
 frontend test
   tcp-request session silent-drop if !HTTP
 `
+const frontend_tcprequestsessionattachsrvsrv1 = `
+frontend test
+  tcp-request session attach-srv srv1
+`
+const frontend_tcprequestsessionattachsrvsrv1na = `
+frontend test
+  tcp-request session attach-srv srv1 name example.com
+`
+const frontend_tcprequestsessionattachsrvsrv1na_ = `
+frontend test
+  tcp-request session attach-srv srv1 name example.com if exceeds_limit
+`
 const frontend_tcprequestcontentsetbandwidthlim = `
 frontend test
   tcp-request content set-bandwidth-limit my-limit

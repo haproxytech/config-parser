@@ -4013,6 +4013,18 @@ const backend_tcprequestsessionsilentdropifHTT = `
 backend test
   tcp-request session silent-drop if !HTTP
 `
+const backend_tcprequestsessionattachsrvsrv1 = `
+backend test
+  tcp-request session attach-srv srv1
+`
+const backend_tcprequestsessionattachsrvsrv1na = `
+backend test
+  tcp-request session attach-srv srv1 name example.com
+`
+const backend_tcprequestsessionattachsrvsrv1na_ = `
+backend test
+  tcp-request session attach-srv srv1 name example.com if exceeds_limit
+`
 const backend_tcprequestcontentsetbandwidthlim = `
 backend test
   tcp-request content set-bandwidth-limit my-limit

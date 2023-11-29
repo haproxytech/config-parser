@@ -1082,6 +1082,13 @@ type TCPType interface {
 //test:ok:tcp-request session unset-var(sess.dn)
 //test:ok:tcp-request session silent-drop
 //test:ok:tcp-request session silent-drop if !HTTP
+//test:ok:tcp-request session attach-srv srv1
+//test:ok:tcp-request session attach-srv srv1 name example.com
+//test:ok:tcp-request session attach-srv srv1 name example.com if exceeds_limit
+//test:fail:tcp-request session attach-srv
+//test:fail:tcp-request session attach-srv srv1 name
+//test:fail:tcp-request session attach-srv srv1 if
+//test:fail:tcp-request session attach-srv srv1 name example.com unless
 //test:ok:tcp-request content set-bandwidth-limit my-limit
 //test:ok:tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
 //test:ok:tcp-request content set-bandwidth-limit my-limit period 10s

@@ -948,6 +948,9 @@ backend test
   tcp-request session unset-var(sess.dn)
   tcp-request session silent-drop
   tcp-request session silent-drop if !HTTP
+  tcp-request session attach-srv srv1
+  tcp-request session attach-srv srv1 name example.com
+  tcp-request session attach-srv srv1 name example.com if exceeds_limit
   tcp-request content set-bandwidth-limit my-limit
   tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
   tcp-request content set-bandwidth-limit my-limit period 10s
@@ -1968,6 +1971,9 @@ frontend test
   tcp-request session unset-var(sess.dn)
   tcp-request session silent-drop
   tcp-request session silent-drop if !HTTP
+  tcp-request session attach-srv srv1
+  tcp-request session attach-srv srv1 name example.com
+  tcp-request session attach-srv srv1 name example.com if exceeds_limit
   tcp-request content set-bandwidth-limit my-limit
   tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
   tcp-request content set-bandwidth-limit my-limit period 10s
@@ -4328,6 +4334,12 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-request session silent-drop
 `, 2},
 	{`  tcp-request session silent-drop if !HTTP
+`, 2},
+	{`  tcp-request session attach-srv srv1
+`, 2},
+	{`  tcp-request session attach-srv srv1 name example.com
+`, 2},
+	{`  tcp-request session attach-srv srv1 name example.com if exceeds_limit
 `, 2},
 	{`  tcp-request content set-bandwidth-limit my-limit
 `, 2},
