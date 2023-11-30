@@ -255,6 +255,7 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Number{Name: "tune.bufsize"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.comp.maxlevel"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "tune.disable-zero-copy-forwarding"})
+	addParser(parser, &sequence, &simple.Number{Name: "tune.events.max-events-at-once"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "tune.fail-alloc"})
 	addParser(parser, &sequence, &simple.OnOff{Name: "tune.fd.edge-triggered"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.be.initial-window-size"})
