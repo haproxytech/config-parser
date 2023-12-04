@@ -1,15 +1,14 @@
-PROJECT_PATH=${PWD}
+PROJECT_PATH=$(shell pwd)
 GOLANGCI_LINT_VERSION=1.54.1
 
 .PHONY: generate
 generate:
-	go install mvdan.cc/gofumpt@latest
-	echo ${PROJECT_PATH}
 	go run generate/*.go ${PROJECT_PATH}
-	gofumpt -l -w .
+	$(MAKE) format
 
 .PHONY: format
 format:
+	go install mvdan.cc/gofumpt@latest
 	gofumpt -l -w .
 
 .PHONY: test
