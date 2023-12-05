@@ -268,6 +268,7 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.fe.max-concurrent-streams"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.max-concurrent-streams"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.max-frame-size"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "tune.h2.zero-copy-fwd-send"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.http.cookielen"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.http.logurilen"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.http.maxhdr"})
