@@ -294,6 +294,7 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Number{Name: "tune.pipesize"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.pool-high-fd-ratio"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.pool-low-fd-ratio"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "tune.pt.zero-copy-forwarding"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.rcvbuf.backend"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.rcvbuf.client"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.rcvbuf.frontend"})
