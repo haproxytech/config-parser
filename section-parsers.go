@@ -259,6 +259,7 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Enabled{Name: "tune.fail-alloc"})
 	addParser(parser, &sequence, &simple.OnOff{Name: "tune.fd.edge-triggered"})
 	addParser(parser, &sequence, &simple.OnOff{Name: "tune.h1.zero-copy-fwd-recv"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "tune.h1.zero-copy-fwd-send"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.be.initial-window-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.header-table-size"})
 	addParser(parser, &sequence, &simple.Number{Name: "tune.h2.initial-window-size"})
