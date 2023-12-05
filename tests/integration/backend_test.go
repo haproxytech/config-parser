@@ -815,6 +815,7 @@ func TestWholeConfigsSectionsBackend(t *testing.T) {
 		{"backend_servername127001sendproxyv2", backend_servername127001sendproxyv2},
 		{"backend_servername127001sendproxyv2ssl", backend_servername127001sendproxyv2ssl},
 		{"backend_servername127001sendproxyv2sslcn", backend_servername127001sendproxyv2sslcn},
+		{"backend_servername127001setproxyv2tlvfmt", backend_servername127001setproxyv2tlvfmt},
 		{"backend_servername127001slowstart2000ms", backend_servername127001slowstart2000ms},
 		{"backend_servername127001sniTODO", backend_servername127001sniTODO},
 		{"backend_servername127001socks412700181", backend_servername127001socks412700181},

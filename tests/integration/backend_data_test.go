@@ -1645,6 +1645,10 @@ const backend_servername127001sslminverTLSv13 = `
 backend test
   server name 127.0.0.1 ssl-min-ver TLSv1.3
 `
+const backend_servername127001setproxyv2tlvfmt = `
+backend test
+  server name 127.0.0.1 set-proxy-v2-tlv-fmt(0x20) %[fc_pp_tlv(0x20)]
+`
 const backend_servername127001sslreuse = `
 backend test
   server name 127.0.0.1 ssl-reuse

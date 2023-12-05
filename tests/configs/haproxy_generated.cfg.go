@@ -382,6 +382,7 @@ backend test
   server name 127.0.0.1 ssl-min-ver TLSv1.1
   server name 127.0.0.1 ssl-min-ver TLSv1.2
   server name 127.0.0.1 ssl-min-ver TLSv1.3
+  server name 127.0.0.1 set-proxy-v2-tlv-fmt(0x20) %[fc_pp_tlv(0x20)]
   server name 127.0.0.1 ssl-reuse
   server name 127.0.0.1 stick
   server name 127.0.0.1 socks4 127.0.0.1:81
@@ -3188,6 +3189,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  server name 127.0.0.1 ssl-min-ver TLSv1.2
 `, 1},
 	{`  server name 127.0.0.1 ssl-min-ver TLSv1.3
+`, 1},
+	{`  server name 127.0.0.1 set-proxy-v2-tlv-fmt(0x20) %[fc_pp_tlv(0x20)]
 `, 1},
 	{`  server name 127.0.0.1 ssl-reuse
 `, 1},

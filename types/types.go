@@ -1031,6 +1031,7 @@ type Peer struct {
 //test:ok:server name 127.0.0.1 ssl-min-ver TLSv1.1
 //test:ok:server name 127.0.0.1 ssl-min-ver TLSv1.2
 //test:ok:server name 127.0.0.1 ssl-min-ver TLSv1.3
+//test:ok:server name 127.0.0.1 set-proxy-v2-tlv-fmt(0x20) %[fc_pp_tlv(0x20)]
 //test:ok:server name 127.0.0.1 ssl-reuse
 //test:ok:server name 127.0.0.1 stick
 //test:ok:server name 127.0.0.1 socks4 127.0.0.1:81

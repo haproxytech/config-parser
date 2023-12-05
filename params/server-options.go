@@ -118,6 +118,45 @@ func (b *ServerOptionValue) String() string {
 	return fmt.Sprintf("%s %s", b.Name, b.Value)
 }
 
+type ServerOptionIDValue struct {
+	ID    string
+	Name  string
+	Value string
+}
+
+// Parse ...
+func (b *ServerOptionIDValue) Parse(options []string, currentIndex int) (int, error) {
+	if currentIndex+1 < len(options) {
+		if strings.HasPrefix(options[currentIndex], fmt.Sprintf("%s(", b.Name)) {
+			words := strings.Split(options[currentIndex], "(")
+			if len(words) != 2 {
+				return 0, &NotEnoughParamsError{}
+			}
+			if !strings.HasSuffix(words[1], ")") {
+				return 0, &NotEnoughParamsError{}
+			}
+			b.ID = words[1][:len(words[1])-1]
+			b.Value = options[currentIndex+1]
+			return 2, nil
+		}
+		return 0, &NotFoundError{Have: options[currentIndex], Want: b.Name}
+	}
+	return 0, &NotEnoughParamsError{}
+}
+
+// Valid ...
+func (b *ServerOptionIDValue) Valid() bool {
+	return b.Value != "" && b.ID != ""
+}
+
+// String ...
+func (b *ServerOptionIDValue) String() string {
+	if b.Name == "" || b.ID == "" || b.Value == "" {
+		return ""
+	}
+	return fmt.Sprintf("%s(%s) %s", b.Name, b.ID, b.Value)
+}
+
 func getServerOptions() []ServerOption {
 	return []ServerOption{
 		&ServerOptionWord{Name: "agent-check"},
@@ -226,6 +265,7 @@ func getServerOptions() []ServerOption {
 		&ServerOptionValue{Name: "pool-low-conn"},
 		&ServerOptionValue{Name: "ws"},
 		&ServerOptionValue{Name: "log-bufsize"},
+		&ServerOptionIDValue{Name: "set-proxy-v2-tlv-fmt"},
 	}
 }
 
