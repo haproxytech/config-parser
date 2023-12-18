@@ -29,6 +29,21 @@ lint:
     - make lint
   rules:
     - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+license-check:
+  stage: lint
+  image:
+    name: $CI_REGISTRY_GO/golang:$GO_VERSION
+    entrypoint: [""]
+  tags:
+    - go
+  script:
+    - go install github.com/google/go-licenses@latest
+    - PROJECT="$(go list -m)"
+    - ALLOWED_LICENSES="$(<.allowed_license_types)"
+    - go-licenses report --ignore "$PROJECT" .
+    - go-licenses check --allowed_licenses="$ALLOWED_LICENSES" --ignore "$PROJECT" .
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
 tidy:
   stage: lint
   image:
