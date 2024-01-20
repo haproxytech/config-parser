@@ -52,6 +52,21 @@ func (p *configParser) Get(sectionType Section, sectionName string, attribute st
 	return section.Get(attribute, createNew)
 }
 
+// GetResult get attribute lines from section
+func (p *configParser) GetResult(sectionType Section, sectionName string, attribute string) ([]common.ReturnResultLine, error) {
+	p.lock()
+	defer p.unLock()
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return nil, errors.ErrSectionMissing
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return nil, errors.ErrSectionMissing
+	}
+	return section.GetResult(attribute)
+}
+
 // GetPreComments get attribute from section
 func (p *configParser) GetPreComments(sectionType Section, sectionName string, attribute string) ([]string, error) {
 	p.lock()
