@@ -77,7 +77,7 @@ type Int64C struct {
 	Comment string
 }
 
-// String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout, CompressionDirection
+// String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout, CompressionDirection, CompressionAlgoReq
 //
 //generate:type:Mode
 //name:mode
@@ -104,12 +104,16 @@ type Int64C struct {
 //name:compression direction
 //test:ok:compression direction both
 //test:fail:compression direction
+//generate:type:CompressionAlgoReq
+//name:compression algo-req
+//test:ok:compression algo-req gzip
+//test:fail:compression algo-req
 type StringC struct {
 	Value   string
 	Comment string
 }
 
-// StringSliceC is used by ConfigSnippet, CompressionAlgo, CompressionType
+// StringSliceC is used by ConfigSnippet, CompressionAlgo, CompressionType, CompressionTypeReq, CompressionTypeRes, CompressionAlgoRes
 //
 //generate:type:ConfigSnippet
 //name:config-snippet
@@ -125,6 +129,20 @@ type StringC struct {
 //test:ok:compression type text/plain
 //test:ok:compression type text/plain application/json
 //test:fail:compression type
+//generate:type:CompressionTypeReq
+//name:compression type-req
+//test:ok:compression type-req text/plain
+//test:ok:compression type-req text/plain application/json
+//test:fail:compression type-req
+//generate:type:CompressionTypeRes
+//name:compression type-res
+//test:ok:compression type-res text/plain
+//test:ok:compression type-res text/plain application/json
+//test:fail:compression type-res
+//generate:type:CompressionAlgoRes
+//name:compression algo-res
+//test:ok:compression algo-res gzip raw-deflate
+//test:fail:compression algo-res
 type StringSliceC struct {
 	Value   []string
 	Comment string
