@@ -2561,6 +2561,30 @@ const backend_httprequestsetbandwidthlimitmyli___ = `
 backend test
   http-request set-bandwidth-limit my-limit limit 1m
 `
+const backend_httprequestsetbcmark123 = `
+backend test
+  http-request set-bc-mark 123
+`
+const backend_httprequestsetbcmark0xffffffff = `
+backend test
+  http-request set-bc-mark 0xffffffff
+`
+const backend_httprequestsetbcmarkhdrportifFAL = `
+backend test
+  http-request set-bc-mark hdr(port) if FALSE
+`
+const backend_httprequestsetbctos10 = `
+backend test
+  http-request set-bc-tos 10
+`
+const backend_httprequestsetfcmark0 = `
+backend test
+  http-request set-fc-mark 0
+`
+const backend_httprequestsetfctos0xffifTRUE = `
+backend test
+  http-request set-fc-tos 0xff if TRUE
+`
 const backend_httprequestaddheaderAuthorizatio = `
 backend test
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
@@ -2980,6 +3004,14 @@ backend test
 const backend_httpresponsesetbandwidthlimitmyl___ = `
 backend test
   http-response set-bandwidth-limit my-limit limit 1m
+`
+const backend_httpresponsesetfcmark2000 = `
+backend test
+  http-response set-fc-mark 2000
+`
+const backend_httpresponsesetfctos200 = `
+backend test
+  http-response set-fc-tos 200
 `
 const backend_httpresponsereturnstatus200conte = `
 backend test
@@ -4121,6 +4153,38 @@ const backend_tcprequestcontentswitchmodehttpp = `
 backend test
   tcp-request content switch-mode http proto my-proto
 `
+const backend_tcprequestconnectionsetfcmark1 = `
+backend test
+  tcp-request connection set-fc-mark 1
+`
+const backend_tcprequestconnectionsetfctos1 = `
+backend test
+  tcp-request connection set-fc-tos 1
+`
+const backend_tcprequestsessionsetfcmark9999if = `
+backend test
+  tcp-request session set-fc-mark 9999 if some_check
+`
+const backend_tcprequestsessionsetfctos255 = `
+backend test
+  tcp-request session set-fc-tos 255
+`
+const backend_tcprequestcontentsetbcmarkhdrpor = `
+backend test
+  tcp-request content set-bc-mark hdr(port)
+`
+const backend_tcprequestcontentsetbctos0xffifs = `
+backend test
+  tcp-request content set-bc-tos 0xff if some_check
+`
+const backend_tcprequestcontentsetfcmark0xffff = `
+backend test
+  tcp-request content set-fc-mark 0xffffffff
+`
+const backend_tcprequestcontentsetfctos100 = `
+backend test
+  tcp-request content set-fc-tos 100
+`
 const backend_tcpresponsecontentluafoo = `
 backend test
   tcp-response content lua.foo
@@ -4220,6 +4284,14 @@ backend test
 const backend_tcpresponsecontentscincgpc12ifis_ = `
 backend test
   tcp-response content sc-inc-gpc1(2) if is-error
+`
+const backend_tcpresponsecontentsetfcmark12345 = `
+backend test
+  tcp-response content set-fc-mark 123456
+`
+const backend_tcpresponsecontentsetfctos0x02 = `
+backend test
+  tcp-response content set-fc-tos 0x02
 `
 const backend_redirectprefixhttpwwwbarcomcode3 = `
 backend test

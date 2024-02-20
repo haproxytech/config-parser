@@ -543,6 +543,12 @@ type Action interface {
 //test:fail:http-request set-bandwidth-limit my-limit 10s
 //test:fail:http-request set-bandwidth-limit my-limit period 10s limit
 //test:fail:http-request set-bandwidth-limit my-limit limit period 10s
+//test:ok:http-request set-bc-mark 123
+//test:ok:http-request set-bc-mark 0xffffffff
+//test:ok:http-request set-bc-mark hdr(port) if FALSE
+//test:ok:http-request set-bc-tos 10
+//test:ok:http-request set-fc-mark 0
+//test:ok:http-request set-fc-tos 0xff if TRUE
 type HTTPRequests struct{}
 
 //name:http-response
@@ -716,6 +722,8 @@ type HTTPRequests struct{}
 //test:fail:http-response set-bandwidth-limit my-limit 10s
 //test:fail:http-response set-bandwidth-limit my-limit period 10s limit
 //test:fail:http-response set-bandwidth-limit my-limit limit period 10s
+//test:ok:http-response set-fc-mark 2000
+//test:ok:http-response set-fc-tos 200
 type HTTPResponses struct{}
 
 //name:http-after-response
@@ -1161,7 +1169,14 @@ type TCPType interface {
 //test:fail:tcp-request content switch-mode
 //test:fail:tcp-request content switch-mode tcp
 //test:fail:tcp-request content switch-mode http proto
-
+//test:ok:tcp-request connection set-fc-mark 1
+//test:ok:tcp-request connection set-fc-tos 1
+//test:ok:tcp-request session set-fc-mark 9999 if some_check
+//test:ok:tcp-request session set-fc-tos 255
+//test:ok:tcp-request content set-bc-mark hdr(port)
+//test:ok:tcp-request content set-bc-tos 0xff if some_check
+//test:ok:tcp-request content set-fc-mark 0xffffffff
+//test:ok:tcp-request content set-fc-tos 100
 type TCPRequests struct{}
 
 //name:tcp-response
@@ -1216,6 +1231,8 @@ type TCPRequests struct{}
 //test:ok:tcp-response content sc-inc-gpc0(2) if is-error
 //test:ok:tcp-response content sc-inc-gpc1(2)
 //test:ok:tcp-response content sc-inc-gpc1(2) if is-error
+//test:ok:tcp-response content set-fc-mark 123456
+//test:ok:tcp-response content set-fc-tos 0x02
 type TCPResponses struct{}
 
 //name:redirect

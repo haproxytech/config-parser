@@ -57,6 +57,10 @@ func (f *Session) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.Reject{}, parts)
 	case "silent-drop":
 		err = f.ParseAction(&actions.SilentDrop{}, parts)
+	case "set-fc-mark":
+		err = f.ParseAction(&actions.SetFcMark{}, parts)
+	case "set-fc-tos":
+		err = f.ParseAction(&actions.SetFcTos{}, parts)
 	default:
 		switch {
 		case strings.HasPrefix(parts[2], "track-sc"):

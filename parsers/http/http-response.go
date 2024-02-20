@@ -95,6 +95,10 @@ func (h *Responses) Parse(line string, parts []string, comment string) (string, 
 			err = h.ParseHTTPResponse(&httpActions.WaitForBody{}, parts, comment)
 		case "set-bandwidth-limit":
 			err = h.ParseHTTPResponse(&actions.SetBandwidthLimit{}, parts, comment)
+		case "set-fc-mark":
+			err = h.ParseHTTPResponse(&actions.SetFcMark{}, parts, comment)
+		case "set-fc-tos":
+			err = h.ParseHTTPResponse(&actions.SetFcTos{}, parts, comment)
 		default:
 			switch {
 			case strings.HasPrefix(parts[1], "track-sc"):

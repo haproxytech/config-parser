@@ -73,6 +73,10 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.SetSrcPort{}, parts)
 	case "set-dst-port":
 		err = f.ParseAction(&actions.SetDstPort{}, parts)
+	case "set-fc-mark":
+		err = f.ParseAction(&actions.SetFcMark{}, parts)
+	case "set-fc-tos":
+		err = f.ParseAction(&actions.SetFcTos{}, parts)
 	default:
 		switch {
 		case strings.HasPrefix(parts[2], "track-sc"):

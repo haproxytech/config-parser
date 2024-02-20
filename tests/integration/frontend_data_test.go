@@ -1533,6 +1533,30 @@ const frontend_httprequestsetbandwidthlimitmyli___ = `
 frontend test
   http-request set-bandwidth-limit my-limit limit 1m
 `
+const frontend_httprequestsetbcmark123 = `
+frontend test
+  http-request set-bc-mark 123
+`
+const frontend_httprequestsetbcmark0xffffffff = `
+frontend test
+  http-request set-bc-mark 0xffffffff
+`
+const frontend_httprequestsetbcmarkhdrportifFAL = `
+frontend test
+  http-request set-bc-mark hdr(port) if FALSE
+`
+const frontend_httprequestsetbctos10 = `
+frontend test
+  http-request set-bc-tos 10
+`
+const frontend_httprequestsetfcmark0 = `
+frontend test
+  http-request set-fc-mark 0
+`
+const frontend_httprequestsetfctos0xffifTRUE = `
+frontend test
+  http-request set-fc-tos 0xff if TRUE
+`
 const frontend_httprequestcapturereqcookcntFirs = `
 frontend test
   http-request capture req.cook_cnt(FirstVisit),bool len 10
@@ -1956,6 +1980,14 @@ frontend test
 const frontend_httpresponsesetbandwidthlimitmyl___ = `
 frontend test
   http-response set-bandwidth-limit my-limit limit 1m
+`
+const frontend_httpresponsesetfcmark2000 = `
+frontend test
+  http-response set-fc-mark 2000
+`
+const frontend_httpresponsesetfctos200 = `
+frontend test
+  http-response set-fc-tos 200
 `
 const frontend_httpresponsecapturereshdrServeri = `
 frontend test
@@ -2853,6 +2885,38 @@ const frontend_tcprequestcontentswitchmodehttpp = `
 frontend test
   tcp-request content switch-mode http proto my-proto
 `
+const frontend_tcprequestconnectionsetfcmark1 = `
+frontend test
+  tcp-request connection set-fc-mark 1
+`
+const frontend_tcprequestconnectionsetfctos1 = `
+frontend test
+  tcp-request connection set-fc-tos 1
+`
+const frontend_tcprequestsessionsetfcmark9999if = `
+frontend test
+  tcp-request session set-fc-mark 9999 if some_check
+`
+const frontend_tcprequestsessionsetfctos255 = `
+frontend test
+  tcp-request session set-fc-tos 255
+`
+const frontend_tcprequestcontentsetbcmarkhdrpor = `
+frontend test
+  tcp-request content set-bc-mark hdr(port)
+`
+const frontend_tcprequestcontentsetbctos0xffifs = `
+frontend test
+  tcp-request content set-bc-tos 0xff if some_check
+`
+const frontend_tcprequestcontentsetfcmark0xffff = `
+frontend test
+  tcp-request content set-fc-mark 0xffffffff
+`
+const frontend_tcprequestcontentsetfctos100 = `
+frontend test
+  tcp-request content set-fc-tos 100
+`
 const frontend_tcpresponsecontentluafoo = `
 frontend test
   tcp-response content lua.foo
@@ -2952,6 +3016,14 @@ frontend test
 const frontend_tcpresponsecontentscincgpc12ifis_ = `
 frontend test
   tcp-response content sc-inc-gpc1(2) if is-error
+`
+const frontend_tcpresponsecontentsetfcmark12345 = `
+frontend test
+  tcp-response content set-fc-mark 123456
+`
+const frontend_tcpresponsecontentsetfctos0x02 = `
+frontend test
+  tcp-response content set-fc-tos 0x02
 `
 const frontend_redirectprefixhttpwwwbarcomcode3 = `
 frontend test

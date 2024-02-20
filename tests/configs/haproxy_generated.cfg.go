@@ -585,6 +585,12 @@ backend test
   http-request set-bandwidth-limit my-limit limit 1m period 10s
   http-request set-bandwidth-limit my-limit period 10s
   http-request set-bandwidth-limit my-limit limit 1m
+  http-request set-bc-mark 123
+  http-request set-bc-mark 0xffffffff
+  http-request set-bc-mark hdr(port) if FALSE
+  http-request set-bc-tos 10
+  http-request set-fc-mark 0
+  http-request set-fc-tos 0xff if TRUE
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
   http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
@@ -690,6 +696,8 @@ backend test
   http-response set-bandwidth-limit my-limit limit 1m period 10s
   http-response set-bandwidth-limit my-limit period 10s
   http-response set-bandwidth-limit my-limit limit 1m
+  http-response set-fc-mark 2000
+  http-response set-fc-tos 200
   http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
   http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
   http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
@@ -975,6 +983,14 @@ backend test
   tcp-request content switch-mode http
   tcp-request content switch-mode http if FALSE
   tcp-request content switch-mode http proto my-proto
+  tcp-request connection set-fc-mark 1
+  tcp-request connection set-fc-tos 1
+  tcp-request session set-fc-mark 9999 if some_check
+  tcp-request session set-fc-tos 255
+  tcp-request content set-bc-mark hdr(port)
+  tcp-request content set-bc-tos 0xff if some_check
+  tcp-request content set-fc-mark 0xffffffff
+  tcp-request content set-fc-tos 100
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
@@ -1000,6 +1016,8 @@ backend test
   tcp-response content sc-inc-gpc0(2) if is-error
   tcp-response content sc-inc-gpc1(2)
   tcp-response content sc-inc-gpc1(2) if is-error
+  tcp-response content set-fc-mark 123456
+  tcp-response content set-fc-tos 0x02
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -1668,6 +1686,12 @@ frontend test
   http-request set-bandwidth-limit my-limit limit 1m period 10s
   http-request set-bandwidth-limit my-limit period 10s
   http-request set-bandwidth-limit my-limit limit 1m
+  http-request set-bc-mark 123
+  http-request set-bc-mark 0xffffffff
+  http-request set-bc-mark hdr(port) if FALSE
+  http-request set-bc-tos 10
+  http-request set-fc-mark 0
+  http-request set-fc-tos 0xff if TRUE
   http-request capture req.cook_cnt(FirstVisit),bool len 10
   http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
   http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
@@ -1774,6 +1798,8 @@ frontend test
   http-response set-bandwidth-limit my-limit limit 1m period 10s
   http-response set-bandwidth-limit my-limit period 10s
   http-response set-bandwidth-limit my-limit limit 1m
+  http-response set-fc-mark 2000
+  http-response set-fc-tos 200
   http-response capture res.hdr(Server) id 0
   http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
   http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
@@ -1998,6 +2024,14 @@ frontend test
   tcp-request content switch-mode http
   tcp-request content switch-mode http if FALSE
   tcp-request content switch-mode http proto my-proto
+  tcp-request connection set-fc-mark 1
+  tcp-request connection set-fc-tos 1
+  tcp-request session set-fc-mark 9999 if some_check
+  tcp-request session set-fc-tos 255
+  tcp-request content set-bc-mark hdr(port)
+  tcp-request content set-bc-tos 0xff if some_check
+  tcp-request content set-fc-mark 0xffffffff
+  tcp-request content set-fc-tos 100
   tcp-response content lua.foo
   tcp-response content lua.foo param if !HTTP
   tcp-response content lua.foo param param1
@@ -2023,6 +2057,8 @@ frontend test
   tcp-response content sc-inc-gpc0(2) if is-error
   tcp-response content sc-inc-gpc1(2)
   tcp-response content sc-inc-gpc1(2) if is-error
+  tcp-response content set-fc-mark 123456
+  tcp-response content set-fc-tos 0x02
   redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
   stats auth admin1:AdMiN123
   stats enable
@@ -3690,6 +3726,18 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  http-request set-bandwidth-limit my-limit limit 1m
 `, 2},
+	{`  http-request set-bc-mark 123
+`, 2},
+	{`  http-request set-bc-mark 0xffffffff
+`, 2},
+	{`  http-request set-bc-mark hdr(port) if FALSE
+`, 2},
+	{`  http-request set-bc-tos 10
+`, 2},
+	{`  http-request set-fc-mark 0
+`, 2},
+	{`  http-request set-fc-tos 0xff if TRUE
+`, 2},
 	{`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 1},
 	{`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
@@ -3875,6 +3923,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-response set-bandwidth-limit my-limit period 10s
 `, 2},
 	{`  http-response set-bandwidth-limit my-limit limit 1m
+`, 2},
+	{`  http-response set-fc-mark 2000
+`, 2},
+	{`  http-response set-fc-tos 200
 `, 2},
 	{`  http-response capture res.hdr(Server) id 0
 `, 1},
@@ -4390,6 +4442,22 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  tcp-request content switch-mode http proto my-proto
 `, 2},
+	{`  tcp-request connection set-fc-mark 1
+`, 2},
+	{`  tcp-request connection set-fc-tos 1
+`, 2},
+	{`  tcp-request session set-fc-mark 9999 if some_check
+`, 2},
+	{`  tcp-request session set-fc-tos 255
+`, 2},
+	{`  tcp-request content set-bc-mark hdr(port)
+`, 2},
+	{`  tcp-request content set-bc-tos 0xff if some_check
+`, 2},
+	{`  tcp-request content set-fc-mark 0xffffffff
+`, 2},
+	{`  tcp-request content set-fc-tos 100
+`, 2},
 	{`  tcp-response content lua.foo
 `, 2},
 	{`  tcp-response content lua.foo param if !HTTP
@@ -4439,6 +4507,10 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-response content sc-inc-gpc1(2)
 `, 2},
 	{`  tcp-response content sc-inc-gpc1(2) if is-error
+`, 2},
+	{`  tcp-response content set-fc-mark 123456
+`, 2},
+	{`  tcp-response content set-fc-tos 0x02
 `, 2},
 	{`  redirect prefix http://www.bar.com code 301 if { hdr(host) -i foo.com }
 `, 2},
