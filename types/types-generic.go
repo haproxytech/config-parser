@@ -77,7 +77,7 @@ type Int64C struct {
 	Comment string
 }
 
-// String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout
+// String is used by parsers Mode, DefaultBackend, SimpleTimeTwoWords, StatsTimeout, CompressionDirection
 //
 //generate:type:Mode
 //name:mode
@@ -100,6 +100,10 @@ type Int64C struct {
 //name:log-send-hostname
 //test:ok:log-send-hostname
 //test:ok:log-send-hostname something
+//generate:type:CompressionDirection
+//name:compression direction
+//test:ok:compression direction both
+//test:fail:compression direction
 type StringC struct {
 	Value   string
 	Comment string
