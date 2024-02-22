@@ -23,7 +23,7 @@ import (
 )
 
 func (p *IgnorePersist) Init() {
-	p.data = nil
+	p.data = []types.IgnorePersist{}
 	p.preComments = []string{}
 }
 
@@ -32,11 +32,7 @@ func (p *IgnorePersist) GetParserName() string {
 }
 
 func (p *IgnorePersist) Get(createIfNotExist bool) (common.ParserData, error) {
-	if p.data == nil {
-		if createIfNotExist {
-			p.data = &types.IgnorePersist{}
-			return p.data, nil
-		}
+	if len(p.data) == 0 && !createIfNotExist {
 		return nil, errors.ErrFetch
 	}
 	return p.data, nil
@@ -51,22 +47,55 @@ func (p *IgnorePersist) SetPreComments(preComments []string) {
 }
 
 func (p *IgnorePersist) GetOne(index int) (common.ParserData, error) {
-	if index > 0 {
+	if index < 0 || index >= len(p.data) {
 		return nil, errors.ErrFetch
 	}
-	if p.data == nil {
-		return nil, errors.ErrFetch
-	}
-	return p.data, nil
+	return p.data[index], nil
 }
 
 func (p *IgnorePersist) Delete(index int) error {
-	p.Init()
+	if index < 0 || index >= len(p.data) {
+		return errors.ErrFetch
+	}
+	copy(p.data[index:], p.data[index+1:])
+	p.data[len(p.data)-1] = types.IgnorePersist{}
+	p.data = p.data[:len(p.data)-1]
 	return nil
 }
 
 func (p *IgnorePersist) Insert(data common.ParserData, index int) error {
-	return p.Set(data, index)
+	if data == nil {
+		return errors.ErrInvalidData
+	}
+	switch newValue := data.(type) {
+	case []types.IgnorePersist:
+		p.data = newValue
+	case *types.IgnorePersist:
+		if index > -1 {
+			if index > len(p.data) {
+				return errors.ErrIndexOutOfRange
+			}
+			p.data = append(p.data, types.IgnorePersist{})
+			copy(p.data[index+1:], p.data[index:])
+			p.data[index] = *newValue
+		} else {
+			p.data = append(p.data, *newValue)
+		}
+	case types.IgnorePersist:
+		if index > -1 {
+			if index > len(p.data) {
+				return errors.ErrIndexOutOfRange
+			}
+			p.data = append(p.data, types.IgnorePersist{})
+			copy(p.data[index+1:], p.data[index:])
+			p.data[index] = newValue
+		} else {
+			p.data = append(p.data, newValue)
+		}
+	default:
+		return errors.ErrInvalidData
+	}
+	return nil
 }
 
 func (p *IgnorePersist) Set(data common.ParserData, index int) error {
@@ -75,10 +104,24 @@ func (p *IgnorePersist) Set(data common.ParserData, index int) error {
 		return nil
 	}
 	switch newValue := data.(type) {
-	case *types.IgnorePersist:
+	case []types.IgnorePersist:
 		p.data = newValue
+	case *types.IgnorePersist:
+		if index > -1 && index < len(p.data) {
+			p.data[index] = *newValue
+		} else if index == -1 {
+			p.data = append(p.data, *newValue)
+		} else {
+			return errors.ErrIndexOutOfRange
+		}
 	case types.IgnorePersist:
-		p.data = &newValue
+		if index > -1 && index < len(p.data) {
+			p.data[index] = newValue
+		} else if index == -1 {
+			p.data = append(p.data, newValue)
+		} else {
+			return errors.ErrIndexOutOfRange
+		}
 	default:
 		return errors.ErrInvalidData
 	}
@@ -91,6 +134,21 @@ func (p *IgnorePersist) PreParse(line string, parts []string, preComments []stri
 		p.preComments = append(p.preComments, preComments...)
 	}
 	return changeState, err
+}
+
+func (p *IgnorePersist) Parse(line string, parts []string, comment string) (string, error) {
+	if parts[0] == "ignore-persist" {
+		data, err := p.parse(line, parts, comment)
+		if err != nil {
+			if _, ok := err.(*errors.ParseError); ok {
+				return "", err
+			}
+			return "", &errors.ParseError{Parser: "IgnorePersist", Line: line}
+		}
+		p.data = append(p.data, *data)
+		return "", nil
+	}
+	return "", &errors.ParseError{Parser: "IgnorePersist", Line: line}
 }
 
 func (p *IgnorePersist) ResultAll() ([]common.ReturnResultLine, []string, error) {
