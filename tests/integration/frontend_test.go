@@ -98,6 +98,7 @@ func TestWholeConfigsSectionsFrontend(t *testing.T) {
 		{"frontend_bind443noalpn", frontend_bind443noalpn},
 		{"frontend_bind443nocanames", frontend_bind443nocanames},
 		{"frontend_bind443nosslv3", frontend_bind443nosslv3},
+		{"frontend_bind443notlstickets", frontend_bind443notlstickets},
 		{"frontend_bind443notlsv10", frontend_bind443notlsv10},
 		{"frontend_bind443notlsv11", frontend_bind443notlsv11},
 		{"frontend_bind443notlsv12", frontend_bind443notlsv12},

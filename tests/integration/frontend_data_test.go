@@ -337,6 +337,10 @@ const frontend_bind443nosslv3 = `
 frontend test
   bind :443 no-sslv3
 `
+const frontend_bind443notlstickets = `
+frontend test
+  bind :443 no-tls-tickets
+`
 const frontend_bind443notlsv10 = `
 frontend test
   bind :443 no-tlsv10

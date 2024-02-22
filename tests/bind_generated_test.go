@@ -92,6 +92,7 @@ func TestBind(t *testing.T) {
 		"bind :443 no-alpn":                              true,
 		"bind :443 no-ca-names":                          true,
 		"bind :443 no-sslv3":                             true,
+		"bind :443 no-tls-tickets":                       true,
 		"bind :443 no-tlsv10":                            true,
 		"bind :443 no-tlsv11":                            true,
 		"bind :443 no-tlsv12":                            true,
