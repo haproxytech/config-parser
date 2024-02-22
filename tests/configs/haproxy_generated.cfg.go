@@ -1409,6 +1409,7 @@ frontend test
   bind :443 no-alpn
   bind :443 no-ca-names
   bind :443 no-sslv3
+  bind :443 no-tls-tickets
   bind :443 no-tlsv10
   bind :443 no-tlsv11
   bind :443 no-tlsv12
@@ -2427,6 +2428,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  bind :443 no-ca-names
 `, 1},
 	{`  bind :443 no-sslv3
+`, 1},
+	{`  bind :443 no-tls-tickets
 `, 1},
 	{`  bind :443 no-tlsv10
 `, 1},
