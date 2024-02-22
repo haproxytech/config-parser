@@ -1368,6 +1368,7 @@ type ForcePersist struct {
 
 //sections:backend
 //name:ignore-persist
+//is:multiple
 //test:ok:ignore-persist if acl-name
 //test:ok:ignore-persist unless acl-name
 //test:fail:ignore-persist

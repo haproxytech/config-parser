@@ -415,6 +415,7 @@ backend test
   server-template srv 3 google.com
   force-persist if acl-name
   ignore-persist if acl-name
+  ignore-persist unless acl-name
   http-send-name-header
   option http-restrict-req-hdr-names preserve
   source 192.168.1.200
@@ -3328,6 +3329,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  force-persist if acl-name
 `, 1},
 	{`  ignore-persist if acl-name
+`, 1},
+	{`  ignore-persist unless acl-name
 `, 1},
 	{`  unix-bind prefix pre
 `, 1},

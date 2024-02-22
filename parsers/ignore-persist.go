@@ -24,36 +24,38 @@ import (
 )
 
 type IgnorePersist struct {
-	data        *types.IgnorePersist
+	data        []types.IgnorePersist
 	preComments []string // comments that appear before the actual line
 }
 
-func (m *IgnorePersist) Parse(line string, parts []string, comment string) (string, error) {
+func (m *IgnorePersist) parse(line string, parts []string, comment string) (*types.IgnorePersist, error) {
 	if len(parts) != 3 {
-		return "", &errors.ParseError{Parser: "IgnorePersist", Line: line}
+		return nil, &errors.ParseError{Parser: "IgnorePersist", Line: line}
 	}
 	if parts[0] == "ignore-persist" {
 		if parts[1] != "if" && parts[1] != "unless" {
-			return "", &errors.ParseError{Parser: "IgnorePersist", Line: line}
+			return nil, &errors.ParseError{Parser: "IgnorePersist", Line: line}
 		}
-		m.data = &types.IgnorePersist{
+		data := &types.IgnorePersist{
 			Cond:     parts[1],
 			CondTest: parts[2],
 			Comment:  comment,
 		}
-		return "", nil
+		return data, nil
 	}
-	return "", &errors.ParseError{Parser: "IgnorePersist", Line: line}
+	return nil, &errors.ParseError{Parser: "IgnorePersist", Line: line}
 }
 
 func (m *IgnorePersist) Result() ([]common.ReturnResultLine, error) {
-	if m.data == nil {
+	if len(m.data) == 0 {
 		return nil, errors.ErrFetch
 	}
-	return []common.ReturnResultLine{
-		{
-			Data:    fmt.Sprintf("ignore-persist %s %s", m.data.Cond, m.data.CondTest),
-			Comment: m.data.Comment,
-		},
-	}, nil
+	result := make([]common.ReturnResultLine, len(m.data))
+	for i := range m.data {
+		result[i] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("ignore-persist %s %s", m.data[i].Cond, m.data[i].CondTest),
+			Comment: m.data[i].Comment,
+		}
+	}
+	return result, nil
 }
