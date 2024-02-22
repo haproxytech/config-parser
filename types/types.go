@@ -199,6 +199,7 @@ type ACL struct {
 //test:ok:bind :443 no-alpn
 //test:ok:bind :443 no-ca-names
 //test:ok:bind :443 no-sslv3
+//test:ok:bind :443 no-tls-tickets
 //test:ok:bind :443 no-tlsv10
 //test:ok:bind :443 no-tlsv11
 //test:ok:bind :443 no-tlsv12

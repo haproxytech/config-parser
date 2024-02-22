@@ -156,6 +156,7 @@ func getBindOptions() []BindOption {
 		&BindOptionWord{Name: "no-alpn"},
 		&BindOptionWord{Name: "no-ca-names"},
 		&BindOptionWord{Name: "no-sslv3"},
+		&BindOptionWord{Name: "no-tls-tickets"},
 		&BindOptionWord{Name: "no-tlsv10"},
 		&BindOptionWord{Name: "no-tlsv11"},
 		&BindOptionWord{Name: "no-tlsv12"},
