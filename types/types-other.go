@@ -923,7 +923,7 @@ type HTTPCheck struct{}
 //test:fail:tcp-check set-var(check.port) int(1234) if x
 //test:quote_ok:tcp-check set-var-fmt(check.name) "%H"
 //test:quote_ok:tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
-//test:quote_fail:tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port] if TRUE"
+//test:quote_fail:tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]" if TRUE
 //test:quote_ok:tcp-check unset-var(txn.from)
 //test:fail:tcp-check unset-var(txn.from) if x
 type TCPCheck struct{}
