@@ -29,7 +29,7 @@ func Test{{ $StructName }}{{ .Dir }}(t *testing.T) {
 		"{{- $val -}}": false,
 	{{- end }}
 	{{- range $index, $val := .TestFailEscaped}}
-		`{{- $val -}}`: true,
+		`{{- $val -}}`: false,
 	{{- end }}
 	}
 	{{- if .HasTable}}
