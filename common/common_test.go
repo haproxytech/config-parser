@@ -122,3 +122,39 @@ func TestCutRight(t *testing.T) {
 		})
 	}
 }
+
+func TestSmartJoin(t *testing.T) {
+	tests := []struct {
+		name string
+		args []string
+		want string
+	}{
+		{
+			name: "simple1",
+			args: []string{"set-param", "abc", "if", "cond_test"},
+			want: "set-param abc if cond_test",
+		},
+		{
+			name: "with empty strings",
+			args: []string{"set-param", "abc", "", ""},
+			want: "set-param abc",
+		},
+		{
+			name: "all empty strings",
+			args: []string{"", "", "", ""},
+			want: "",
+		},
+		{
+			name: "mixed",
+			args: []string{"", "header", "", "zero"},
+			want: " header zero",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := SmartJoin(tt.args...); got != tt.want {
+				t.Errorf("SmartJoin() = '%v', want '%v'", got, tt.want)
+			}
+		})
+	}
+}

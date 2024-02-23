@@ -140,3 +140,37 @@ func CutRight(s, sep string) (before, after string, found bool) { //nolint:nonam
 	}
 	return before, after, found
 }
+
+// SmartJoin is similar to strings.Join except it skips empty strings and
+// the separator is always a white space. Useful for formatting configuration
+// stanzas with only 1 memory allocation.
+func SmartJoin(elems ...string) string {
+	switch len(elems) {
+	case 0:
+		return ""
+	case 1:
+		return elems[0]
+	}
+
+	var n int
+	for _, elem := range elems {
+		if len(elem) > 0 {
+			n += len(elem) + 1
+		}
+	}
+	if n == 0 {
+		return ""
+	}
+	n-- // no space before the first elem
+
+	var b strings.Builder
+	b.Grow(n)
+	b.WriteString(elems[0])
+	for _, s := range elems[1:] {
+		if len(s) > 0 {
+			b.WriteByte(' ')
+			b.WriteString(s)
+		}
+	}
+	return b.String()
+}
