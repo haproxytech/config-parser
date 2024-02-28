@@ -2865,6 +2865,10 @@ const frontend_tcprequestconnectionsettos0 = `
 frontend test
   tcp-request connection set-tos 0
 `
+const frontend_tcprequestconnectionsetvarfmttxn = `
+frontend test
+  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
+`
 const frontend_tcprequestcontentsetnice0ifFALSE = `
 frontend test
   tcp-request content set-nice 0 if FALSE

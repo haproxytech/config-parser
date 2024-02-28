@@ -978,6 +978,7 @@ backend test
   tcp-request content set-tos 0
   tcp-request connection set-tos 0 if FALSE
   tcp-request connection set-tos 0
+  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
   tcp-request content set-nice 0 if FALSE
   tcp-request content set-nice 0
   tcp-request content switch-mode http
@@ -2019,6 +2020,7 @@ frontend test
   tcp-request content set-tos 0
   tcp-request connection set-tos 0 if FALSE
   tcp-request connection set-tos 0
+  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
   tcp-request content set-nice 0 if FALSE
   tcp-request content set-nice 0
   tcp-request content switch-mode http
@@ -4431,6 +4433,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-request connection set-tos 0 if FALSE
 `, 2},
 	{`  tcp-request connection set-tos 0
+`, 2},
+	{`  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
 `, 2},
 	{`  tcp-request content set-nice 0 if FALSE
 `, 2},

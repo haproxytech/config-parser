@@ -61,7 +61,7 @@ func (f *Session) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.SetFcMark{}, parts)
 	case "set-fc-tos":
 		err = f.ParseAction(&actions.SetFcTos{}, parts)
-	default:
+	default: //nolint:dupl
 		switch {
 		case strings.HasPrefix(parts[2], "track-sc"):
 			err = f.ParseAction(&actions.TrackSc{}, parts)
