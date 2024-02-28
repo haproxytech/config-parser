@@ -185,6 +185,7 @@ func TestRequeststcp(t *testing.T) {
 		"tcp-request content set-tos 0":                                                true,
 		"tcp-request connection set-tos 0 if FALSE":                                    true,
 		"tcp-request connection set-tos 0":                                             true,
+		"tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]":         true,
 		"tcp-request content set-nice 0 if FALSE":                                      true,
 		"tcp-request content set-nice 0":                                               true,
 		"tcp-request content switch-mode http":                                         true,

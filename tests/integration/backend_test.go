@@ -952,6 +952,7 @@ func TestWholeConfigsSectionsBackend(t *testing.T) {
 		{"backend_tcprequestconnectionsetsrcsrcipm_", backend_tcprequestconnectionsetsrcsrcipm_},
 		{"backend_tcprequestconnectionsettos0", backend_tcprequestconnectionsettos0},
 		{"backend_tcprequestconnectionsettos0ifFAL", backend_tcprequestconnectionsettos0ifFAL},
+		{"backend_tcprequestconnectionsetvarfmttxn", backend_tcprequestconnectionsetvarfmttxn},
 		{"backend_tcprequestconnectionsilentdrop", backend_tcprequestconnectionsilentdrop},
 		{"backend_tcprequestconnectionsilentdropif", backend_tcprequestconnectionsilentdropif},
 		{"backend_tcprequestconnectiontracksc0src", backend_tcprequestconnectiontracksc0src},

@@ -73,7 +73,7 @@ func (f *Connection) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.SetSrcPort{}, parts)
 	case "set-dst-port":
 		err = f.ParseAction(&actions.SetDstPort{}, parts)
-	default:
+	default: //nolint:dupl
 		switch {
 		case strings.HasPrefix(parts[2], "track-sc"):
 			err = f.ParseAction(&actions.TrackSc{}, parts)
@@ -91,6 +91,8 @@ func (f *Connection) Parse(parts []string, comment string) error {
 			err = f.ParseAction(&actions.ScSetGpt{}, parts)
 		case strings.HasPrefix(parts[2], "sc-set-gpt0"):
 			err = f.ParseAction(&actions.ScSetGpt0{}, parts)
+		case strings.HasPrefix(parts[2], "set-var-fmt"):
+			err = f.ParseAction(&actions.SetVarFmt{}, parts)
 		case strings.HasPrefix(parts[2], "unset-var"):
 			err = f.ParseAction(&actions.UnsetVar{}, parts)
 		default:

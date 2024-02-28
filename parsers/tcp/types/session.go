@@ -57,7 +57,7 @@ func (f *Session) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.Reject{}, parts)
 	case "silent-drop":
 		err = f.ParseAction(&actions.SilentDrop{}, parts)
-	default:
+	default: //nolint:dupl
 		switch {
 		case strings.HasPrefix(parts[2], "track-sc"):
 			err = f.ParseAction(&actions.TrackSc{}, parts)

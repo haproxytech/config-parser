@@ -627,6 +627,7 @@ func TestWholeConfigsSectionsFrontend(t *testing.T) {
 		{"frontend_tcprequestconnectionsetsrcsrcipm_", frontend_tcprequestconnectionsetsrcsrcipm_},
 		{"frontend_tcprequestconnectionsettos0", frontend_tcprequestconnectionsettos0},
 		{"frontend_tcprequestconnectionsettos0ifFAL", frontend_tcprequestconnectionsettos0ifFAL},
+		{"frontend_tcprequestconnectionsetvarfmttxn", frontend_tcprequestconnectionsetvarfmttxn},
 		{"frontend_tcprequestconnectionsilentdrop", frontend_tcprequestconnectionsilentdrop},
 		{"frontend_tcprequestconnectionsilentdropif", frontend_tcprequestconnectionsilentdropif},
 		{"frontend_tcprequestconnectiontracksc0src", frontend_tcprequestconnectiontracksc0src},
