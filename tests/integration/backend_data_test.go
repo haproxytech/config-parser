@@ -4125,6 +4125,10 @@ const backend_tcprequestconnectionsettos0 = `
 backend test
   tcp-request connection set-tos 0
 `
+const backend_tcprequestconnectionsetvarfmttxn = `
+backend test
+  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
+`
 const backend_tcprequestcontentsetnice0ifFALSE = `
 backend test
   tcp-request content set-nice 0 if FALSE
