@@ -19,6 +19,7 @@ package parser
 import (
 	"github.com/haproxytech/config-parser/v5/common"
 	"github.com/haproxytech/config-parser/v5/errors"
+	"github.com/haproxytech/config-parser/v5/parsers/extra"
 )
 
 type ParserInterface interface { //nolint:revive
@@ -42,6 +43,29 @@ type Parsers struct {
 	PreComments        []string
 	PostComments       []string
 	DefaultSectionName string
+}
+
+func (p *Parsers) GetAttributes(existingOnly bool) []string {
+	keys := make([]string, len(p.Parsers))
+	i := 0
+	for _, section := range p.ParserSequence {
+		attribute := string(section)
+		if attribute == "" {
+			continue
+		}
+		if _, ok := p.Parsers[attribute].(*extra.Section); ok {
+			continue
+		}
+		if existingOnly {
+			val, err := p.Parsers[attribute].Get(false)
+			if err != nil || val == nil {
+				continue
+			}
+		}
+		keys[i] = attribute
+		i++
+	}
+	return keys[:i]
 }
 
 func (p *Parsers) Get(attribute string, createIfNotExist ...bool) (common.ParserData, error) {
