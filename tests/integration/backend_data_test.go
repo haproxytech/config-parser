@@ -2189,6 +2189,10 @@ const backend_httprequestscincgpc11ifFALSE = `
 backend test
   http-request sc-inc-gpc1(1) if FALSE
 `
+const backend_httprequestscsetgpt12hdrHostlowe = `
+backend test
+  http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
+`
 const backend_httprequestscsetgpt01hdrHostlowe = `
 backend test
   http-request sc-set-gpt0(1) hdr(Host),lower
@@ -2761,6 +2765,10 @@ const backend_httpresponsescincgpc11ifFALSE = `
 backend test
   http-response sc-inc-gpc1(1) if FALSE
 `
+const backend_httpresponsescsetgpt12hdrHostlow = `
+backend test
+  http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
+`
 const backend_httpresponsescsetgpt01hdrHostlow = `
 backend test
   http-response sc-set-gpt0(1) hdr(Host),lower
@@ -3128,6 +3136,10 @@ backend test
 const backend_httpafterresponsescincgpc11ifFAL = `
 backend test
   http-after-response sc-inc-gpc1(1) if FALSE
+`
+const backend_httpafterresponsescsetgpt1210 = `
+backend test
+  http-after-response sc-set-gpt(1,2) 10
 `
 const backend_httpafterresponsescsetgpt01hdrHo = `
 backend test
@@ -3565,6 +3577,10 @@ const backend_tcprequestcontentscincgpc12ifise_ = `
 backend test
   tcp-request content sc-inc-gpc1(2) if is-error
 `
+const backend_tcprequestcontentscsetgptx91337i = `
+backend test
+  tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
+`
 const backend_tcprequestcontentscsetgpt001337 = `
 backend test
   tcp-request content sc-set-gpt0(0) 1337
@@ -3769,6 +3785,10 @@ const backend_tcprequestconnectionscincgpc12if_ = `
 backend test
   tcp-request connection sc-inc-gpc1(2) if is-error
 `
+const backend_tcprequestconnectionscsetgptscx4 = `
+backend test
+  tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
+`
 const backend_tcprequestconnectionscsetgpt0013 = `
 backend test
   tcp-request connection sc-set-gpt0(0) 1337
@@ -3924,6 +3944,10 @@ backend test
 const backend_tcprequestsessionscincgpc12ifise_ = `
 backend test
   tcp-request session sc-inc-gpc1(2) if is-error
+`
+const backend_tcprequestsessionscsetgptsc51133 = `
+backend test
+  tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
 `
 const backend_tcprequestsessionscsetgpt001337 = `
 backend test

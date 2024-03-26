@@ -387,6 +387,7 @@ type Action interface {
 //test:ok:http-request sc-inc-gpc1(1)
 //test:ok:http-request sc-inc-gpc1(1) if FALSE
 //test:fail:http-request sc-inc-gpc1
+//test:ok:http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
 //test:ok:http-request sc-set-gpt0(1) hdr(Host),lower
 //test:ok:http-request sc-set-gpt0(1) 10
 //test:ok:http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -635,6 +636,7 @@ type HTTPRequests struct{}
 //test:ok:http-response sc-inc-gpc1(1)
 //test:ok:http-response sc-inc-gpc1(1) if FALSE
 //test:fail:http-response sc-inc-gpc1
+//test:ok:http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
 //test:ok:http-response sc-set-gpt0(1) hdr(Host),lower
 //test:ok:http-response sc-set-gpt0(1) 10
 //test:ok:http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -780,6 +782,7 @@ type HTTPResponses struct{}
 //test:ok:http-after-response sc-inc-gpc1(1)
 //test:ok:http-after-response sc-inc-gpc1(1) if FALSE
 //test:fail:http-after-response sc-inc-gpc1
+//test:ok:http-after-response sc-set-gpt(1,2) 10
 //test:ok:http-after-response sc-set-gpt0(1) hdr(Host),lower
 //test:ok:http-after-response sc-set-gpt0(1) 10
 //test:ok:http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -963,6 +966,7 @@ type TCPType interface {
 //test:ok:tcp-request content sc-inc-gpc1(2)
 //test:ok:tcp-request content sc-inc-gpc1(2) if is-error
 //test:fail:tcp-request content sc-inc-gpc1
+//test:ok:tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
 //test:ok:tcp-request content sc-set-gpt0(0) 1337
 //test:ok:tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
 //test:ok:tcp-request content sc-add-gpc(1,2) 1
@@ -1019,6 +1023,7 @@ type TCPType interface {
 //test:ok:tcp-request connection sc-inc-gpc1(2)
 //test:ok:tcp-request connection sc-inc-gpc1(2) if is-error
 //test:fail:tcp-request connection sc-inc-gpc1
+//test:ok:tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
 //test:ok:tcp-request connection sc-set-gpt0(0) 1337
 //test:ok:tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
 //test:ok:tcp-request connection set-src src,ipmask(24)
@@ -1063,6 +1068,7 @@ type TCPType interface {
 //test:ok:tcp-request session sc-inc-gpc1(2)
 //test:fail:tcp-request session sc-inc-gpc1
 //test:ok:tcp-request session sc-inc-gpc1(2) if is-error
+//test:ok:tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
 //test:ok:tcp-request session sc-set-gpt0(0) 1337
 //test:ok:tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
 //test:ok:tcp-request session set-var(sess.src) src

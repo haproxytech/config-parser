@@ -494,6 +494,7 @@ backend test
   http-request sc-inc-gpc0(1) if FALSE
   http-request sc-inc-gpc1(1)
   http-request sc-inc-gpc1(1) if FALSE
+  http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
   http-request sc-set-gpt0(1) hdr(Host),lower
   http-request sc-set-gpt0(1) 10
   http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -637,6 +638,7 @@ backend test
   http-response sc-inc-gpc0(1) if FALSE
   http-response sc-inc-gpc1(1)
   http-response sc-inc-gpc1(1) if FALSE
+  http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
   http-response sc-set-gpt0(1) hdr(Host),lower
   http-response sc-set-gpt0(1) 10
   http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -729,6 +731,7 @@ backend test
   http-after-response sc-inc-gpc0(1) if FALSE
   http-after-response sc-inc-gpc1(1)
   http-after-response sc-inc-gpc1(1) if FALSE
+  http-after-response sc-set-gpt(1,2) 10
   http-after-response sc-set-gpt0(1) hdr(Host),lower
   http-after-response sc-set-gpt0(1) 10
   http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -838,6 +841,7 @@ backend test
   tcp-request content sc-inc-gpc0(2) if is-error
   tcp-request content sc-inc-gpc1(2)
   tcp-request content sc-inc-gpc1(2) if is-error
+  tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
   tcp-request content sc-set-gpt0(0) 1337
   tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request content sc-add-gpc(1,2) 1
@@ -889,6 +893,7 @@ backend test
   tcp-request connection sc-inc-gpc0(2) if is-error
   tcp-request connection sc-inc-gpc1(2)
   tcp-request connection sc-inc-gpc1(2) if is-error
+  tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
   tcp-request connection sc-set-gpt0(0) 1337
   tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request connection set-src src,ipmask(24)
@@ -928,6 +933,7 @@ backend test
   tcp-request session sc-inc-gpc0(2) if is-error
   tcp-request session sc-inc-gpc1(2)
   tcp-request session sc-inc-gpc1(2) if is-error
+  tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
   tcp-request session sc-set-gpt0(0) 1337
   tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request session set-var(sess.src) src
@@ -1561,6 +1567,7 @@ frontend test
   http-request sc-inc-gpc0(1) if FALSE
   http-request sc-inc-gpc1(1)
   http-request sc-inc-gpc1(1) if FALSE
+  http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
   http-request sc-set-gpt0(1) hdr(Host),lower
   http-request sc-set-gpt0(1) 10
   http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -1705,6 +1712,7 @@ frontend test
   http-response sc-inc-gpc0(1) if FALSE
   http-response sc-inc-gpc1(1)
   http-response sc-inc-gpc1(1) if FALSE
+  http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
   http-response sc-set-gpt0(1) hdr(Host),lower
   http-response sc-set-gpt0(1) 10
   http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -1798,6 +1806,7 @@ frontend test
   http-after-response sc-inc-gpc0(1) if FALSE
   http-after-response sc-inc-gpc1(1)
   http-after-response sc-inc-gpc1(1) if FALSE
+  http-after-response sc-set-gpt(1,2) 10
   http-after-response sc-set-gpt0(1) hdr(Host),lower
   http-after-response sc-set-gpt0(1) 10
   http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
@@ -1845,6 +1854,7 @@ frontend test
   tcp-request content sc-inc-gpc0(2) if is-error
   tcp-request content sc-inc-gpc1(2)
   tcp-request content sc-inc-gpc1(2) if is-error
+  tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
   tcp-request content sc-set-gpt0(0) 1337
   tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request content sc-add-gpc(1,2) 1
@@ -1896,6 +1906,7 @@ frontend test
   tcp-request connection sc-inc-gpc0(2) if is-error
   tcp-request connection sc-inc-gpc1(2)
   tcp-request connection sc-inc-gpc1(2) if is-error
+  tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
   tcp-request connection sc-set-gpt0(0) 1337
   tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request connection set-src src,ipmask(24)
@@ -1935,6 +1946,7 @@ frontend test
   tcp-request session sc-inc-gpc0(2) if is-error
   tcp-request session sc-inc-gpc1(2)
   tcp-request session sc-inc-gpc1(2) if is-error
+  tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
   tcp-request session sc-set-gpt0(0) 1337
   tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
   tcp-request session set-var(sess.src) src
@@ -3466,6 +3478,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  http-request sc-inc-gpc1(1) if FALSE
 `, 2},
+	{`  http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
+`, 2},
 	{`  http-request sc-set-gpt0(1) hdr(Host),lower
 `, 2},
 	{`  http-request sc-set-gpt0(1) 10
@@ -3728,6 +3742,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  http-response sc-inc-gpc1(1) if FALSE
 `, 2},
+	{`  http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
+`, 2},
 	{`  http-response sc-set-gpt0(1) hdr(Host),lower
 `, 2},
 	{`  http-response sc-set-gpt0(1) 10
@@ -3893,6 +3909,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-after-response sc-inc-gpc1(1)
 `, 2},
 	{`  http-after-response sc-inc-gpc1(1) if FALSE
+`, 2},
+	{`  http-after-response sc-set-gpt(1,2) 10
 `, 2},
 	{`  http-after-response sc-set-gpt0(1) hdr(Host),lower
 `, 2},
@@ -4074,6 +4092,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  tcp-request content sc-inc-gpc1(2) if is-error
 `, 2},
+	{`  tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
+`, 2},
 	{`  tcp-request content sc-set-gpt0(0) 1337
 `, 2},
 	{`  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
@@ -4176,6 +4196,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 2},
 	{`  tcp-request connection sc-inc-gpc1(2) if is-error
 `, 2},
+	{`  tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
+`, 2},
 	{`  tcp-request connection sc-set-gpt0(0) 1337
 `, 2},
 	{`  tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
@@ -4253,6 +4275,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-request session sc-inc-gpc1(2)
 `, 2},
 	{`  tcp-request session sc-inc-gpc1(2) if is-error
+`, 2},
+	{`  tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
 `, 2},
 	{`  tcp-request session sc-set-gpt0(0) 1337
 `, 2},

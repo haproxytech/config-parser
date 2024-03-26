@@ -72,6 +72,7 @@ func TestResponseshttp(t *testing.T) {
 		"http-response sc-inc-gpc0(1) if FALSE":                                                                                     true,
 		"http-response sc-inc-gpc1(1)":                                                                                              true,
 		"http-response sc-inc-gpc1(1) if FALSE":                                                                                     true,
+		"http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE":                                                                    true,
 		"http-response sc-set-gpt0(1) hdr(Host),lower":                                                                              true,
 		"http-response sc-set-gpt0(1) 10":                                                                                           true,
 		"http-response sc-set-gpt0(1) hdr(Host),lower if FALSE":                                                                     true,
