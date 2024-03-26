@@ -91,6 +91,8 @@ func (f *Connection) Parse(parts []string, comment string) error {
 			err = f.ParseAction(&actions.ScIncGpc0{}, parts)
 		case strings.HasPrefix(parts[2], "sc-inc-gpc1("):
 			err = f.ParseAction(&actions.ScIncGpc1{}, parts)
+		case strings.HasPrefix(parts[2], "sc-set-gpt("):
+			err = f.ParseAction(&actions.ScSetGpt{}, parts)
 		case strings.HasPrefix(parts[2], "sc-set-gpt0"):
 			err = f.ParseAction(&actions.ScSetGpt0{}, parts)
 		case strings.HasPrefix(parts[2], "set-var-fmt"):

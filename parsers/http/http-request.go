@@ -169,6 +169,8 @@ func (h *Requests) Parse(line string, parts []string, comment string) (string, e
 				err = h.ParseHTTPRequest(&actions.ScIncGpc0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-inc-gpc1("):
 				err = h.ParseHTTPRequest(&actions.ScIncGpc1{}, parts, comment)
+			case strings.HasPrefix(parts[1], "sc-set-gpt("):
+				err = h.ParseHTTPRequest(&actions.ScSetGpt{}, parts, comment)
 			case strings.HasPrefix(parts[1], "sc-set-gpt0("):
 				err = h.ParseHTTPRequest(&actions.ScSetGpt0{}, parts, comment)
 			case strings.HasPrefix(parts[1], "set-var("):
