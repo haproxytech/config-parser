@@ -1,5 +1,5 @@
 variables:
- GO_VERSION: "1.21"
+  GO_VERSION: "1.22"
 stages:
   - diff
   - lint
