@@ -1,6 +1,6 @@
 module github.com/haproxytech/config-parser/v5
 
-go 1.21
+go 1.22
 
 require (
 	github.com/gofrs/flock v0.8.1
