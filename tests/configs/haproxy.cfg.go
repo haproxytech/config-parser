@@ -95,6 +95,7 @@ defaults A
   srvtcpka-idle 10s
   srvtcpka-intvl 10s
   load-server-state-from-file global
+  hash-balance-factor 150
 
 # some random userlist L1
 userlist L1
@@ -317,6 +318,7 @@ backend default_backend2 from A
 
 backend test from A
   mode http
+  hash-type consistent
   balance roundrobin
   option http-keep-alive
   option forwardfor header X-Forwarded-For
@@ -347,6 +349,7 @@ backend test from A
   server webserv2 192.168.1.1:9300 maxconn 1000 ssl weight 10 cookie BLAH
   tcp-response content accept if TRUE
   tcp-response content reject if FALSE
+  hash-balance-factor 150
   option httplog
   option contstats
   option contstats
