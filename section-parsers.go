@@ -199,6 +199,7 @@ func (p *configParser) getDefaultParser() *Parsers {
 	addParser(parser, &sequence, &parsers.Source{})
 	addParser(parser, &sequence, &parsers.Persist{})
 	addParser(parser, &sequence, &simple.Number{Name: "rate-limit sessions"})
+	addParser(parser, &sequence, &simple.Number{Name: "hash-balance-factor"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
@@ -633,6 +634,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.HTTPSendNameHeader{})
 	addParser(parser, &sequence, &parsers.Source{})
 	addParser(parser, &sequence, &parsers.Persist{})
+	addParser(parser, &sequence, &simple.Number{Name: "hash-balance-factor"})
 	return p.createParsers(parser, sequence)
 }
 
