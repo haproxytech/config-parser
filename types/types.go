@@ -1340,6 +1340,7 @@ type ProcessVary struct {
 
 //sections:backend
 //name:force-persist
+//is:multiple
 //test:ok:force-persist if acl-name
 //test:ok:force-persist unless acl-name
 //test:fail:force-persist
