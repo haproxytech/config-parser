@@ -24,36 +24,38 @@ import (
 )
 
 type ForcePersist struct {
-	data        *types.ForcePersist
+	data        []types.ForcePersist
 	preComments []string // comments that appear before the actual line
 }
 
-func (m *ForcePersist) Parse(line string, parts []string, comment string) (string, error) {
+func (m *ForcePersist) parse(line string, parts []string, comment string) (*types.ForcePersist, error) {
 	if len(parts) != 3 {
-		return "", &errors.ParseError{Parser: "ForcePersist", Line: line}
+		return nil, &errors.ParseError{Parser: "ForcePersist", Line: line}
 	}
 	if parts[0] == "force-persist" {
 		if parts[1] != "if" && parts[1] != "unless" {
-			return "", &errors.ParseError{Parser: "ForcePersist", Line: line}
+			return nil, &errors.ParseError{Parser: "ForcePersist", Line: line}
 		}
-		m.data = &types.ForcePersist{
+		data := &types.ForcePersist{
 			Cond:     parts[1],
 			CondTest: parts[2],
 			Comment:  comment,
 		}
-		return "", nil
+		return data, nil
 	}
-	return "", &errors.ParseError{Parser: "ForcePersist", Line: line}
+	return nil, &errors.ParseError{Parser: "ForcePersist", Line: line}
 }
 
 func (m *ForcePersist) Result() ([]common.ReturnResultLine, error) {
-	if m.data == nil {
+	if len(m.data) == 0 {
 		return nil, errors.ErrFetch
 	}
-	return []common.ReturnResultLine{
-		{
-			Data:    fmt.Sprintf("force-persist %s %s", m.data.Cond, m.data.CondTest),
-			Comment: m.data.Comment,
-		},
-	}, nil
+	result := make([]common.ReturnResultLine, len(m.data))
+	for i := range m.data {
+		result[i] = common.ReturnResultLine{
+			Data:    fmt.Sprintf("force-persist %s %s", m.data[i].Cond, m.data[i].CondTest),
+			Comment: m.data[i].Comment,
+		}
+	}
+	return result, nil
 }

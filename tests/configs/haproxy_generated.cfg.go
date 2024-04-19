@@ -414,6 +414,7 @@ backend test
   server-template srv 3 google.com:80
   server-template srv 3 google.com
   force-persist if acl-name
+  force-persist unless acl-name
   ignore-persist if acl-name
   ignore-persist unless acl-name
   http-send-name-header
@@ -3327,6 +3328,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  process-vary on
 `, 1},
 	{`  force-persist if acl-name
+`, 1},
+	{`  force-persist unless acl-name
 `, 1},
 	{`  ignore-persist if acl-name
 `, 1},
