@@ -62,6 +62,8 @@ func (h *AfterResponses) Parse(line string, parts []string, comment string) (str
 		err = h.ParseHTTPRequest(&actions.AddHeader{}, parts, comment)
 	case action == "allow":
 		err = h.ParseHTTPRequest(&actions.Allow{}, parts, comment)
+	case action == "capture":
+		err = h.ParseHTTPRequest(&httpActions.Capture{}, parts, comment)
 	case action == "del-header":
 		err = h.ParseHTTPRequest(&actions.DelHeader{}, parts, comment)
 	case action == "replace-header":
@@ -78,6 +80,8 @@ func (h *AfterResponses) Parse(line string, parts []string, comment string) (str
 		err = h.ParseHTTPRequest(&parsersActions.UnsetVar{}, parts, comment)
 	case strings.HasPrefix(action, "set-var("):
 		err = h.ParseHTTPRequest(&parsersActions.SetVar{}, parts, comment)
+	case strings.HasPrefix(action, "set-var-fmt"):
+		err = h.ParseHTTPRequest(&parsersActions.SetVarFmt{}, parts, comment)
 	case action == "set-log-level":
 		err = h.ParseHTTPRequest(&parsersActions.SetLogLevel{}, parts, comment)
 	case strings.HasPrefix(action, "del-acl("):
