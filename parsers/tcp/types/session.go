@@ -57,11 +57,23 @@ func (f *Session) Parse(parts []string, comment string) error {
 		err = f.ParseAction(&actions.Reject{}, parts)
 	case "silent-drop":
 		err = f.ParseAction(&actions.SilentDrop{}, parts)
+	case "set-dst":
+		err = f.ParseAction(&actions.SetDst{}, parts)
+	case "set-dst-port":
+		err = f.ParseAction(&actions.SetDstPort{}, parts)
 	case "set-fc-mark":
 		err = f.ParseAction(&actions.SetFcMark{}, parts)
 	case "set-fc-tos":
 		err = f.ParseAction(&actions.SetFcTos{}, parts)
-	default: //nolint:dupl
+	case "set-mark":
+		err = f.ParseAction(&actions.SetMark{}, parts)
+	case "set-src":
+		err = f.ParseAction(&tcpActions.SetSrc{}, parts)
+	case "set-src-port":
+		err = f.ParseAction(&actions.SetSrcPort{}, parts)
+	case "set-tos":
+		err = f.ParseAction(&actions.SetTos{}, parts)
+	default:
 		switch {
 		case strings.HasPrefix(parts[2], "track-sc"):
 			err = f.ParseAction(&actions.TrackSc{}, parts)
