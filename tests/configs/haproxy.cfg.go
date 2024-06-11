@@ -35,13 +35,23 @@ global
   stats socket $PWD/haproxy-runtime-api.3.sock level admin mode 777 expose-fd listeners process 3
   stats timeout 120s
   limited-quic
+  tune.applet.zero-copy-forwarding off
+  tune.buffers.limit 30
+  tune.buffers.reserve 3
+  tune.bufsize 32768
   tune.disable-zero-copy-forwarding
   tune.events.max-events-at-once 150
   tune.h1.zero-copy-fwd-recv on
   tune.h1.zero-copy-fwd-send on
+  tune.h2.be.glitches-threshold 16
+  tune.h2.fe.glitches-threshold 24
+  tune.h2.fe.max-total-streams 1048576
   tune.h2.zero-copy-fwd-send on
   tune.pt.zero-copy-forwarding on
+  tune.ring.queues 8
   tune.ssl.default-dh-param 2048
+  tune.quic.reorder-ratio 75
+  tune.quic.zero-copy-fwd-send on
   ssl-default-bind-options no-sslv3 no-tls-tickets
   ssl-default-bind-ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK
   ssl-load-extra-del-ext
@@ -49,7 +59,6 @@ global
   # random comment before snippet
   ###_config-snippet_### BEGIN
   tune.ssl.default-dh-param 2048
-  tune.bufsize 32768
   ssl-default-bind-client-sigalgs RSA+SHA256
   ssl-default-bind-sigalgs ECDSA+SHA256:RSA+SHA256
   ###_config-snippet_### END
