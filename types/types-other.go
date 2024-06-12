@@ -260,7 +260,7 @@ type Action interface {
 	GetComment() string
 }
 
-//sections:frontend,backend
+//sections:frontend,backend,defaults
 //name:http-request
 //struct:name:Requests
 //dir:http
@@ -553,7 +553,7 @@ type Action interface {
 type HTTPRequests struct{}
 
 //name:http-response
-//sections:frontend,backend
+//sections:frontend,backend,defaults
 //struct:name:Responses
 //dir:http
 //is:multiple
@@ -729,7 +729,7 @@ type HTTPRequests struct{}
 type HTTPResponses struct{}
 
 //name:http-after-response
-//sections:frontend,backend
+//sections:frontend,backend,defaults
 //struct:name:AfterResponses
 //dir:http
 //is:multiple
@@ -938,7 +938,7 @@ type TCPType interface {
 }
 
 //name:tcp-request
-//sections:frontend,backend
+//sections:frontend,backend,defaults
 //struct:name:Requests
 //dir:tcp
 //is:multiple

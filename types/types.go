@@ -103,7 +103,7 @@ type LogStdErr struct {
 	Comment     string
 }
 
-//sections:frontend,backend
+//sections:frontend,backend,defaults
 //name:acl
 //is:multiple
 //test:ok:acl url_stats path_beg /stats

@@ -17,6 +17,66 @@ limitations under the License.
 
 package integration_test
 
+const defaults_aclurlstatspathbegstats = `
+defaults test
+  acl url_stats path_beg /stats
+`
+const defaults_aclurlstaticpathbegistaticimages = `
+defaults test
+  acl url_static path_beg -i /static /images /javascript /stylesheets
+`
+const defaults_aclurlstaticpathendijpggifpngcss = `
+defaults test
+  acl url_static path_end -i .jpg .gif .png .css .js
+`
+const defaults_aclbeappoknbsrvbeappgt0 = `
+defaults test
+  acl be_app_ok nbsrv(be_app) gt 0
+`
+const defaults_aclbestaticoknbsrvbestaticgt0 = `
+defaults test
+  acl be_static_ok nbsrv(be_static) gt 0
+`
+const defaults_aclkeyreqhdrXAddACLKeymfound = `
+defaults test
+  acl key req.hdr(X-Add-ACL-Key) -m found
+`
+const defaults_acladdpathaddacl = `
+defaults test
+  acl add path /addacl
+`
+const defaults_acldelpathdelacl = `
+defaults test
+  acl del path /delacl
+`
+const defaults_aclmyhosthdrHostfmyhostlst = `
+defaults test
+  acl myhost hdr(Host) -f myhost.lst
+`
+const defaults_aclcleardstport80 = `
+defaults test
+  acl clear dst_port 80
+`
+const defaults_aclsecuredstport8080 = `
+defaults test
+  acl secure dst_port 8080
+`
+const defaults_aclloginpageurlbeglogin = `
+defaults test
+  acl login_page url_beg /login
+`
+const defaults_acllogouturlbeglogout = `
+defaults test
+  acl logout url_beg /logout
+`
+const defaults_acluidgivenurlregloginuserid = `
+defaults test
+  acl uid_given url_reg /login?userid=[^&]+
+`
+const defaults_aclcookiesethdrsubcookieSEEN1 = `
+defaults test
+  acl cookie_set hdr_sub(cookie) SEEN=1
+`
 const defaults_balanceroundrobin = `
 defaults test
   balance roundrobin
@@ -1093,6 +1153,1346 @@ const defaults_optionoriginaltoexcept127001comm = `
 defaults test
   option originalto except 127.0.0.1 # comment
 `
+const defaults_httprequestsetmapmaplstsrcreqhdr = `
+defaults test
+  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
+`
+const defaults_httprequestsetmapmaplstsrcreqhdr_ = `
+defaults test
+  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
+`
+const defaults_httprequestaddaclmaplstsrc = `
+defaults test
+  http-request add-acl(map.lst) [src]
+`
+const defaults_httprequestaddheaderXvaluevalue = `
+defaults test
+  http-request add-header X-value value
+`
+const defaults_httprequestcacheusecachename = `
+defaults test
+  http-request cache-use cache-name
+`
+const defaults_httprequestcacheusecachenameifFA = `
+defaults test
+  http-request cache-use cache-name if FALSE
+`
+const defaults_httprequestdelaclmaplstsrc = `
+defaults test
+  http-request del-acl(map.lst) [src]
+`
+const defaults_httprequestallow = `
+defaults test
+  http-request allow
+`
+const defaults_httprequestauth = `
+defaults test
+  http-request auth
+`
+const defaults_httprequestdelheaderXvalue = `
+defaults test
+  http-request del-header X-value
+`
+const defaults_httprequestdelheaderXvalueifTRUE = `
+defaults test
+  http-request del-header X-value if TRUE
+`
+const defaults_httprequestdelheaderXvaluemstrif = `
+defaults test
+  http-request del-header X-value -m str if TRUE
+`
+const defaults_httprequestdelmapmaplstsrcifvalu = `
+defaults test
+  http-request del-map(map.lst) %[src] if ! value
+`
+const defaults_httprequestdelmapmaplstsrc = `
+defaults test
+  http-request del-map(map.lst) %[src]
+`
+const defaults_httprequestdeny = `
+defaults test
+  http-request deny
+`
+const defaults_httprequestdenydenystatus400 = `
+defaults test
+  http-request deny deny_status 400
+`
+const defaults_httprequestdenyifTRUE = `
+defaults test
+  http-request deny if TRUE
+`
+const defaults_httprequestdenydenystatus400ifTR = `
+defaults test
+  http-request deny deny_status 400 if TRUE
+`
+const defaults_httprequestdenydenystatus400cont = `
+defaults test
+  http-request deny deny_status 400 content-type application/json if TRUE
+`
+const defaults_httprequestdenydenystatus400cont_ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json
+`
+const defaults_httprequestdenydenystatus400cont__ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json default-errorfiles
+`
+const defaults_httprequestdenydenystatus400cont___ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json errorfile errors
+`
+const defaults_httprequestdenydenystatus400cont____ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json string error if TRUE
+`
+const defaults_httprequestdenydenystatus400cont_____ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+`
+const defaults_httprequestdenydenystatus400cont______ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json file /var/errors.file
+`
+const defaults_httprequestdenydenystatus400cont_______ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
+`
+const defaults_httprequestdenydenystatus400cont________ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+`
+const defaults_httprequestdenydenystatus400cont_________ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+`
+const defaults_httprequestdenydenystatus400cont__________ = `
+defaults test
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+`
+const defaults_httprequestdisablel7retry = `
+defaults test
+  http-request disable-l7-retry
+`
+const defaults_httprequestdisablel7retryifFALSE = `
+defaults test
+  http-request disable-l7-retry if FALSE
+`
+const defaults_httprequestearlyhinthintsrc = `
+defaults test
+  http-request early-hint hint %[src]
+`
+const defaults_httprequestearlyhinthintsrcifFAL = `
+defaults test
+  http-request early-hint hint %[src] if FALSE
+`
+const defaults_httprequestearlyhintifFALSE = `
+defaults test
+  http-request early-hint if FALSE
+`
+const defaults_httprequestluafoo = `
+defaults test
+  http-request lua.foo
+`
+const defaults_httprequestluafooifFALSE = `
+defaults test
+  http-request lua.foo if FALSE
+`
+const defaults_httprequestluafooparam = `
+defaults test
+  http-request lua.foo param
+`
+const defaults_httprequestluafooparamparam2 = `
+defaults test
+  http-request lua.foo param param2
+`
+const defaults_httprequestnormalizeurifragmente = `
+defaults test
+  http-request normalize-uri fragment-encode
+`
+const defaults_httprequestnormalizeurifragmente_ = `
+defaults test
+  http-request normalize-uri fragment-encode if TRUE
+`
+const defaults_httprequestnormalizeurifragments = `
+defaults test
+  http-request normalize-uri fragment-strip
+`
+const defaults_httprequestnormalizeurifragments_ = `
+defaults test
+  http-request normalize-uri fragment-strip if TRUE
+`
+const defaults_httprequestnormalizeuripathmerge = `
+defaults test
+  http-request normalize-uri path-merge-slashes
+`
+const defaults_httprequestnormalizeuripathmerge_ = `
+defaults test
+  http-request normalize-uri path-merge-slashes if TRUE
+`
+const defaults_httprequestnormalizeuripathstrip = `
+defaults test
+  http-request normalize-uri path-strip-dot
+`
+const defaults_httprequestnormalizeuripathstrip_ = `
+defaults test
+  http-request normalize-uri path-strip-dot if TRUE
+`
+const defaults_httprequestnormalizeuripathstrip__ = `
+defaults test
+  http-request normalize-uri path-strip-dotdot
+`
+const defaults_httprequestnormalizeuripathstrip___ = `
+defaults test
+  http-request normalize-uri path-strip-dotdot full
+`
+const defaults_httprequestnormalizeuripathstrip____ = `
+defaults test
+  http-request normalize-uri path-strip-dotdot if TRUE
+`
+const defaults_httprequestnormalizeuripathstrip_____ = `
+defaults test
+  http-request normalize-uri path-strip-dotdot full if TRUE
+`
+const defaults_httprequestnormalizeuripercentde = `
+defaults test
+  http-request normalize-uri percent-decode-unreserved
+`
+const defaults_httprequestnormalizeuripercentde_ = `
+defaults test
+  http-request normalize-uri percent-decode-unreserved if TRUE
+`
+const defaults_httprequestnormalizeuripercentde__ = `
+defaults test
+  http-request normalize-uri percent-decode-unreserved strict
+`
+const defaults_httprequestnormalizeuripercentde___ = `
+defaults test
+  http-request normalize-uri percent-decode-unreserved strict if TRUE
+`
+const defaults_httprequestnormalizeuripercentto = `
+defaults test
+  http-request normalize-uri percent-to-uppercase
+`
+const defaults_httprequestnormalizeuripercentto_ = `
+defaults test
+  http-request normalize-uri percent-to-uppercase if TRUE
+`
+const defaults_httprequestnormalizeuripercentto__ = `
+defaults test
+  http-request normalize-uri percent-to-uppercase strict
+`
+const defaults_httprequestnormalizeuripercentto___ = `
+defaults test
+  http-request normalize-uri percent-to-uppercase strict if TRUE
+`
+const defaults_httprequestnormalizeuriquerysort = `
+defaults test
+  http-request normalize-uri query-sort-by-name
+`
+const defaults_httprequestnormalizeuriquerysort_ = `
+defaults test
+  http-request normalize-uri query-sort-by-name if TRUE
+`
+const defaults_httprequestredirectprefixhttpsmy = `
+defaults test
+  http-request redirect prefix https://mysite.com
+`
+const defaults_httprequestreject = `
+defaults test
+  http-request reject
+`
+const defaults_httprequestreplaceheaderUseragen = `
+defaults test
+  http-request replace-header User-agent curl foo
+`
+const defaults_httprequestreplacepathfoo = `
+defaults test
+  http-request replace-path (.*) /foo
+`
+const defaults_httprequestreplacepathfooifTRUE = `
+defaults test
+  http-request replace-path (.*) /foo if TRUE
+`
+const defaults_httprequestreplacepathqfoo = `
+defaults test
+  http-request replace-pathq (.*) /foo
+`
+const defaults_httprequestreplacepathqfooifTRUE = `
+defaults test
+  http-request replace-pathq (.*) /foo if TRUE
+`
+const defaults_httprequestreplaceurihttphttps1 = `
+defaults test
+  http-request replace-uri ^http://(.*) https://1
+`
+const defaults_httprequestreplaceurihttphttps1i = `
+defaults test
+  http-request replace-uri ^http://(.*) https://1 if FALSE
+`
+const defaults_httprequestreplacevalueXForwarde = `
+defaults test
+  http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+`
+const defaults_httprequestscaddgpc121 = `
+defaults test
+  http-request sc-add-gpc(1,2) 1
+`
+const defaults_httprequestscaddgpc121ifiserror = `
+defaults test
+  http-request sc-add-gpc(1,2) 1 if is-error
+`
+const defaults_httprequestscincgpc12 = `
+defaults test
+  http-request sc-inc-gpc(1,2)
+`
+const defaults_httprequestscincgpc12ifFALSE = `
+defaults test
+  http-request sc-inc-gpc(1,2) if FALSE
+`
+const defaults_httprequestscincgpc01 = `
+defaults test
+  http-request sc-inc-gpc0(1)
+`
+const defaults_httprequestscincgpc01ifFALSE = `
+defaults test
+  http-request sc-inc-gpc0(1) if FALSE
+`
+const defaults_httprequestscincgpc11 = `
+defaults test
+  http-request sc-inc-gpc1(1)
+`
+const defaults_httprequestscincgpc11ifFALSE = `
+defaults test
+  http-request sc-inc-gpc1(1) if FALSE
+`
+const defaults_httprequestscsetgpt12hdrHostlowe = `
+defaults test
+  http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
+`
+const defaults_httprequestscsetgpt01hdrHostlowe = `
+defaults test
+  http-request sc-set-gpt0(1) hdr(Host),lower
+`
+const defaults_httprequestscsetgpt0110 = `
+defaults test
+  http-request sc-set-gpt0(1) 10
+`
+const defaults_httprequestscsetgpt01hdrHostlowe_ = `
+defaults test
+  http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
+`
+const defaults_httprequestsendspoegroupenginegr = `
+defaults test
+  http-request send-spoe-group engine group
+`
+const defaults_httprequestsetheaderXvaluevalue = `
+defaults test
+  http-request set-header X-value value
+`
+const defaults_httprequestsetloglevelsilent = `
+defaults test
+  http-request set-log-level silent
+`
+const defaults_httprequestsetmark20 = `
+defaults test
+  http-request set-mark 20
+`
+const defaults_httprequestsetmark0x1Ab = `
+defaults test
+  http-request set-mark 0x1Ab
+`
+const defaults_httprequestsetnice0 = `
+defaults test
+  http-request set-nice 0
+`
+const defaults_httprequestsetnice0ifFALSE = `
+defaults test
+  http-request set-nice 0 if FALSE
+`
+const defaults_httprequestsetmethodPOST = `
+defaults test
+  http-request set-method POST
+`
+const defaults_httprequestsetmethodPOSTifFALSE = `
+defaults test
+  http-request set-method POST if FALSE
+`
+const defaults_httprequestsetpathhdrhostpath = `
+defaults test
+  http-request set-path /%[hdr(host)]%[path]
+`
+const defaults_httprequestsetpathqhdrhostpath = `
+defaults test
+  http-request set-pathq /%[hdr(host)]%[path]
+`
+const defaults_httprequestsetpriorityclassreqhd = `
+defaults test
+  http-request set-priority-class req.hdr(priority)
+`
+const defaults_httprequestsetpriorityclassreqhd_ = `
+defaults test
+  http-request set-priority-class req.hdr(priority) if FALSE
+`
+const defaults_httprequestsetpriorityoffsetreqh = `
+defaults test
+  http-request set-priority-offset req.hdr(offset)
+`
+const defaults_httprequestsetpriorityoffsetreqh_ = `
+defaults test
+  http-request set-priority-offset req.hdr(offset) if FALSE
+`
+const defaults_httprequestsetqueryqueryregsub3D = `
+defaults test
+  http-request set-query %[query,regsub(%3D,=,g)]
+`
+const defaults_httprequestsetsrchdrsrc = `
+defaults test
+  http-request set-src hdr(src)
+`
+const defaults_httprequestsetsrchdrsrcifFALSE = `
+defaults test
+  http-request set-src hdr(src) if FALSE
+`
+const defaults_httprequestsetsrcporthdrport = `
+defaults test
+  http-request set-src-port hdr(port)
+`
+const defaults_httprequestsetsrcporthdrportifFA = `
+defaults test
+  http-request set-src-port hdr(port) if FALSE
+`
+const defaults_httprequestsettimeoutserver20 = `
+defaults test
+  http-request set-timeout server 20
+`
+const defaults_httprequestsettimeouttunnel20 = `
+defaults test
+  http-request set-timeout tunnel 20
+`
+const defaults_httprequestsettimeouttunnel20sif = `
+defaults test
+  http-request set-timeout tunnel 20s if TRUE
+`
+const defaults_httprequestsettimeoutserver20sif = `
+defaults test
+  http-request set-timeout server 20s if TRUE
+`
+const defaults_httprequestsettimeoutclient20 = `
+defaults test
+  http-request set-timeout client 20
+`
+const defaults_httprequestsettimeoutclient20sif = `
+defaults test
+  http-request set-timeout client 20s if TRUE
+`
+const defaults_httprequestsettos0ifFALSE = `
+defaults test
+  http-request set-tos 0 if FALSE
+`
+const defaults_httprequestsettos0 = `
+defaults test
+  http-request set-tos 0
+`
+const defaults_httprequestseturihdrhostpath = `
+defaults test
+  http-request set-uri /%[hdr(host)]%[path]
+`
+const defaults_httprequestsetvarreqmyvarreqfhdr = `
+defaults test
+  http-request set-var(req.my_var) req.fhdr(user-agent),lower
+`
+const defaults_httprequestsetvarfmtreqmyvarreqf = `
+defaults test
+  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
+`
+const defaults_httprequestsilentdrop = `
+defaults test
+  http-request silent-drop
+`
+const defaults_httprequestsilentdropifFALSE = `
+defaults test
+  http-request silent-drop if FALSE
+`
+const defaults_httprequeststrictmodeon = `
+defaults test
+  http-request strict-mode on
+`
+const defaults_httprequeststrictmodeonifFALSE = `
+defaults test
+  http-request strict-mode on if FALSE
+`
+const defaults_httprequesttarpit = `
+defaults test
+  http-request tarpit
+`
+const defaults_httprequesttarpitdenystatus400 = `
+defaults test
+  http-request tarpit deny_status 400
+`
+const defaults_httprequesttarpitifTRUE = `
+defaults test
+  http-request tarpit if TRUE
+`
+const defaults_httprequesttarpitdenystatus400if = `
+defaults test
+  http-request tarpit deny_status 400 if TRUE
+`
+const defaults_httprequesttarpitdenystatus400co = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json if TRUE
+`
+const defaults_httprequesttarpitdenystatus400co_ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json
+`
+const defaults_httprequesttarpitdenystatus400co__ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json default-errorfiles
+`
+const defaults_httprequesttarpitdenystatus400co___ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json errorfile errors
+`
+const defaults_httprequesttarpitdenystatus400co____ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json string error if TRUE
+`
+const defaults_httprequesttarpitdenystatus400co_____ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+`
+const defaults_httprequesttarpitdenystatus400co______ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
+`
+const defaults_httprequesttarpitdenystatus400co_______ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
+`
+const defaults_httprequesttarpitdenystatus400co________ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
+`
+const defaults_httprequesttarpitdenystatus400co_________ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+`
+const defaults_httprequesttarpitdenystatus400co__________ = `
+defaults test
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+`
+const defaults_httprequesttracksc0src = `
+defaults test
+  http-request track-sc0 src
+`
+const defaults_httprequesttracksc1src = `
+defaults test
+  http-request track-sc1 src
+`
+const defaults_httprequesttracksc2src = `
+defaults test
+  http-request track-sc2 src
+`
+const defaults_httprequesttracksc5src = `
+defaults test
+  http-request track-sc5 src
+`
+const defaults_httprequesttracksc5srctableatabl = `
+defaults test
+  http-request track-sc5 src table a_table
+`
+const defaults_httprequesttracksc5srctableatabl_ = `
+defaults test
+  http-request track-sc5 src table a_table if some_cond
+`
+const defaults_httprequesttracksc5srcifsomecond = `
+defaults test
+  http-request track-sc5 src if some_cond
+`
+const defaults_httprequestunsetvarreqmyvar = `
+defaults test
+  http-request unset-var(req.my_var)
+`
+const defaults_httprequestunsetvarreqmyvarifFAL = `
+defaults test
+  http-request unset-var(req.my_var) if FALSE
+`
+const defaults_httprequestwaitforbodytime20s = `
+defaults test
+  http-request wait-for-body time 20s
+`
+const defaults_httprequestwaitforbodytime20sifT = `
+defaults test
+  http-request wait-for-body time 20s if TRUE
+`
+const defaults_httprequestwaitforbodytime20satl = `
+defaults test
+  http-request wait-for-body time 20s at-least 100k
+`
+const defaults_httprequestwaitforbodytime20satl_ = `
+defaults test
+  http-request wait-for-body time 20s at-least 100k if TRUE
+`
+const defaults_httprequestwaitforhandshake = `
+defaults test
+  http-request wait-for-handshake
+`
+const defaults_httprequestwaitforhandshakeifFAL = `
+defaults test
+  http-request wait-for-handshake if FALSE
+`
+const defaults_httprequestdoresolvetxnmyipmydns = `
+defaults test
+  http-request do-resolve(txn.myip,mydns) hdr(Host),lower
+`
+const defaults_httprequestdoresolvetxnmyipmydns_ = `
+defaults test
+  http-request do-resolve(txn.myip,mydns) hdr(Host),lower if { var(txn.myip) -m found }
+`
+const defaults_httprequestdoresolvetxnmyipmydns__ = `
+defaults test
+  http-request do-resolve(txn.myip,mydns) hdr(Host),lower unless { var(txn.myip) -m found }
+`
+const defaults_httprequestdoresolvetxnmyipmydns___ = `
+defaults test
+  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
+`
+const defaults_httprequestdoresolvetxnmyipmydns____ = `
+defaults test
+  http-request do-resolve(txn.myip,mydns,ipv6) hdr(Host),lower
+`
+const defaults_httprequestsetdstvartxnmyip = `
+defaults test
+  http-request set-dst var(txn.myip)
+`
+const defaults_httprequestsetdstvartxnmyipifvar = `
+defaults test
+  http-request set-dst var(txn.myip) if { var(txn.myip) -m found }
+`
+const defaults_httprequestsetdstvartxnmyipunles = `
+defaults test
+  http-request set-dst var(txn.myip) unless { var(txn.myip) -m found }
+`
+const defaults_httprequestsetdstporthdrxport = `
+defaults test
+  http-request set-dst-port hdr(x-port)
+`
+const defaults_httprequestsetdstporthdrxportifv = `
+defaults test
+  http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
+`
+const defaults_httprequestsetdstporthdrxportunl = `
+defaults test
+  http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
+`
+const defaults_httprequestsetdstportint4000 = `
+defaults test
+  http-request set-dst-port int(4000)
+`
+const defaults_httprequestreturnstatus400defaul = `
+defaults test
+  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturnstatus400errorf = `
+defaults test
+  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturnstatus400errorf_ = `
+defaults test
+  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+`
+const defaults_httprequestredirectlocationfileh = `
+defaults test
+  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+`
+const defaults_httprequestsetbandwidthlimitmyli = `
+defaults test
+  http-request set-bandwidth-limit my-limit
+`
+const defaults_httprequestsetbandwidthlimitmyli_ = `
+defaults test
+  http-request set-bandwidth-limit my-limit limit 1m period 10s
+`
+const defaults_httprequestsetbandwidthlimitmyli__ = `
+defaults test
+  http-request set-bandwidth-limit my-limit period 10s
+`
+const defaults_httprequestsetbandwidthlimitmyli___ = `
+defaults test
+  http-request set-bandwidth-limit my-limit limit 1m
+`
+const defaults_httprequestsetbcmark123 = `
+defaults test
+  http-request set-bc-mark 123
+`
+const defaults_httprequestsetbcmark0xffffffff = `
+defaults test
+  http-request set-bc-mark 0xffffffff
+`
+const defaults_httprequestsetbcmarkhdrportifFAL = `
+defaults test
+  http-request set-bc-mark hdr(port) if FALSE
+`
+const defaults_httprequestsetbctos10 = `
+defaults test
+  http-request set-bc-tos 10
+`
+const defaults_httprequestsetfcmark0 = `
+defaults test
+  http-request set-fc-mark 0
+`
+const defaults_httprequestsetfctos0xffifTRUE = `
+defaults test
+  http-request set-fc-tos 0xff if TRUE
+`
+const defaults_httprequestaddheaderAuthorizatio = `
+defaults test
+  http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
+`
+const defaults_httprequestaddheaderAuthorisatio = `
+defaults test
+  http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
+`
+const defaults_httprequestreturnstatus200conten = `
+defaults test
+  http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturnstatus200conten_ = `
+defaults test
+  http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext = `
+defaults test
+  http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext_ = `
+defaults test
+  http-request return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext__ = `
+defaults test
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext___ = `
+defaults test
+  http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext____ = `
+defaults test
+  http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext_____ = `
+defaults test
+  http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext______ = `
+defaults test
+  http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+`
+const defaults_httprequestreturncontenttypetext_______ = `
+defaults test
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
+`
+const defaults_httprequestredirectlocationfileh_ = `
+defaults test
+  http-request redirect location /file.html if { var(txn.routecookie) "ROUTEMP" }:1
+`
+const defaults_httpresponsesetmapmaplstsrcreshd = `
+defaults test
+  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+`
+const defaults_httpresponsesetmapmaplstsrcreshd_ = `
+defaults test
+  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+`
+const defaults_httpresponseaddaclmaplstsrc = `
+defaults test
+  http-response add-acl(map.lst) [src]
+`
+const defaults_httpresponseaddheaderXvaluevalue = `
+defaults test
+  http-response add-header X-value value
+`
+const defaults_httpresponsedelaclmaplstsrc = `
+defaults test
+  http-response del-acl(map.lst) [src]
+`
+const defaults_httpresponseallow = `
+defaults test
+  http-response allow
+`
+const defaults_httpresponsecachestorecachename = `
+defaults test
+  http-response cache-store cache-name
+`
+const defaults_httpresponsecachestorecachenamei = `
+defaults test
+  http-response cache-store cache-name if FALSE
+`
+const defaults_httpresponsedelheaderXvalue = `
+defaults test
+  http-response del-header X-value
+`
+const defaults_httpresponsedelmapmaplstsrcifval = `
+defaults test
+  http-response del-map(map.lst) %[src] if ! value
+`
+const defaults_httpresponsedelmapmaplstsrc = `
+defaults test
+  http-response del-map(map.lst) %[src]
+`
+const defaults_httpresponsedeny = `
+defaults test
+  http-response deny
+`
+const defaults_httpresponsedenydenystatus400 = `
+defaults test
+  http-response deny deny_status 400
+`
+const defaults_httpresponsedenyifTRUE = `
+defaults test
+  http-response deny if TRUE
+`
+const defaults_httpresponsedenydenystatus400ifT = `
+defaults test
+  http-response deny deny_status 400 if TRUE
+`
+const defaults_httpresponsedenydenystatus400con = `
+defaults test
+  http-response deny deny_status 400 content-type application/json if TRUE
+`
+const defaults_httpresponsedenydenystatus400con_ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json
+`
+const defaults_httpresponsedenydenystatus400con__ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json default-errorfiles
+`
+const defaults_httpresponsedenydenystatus400con___ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json errorfile errors
+`
+const defaults_httpresponsedenydenystatus400con____ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json string error if TRUE
+`
+const defaults_httpresponsedenydenystatus400con_____ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+`
+const defaults_httpresponsedenydenystatus400con______ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json file /var/errors.file
+`
+const defaults_httpresponsedenydenystatus400con_______ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
+`
+const defaults_httpresponsedenydenystatus400con________ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+`
+const defaults_httpresponsedenydenystatus400con_________ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+`
+const defaults_httpresponsedenydenystatus400con__________ = `
+defaults test
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+`
+const defaults_httpresponseluafoo = `
+defaults test
+  http-response lua.foo
+`
+const defaults_httpresponseluafooifFALSE = `
+defaults test
+  http-response lua.foo if FALSE
+`
+const defaults_httpresponseluafooparam = `
+defaults test
+  http-response lua.foo param
+`
+const defaults_httpresponseluafooparamparam2 = `
+defaults test
+  http-response lua.foo param param2
+`
+const defaults_httpresponseredirectprefixhttpsm = `
+defaults test
+  http-response redirect prefix https://mysite.com
+`
+const defaults_httpresponsereplaceheaderUserage = `
+defaults test
+  http-response replace-header User-agent curl foo
+`
+const defaults_httpresponsereplacevalueXForward = `
+defaults test
+  http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+`
+const defaults_httpresponsereturnstatus400defau = `
+defaults test
+  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturnstatus400error = `
+defaults test
+  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturnstatus400error_ = `
+defaults test
+  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+`
+const defaults_httpresponsescaddgpc121 = `
+defaults test
+  http-response sc-add-gpc(1,2) 1
+`
+const defaults_httpresponsescaddgpc121ifiserror = `
+defaults test
+  http-response sc-add-gpc(1,2) 1 if is-error
+`
+const defaults_httpresponsescincgpc12 = `
+defaults test
+  http-response sc-inc-gpc(1,2)
+`
+const defaults_httpresponsescincgpc12ifFALSE = `
+defaults test
+  http-response sc-inc-gpc(1,2) if FALSE
+`
+const defaults_httpresponsescincgpc01 = `
+defaults test
+  http-response sc-inc-gpc0(1)
+`
+const defaults_httpresponsescincgpc01ifFALSE = `
+defaults test
+  http-response sc-inc-gpc0(1) if FALSE
+`
+const defaults_httpresponsescincgpc11 = `
+defaults test
+  http-response sc-inc-gpc1(1)
+`
+const defaults_httpresponsescincgpc11ifFALSE = `
+defaults test
+  http-response sc-inc-gpc1(1) if FALSE
+`
+const defaults_httpresponsescsetgpt12hdrHostlow = `
+defaults test
+  http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
+`
+const defaults_httpresponsescsetgpt01hdrHostlow = `
+defaults test
+  http-response sc-set-gpt0(1) hdr(Host),lower
+`
+const defaults_httpresponsescsetgpt0110 = `
+defaults test
+  http-response sc-set-gpt0(1) 10
+`
+const defaults_httpresponsescsetgpt01hdrHostlow_ = `
+defaults test
+  http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
+`
+const defaults_httpresponsesendspoegroupengineg = `
+defaults test
+  http-response send-spoe-group engine group
+`
+const defaults_httpresponsesetheaderXvaluevalue = `
+defaults test
+  http-response set-header X-value value
+`
+const defaults_httpresponsesetloglevelsilent = `
+defaults test
+  http-response set-log-level silent
+`
+const defaults_httpresponsesetmark20 = `
+defaults test
+  http-response set-mark 20
+`
+const defaults_httpresponsesetmark0x1Ab = `
+defaults test
+  http-response set-mark 0x1Ab
+`
+const defaults_httpresponsesetnice0 = `
+defaults test
+  http-response set-nice 0
+`
+const defaults_httpresponsesetnice0ifFALSE = `
+defaults test
+  http-response set-nice 0 if FALSE
+`
+const defaults_httpresponsesetstatus503 = `
+defaults test
+  http-response set-status 503
+`
+const defaults_httpresponsesettimeoutserver20 = `
+defaults test
+  http-response set-timeout server 20
+`
+const defaults_httpresponsesettimeouttunnel20 = `
+defaults test
+  http-response set-timeout tunnel 20
+`
+const defaults_httpresponsesettimeouttunnel20si = `
+defaults test
+  http-response set-timeout tunnel 20s if TRUE
+`
+const defaults_httpresponsesettimeoutserver20si = `
+defaults test
+  http-response set-timeout server 20s if TRUE
+`
+const defaults_httpresponsesettimeoutclient20 = `
+defaults test
+  http-response set-timeout client 20
+`
+const defaults_httpresponsesettimeoutclient20si = `
+defaults test
+  http-response set-timeout client 20s if TRUE
+`
+const defaults_httpresponsesettos0ifFALSE = `
+defaults test
+  http-response set-tos 0 if FALSE
+`
+const defaults_httpresponsesettos0 = `
+defaults test
+  http-response set-tos 0
+`
+const defaults_httpresponsesetvarreqmyvarresfhd = `
+defaults test
+  http-response set-var(req.my_var) res.fhdr(user-agent),lower
+`
+const defaults_httpresponsesetvarfmtreqmyvarres = `
+defaults test
+  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
+`
+const defaults_httpresponsesilentdrop = `
+defaults test
+  http-response silent-drop
+`
+const defaults_httpresponsesilentdropifFALSE = `
+defaults test
+  http-response silent-drop if FALSE
+`
+const defaults_httpresponseunsetvarreqmyvar = `
+defaults test
+  http-response unset-var(req.my_var)
+`
+const defaults_httpresponseunsetvarreqmyvarifFA = `
+defaults test
+  http-response unset-var(req.my_var) if FALSE
+`
+const defaults_httpresponsetracksc0srcifFALSE = `
+defaults test
+  http-response track-sc0 src if FALSE
+`
+const defaults_httpresponsetracksc0srctabletrif = `
+defaults test
+  http-response track-sc0 src table tr if FALSE
+`
+const defaults_httpresponsetracksc0src = `
+defaults test
+  http-response track-sc0 src
+`
+const defaults_httpresponsetracksc1srcifFALSE = `
+defaults test
+  http-response track-sc1 src if FALSE
+`
+const defaults_httpresponsetracksc1srctabletrif = `
+defaults test
+  http-response track-sc1 src table tr if FALSE
+`
+const defaults_httpresponsetracksc1src = `
+defaults test
+  http-response track-sc1 src
+`
+const defaults_httpresponsetracksc2srcifFALSE = `
+defaults test
+  http-response track-sc2 src if FALSE
+`
+const defaults_httpresponsetracksc2srctabletrif = `
+defaults test
+  http-response track-sc2 src table tr if FALSE
+`
+const defaults_httpresponsetracksc2src = `
+defaults test
+  http-response track-sc2 src
+`
+const defaults_httpresponsetracksc5src = `
+defaults test
+  http-response track-sc5 src
+`
+const defaults_httpresponsetracksc5srctableatab = `
+defaults test
+  http-response track-sc5 src table a_table
+`
+const defaults_httpresponsetracksc5srctableatab_ = `
+defaults test
+  http-response track-sc5 src table a_table if some_cond
+`
+const defaults_httpresponsetracksc5srcifsomecon = `
+defaults test
+  http-response track-sc5 src if some_cond
+`
+const defaults_httpresponsestrictmodeon = `
+defaults test
+  http-response strict-mode on
+`
+const defaults_httpresponsestrictmodeonifFALSE = `
+defaults test
+  http-response strict-mode on if FALSE
+`
+const defaults_httpresponsewaitforbodytime20s = `
+defaults test
+  http-response wait-for-body time 20s
+`
+const defaults_httpresponsewaitforbodytime20sif = `
+defaults test
+  http-response wait-for-body time 20s if TRUE
+`
+const defaults_httpresponsewaitforbodytime20sat = `
+defaults test
+  http-response wait-for-body time 20s at-least 100k
+`
+const defaults_httpresponsewaitforbodytime20sat_ = `
+defaults test
+  http-response wait-for-body time 20s at-least 100k if TRUE
+`
+const defaults_httpresponsesetbandwidthlimitmyl = `
+defaults test
+  http-response set-bandwidth-limit my-limit
+`
+const defaults_httpresponsesetbandwidthlimitmyl_ = `
+defaults test
+  http-response set-bandwidth-limit my-limit limit 1m period 10s
+`
+const defaults_httpresponsesetbandwidthlimitmyl__ = `
+defaults test
+  http-response set-bandwidth-limit my-limit period 10s
+`
+const defaults_httpresponsesetbandwidthlimitmyl___ = `
+defaults test
+  http-response set-bandwidth-limit my-limit limit 1m
+`
+const defaults_httpresponsesetfcmark2000 = `
+defaults test
+  http-response set-fc-mark 2000
+`
+const defaults_httpresponsesetfctos200 = `
+defaults test
+  http-response set-fc-tos 200
+`
+const defaults_httpresponsereturnstatus200conte = `
+defaults test
+  http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturnstatus200conte_ = `
+defaults test
+  http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex = `
+defaults test
+  http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex_ = `
+defaults test
+  http-response return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex__ = `
+defaults test
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex___ = `
+defaults test
+  http-response return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex____ = `
+defaults test
+  http-response return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex_____ = `
+defaults test
+  http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex______ = `
+defaults test
+  http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+`
+const defaults_httpresponsereturncontenttypetex_______ = `
+defaults test
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
+`
+const defaults_httpafterresponseallow = `
+defaults test
+  http-after-response allow
+`
+const defaults_httpafterresponseallowifacl = `
+defaults test
+  http-after-response allow if acl
+`
+const defaults_httpafterresponsesetheaderStrict = `
+defaults test
+  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
+`
+const defaults_httpafterresponseaddheaderXHeade = `
+defaults test
+  http-after-response add-header X-Header \"foo=bar\"
+`
+const defaults_httpafterresponseaddheaderXHeade_ = `
+defaults test
+  http-after-response add-header X-Header \"foo=bar\" if acl
+`
+const defaults_httpafterresponseaddheaderXHeade__ = `
+defaults test
+  http-after-response add-header X-Header \"foo=bar\" unless acl
+`
+const defaults_httpafterresponseallowunlessacl = `
+defaults test
+  http-after-response allow unless acl
+`
+const defaults_httpafterresponsedelheaderXValue = `
+defaults test
+  http-after-response del-header X-Value
+`
+const defaults_httpafterresponsedelheaderXValue_ = `
+defaults test
+  http-after-response del-header X-Value -m GET
+`
+const defaults_httpafterresponsedelheaderXValue__ = `
+defaults test
+  http-after-response del-header X-Value -m GET if acl
+`
+const defaults_httpafterresponsedelheaderXValue___ = `
+defaults test
+  http-after-response del-header X-Value -m GET unless acl
+`
+const defaults_httpafterresponsereplaceheaderSe = `
+defaults test
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
+`
+const defaults_httpafterresponsereplaceheaderSe_ = `
+defaults test
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
+`
+const defaults_httpafterresponsereplacevalueCac = `
+defaults test
+  http-after-response replace-value Cache-control ^public$ private
+`
+const defaults_httpafterresponsereplacevalueCac_ = `
+defaults test
+  http-after-response replace-value Cache-control ^public$ private if acl
+`
+const defaults_httpafterresponsesetstatus431 = `
+defaults test
+  http-after-response set-status 431
+`
+const defaults_httpafterresponsesetstatus503rea = `
+defaults test
+  http-after-response set-status 503 reason \"SlowDown\"
+`
+const defaults_httpafterresponsesetstatus500rea = `
+defaults test
+  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
+`
+const defaults_httpafterresponsesetstatus500rea_ = `
+defaults test
+  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
+`
+const defaults_httpafterresponsesetvarsesslastr = `
+defaults test
+  http-after-response set-var(sess.last_redir) res.hdr(location)
+`
+const defaults_httpafterresponsesetvarsesslastr_ = `
+defaults test
+  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
+`
+const defaults_httpafterresponsesetvarsesslastr__ = `
+defaults test
+  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
+`
+const defaults_httpafterresponsestrictmodeon = `
+defaults test
+  http-after-response strict-mode on
+`
+const defaults_httpafterresponsestrictmodeoff = `
+defaults test
+  http-after-response strict-mode off
+`
+const defaults_httpafterresponseunsetvarsesslas = `
+defaults test
+  http-after-response unset-var(sess.last_redir)
+`
+const defaults_httpafterresponseunsetvarsesslas_ = `
+defaults test
+  http-after-response unset-var(sess.last_redir) if acl
+`
+const defaults_httpafterresponseunsetvarsesslas__ = `
+defaults test
+  http-after-response unset-var(sess.last_redir) unless acl
+`
+const defaults_httpafterresponsesetmapmaplstsrc = `
+defaults test
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+`
+const defaults_httpafterresponsesetmapmaplstsrc_ = `
+defaults test
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+`
+const defaults_httpafterresponsedelaclmaplstsrc = `
+defaults test
+  http-after-response del-acl(map.lst) [src]
+`
+const defaults_httpafterresponsedelmapmaplstsrc = `
+defaults test
+  http-after-response del-map(map.lst) %[src] if ! value
+`
+const defaults_httpafterresponsedelmapmaplstsrc_ = `
+defaults test
+  http-after-response del-map(map.lst) %[src]
+`
+const defaults_httpafterresponsescaddgpc121 = `
+defaults test
+  http-after-response sc-add-gpc(1,2) 1
+`
+const defaults_httpafterresponsescaddgpc121ifis = `
+defaults test
+  http-after-response sc-add-gpc(1,2) 1 if is-error
+`
+const defaults_httpafterresponsescincgpc12 = `
+defaults test
+  http-after-response sc-inc-gpc(1,2)
+`
+const defaults_httpafterresponsescincgpc12ifise = `
+defaults test
+  http-after-response sc-inc-gpc(1,2) if is-error
+`
+const defaults_httpafterresponsescincgpc01 = `
+defaults test
+  http-after-response sc-inc-gpc0(1)
+`
+const defaults_httpafterresponsescincgpc01ifFAL = `
+defaults test
+  http-after-response sc-inc-gpc0(1) if FALSE
+`
+const defaults_httpafterresponsescincgpc11 = `
+defaults test
+  http-after-response sc-inc-gpc1(1)
+`
+const defaults_httpafterresponsescincgpc11ifFAL = `
+defaults test
+  http-after-response sc-inc-gpc1(1) if FALSE
+`
+const defaults_httpafterresponsescsetgpt1210 = `
+defaults test
+  http-after-response sc-set-gpt(1,2) 10
+`
+const defaults_httpafterresponsescsetgpt01hdrHo = `
+defaults test
+  http-after-response sc-set-gpt0(1) hdr(Host),lower
+`
+const defaults_httpafterresponsescsetgpt0110 = `
+defaults test
+  http-after-response sc-set-gpt0(1) 10
+`
+const defaults_httpafterresponsescsetgpt01hdrHo_ = `
+defaults test
+  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
+`
 const defaults_httperrorstatus400 = `
 defaults test
   http-error status 400
@@ -1380,6 +2780,694 @@ defaults test
 const defaults_tcpcheckunsetvartxnfrom = `
 defaults test
   tcp-check unset-var(txn.from)
+`
+const defaults_tcprequestcontentaccept = `
+defaults test
+  tcp-request content accept
+`
+const defaults_tcprequestcontentacceptifHTTP = `
+defaults test
+  tcp-request content accept if !HTTP
+`
+const defaults_tcprequestcontentreject = `
+defaults test
+  tcp-request content reject
+`
+const defaults_tcprequestcontentrejectifHTTP = `
+defaults test
+  tcp-request content reject if !HTTP
+`
+const defaults_tcprequestcontentcapturereqpaylo = `
+defaults test
+  tcp-request content capture req.payload(0,6) len 6
+`
+const defaults_tcprequestcontentcapturereqpaylo_ = `
+defaults test
+  tcp-request content capture req.payload(0,6) len 6 if !HTTP
+`
+const defaults_tcprequestcontentdoresolvetxnmyi = `
+defaults test
+  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
+`
+const defaults_tcprequestcontentdoresolvetxnmyi_ = `
+defaults test
+  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
+`
+const defaults_tcprequestcontentsetpriorityclas = `
+defaults test
+  tcp-request content set-priority-class int(1)
+`
+const defaults_tcprequestcontentsetpriorityclas_ = `
+defaults test
+  tcp-request content set-priority-class int(1) if some_check
+`
+const defaults_tcprequestcontentsetpriorityoffs = `
+defaults test
+  tcp-request content set-priority-offset int(10)
+`
+const defaults_tcprequestcontentsetpriorityoffs_ = `
+defaults test
+  tcp-request content set-priority-offset int(10) if some_check
+`
+const defaults_tcprequestcontenttracksc0src = `
+defaults test
+  tcp-request content track-sc0 src
+`
+const defaults_tcprequestcontenttracksc0srcifso = `
+defaults test
+  tcp-request content track-sc0 src if some_check
+`
+const defaults_tcprequestcontenttracksc1src = `
+defaults test
+  tcp-request content track-sc1 src
+`
+const defaults_tcprequestcontenttracksc1srcifso = `
+defaults test
+  tcp-request content track-sc1 src if some_check
+`
+const defaults_tcprequestcontenttracksc2src = `
+defaults test
+  tcp-request content track-sc2 src
+`
+const defaults_tcprequestcontenttracksc2srcifso = `
+defaults test
+  tcp-request content track-sc2 src if some_check
+`
+const defaults_tcprequestcontenttracksc0srctabl = `
+defaults test
+  tcp-request content track-sc0 src table foo
+`
+const defaults_tcprequestcontenttracksc0srctabl_ = `
+defaults test
+  tcp-request content track-sc0 src table foo if some_check
+`
+const defaults_tcprequestcontenttracksc1srctabl = `
+defaults test
+  tcp-request content track-sc1 src table foo
+`
+const defaults_tcprequestcontenttracksc1srctabl_ = `
+defaults test
+  tcp-request content track-sc1 src table foo if some_check
+`
+const defaults_tcprequestcontenttracksc2srctabl = `
+defaults test
+  tcp-request content track-sc2 src table foo
+`
+const defaults_tcprequestcontenttracksc2srctabl_ = `
+defaults test
+  tcp-request content track-sc2 src table foo if some_check
+`
+const defaults_tcprequestcontenttracksc5src = `
+defaults test
+  tcp-request content track-sc5 src
+`
+const defaults_tcprequestcontenttracksc5srcifso = `
+defaults test
+  tcp-request content track-sc5 src if some_check
+`
+const defaults_tcprequestcontenttracksc5srctabl = `
+defaults test
+  tcp-request content track-sc5 src table foo
+`
+const defaults_tcprequestcontenttracksc5srctabl_ = `
+defaults test
+  tcp-request content track-sc5 src table foo if some_check
+`
+const defaults_tcprequestcontentscincgpc12 = `
+defaults test
+  tcp-request content sc-inc-gpc(1,2)
+`
+const defaults_tcprequestcontentscincgpc12ifise = `
+defaults test
+  tcp-request content sc-inc-gpc(1,2) if is-error
+`
+const defaults_tcprequestcontentscincgpc02 = `
+defaults test
+  tcp-request content sc-inc-gpc0(2)
+`
+const defaults_tcprequestcontentscincgpc02ifise = `
+defaults test
+  tcp-request content sc-inc-gpc0(2) if is-error
+`
+const defaults_tcprequestcontentscincgpc12_ = `
+defaults test
+  tcp-request content sc-inc-gpc1(2)
+`
+const defaults_tcprequestcontentscincgpc12ifise_ = `
+defaults test
+  tcp-request content sc-inc-gpc1(2) if is-error
+`
+const defaults_tcprequestcontentscsetgptx91337i = `
+defaults test
+  tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
+`
+const defaults_tcprequestcontentscsetgpt001337 = `
+defaults test
+  tcp-request content sc-set-gpt0(0) 1337
+`
+const defaults_tcprequestcontentscsetgpt001337i = `
+defaults test
+  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+`
+const defaults_tcprequestcontentscaddgpc121 = `
+defaults test
+  tcp-request content sc-add-gpc(1,2) 1
+`
+const defaults_tcprequestcontentscaddgpc121ifis = `
+defaults test
+  tcp-request content sc-add-gpc(1,2) 1 if is-error
+`
+const defaults_tcprequestcontentsetdstipv410001 = `
+defaults test
+  tcp-request content set-dst ipv4(10.0.0.1)
+`
+const defaults_tcprequestcontentsetvarsesssrcsr = `
+defaults test
+  tcp-request content set-var(sess.src) src
+`
+const defaults_tcprequestcontentsetvarsessdnssl = `
+defaults test
+  tcp-request content set-var(sess.dn) ssl_c_s_dn
+`
+const defaults_tcprequestcontentsetvarfmtsesssr = `
+defaults test
+  tcp-request content set-var-fmt(sess.src) src
+`
+const defaults_tcprequestcontentsetvarfmtsessdn = `
+defaults test
+  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
+`
+const defaults_tcprequestcontentunsetvarsesssrc = `
+defaults test
+  tcp-request content unset-var(sess.src)
+`
+const defaults_tcprequestcontentunsetvarsessdn = `
+defaults test
+  tcp-request content unset-var(sess.dn)
+`
+const defaults_tcprequestcontentsilentdrop = `
+defaults test
+  tcp-request content silent-drop
+`
+const defaults_tcprequestcontentsilentdropifHTT = `
+defaults test
+  tcp-request content silent-drop if !HTTP
+`
+const defaults_tcprequestcontentsendspoegroupen = `
+defaults test
+  tcp-request content send-spoe-group engine group
+`
+const defaults_tcprequestcontentuseserviceluade = `
+defaults test
+  tcp-request content use-service lua.deny
+`
+const defaults_tcprequestcontentuseserviceluade_ = `
+defaults test
+  tcp-request content use-service lua.deny if !HTTP
+`
+const defaults_tcprequestcontentluafoo = `
+defaults test
+  tcp-request content lua.foo
+`
+const defaults_tcprequestcontentluafooparamifHT = `
+defaults test
+  tcp-request content lua.foo param if !HTTP
+`
+const defaults_tcprequestcontentluafooparampara = `
+defaults test
+  tcp-request content lua.foo param param1
+`
+const defaults_tcprequestconnectionaccept = `
+defaults test
+  tcp-request connection accept
+`
+const defaults_tcprequestconnectionacceptifHTTP = `
+defaults test
+  tcp-request connection accept if !HTTP
+`
+const defaults_tcprequestconnectionreject = `
+defaults test
+  tcp-request connection reject
+`
+const defaults_tcprequestconnectionrejectifHTTP = `
+defaults test
+  tcp-request connection reject if !HTTP
+`
+const defaults_tcprequestconnectionexpectproxyl = `
+defaults test
+  tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
+`
+const defaults_tcprequestconnectionexpectnetsca = `
+defaults test
+  tcp-request connection expect-netscaler-cip layer4
+`
+const defaults_tcprequestconnectionexpectnetsca_ = `
+defaults test
+  tcp-request connection expect-netscaler-cip layer4 if TRUE
+`
+const defaults_tcprequestconnectioncapturereqpa = `
+defaults test
+  tcp-request connection capture req.payload(0,6) len 6
+`
+const defaults_tcprequestconnectiontracksc0src = `
+defaults test
+  tcp-request connection track-sc0 src
+`
+const defaults_tcprequestconnectiontracksc0srci = `
+defaults test
+  tcp-request connection track-sc0 src if some_check
+`
+const defaults_tcprequestconnectiontracksc1src = `
+defaults test
+  tcp-request connection track-sc1 src
+`
+const defaults_tcprequestconnectiontracksc1srci = `
+defaults test
+  tcp-request connection track-sc1 src if some_check
+`
+const defaults_tcprequestconnectiontracksc2src = `
+defaults test
+  tcp-request connection track-sc2 src
+`
+const defaults_tcprequestconnectiontracksc2srci = `
+defaults test
+  tcp-request connection track-sc2 src if some_check
+`
+const defaults_tcprequestconnectiontracksc0srct = `
+defaults test
+  tcp-request connection track-sc0 src table foo
+`
+const defaults_tcprequestconnectiontracksc0srct_ = `
+defaults test
+  tcp-request connection track-sc0 src table foo if some_check
+`
+const defaults_tcprequestconnectiontracksc1srct = `
+defaults test
+  tcp-request connection track-sc1 src table foo
+`
+const defaults_tcprequestconnectiontracksc1srct_ = `
+defaults test
+  tcp-request connection track-sc1 src table foo if some_check
+`
+const defaults_tcprequestconnectiontracksc2srct = `
+defaults test
+  tcp-request connection track-sc2 src table foo
+`
+const defaults_tcprequestconnectiontracksc2srct_ = `
+defaults test
+  tcp-request connection track-sc2 src table foo if some_check
+`
+const defaults_tcprequestconnectiontracksc5src = `
+defaults test
+  tcp-request connection track-sc5 src
+`
+const defaults_tcprequestconnectiontracksc5srci = `
+defaults test
+  tcp-request connection track-sc5 src if some_check
+`
+const defaults_tcprequestconnectiontracksc5srct = `
+defaults test
+  tcp-request connection track-sc5 src table foo
+`
+const defaults_tcprequestconnectiontracksc5srct_ = `
+defaults test
+  tcp-request connection track-sc5 src table foo if some_check
+`
+const defaults_tcprequestconnectionscaddgpc121 = `
+defaults test
+  tcp-request connection sc-add-gpc(1,2) 1
+`
+const defaults_tcprequestconnectionscaddgpc121i = `
+defaults test
+  tcp-request connection sc-add-gpc(1,2) 1 if is-error
+`
+const defaults_tcprequestconnectionscincgpc12 = `
+defaults test
+  tcp-request connection sc-inc-gpc(1,2)
+`
+const defaults_tcprequestconnectionscincgpc12if = `
+defaults test
+  tcp-request connection sc-inc-gpc(1,2) if is-error
+`
+const defaults_tcprequestconnectionscincgpc02 = `
+defaults test
+  tcp-request connection sc-inc-gpc0(2)
+`
+const defaults_tcprequestconnectionscincgpc02if = `
+defaults test
+  tcp-request connection sc-inc-gpc0(2) if is-error
+`
+const defaults_tcprequestconnectionscincgpc12_ = `
+defaults test
+  tcp-request connection sc-inc-gpc1(2)
+`
+const defaults_tcprequestconnectionscincgpc12if_ = `
+defaults test
+  tcp-request connection sc-inc-gpc1(2) if is-error
+`
+const defaults_tcprequestconnectionscsetgptscx4 = `
+defaults test
+  tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
+`
+const defaults_tcprequestconnectionscsetgpt0013 = `
+defaults test
+  tcp-request connection sc-set-gpt0(0) 1337
+`
+const defaults_tcprequestconnectionscsetgpt0013_ = `
+defaults test
+  tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
+`
+const defaults_tcprequestconnectionsetsrcsrcipm = `
+defaults test
+  tcp-request connection set-src src,ipmask(24)
+`
+const defaults_tcprequestconnectionsetsrcsrcipm_ = `
+defaults test
+  tcp-request connection set-src src,ipmask(24) if some_check
+`
+const defaults_tcprequestconnectionsetsrchdrxfo = `
+defaults test
+  tcp-request connection set-src hdr(x-forwarded-for)
+`
+const defaults_tcprequestconnectionsetsrchdrxfo_ = `
+defaults test
+  tcp-request connection set-src hdr(x-forwarded-for) if some_check
+`
+const defaults_tcprequestconnectionsilentdrop = `
+defaults test
+  tcp-request connection silent-drop
+`
+const defaults_tcprequestconnectionsilentdropif = `
+defaults test
+  tcp-request connection silent-drop if !HTTP
+`
+const defaults_tcprequestconnectionluafoo = `
+defaults test
+  tcp-request connection lua.foo
+`
+const defaults_tcprequestconnectionluafooparami = `
+defaults test
+  tcp-request connection lua.foo param if !HTTP
+`
+const defaults_tcprequestconnectionluafooparamp = `
+defaults test
+  tcp-request connection lua.foo param param1
+`
+const defaults_tcprequestsessionaccept = `
+defaults test
+  tcp-request session accept
+`
+const defaults_tcprequestsessionacceptifHTTP = `
+defaults test
+  tcp-request session accept if !HTTP
+`
+const defaults_tcprequestsessionreject = `
+defaults test
+  tcp-request session reject
+`
+const defaults_tcprequestsessionrejectifHTTP = `
+defaults test
+  tcp-request session reject if !HTTP
+`
+const defaults_tcprequestsessiontracksc0src = `
+defaults test
+  tcp-request session track-sc0 src
+`
+const defaults_tcprequestsessiontracksc0srcifso = `
+defaults test
+  tcp-request session track-sc0 src if some_check
+`
+const defaults_tcprequestsessiontracksc1src = `
+defaults test
+  tcp-request session track-sc1 src
+`
+const defaults_tcprequestsessiontracksc1srcifso = `
+defaults test
+  tcp-request session track-sc1 src if some_check
+`
+const defaults_tcprequestsessiontracksc2src = `
+defaults test
+  tcp-request session track-sc2 src
+`
+const defaults_tcprequestsessiontracksc2srcifso = `
+defaults test
+  tcp-request session track-sc2 src if some_check
+`
+const defaults_tcprequestsessiontracksc0srctabl = `
+defaults test
+  tcp-request session track-sc0 src table foo
+`
+const defaults_tcprequestsessiontracksc0srctabl_ = `
+defaults test
+  tcp-request session track-sc0 src table foo if some_check
+`
+const defaults_tcprequestsessiontracksc1srctabl = `
+defaults test
+  tcp-request session track-sc1 src table foo
+`
+const defaults_tcprequestsessiontracksc1srctabl_ = `
+defaults test
+  tcp-request session track-sc1 src table foo if some_check
+`
+const defaults_tcprequestsessiontracksc2srctabl = `
+defaults test
+  tcp-request session track-sc2 src table foo
+`
+const defaults_tcprequestsessiontracksc2srctabl_ = `
+defaults test
+  tcp-request session track-sc2 src table foo if some_check
+`
+const defaults_tcprequestsessiontracksc5src = `
+defaults test
+  tcp-request session track-sc5 src
+`
+const defaults_tcprequestsessiontracksc5srcifso = `
+defaults test
+  tcp-request session track-sc5 src if some_check
+`
+const defaults_tcprequestsessiontracksc5srctabl = `
+defaults test
+  tcp-request session track-sc5 src table foo
+`
+const defaults_tcprequestsessiontracksc5srctabl_ = `
+defaults test
+  tcp-request session track-sc5 src table foo if some_check
+`
+const defaults_tcprequestsessionscaddgpc121 = `
+defaults test
+  tcp-request session sc-add-gpc(1,2) 1
+`
+const defaults_tcprequestsessionscaddgpc121ifis = `
+defaults test
+  tcp-request session sc-add-gpc(1,2) 1 if is-error
+`
+const defaults_tcprequestsessionscincgpc12 = `
+defaults test
+  tcp-request session sc-inc-gpc(1,2)
+`
+const defaults_tcprequestsessionscincgpc12ifise = `
+defaults test
+  tcp-request session sc-inc-gpc(1,2) if is-error
+`
+const defaults_tcprequestsessionscincgpc02 = `
+defaults test
+  tcp-request session sc-inc-gpc0(2)
+`
+const defaults_tcprequestsessionscincgpc02ifise = `
+defaults test
+  tcp-request session sc-inc-gpc0(2) if is-error
+`
+const defaults_tcprequestsessionscincgpc12_ = `
+defaults test
+  tcp-request session sc-inc-gpc1(2)
+`
+const defaults_tcprequestsessionscincgpc12ifise_ = `
+defaults test
+  tcp-request session sc-inc-gpc1(2) if is-error
+`
+const defaults_tcprequestsessionscsetgptsc51133 = `
+defaults test
+  tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
+`
+const defaults_tcprequestsessionscsetgpt001337 = `
+defaults test
+  tcp-request session sc-set-gpt0(0) 1337
+`
+const defaults_tcprequestsessionscsetgpt001337i = `
+defaults test
+  tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
+`
+const defaults_tcprequestsessionsetvarsesssrcsr = `
+defaults test
+  tcp-request session set-var(sess.src) src
+`
+const defaults_tcprequestsessionsetvarsessdnssl = `
+defaults test
+  tcp-request session set-var(sess.dn) ssl_c_s_dn
+`
+const defaults_tcprequestsessionsetvarfmtsesssr = `
+defaults test
+  tcp-request session set-var-fmt(sess.src) src
+`
+const defaults_tcprequestsessionsetvarfmtsessdn = `
+defaults test
+  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
+`
+const defaults_tcprequestsessionunsetvarsesssrc = `
+defaults test
+  tcp-request session unset-var(sess.src)
+`
+const defaults_tcprequestsessionunsetvarsessdn = `
+defaults test
+  tcp-request session unset-var(sess.dn)
+`
+const defaults_tcprequestsessionsilentdrop = `
+defaults test
+  tcp-request session silent-drop
+`
+const defaults_tcprequestsessionsilentdropifHTT = `
+defaults test
+  tcp-request session silent-drop if !HTTP
+`
+const defaults_tcprequestsessionattachsrvsrv1 = `
+defaults test
+  tcp-request session attach-srv srv1
+`
+const defaults_tcprequestsessionattachsrvsrv1na = `
+defaults test
+  tcp-request session attach-srv srv1 name example.com
+`
+const defaults_tcprequestsessionattachsrvsrv1na_ = `
+defaults test
+  tcp-request session attach-srv srv1 name example.com if exceeds_limit
+`
+const defaults_tcprequestcontentsetbandwidthlim = `
+defaults test
+  tcp-request content set-bandwidth-limit my-limit
+`
+const defaults_tcprequestcontentsetbandwidthlim_ = `
+defaults test
+  tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
+`
+const defaults_tcprequestcontentsetbandwidthlim__ = `
+defaults test
+  tcp-request content set-bandwidth-limit my-limit period 10s
+`
+const defaults_tcprequestcontentsetbandwidthlim___ = `
+defaults test
+  tcp-request content set-bandwidth-limit my-limit limit 1m
+`
+const defaults_tcprequestcontentsetloglevelsile = `
+defaults test
+  tcp-request content set-log-level silent
+`
+const defaults_tcprequestcontentsetloglevelsile_ = `
+defaults test
+  tcp-request content set-log-level silent if FALSE
+`
+const defaults_tcprequestcontentsetmark20 = `
+defaults test
+  tcp-request content set-mark 20
+`
+const defaults_tcprequestcontentsetmark0x1AbifF = `
+defaults test
+  tcp-request content set-mark 0x1Ab if FALSE
+`
+const defaults_tcprequestconnectionsetmark20 = `
+defaults test
+  tcp-request connection set-mark 20
+`
+const defaults_tcprequestconnectionsetmark0x1Ab = `
+defaults test
+  tcp-request connection set-mark 0x1Ab if FALSE
+`
+const defaults_tcprequestconnectionsetsrcporthd = `
+defaults test
+  tcp-request connection set-src-port hdr(port)
+`
+const defaults_tcprequestconnectionsetsrcporthd_ = `
+defaults test
+  tcp-request connection set-src-port hdr(port) if FALSE
+`
+const defaults_tcprequestcontentsetsrcporthdrpo = `
+defaults test
+  tcp-request content set-src-port hdr(port)
+`
+const defaults_tcprequestcontentsetsrcporthdrpo_ = `
+defaults test
+  tcp-request content set-src-port hdr(port) if FALSE
+`
+const defaults_tcprequestcontentsettos0ifFALSE = `
+defaults test
+  tcp-request content set-tos 0 if FALSE
+`
+const defaults_tcprequestcontentsettos0 = `
+defaults test
+  tcp-request content set-tos 0
+`
+const defaults_tcprequestconnectionsettos0ifFAL = `
+defaults test
+  tcp-request connection set-tos 0 if FALSE
+`
+const defaults_tcprequestconnectionsettos0 = `
+defaults test
+  tcp-request connection set-tos 0
+`
+const defaults_tcprequestconnectionsetvarfmttxn = `
+defaults test
+  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
+`
+const defaults_tcprequestcontentsetnice0ifFALSE = `
+defaults test
+  tcp-request content set-nice 0 if FALSE
+`
+const defaults_tcprequestcontentsetnice0 = `
+defaults test
+  tcp-request content set-nice 0
+`
+const defaults_tcprequestcontentswitchmodehttp = `
+defaults test
+  tcp-request content switch-mode http
+`
+const defaults_tcprequestcontentswitchmodehttpi = `
+defaults test
+  tcp-request content switch-mode http if FALSE
+`
+const defaults_tcprequestcontentswitchmodehttpp = `
+defaults test
+  tcp-request content switch-mode http proto my-proto
+`
+const defaults_tcprequestconnectionsetfcmark1 = `
+defaults test
+  tcp-request connection set-fc-mark 1
+`
+const defaults_tcprequestconnectionsetfctos1 = `
+defaults test
+  tcp-request connection set-fc-tos 1
+`
+const defaults_tcprequestsessionsetfcmark9999if = `
+defaults test
+  tcp-request session set-fc-mark 9999 if some_check
+`
+const defaults_tcprequestsessionsetfctos255 = `
+defaults test
+  tcp-request session set-fc-tos 255
+`
+const defaults_tcprequestcontentsetbcmarkhdrpor = `
+defaults test
+  tcp-request content set-bc-mark hdr(port)
+`
+const defaults_tcprequestcontentsetbctos0xffifs = `
+defaults test
+  tcp-request content set-bc-tos 0xff if some_check
+`
+const defaults_tcprequestcontentsetfcmark0xffff = `
+defaults test
+  tcp-request content set-fc-mark 0xffffffff
+`
+const defaults_tcprequestcontentsetfctos100 = `
+defaults test
+  tcp-request content set-fc-tos 100
 `
 const defaults_statsauthadmin1AdMiN123 = `
 defaults test

@@ -1056,6 +1056,21 @@ cache test
   process-vary on
 
 defaults test
+  acl url_stats path_beg /stats
+  acl url_static path_beg -i /static /images /javascript /stylesheets
+  acl url_static path_end -i .jpg .gif .png .css .js
+  acl be_app_ok nbsrv(be_app) gt 0
+  acl be_static_ok nbsrv(be_static) gt 0
+  acl key req.hdr(X-Add-ACL-Key) -m found
+  acl add path /addacl
+  acl del path /delacl
+  acl myhost hdr(Host) -f myhost.lst
+  acl clear dst_port 80
+  acl secure dst_port 8080
+  acl login_page url_beg /login
+  acl logout url_beg /logout
+  acl uid_given url_reg /login?userid=[^&]+
+  acl cookie_set hdr_sub(cookie) SEEN=1
   balance roundrobin
   persist rdp-cookie
   cookie test
@@ -1244,6 +1259,341 @@ defaults test
   option http-restrict-req-hdr-names preserve
   source 192.168.1.200
   option originalto
+  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
+  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
+  http-request add-acl(map.lst) [src]
+  http-request add-header X-value value
+  http-request cache-use cache-name
+  http-request cache-use cache-name if FALSE
+  http-request del-acl(map.lst) [src]
+  http-request allow
+  http-request auth
+  http-request del-header X-value
+  http-request del-header X-value if TRUE
+  http-request del-header X-value -m str if TRUE
+  http-request del-map(map.lst) %[src] if ! value
+  http-request del-map(map.lst) %[src]
+  http-request deny
+  http-request deny deny_status 400
+  http-request deny if TRUE
+  http-request deny deny_status 400 if TRUE
+  http-request deny deny_status 400 content-type application/json if TRUE
+  http-request deny deny_status 400 content-type application/json
+  http-request deny deny_status 400 content-type application/json default-errorfiles
+  http-request deny deny_status 400 content-type application/json errorfile errors
+  http-request deny deny_status 400 content-type application/json string error if TRUE
+  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-request deny deny_status 400 content-type application/json file /var/errors.file
+  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+  http-request disable-l7-retry
+  http-request disable-l7-retry if FALSE
+  http-request early-hint hint %[src]
+  http-request early-hint hint %[src] if FALSE
+  http-request early-hint if FALSE
+  http-request lua.foo
+  http-request lua.foo if FALSE
+  http-request lua.foo param
+  http-request lua.foo param param2
+  http-request normalize-uri fragment-encode
+  http-request normalize-uri fragment-encode if TRUE
+  http-request normalize-uri fragment-strip
+  http-request normalize-uri fragment-strip if TRUE
+  http-request normalize-uri path-merge-slashes
+  http-request normalize-uri path-merge-slashes if TRUE
+  http-request normalize-uri path-strip-dot
+  http-request normalize-uri path-strip-dot if TRUE
+  http-request normalize-uri path-strip-dotdot
+  http-request normalize-uri path-strip-dotdot full
+  http-request normalize-uri path-strip-dotdot if TRUE
+  http-request normalize-uri path-strip-dotdot full if TRUE
+  http-request normalize-uri percent-decode-unreserved
+  http-request normalize-uri percent-decode-unreserved if TRUE
+  http-request normalize-uri percent-decode-unreserved strict
+  http-request normalize-uri percent-decode-unreserved strict if TRUE
+  http-request normalize-uri percent-to-uppercase
+  http-request normalize-uri percent-to-uppercase if TRUE
+  http-request normalize-uri percent-to-uppercase strict
+  http-request normalize-uri percent-to-uppercase strict if TRUE
+  http-request normalize-uri query-sort-by-name
+  http-request normalize-uri query-sort-by-name if TRUE
+  http-request redirect prefix https://mysite.com
+  http-request reject
+  http-request replace-header User-agent curl foo
+  http-request replace-path (.*) /foo
+  http-request replace-path (.*) /foo if TRUE
+  http-request replace-pathq (.*) /foo
+  http-request replace-pathq (.*) /foo if TRUE
+  http-request replace-uri ^http://(.*) https://1
+  http-request replace-uri ^http://(.*) https://1 if FALSE
+  http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+  http-request sc-add-gpc(1,2) 1
+  http-request sc-add-gpc(1,2) 1 if is-error
+  http-request sc-inc-gpc(1,2)
+  http-request sc-inc-gpc(1,2) if FALSE
+  http-request sc-inc-gpc0(1)
+  http-request sc-inc-gpc0(1) if FALSE
+  http-request sc-inc-gpc1(1)
+  http-request sc-inc-gpc1(1) if FALSE
+  http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
+  http-request sc-set-gpt0(1) hdr(Host),lower
+  http-request sc-set-gpt0(1) 10
+  http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
+  http-request send-spoe-group engine group
+  http-request set-header X-value value
+  http-request set-log-level silent
+  http-request set-mark 20
+  http-request set-mark 0x1Ab
+  http-request set-nice 0
+  http-request set-nice 0 if FALSE
+  http-request set-method POST
+  http-request set-method POST if FALSE
+  http-request set-path /%[hdr(host)]%[path]
+  http-request set-pathq /%[hdr(host)]%[path]
+  http-request set-priority-class req.hdr(priority)
+  http-request set-priority-class req.hdr(priority) if FALSE
+  http-request set-priority-offset req.hdr(offset)
+  http-request set-priority-offset req.hdr(offset) if FALSE
+  http-request set-query %[query,regsub(%3D,=,g)]
+  http-request set-src hdr(src)
+  http-request set-src hdr(src) if FALSE
+  http-request set-src-port hdr(port)
+  http-request set-src-port hdr(port) if FALSE
+  http-request set-timeout server 20
+  http-request set-timeout tunnel 20
+  http-request set-timeout tunnel 20s if TRUE
+  http-request set-timeout server 20s if TRUE
+  http-request set-timeout client 20
+  http-request set-timeout client 20s if TRUE
+  http-request set-tos 0 if FALSE
+  http-request set-tos 0
+  http-request set-uri /%[hdr(host)]%[path]
+  http-request set-var(req.my_var) req.fhdr(user-agent),lower
+  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
+  http-request silent-drop
+  http-request silent-drop if FALSE
+  http-request strict-mode on
+  http-request strict-mode on if FALSE
+  http-request tarpit
+  http-request tarpit deny_status 400
+  http-request tarpit if TRUE
+  http-request tarpit deny_status 400 if TRUE
+  http-request tarpit deny_status 400 content-type application/json if TRUE
+  http-request tarpit deny_status 400 content-type application/json
+  http-request tarpit deny_status 400 content-type application/json default-errorfiles
+  http-request tarpit deny_status 400 content-type application/json errorfile errors
+  http-request tarpit deny_status 400 content-type application/json string error if TRUE
+  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
+  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+  http-request track-sc0 src
+  http-request track-sc1 src
+  http-request track-sc2 src
+  http-request track-sc5 src
+  http-request track-sc5 src table a_table
+  http-request track-sc5 src table a_table if some_cond
+  http-request track-sc5 src if some_cond
+  http-request unset-var(req.my_var)
+  http-request unset-var(req.my_var) if FALSE
+  http-request wait-for-body time 20s
+  http-request wait-for-body time 20s if TRUE
+  http-request wait-for-body time 20s at-least 100k
+  http-request wait-for-body time 20s at-least 100k if TRUE
+  http-request wait-for-handshake
+  http-request wait-for-handshake if FALSE
+  http-request do-resolve(txn.myip,mydns) hdr(Host),lower
+  http-request do-resolve(txn.myip,mydns) hdr(Host),lower if { var(txn.myip) -m found }
+  http-request do-resolve(txn.myip,mydns) hdr(Host),lower unless { var(txn.myip) -m found }
+  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
+  http-request do-resolve(txn.myip,mydns,ipv6) hdr(Host),lower
+  http-request set-dst var(txn.myip)
+  http-request set-dst var(txn.myip) if { var(txn.myip) -m found }
+  http-request set-dst var(txn.myip) unless { var(txn.myip) -m found }
+  http-request set-dst-port hdr(x-port)
+  http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
+  http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
+  http-request set-dst-port int(4000)
+  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
+  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
+  http-request set-bandwidth-limit my-limit
+  http-request set-bandwidth-limit my-limit limit 1m period 10s
+  http-request set-bandwidth-limit my-limit period 10s
+  http-request set-bandwidth-limit my-limit limit 1m
+  http-request set-bc-mark 123
+  http-request set-bc-mark 0xffffffff
+  http-request set-bc-mark hdr(port) if FALSE
+  http-request set-bc-tos 10
+  http-request set-fc-mark 0
+  http-request set-fc-tos 0xff if TRUE
+  http-request add-header Authorization Basic\ eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz
+  http-request add-header Authorisation "Basic eC1oYXByb3h5LXJlY3J1aXRzOlBlb3BsZSB3aG8gZGVjb2RlIG1lc3NhZ2VzIG9mdGVuIGxvdmUgd29ya2luZyBhdCBIQVByb3h5LiBEbyBub3QgYmUgc2h5LCBjb250YWN0IHVz"
+  http-request return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-request return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-request return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+  http-request return content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-request redirect location /file.html if { var(txn.routecookie) "ROUTEMP" }:1
+  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+  http-response add-acl(map.lst) [src]
+  http-response add-header X-value value
+  http-response del-acl(map.lst) [src]
+  http-response allow
+  http-response cache-store cache-name
+  http-response cache-store cache-name if FALSE
+  http-response del-header X-value
+  http-response del-map(map.lst) %[src] if ! value
+  http-response del-map(map.lst) %[src]
+  http-response deny
+  http-response deny deny_status 400
+  http-response deny if TRUE
+  http-response deny deny_status 400 if TRUE
+  http-response deny deny_status 400 content-type application/json if TRUE
+  http-response deny deny_status 400 content-type application/json
+  http-response deny deny_status 400 content-type application/json default-errorfiles
+  http-response deny deny_status 400 content-type application/json errorfile errors
+  http-response deny deny_status 400 content-type application/json string error if TRUE
+  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
+  http-response deny deny_status 400 content-type application/json file /var/errors.file
+  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
+  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
+  http-response lua.foo
+  http-response lua.foo if FALSE
+  http-response lua.foo param
+  http-response lua.foo param param2
+  http-response redirect prefix https://mysite.com
+  http-response replace-header User-agent curl foo
+  http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
+  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
+  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
+  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
+  http-response sc-add-gpc(1,2) 1
+  http-response sc-add-gpc(1,2) 1 if is-error
+  http-response sc-inc-gpc(1,2)
+  http-response sc-inc-gpc(1,2) if FALSE
+  http-response sc-inc-gpc0(1)
+  http-response sc-inc-gpc0(1) if FALSE
+  http-response sc-inc-gpc1(1)
+  http-response sc-inc-gpc1(1) if FALSE
+  http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
+  http-response sc-set-gpt0(1) hdr(Host),lower
+  http-response sc-set-gpt0(1) 10
+  http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
+  http-response send-spoe-group engine group
+  http-response set-header X-value value
+  http-response set-log-level silent
+  http-response set-mark 20
+  http-response set-mark 0x1Ab
+  http-response set-nice 0
+  http-response set-nice 0 if FALSE
+  http-response set-status 503
+  http-response set-timeout server 20
+  http-response set-timeout tunnel 20
+  http-response set-timeout tunnel 20s if TRUE
+  http-response set-timeout server 20s if TRUE
+  http-response set-timeout client 20
+  http-response set-timeout client 20s if TRUE
+  http-response set-tos 0 if FALSE
+  http-response set-tos 0
+  http-response set-var(req.my_var) res.fhdr(user-agent),lower
+  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
+  http-response silent-drop
+  http-response silent-drop if FALSE
+  http-response unset-var(req.my_var)
+  http-response unset-var(req.my_var) if FALSE
+  http-response track-sc0 src if FALSE
+  http-response track-sc0 src table tr if FALSE
+  http-response track-sc0 src
+  http-response track-sc1 src if FALSE
+  http-response track-sc1 src table tr if FALSE
+  http-response track-sc1 src
+  http-response track-sc2 src if FALSE
+  http-response track-sc2 src table tr if FALSE
+  http-response track-sc2 src
+  http-response track-sc5 src
+  http-response track-sc5 src table a_table
+  http-response track-sc5 src table a_table if some_cond
+  http-response track-sc5 src if some_cond
+  http-response strict-mode on
+  http-response strict-mode on if FALSE
+  http-response wait-for-body time 20s
+  http-response wait-for-body time 20s if TRUE
+  http-response wait-for-body time 20s at-least 100k
+  http-response wait-for-body time 20s at-least 100k if TRUE
+  http-response set-bandwidth-limit my-limit
+  http-response set-bandwidth-limit my-limit limit 1m period 10s
+  http-response set-bandwidth-limit my-limit period 10s
+  http-response set-bandwidth-limit my-limit limit 1m
+  http-response set-fc-mark 2000
+  http-response set-fc-tos 200
+  http-response return status 200 content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-response return status 200 content-type "text/plain" string "My content" unless { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" if { var(txn.myip) -m found }
+  http-response return content-type 'text/plain' string 'My content' if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]" if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" file /my/fancy/response/file if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-file /my/fancy/lof/format/response/file if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" hdr X-value value if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" string "My content" hdr X-value x-value hdr Y-value y-value if { var(txn.myip) -m found }
+  http-response return content-type "text/plain" lf-string "Hello, you are: %[src]"
+  http-after-response allow
+  http-after-response allow if acl
+  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
+  http-after-response add-header X-Header \"foo=bar\"
+  http-after-response add-header X-Header \"foo=bar\" if acl
+  http-after-response add-header X-Header \"foo=bar\" unless acl
+  http-after-response allow unless acl
+  http-after-response del-header X-Value
+  http-after-response del-header X-Value -m GET
+  http-after-response del-header X-Value -m GET if acl
+  http-after-response del-header X-Value -m GET unless acl
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
+  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
+  http-after-response replace-value Cache-control ^public$ private
+  http-after-response replace-value Cache-control ^public$ private if acl
+  http-after-response set-status 431
+  http-after-response set-status 503 reason \"SlowDown\"
+  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
+  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
+  http-after-response set-var(sess.last_redir) res.hdr(location)
+  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
+  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
+  http-after-response strict-mode on
+  http-after-response strict-mode off
+  http-after-response unset-var(sess.last_redir)
+  http-after-response unset-var(sess.last_redir) if acl
+  http-after-response unset-var(sess.last_redir) unless acl
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
+  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
+  http-after-response del-acl(map.lst) [src]
+  http-after-response del-map(map.lst) %[src] if ! value
+  http-after-response del-map(map.lst) %[src]
+  http-after-response sc-add-gpc(1,2) 1
+  http-after-response sc-add-gpc(1,2) 1 if is-error
+  http-after-response sc-inc-gpc(1,2)
+  http-after-response sc-inc-gpc(1,2) if is-error
+  http-after-response sc-inc-gpc0(1)
+  http-after-response sc-inc-gpc0(1) if FALSE
+  http-after-response sc-inc-gpc1(1)
+  http-after-response sc-inc-gpc1(1) if FALSE
+  http-after-response sc-set-gpt(1,2) 10
+  http-after-response sc-set-gpt0(1) hdr(Host),lower
+  http-after-response sc-set-gpt0(1) 10
+  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
   http-error status 400
   http-error status 400 default-errorfiles
   http-error status 400 errorfile /my/fancy/errorfile
@@ -1316,6 +1666,178 @@ defaults test
   tcp-check set-var-fmt(check.name) "%H"
   tcp-check set-var-fmt(txn.from) "addr=%[src]:%[src_port]"
   tcp-check unset-var(txn.from)
+  tcp-request content accept
+  tcp-request content accept if !HTTP
+  tcp-request content reject
+  tcp-request content reject if !HTTP
+  tcp-request content capture req.payload(0,6) len 6
+  tcp-request content capture req.payload(0,6) len 6 if !HTTP
+  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
+  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
+  tcp-request content set-priority-class int(1)
+  tcp-request content set-priority-class int(1) if some_check
+  tcp-request content set-priority-offset int(10)
+  tcp-request content set-priority-offset int(10) if some_check
+  tcp-request content track-sc0 src
+  tcp-request content track-sc0 src if some_check
+  tcp-request content track-sc1 src
+  tcp-request content track-sc1 src if some_check
+  tcp-request content track-sc2 src
+  tcp-request content track-sc2 src if some_check
+  tcp-request content track-sc0 src table foo
+  tcp-request content track-sc0 src table foo if some_check
+  tcp-request content track-sc1 src table foo
+  tcp-request content track-sc1 src table foo if some_check
+  tcp-request content track-sc2 src table foo
+  tcp-request content track-sc2 src table foo if some_check
+  tcp-request content track-sc5 src
+  tcp-request content track-sc5 src if some_check
+  tcp-request content track-sc5 src table foo
+  tcp-request content track-sc5 src table foo if some_check
+  tcp-request content sc-inc-gpc(1,2)
+  tcp-request content sc-inc-gpc(1,2) if is-error
+  tcp-request content sc-inc-gpc0(2)
+  tcp-request content sc-inc-gpc0(2) if is-error
+  tcp-request content sc-inc-gpc1(2)
+  tcp-request content sc-inc-gpc1(2) if is-error
+  tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
+  tcp-request content sc-set-gpt0(0) 1337
+  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
+  tcp-request content sc-add-gpc(1,2) 1
+  tcp-request content sc-add-gpc(1,2) 1 if is-error
+  tcp-request content set-dst ipv4(10.0.0.1)
+  tcp-request content set-var(sess.src) src
+  tcp-request content set-var(sess.dn) ssl_c_s_dn
+  tcp-request content set-var-fmt(sess.src) src
+  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
+  tcp-request content unset-var(sess.src)
+  tcp-request content unset-var(sess.dn)
+  tcp-request content silent-drop
+  tcp-request content silent-drop if !HTTP
+  tcp-request content send-spoe-group engine group
+  tcp-request content use-service lua.deny
+  tcp-request content use-service lua.deny if !HTTP
+  tcp-request content lua.foo
+  tcp-request content lua.foo param if !HTTP
+  tcp-request content lua.foo param param1
+  tcp-request connection accept
+  tcp-request connection accept if !HTTP
+  tcp-request connection reject
+  tcp-request connection reject if !HTTP
+  tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
+  tcp-request connection expect-netscaler-cip layer4
+  tcp-request connection expect-netscaler-cip layer4 if TRUE
+  tcp-request connection capture req.payload(0,6) len 6
+  tcp-request connection track-sc0 src
+  tcp-request connection track-sc0 src if some_check
+  tcp-request connection track-sc1 src
+  tcp-request connection track-sc1 src if some_check
+  tcp-request connection track-sc2 src
+  tcp-request connection track-sc2 src if some_check
+  tcp-request connection track-sc0 src table foo
+  tcp-request connection track-sc0 src table foo if some_check
+  tcp-request connection track-sc1 src table foo
+  tcp-request connection track-sc1 src table foo if some_check
+  tcp-request connection track-sc2 src table foo
+  tcp-request connection track-sc2 src table foo if some_check
+  tcp-request connection track-sc5 src
+  tcp-request connection track-sc5 src if some_check
+  tcp-request connection track-sc5 src table foo
+  tcp-request connection track-sc5 src table foo if some_check
+  tcp-request connection sc-add-gpc(1,2) 1
+  tcp-request connection sc-add-gpc(1,2) 1 if is-error
+  tcp-request connection sc-inc-gpc(1,2)
+  tcp-request connection sc-inc-gpc(1,2) if is-error
+  tcp-request connection sc-inc-gpc0(2)
+  tcp-request connection sc-inc-gpc0(2) if is-error
+  tcp-request connection sc-inc-gpc1(2)
+  tcp-request connection sc-inc-gpc1(2) if is-error
+  tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
+  tcp-request connection sc-set-gpt0(0) 1337
+  tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
+  tcp-request connection set-src src,ipmask(24)
+  tcp-request connection set-src src,ipmask(24) if some_check
+  tcp-request connection set-src hdr(x-forwarded-for)
+  tcp-request connection set-src hdr(x-forwarded-for) if some_check
+  tcp-request connection silent-drop
+  tcp-request connection silent-drop if !HTTP
+  tcp-request connection lua.foo
+  tcp-request connection lua.foo param if !HTTP
+  tcp-request connection lua.foo param param1
+  tcp-request session accept
+  tcp-request session accept if !HTTP
+  tcp-request session reject
+  tcp-request session reject if !HTTP
+  tcp-request session track-sc0 src
+  tcp-request session track-sc0 src if some_check
+  tcp-request session track-sc1 src
+  tcp-request session track-sc1 src if some_check
+  tcp-request session track-sc2 src
+  tcp-request session track-sc2 src if some_check
+  tcp-request session track-sc0 src table foo
+  tcp-request session track-sc0 src table foo if some_check
+  tcp-request session track-sc1 src table foo
+  tcp-request session track-sc1 src table foo if some_check
+  tcp-request session track-sc2 src table foo
+  tcp-request session track-sc2 src table foo if some_check
+  tcp-request session track-sc5 src
+  tcp-request session track-sc5 src if some_check
+  tcp-request session track-sc5 src table foo
+  tcp-request session track-sc5 src table foo if some_check
+  tcp-request session sc-add-gpc(1,2) 1
+  tcp-request session sc-add-gpc(1,2) 1 if is-error
+  tcp-request session sc-inc-gpc(1,2)
+  tcp-request session sc-inc-gpc(1,2) if is-error
+  tcp-request session sc-inc-gpc0(2)
+  tcp-request session sc-inc-gpc0(2) if is-error
+  tcp-request session sc-inc-gpc1(2)
+  tcp-request session sc-inc-gpc1(2) if is-error
+  tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
+  tcp-request session sc-set-gpt0(0) 1337
+  tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
+  tcp-request session set-var(sess.src) src
+  tcp-request session set-var(sess.dn) ssl_c_s_dn
+  tcp-request session set-var-fmt(sess.src) src
+  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
+  tcp-request session unset-var(sess.src)
+  tcp-request session unset-var(sess.dn)
+  tcp-request session silent-drop
+  tcp-request session silent-drop if !HTTP
+  tcp-request session attach-srv srv1
+  tcp-request session attach-srv srv1 name example.com
+  tcp-request session attach-srv srv1 name example.com if exceeds_limit
+  tcp-request content set-bandwidth-limit my-limit
+  tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
+  tcp-request content set-bandwidth-limit my-limit period 10s
+  tcp-request content set-bandwidth-limit my-limit limit 1m
+  tcp-request content set-log-level silent
+  tcp-request content set-log-level silent if FALSE
+  tcp-request content set-mark 20
+  tcp-request content set-mark 0x1Ab if FALSE
+  tcp-request connection set-mark 20
+  tcp-request connection set-mark 0x1Ab if FALSE
+  tcp-request connection set-src-port hdr(port)
+  tcp-request connection set-src-port hdr(port) if FALSE
+  tcp-request content set-src-port hdr(port)
+  tcp-request content set-src-port hdr(port) if FALSE
+  tcp-request content set-tos 0 if FALSE
+  tcp-request content set-tos 0
+  tcp-request connection set-tos 0 if FALSE
+  tcp-request connection set-tos 0
+  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
+  tcp-request content set-nice 0 if FALSE
+  tcp-request content set-nice 0
+  tcp-request content switch-mode http
+  tcp-request content switch-mode http if FALSE
+  tcp-request content switch-mode http proto my-proto
+  tcp-request connection set-fc-mark 1
+  tcp-request connection set-fc-tos 1
+  tcp-request session set-fc-mark 9999 if some_check
+  tcp-request session set-fc-tos 255
+  tcp-request content set-bc-mark hdr(port)
+  tcp-request content set-bc-tos 0xff if some_check
+  tcp-request content set-fc-mark 0xffffffff
+  tcp-request content set-fc-tos 100
   stats auth admin1:AdMiN123
   stats enable
   stats hide-version
@@ -2308,35 +2830,35 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  log-stderr global
 `, 1},
 	{`  acl url_stats path_beg /stats
-`, 2},
+`, 3},
 	{`  acl url_static path_beg -i /static /images /javascript /stylesheets
-`, 2},
+`, 3},
 	{`  acl url_static path_end -i .jpg .gif .png .css .js
-`, 2},
+`, 3},
 	{`  acl be_app_ok nbsrv(be_app) gt 0
-`, 2},
+`, 3},
 	{`  acl be_static_ok nbsrv(be_static) gt 0
-`, 2},
+`, 3},
 	{`  acl key req.hdr(X-Add-ACL-Key) -m found
-`, 2},
+`, 3},
 	{`  acl add path /addacl
-`, 2},
+`, 3},
 	{`  acl del path /delacl
-`, 2},
+`, 3},
 	{`  acl myhost hdr(Host) -f myhost.lst
-`, 2},
+`, 3},
 	{`  acl clear dst_port 80
-`, 2},
+`, 3},
 	{`  acl secure dst_port 8080
-`, 2},
+`, 3},
 	{`  acl login_page url_beg /login
-`, 2},
+`, 3},
 	{`  acl logout url_beg /logout
-`, 2},
+`, 3},
 	{`  acl uid_given url_reg /login?userid=[^&]+
-`, 2},
+`, 3},
 	{`  acl cookie_set hdr_sub(cookie) SEEN=1
-`, 2},
+`, 3},
 	{`  bind :80,:443
 `, 1},
 	{`  bind 10.0.0.1:10080,10.0.0.1:10443
@@ -3418,633 +3940,633 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  httpclient.ssl.verify none
 `, 1},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
-`, 2},
+`, 3},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)]
-`, 2},
+`, 3},
 	{`  http-request add-acl(map.lst) [src]
-`, 2},
+`, 3},
 	{`  http-request add-header X-value value
-`, 2},
+`, 3},
 	{`  http-request cache-use cache-name
-`, 2},
+`, 3},
 	{`  http-request cache-use cache-name if FALSE
-`, 2},
+`, 3},
 	{`  http-request del-acl(map.lst) [src]
-`, 2},
+`, 3},
 	{`  http-request allow
-`, 2},
+`, 3},
 	{`  http-request auth
-`, 2},
+`, 3},
 	{`  http-request del-header X-value
-`, 2},
+`, 3},
 	{`  http-request del-header X-value if TRUE
-`, 2},
+`, 3},
 	{`  http-request del-header X-value -m str if TRUE
-`, 2},
+`, 3},
 	{`  http-request del-map(map.lst) %[src] if ! value
-`, 2},
+`, 3},
 	{`  http-request del-map(map.lst) %[src]
-`, 2},
+`, 3},
 	{`  http-request deny
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400
-`, 2},
+`, 3},
 	{`  http-request deny if TRUE
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 if TRUE
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json if TRUE
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json default-errorfiles
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json errorfile errors
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json string error if TRUE
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json file /var/errors.file
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json lf-file /var/errors.file
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
-`, 2},
+`, 3},
 	{`  http-request deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
-`, 2},
+`, 3},
 	{`  http-request disable-l7-retry
-`, 2},
+`, 3},
 	{`  http-request disable-l7-retry if FALSE
-`, 2},
+`, 3},
 	{`  http-request early-hint hint %[src]
-`, 2},
+`, 3},
 	{`  http-request early-hint hint %[src] if FALSE
-`, 2},
+`, 3},
 	{`  http-request early-hint if FALSE
-`, 2},
+`, 3},
 	{`  http-request lua.foo
-`, 2},
+`, 3},
 	{`  http-request lua.foo if FALSE
-`, 2},
+`, 3},
 	{`  http-request lua.foo param
-`, 2},
+`, 3},
 	{`  http-request lua.foo param param2
-`, 2},
+`, 3},
 	{`  http-request normalize-uri fragment-encode
-`, 2},
+`, 3},
 	{`  http-request normalize-uri fragment-encode if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri fragment-strip
-`, 2},
+`, 3},
 	{`  http-request normalize-uri fragment-strip if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-merge-slashes
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-merge-slashes if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-strip-dot
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-strip-dot if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-strip-dotdot
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-strip-dotdot full
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-strip-dotdot if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri path-strip-dotdot full if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-decode-unreserved
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-decode-unreserved if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-decode-unreserved strict
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-decode-unreserved strict if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-to-uppercase
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-to-uppercase if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-to-uppercase strict
-`, 2},
+`, 3},
 	{`  http-request normalize-uri percent-to-uppercase strict if TRUE
-`, 2},
+`, 3},
 	{`  http-request normalize-uri query-sort-by-name
-`, 2},
+`, 3},
 	{`  http-request normalize-uri query-sort-by-name if TRUE
-`, 2},
+`, 3},
 	{`  http-request redirect prefix https://mysite.com
-`, 2},
+`, 3},
 	{`  http-request reject
-`, 2},
+`, 3},
 	{`  http-request replace-header User-agent curl foo
-`, 2},
+`, 3},
 	{`  http-request replace-path (.*) /foo
-`, 2},
+`, 3},
 	{`  http-request replace-path (.*) /foo if TRUE
-`, 2},
+`, 3},
 	{`  http-request replace-pathq (.*) /foo
-`, 2},
+`, 3},
 	{`  http-request replace-pathq (.*) /foo if TRUE
-`, 2},
+`, 3},
 	{`  http-request replace-uri ^http://(.*) https://1
-`, 2},
+`, 3},
 	{`  http-request replace-uri ^http://(.*) https://1 if FALSE
-`, 2},
+`, 3},
 	{`  http-request replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
-`, 2},
+`, 3},
 	{`  http-request sc-add-gpc(1,2) 1
-`, 2},
+`, 3},
 	{`  http-request sc-add-gpc(1,2) 1 if is-error
-`, 2},
+`, 3},
 	{`  http-request sc-inc-gpc(1,2)
-`, 2},
+`, 3},
 	{`  http-request sc-inc-gpc(1,2) if FALSE
-`, 2},
+`, 3},
 	{`  http-request sc-inc-gpc0(1)
-`, 2},
+`, 3},
 	{`  http-request sc-inc-gpc0(1) if FALSE
-`, 2},
+`, 3},
 	{`  http-request sc-inc-gpc1(1)
-`, 2},
+`, 3},
 	{`  http-request sc-inc-gpc1(1) if FALSE
-`, 2},
+`, 3},
 	{`  http-request sc-set-gpt(1,2) hdr(Host),lower if FALSE
-`, 2},
+`, 3},
 	{`  http-request sc-set-gpt0(1) hdr(Host),lower
-`, 2},
+`, 3},
 	{`  http-request sc-set-gpt0(1) 10
-`, 2},
+`, 3},
 	{`  http-request sc-set-gpt0(1) hdr(Host),lower if FALSE
-`, 2},
+`, 3},
 	{`  http-request send-spoe-group engine group
-`, 2},
+`, 3},
 	{`  http-request set-header X-value value
-`, 2},
+`, 3},
 	{`  http-request set-log-level silent
-`, 2},
+`, 3},
 	{`  http-request set-mark 20
-`, 2},
+`, 3},
 	{`  http-request set-mark 0x1Ab
-`, 2},
+`, 3},
 	{`  http-request set-nice 0
-`, 2},
+`, 3},
 	{`  http-request set-nice 0 if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-method POST
-`, 2},
+`, 3},
 	{`  http-request set-method POST if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-path /%[hdr(host)]%[path]
-`, 2},
+`, 3},
 	{`  http-request set-pathq /%[hdr(host)]%[path]
-`, 2},
+`, 3},
 	{`  http-request set-priority-class req.hdr(priority)
-`, 2},
+`, 3},
 	{`  http-request set-priority-class req.hdr(priority) if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-priority-offset req.hdr(offset)
-`, 2},
+`, 3},
 	{`  http-request set-priority-offset req.hdr(offset) if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-query %[query,regsub(%3D,=,g)]
-`, 2},
+`, 3},
 	{`  http-request set-src hdr(src)
-`, 2},
+`, 3},
 	{`  http-request set-src hdr(src) if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-src-port hdr(port)
-`, 2},
+`, 3},
 	{`  http-request set-src-port hdr(port) if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-timeout server 20
-`, 2},
+`, 3},
 	{`  http-request set-timeout tunnel 20
-`, 2},
+`, 3},
 	{`  http-request set-timeout tunnel 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-request set-timeout server 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-request set-timeout client 20
-`, 2},
+`, 3},
 	{`  http-request set-timeout client 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-request set-tos 0 if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-tos 0
-`, 2},
+`, 3},
 	{`  http-request set-uri /%[hdr(host)]%[path]
-`, 2},
+`, 3},
 	{`  http-request set-var(req.my_var) req.fhdr(user-agent),lower
-`, 2},
+`, 3},
 	{`  http-request set-var-fmt(req.my_var) req.fhdr(user-agent),lower
-`, 2},
+`, 3},
 	{`  http-request silent-drop
-`, 2},
+`, 3},
 	{`  http-request silent-drop if FALSE
-`, 2},
+`, 3},
 	{`  http-request strict-mode on
-`, 2},
+`, 3},
 	{`  http-request strict-mode on if FALSE
-`, 2},
+`, 3},
 	{`  http-request tarpit
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400
-`, 2},
+`, 3},
 	{`  http-request tarpit if TRUE
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 if TRUE
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json if TRUE
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json default-errorfiles
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json errorfile errors
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json string error if TRUE
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json file /var/errors.file
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json lf-file /var/errors.file
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com if TRUE
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
-`, 2},
+`, 3},
 	{`  http-request tarpit deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
-`, 2},
+`, 3},
 	{`  http-request track-sc0 src
-`, 2},
+`, 3},
 	{`  http-request track-sc1 src
-`, 2},
+`, 3},
 	{`  http-request track-sc2 src
-`, 2},
+`, 3},
 	{`  http-request track-sc5 src
-`, 2},
+`, 3},
 	{`  http-request track-sc5 src table a_table
-`, 2},
+`, 3},
 	{`  http-request track-sc5 src table a_table if some_cond
-`, 2},
+`, 3},
 	{`  http-request track-sc5 src if some_cond
-`, 2},
+`, 3},
 	{`  http-request unset-var(req.my_var)
-`, 2},
+`, 3},
 	{`  http-request unset-var(req.my_var) if FALSE
-`, 2},
+`, 3},
 	{`  http-request wait-for-body time 20s
-`, 2},
+`, 3},
 	{`  http-request wait-for-body time 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-request wait-for-body time 20s at-least 100k
-`, 2},
+`, 3},
 	{`  http-request wait-for-body time 20s at-least 100k if TRUE
-`, 2},
+`, 3},
 	{`  http-request wait-for-handshake
-`, 2},
+`, 3},
 	{`  http-request wait-for-handshake if FALSE
-`, 2},
+`, 3},
 	{`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower
-`, 2},
+`, 3},
 	{`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request do-resolve(txn.myip,mydns) hdr(Host),lower unless { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request do-resolve(txn.myip,mydns,ipv4) hdr(Host),lower
-`, 2},
+`, 3},
 	{`  http-request do-resolve(txn.myip,mydns,ipv6) hdr(Host),lower
-`, 2},
+`, 3},
 	{`  http-request set-dst var(txn.myip)
-`, 2},
+`, 3},
 	{`  http-request set-dst var(txn.myip) if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request set-dst var(txn.myip) unless { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request set-dst-port hdr(x-port)
-`, 2},
+`, 3},
 	{`  http-request set-dst-port hdr(x-port) if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request set-dst-port hdr(x-port) unless { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request set-dst-port int(4000)
-`, 2},
+`, 3},
 	{`  http-request return status 400 default-errorfiles if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request return status 400 errorfiles myerror if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-request redirect location /file.html if { var(txn.routecookie) -m found } !{ var(txn.pod),nbsrv -m found }:1]
-`, 2},
+`, 3},
 	{`  http-request set-bandwidth-limit my-limit
-`, 2},
+`, 3},
 	{`  http-request set-bandwidth-limit my-limit limit 1m period 10s
-`, 2},
+`, 3},
 	{`  http-request set-bandwidth-limit my-limit period 10s
-`, 2},
+`, 3},
 	{`  http-request set-bandwidth-limit my-limit limit 1m
-`, 2},
+`, 3},
 	{`  http-request set-bc-mark 123
-`, 2},
+`, 3},
 	{`  http-request set-bc-mark 0xffffffff
-`, 2},
+`, 3},
 	{`  http-request set-bc-mark hdr(port) if FALSE
-`, 2},
+`, 3},
 	{`  http-request set-bc-tos 10
-`, 2},
+`, 3},
 	{`  http-request set-fc-mark 0
-`, 2},
+`, 3},
 	{`  http-request set-fc-tos 0xff if TRUE
-`, 2},
+`, 3},
 	{`  http-request capture req.cook_cnt(FirstVisit),bool len 10
 `, 1},
 	{`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
-`, 2},
+`, 3},
 	{`  http-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
-`, 2},
+`, 3},
 	{`  http-response add-acl(map.lst) [src]
-`, 2},
+`, 3},
 	{`  http-response add-header X-value value
-`, 2},
+`, 3},
 	{`  http-response del-acl(map.lst) [src]
-`, 2},
+`, 3},
 	{`  http-response allow
-`, 2},
+`, 3},
 	{`  http-response cache-store cache-name
-`, 2},
+`, 3},
 	{`  http-response cache-store cache-name if FALSE
-`, 2},
+`, 3},
 	{`  http-response del-header X-value
-`, 2},
+`, 3},
 	{`  http-response del-map(map.lst) %[src] if ! value
-`, 2},
+`, 3},
 	{`  http-response del-map(map.lst) %[src]
-`, 2},
+`, 3},
 	{`  http-response deny
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400
-`, 2},
+`, 3},
 	{`  http-response deny if TRUE
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 if TRUE
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json if TRUE
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json default-errorfiles
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json errorfile errors
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json string error if TRUE
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json lf-string error hdr host google.com if TRUE
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json file /var/errors.file
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json lf-file /var/errors.file
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json string error hdr host google.com if TRUE
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla if TRUE
-`, 2},
+`, 3},
 	{`  http-response deny deny_status 400 content-type application/json string error hdr host google.com hdr x-value bla
-`, 2},
+`, 3},
 	{`  http-response lua.foo
-`, 2},
+`, 3},
 	{`  http-response lua.foo if FALSE
-`, 2},
+`, 3},
 	{`  http-response lua.foo param
-`, 2},
+`, 3},
 	{`  http-response lua.foo param param2
-`, 2},
+`, 3},
 	{`  http-response redirect prefix https://mysite.com
-`, 2},
+`, 3},
 	{`  http-response replace-header User-agent curl foo
-`, 2},
+`, 3},
 	{`  http-response replace-value X-Forwarded-For ^192.168.(.*)$ 172.16.1
-`, 2},
+`, 3},
 	{`  http-response return status 400 default-errorfiles if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-response return status 400 errorfile /my/fancy/errorfile if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-response return status 400 errorfiles myerror if { var(txn.myip) -m found }
-`, 2},
+`, 3},
 	{`  http-response sc-add-gpc(1,2) 1
-`, 2},
+`, 3},
 	{`  http-response sc-add-gpc(1,2) 1 if is-error
-`, 2},
+`, 3},
 	{`  http-response sc-inc-gpc(1,2)
-`, 2},
+`, 3},
 	{`  http-response sc-inc-gpc(1,2) if FALSE
-`, 2},
+`, 3},
 	{`  http-response sc-inc-gpc0(1)
-`, 2},
+`, 3},
 	{`  http-response sc-inc-gpc0(1) if FALSE
-`, 2},
+`, 3},
 	{`  http-response sc-inc-gpc1(1)
-`, 2},
+`, 3},
 	{`  http-response sc-inc-gpc1(1) if FALSE
-`, 2},
+`, 3},
 	{`  http-response sc-set-gpt(1,2) hdr(Host),lower if FALSE
-`, 2},
+`, 3},
 	{`  http-response sc-set-gpt0(1) hdr(Host),lower
-`, 2},
+`, 3},
 	{`  http-response sc-set-gpt0(1) 10
-`, 2},
+`, 3},
 	{`  http-response sc-set-gpt0(1) hdr(Host),lower if FALSE
-`, 2},
+`, 3},
 	{`  http-response send-spoe-group engine group
-`, 2},
+`, 3},
 	{`  http-response set-header X-value value
-`, 2},
+`, 3},
 	{`  http-response set-log-level silent
-`, 2},
+`, 3},
 	{`  http-response set-mark 20
-`, 2},
+`, 3},
 	{`  http-response set-mark 0x1Ab
-`, 2},
+`, 3},
 	{`  http-response set-nice 0
-`, 2},
+`, 3},
 	{`  http-response set-nice 0 if FALSE
-`, 2},
+`, 3},
 	{`  http-response set-status 503
-`, 2},
+`, 3},
 	{`  http-response set-timeout server 20
-`, 2},
+`, 3},
 	{`  http-response set-timeout tunnel 20
-`, 2},
+`, 3},
 	{`  http-response set-timeout tunnel 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-response set-timeout server 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-response set-timeout client 20
-`, 2},
+`, 3},
 	{`  http-response set-timeout client 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-response set-tos 0 if FALSE
-`, 2},
+`, 3},
 	{`  http-response set-tos 0
-`, 2},
+`, 3},
 	{`  http-response set-var(req.my_var) res.fhdr(user-agent),lower
-`, 2},
+`, 3},
 	{`  http-response set-var-fmt(req.my_var) res.fhdr(user-agent),lower
-`, 2},
+`, 3},
 	{`  http-response silent-drop
-`, 2},
+`, 3},
 	{`  http-response silent-drop if FALSE
-`, 2},
+`, 3},
 	{`  http-response unset-var(req.my_var)
-`, 2},
+`, 3},
 	{`  http-response unset-var(req.my_var) if FALSE
-`, 2},
+`, 3},
 	{`  http-response track-sc0 src if FALSE
-`, 2},
+`, 3},
 	{`  http-response track-sc0 src table tr if FALSE
-`, 2},
+`, 3},
 	{`  http-response track-sc0 src
-`, 2},
+`, 3},
 	{`  http-response track-sc1 src if FALSE
-`, 2},
+`, 3},
 	{`  http-response track-sc1 src table tr if FALSE
-`, 2},
+`, 3},
 	{`  http-response track-sc1 src
-`, 2},
+`, 3},
 	{`  http-response track-sc2 src if FALSE
-`, 2},
+`, 3},
 	{`  http-response track-sc2 src table tr if FALSE
-`, 2},
+`, 3},
 	{`  http-response track-sc2 src
-`, 2},
+`, 3},
 	{`  http-response track-sc5 src
-`, 2},
+`, 3},
 	{`  http-response track-sc5 src table a_table
-`, 2},
+`, 3},
 	{`  http-response track-sc5 src table a_table if some_cond
-`, 2},
+`, 3},
 	{`  http-response track-sc5 src if some_cond
-`, 2},
+`, 3},
 	{`  http-response strict-mode on
-`, 2},
+`, 3},
 	{`  http-response strict-mode on if FALSE
-`, 2},
+`, 3},
 	{`  http-response wait-for-body time 20s
-`, 2},
+`, 3},
 	{`  http-response wait-for-body time 20s if TRUE
-`, 2},
+`, 3},
 	{`  http-response wait-for-body time 20s at-least 100k
-`, 2},
+`, 3},
 	{`  http-response wait-for-body time 20s at-least 100k if TRUE
-`, 2},
+`, 3},
 	{`  http-response set-bandwidth-limit my-limit
-`, 2},
+`, 3},
 	{`  http-response set-bandwidth-limit my-limit limit 1m period 10s
-`, 2},
+`, 3},
 	{`  http-response set-bandwidth-limit my-limit period 10s
-`, 2},
+`, 3},
 	{`  http-response set-bandwidth-limit my-limit limit 1m
-`, 2},
+`, 3},
 	{`  http-response set-fc-mark 2000
-`, 2},
+`, 3},
 	{`  http-response set-fc-tos 200
-`, 2},
+`, 3},
 	{`  http-response capture res.hdr(Server) id 0
 `, 1},
 	{`  http-after-response allow
-`, 2},
+`, 3},
 	{`  http-after-response allow if acl
-`, 2},
+`, 3},
 	{`  http-after-response set-header Strict-Transport-Security \"max-age=31536000\"
-`, 2},
+`, 3},
 	{`  http-after-response add-header X-Header \"foo=bar\"
-`, 2},
+`, 3},
 	{`  http-after-response add-header X-Header \"foo=bar\" if acl
-`, 2},
+`, 3},
 	{`  http-after-response add-header X-Header \"foo=bar\" unless acl
-`, 2},
+`, 3},
 	{`  http-after-response allow unless acl
-`, 2},
+`, 3},
 	{`  http-after-response del-header X-Value
-`, 2},
+`, 3},
 	{`  http-after-response del-header X-Value -m GET
-`, 2},
+`, 3},
 	{`  http-after-response del-header X-Value -m GET if acl
-`, 2},
+`, 3},
 	{`  http-after-response del-header X-Value -m GET unless acl
-`, 2},
+`, 3},
 	{`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2
-`, 2},
+`, 3},
 	{`  http-after-response replace-header Set-Cookie (C=[^;]*);(.*) \\1;ip=%bi;\\2 if acl
-`, 2},
+`, 3},
 	{`  http-after-response replace-value Cache-control ^public$ private
-`, 2},
+`, 3},
 	{`  http-after-response replace-value Cache-control ^public$ private if acl
-`, 2},
+`, 3},
 	{`  http-after-response set-status 431
-`, 2},
+`, 3},
 	{`  http-after-response set-status 503 reason \"SlowDown\"
-`, 2},
+`, 3},
 	{`  http-after-response set-status 500 reason \"ServiceUnavailable\" if acl
-`, 2},
+`, 3},
 	{`  http-after-response set-status 500 reason \"ServiceUnavailable\" unless acl
-`, 2},
+`, 3},
 	{`  http-after-response set-var(sess.last_redir) res.hdr(location)
-`, 2},
+`, 3},
 	{`  http-after-response set-var(sess.last_redir) res.hdr(location) if acl
-`, 2},
+`, 3},
 	{`  http-after-response set-var(sess.last_redir) res.hdr(location) unless acl
-`, 2},
+`, 3},
 	{`  http-after-response strict-mode on
-`, 2},
+`, 3},
 	{`  http-after-response strict-mode off
-`, 2},
+`, 3},
 	{`  http-after-response unset-var(sess.last_redir)
-`, 2},
+`, 3},
 	{`  http-after-response unset-var(sess.last_redir) if acl
-`, 2},
+`, 3},
 	{`  http-after-response unset-var(sess.last_redir) unless acl
-`, 2},
+`, 3},
 	{`  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)] if value
-`, 2},
+`, 3},
 	{`  http-after-response set-map(map.lst) %[src] %[res.hdr(X-Value)]
-`, 2},
+`, 3},
 	{`  http-after-response del-acl(map.lst) [src]
-`, 2},
+`, 3},
 	{`  http-after-response del-map(map.lst) %[src] if ! value
-`, 2},
+`, 3},
 	{`  http-after-response del-map(map.lst) %[src]
-`, 2},
+`, 3},
 	{`  http-after-response sc-add-gpc(1,2) 1
-`, 2},
+`, 3},
 	{`  http-after-response sc-add-gpc(1,2) 1 if is-error
-`, 2},
+`, 3},
 	{`  http-after-response sc-inc-gpc(1,2)
-`, 2},
+`, 3},
 	{`  http-after-response sc-inc-gpc(1,2) if is-error
-`, 2},
+`, 3},
 	{`  http-after-response sc-inc-gpc0(1)
-`, 2},
+`, 3},
 	{`  http-after-response sc-inc-gpc0(1) if FALSE
-`, 2},
+`, 3},
 	{`  http-after-response sc-inc-gpc1(1)
-`, 2},
+`, 3},
 	{`  http-after-response sc-inc-gpc1(1) if FALSE
-`, 2},
+`, 3},
 	{`  http-after-response sc-set-gpt(1,2) 10
-`, 2},
+`, 3},
 	{`  http-after-response sc-set-gpt0(1) hdr(Host),lower
-`, 2},
+`, 3},
 	{`  http-after-response sc-set-gpt0(1) 10
-`, 2},
+`, 3},
 	{`  http-after-response sc-set-gpt0(1) hdr(Host),lower if FALSE
-`, 2},
+`, 3},
 	{`  http-error status 400
 `, 3},
 	{`  http-error status 400 default-errorfiles
@@ -4152,349 +4674,349 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  tcp-check set-var(check.port) int(1234)
 `, 2},
 	{`  tcp-request content accept
-`, 2},
+`, 3},
 	{`  tcp-request content accept if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request content reject
-`, 2},
+`, 3},
 	{`  tcp-request content reject if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request content capture req.payload(0,6) len 6
-`, 2},
+`, 3},
 	{`  tcp-request content capture req.payload(0,6) len 6 if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request content do-resolve(txn.myip,mydns,ipv6) capture.req.hdr(0),lower
-`, 2},
+`, 3},
 	{`  tcp-request content do-resolve(txn.myip,mydns) capture.req.hdr(0),lower
-`, 2},
+`, 3},
 	{`  tcp-request content set-priority-class int(1)
-`, 2},
+`, 3},
 	{`  tcp-request content set-priority-class int(1) if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content set-priority-offset int(10)
-`, 2},
+`, 3},
 	{`  tcp-request content set-priority-offset int(10) if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc0 src
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc0 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc1 src
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc1 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc2 src
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc2 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc0 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc0 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc1 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc1 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc2 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc2 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc5 src
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc5 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc5 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request content track-sc5 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content sc-inc-gpc(1,2)
-`, 2},
+`, 3},
 	{`  tcp-request content sc-inc-gpc(1,2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request content sc-inc-gpc0(2)
-`, 2},
+`, 3},
 	{`  tcp-request content sc-inc-gpc0(2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request content sc-inc-gpc1(2)
-`, 2},
+`, 3},
 	{`  tcp-request content sc-inc-gpc1(2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request content sc-set-gpt(x,9) 1337 if exceeds_limit
-`, 2},
+`, 3},
 	{`  tcp-request content sc-set-gpt0(0) 1337
-`, 2},
+`, 3},
 	{`  tcp-request content sc-set-gpt0(0) 1337 if exceeds_limit
-`, 2},
+`, 3},
 	{`  tcp-request content sc-add-gpc(1,2) 1
-`, 2},
+`, 3},
 	{`  tcp-request content sc-add-gpc(1,2) 1 if is-error
-`, 2},
+`, 3},
 	{`  tcp-request content set-dst ipv4(10.0.0.1)
-`, 2},
+`, 3},
 	{`  tcp-request content set-var(sess.src) src
-`, 2},
+`, 3},
 	{`  tcp-request content set-var(sess.dn) ssl_c_s_dn
-`, 2},
+`, 3},
 	{`  tcp-request content set-var-fmt(sess.src) src
-`, 2},
+`, 3},
 	{`  tcp-request content set-var-fmt(sess.dn) ssl_c_s_dn
-`, 2},
+`, 3},
 	{`  tcp-request content unset-var(sess.src)
-`, 2},
+`, 3},
 	{`  tcp-request content unset-var(sess.dn)
-`, 2},
+`, 3},
 	{`  tcp-request content silent-drop
-`, 2},
+`, 3},
 	{`  tcp-request content silent-drop if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request content send-spoe-group engine group
-`, 2},
+`, 3},
 	{`  tcp-request content use-service lua.deny
-`, 2},
+`, 3},
 	{`  tcp-request content use-service lua.deny if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request content lua.foo
-`, 2},
+`, 3},
 	{`  tcp-request content lua.foo param if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request content lua.foo param param1
-`, 2},
+`, 3},
 	{`  tcp-request connection accept
-`, 2},
+`, 3},
 	{`  tcp-request connection accept if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request connection reject
-`, 2},
+`, 3},
 	{`  tcp-request connection reject if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request connection expect-proxy layer4 if { src -f proxies.lst }
-`, 2},
+`, 3},
 	{`  tcp-request connection expect-netscaler-cip layer4
-`, 2},
+`, 3},
 	{`  tcp-request connection expect-netscaler-cip layer4 if TRUE
-`, 2},
+`, 3},
 	{`  tcp-request connection capture req.payload(0,6) len 6
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc0 src
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc0 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc1 src
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc1 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc2 src
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc2 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc0 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc0 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc1 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc1 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc2 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc2 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc5 src
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc5 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc5 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request connection track-sc5 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-add-gpc(1,2) 1
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-add-gpc(1,2) 1 if is-error
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-inc-gpc(1,2)
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-inc-gpc(1,2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-inc-gpc0(2)
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-inc-gpc0(2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-inc-gpc1(2)
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-inc-gpc1(2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-set-gpt(scx,44) 1337 if exceeds_limit
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-set-gpt0(0) 1337
-`, 2},
+`, 3},
 	{`  tcp-request connection sc-set-gpt0(0) 1337 if exceeds_limit
-`, 2},
+`, 3},
 	{`  tcp-request connection set-src src,ipmask(24)
-`, 2},
+`, 3},
 	{`  tcp-request connection set-src src,ipmask(24) if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection set-src hdr(x-forwarded-for)
-`, 2},
+`, 3},
 	{`  tcp-request connection set-src hdr(x-forwarded-for) if some_check
-`, 2},
+`, 3},
 	{`  tcp-request connection silent-drop
-`, 2},
+`, 3},
 	{`  tcp-request connection silent-drop if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request connection lua.foo
-`, 2},
+`, 3},
 	{`  tcp-request connection lua.foo param if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request connection lua.foo param param1
-`, 2},
+`, 3},
 	{`  tcp-request session accept
-`, 2},
+`, 3},
 	{`  tcp-request session accept if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request session reject
-`, 2},
+`, 3},
 	{`  tcp-request session reject if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc0 src
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc0 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc1 src
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc1 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc2 src
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc2 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc0 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc0 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc1 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc1 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc2 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc2 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc5 src
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc5 src if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc5 src table foo
-`, 2},
+`, 3},
 	{`  tcp-request session track-sc5 src table foo if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session sc-add-gpc(1,2) 1
-`, 2},
+`, 3},
 	{`  tcp-request session sc-add-gpc(1,2) 1 if is-error
-`, 2},
+`, 3},
 	{`  tcp-request session sc-inc-gpc(1,2)
-`, 2},
+`, 3},
 	{`  tcp-request session sc-inc-gpc(1,2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request session sc-inc-gpc0(2)
-`, 2},
+`, 3},
 	{`  tcp-request session sc-inc-gpc0(2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request session sc-inc-gpc1(2)
-`, 2},
+`, 3},
 	{`  tcp-request session sc-inc-gpc1(2) if is-error
-`, 2},
+`, 3},
 	{`  tcp-request session sc-set-gpt(sc5,1) 1337 if exceeds_limit
-`, 2},
+`, 3},
 	{`  tcp-request session sc-set-gpt0(0) 1337
-`, 2},
+`, 3},
 	{`  tcp-request session sc-set-gpt0(0) 1337 if exceeds_limit
-`, 2},
+`, 3},
 	{`  tcp-request session set-var(sess.src) src
-`, 2},
+`, 3},
 	{`  tcp-request session set-var(sess.dn) ssl_c_s_dn
-`, 2},
+`, 3},
 	{`  tcp-request session set-var-fmt(sess.src) src
-`, 2},
+`, 3},
 	{`  tcp-request session set-var-fmt(sess.dn) ssl_c_s_dn
-`, 2},
+`, 3},
 	{`  tcp-request session unset-var(sess.src)
-`, 2},
+`, 3},
 	{`  tcp-request session unset-var(sess.dn)
-`, 2},
+`, 3},
 	{`  tcp-request session silent-drop
-`, 2},
+`, 3},
 	{`  tcp-request session silent-drop if !HTTP
-`, 2},
+`, 3},
 	{`  tcp-request session attach-srv srv1
-`, 2},
+`, 3},
 	{`  tcp-request session attach-srv srv1 name example.com
-`, 2},
+`, 3},
 	{`  tcp-request session attach-srv srv1 name example.com if exceeds_limit
-`, 2},
+`, 3},
 	{`  tcp-request content set-bandwidth-limit my-limit
-`, 2},
+`, 3},
 	{`  tcp-request content set-bandwidth-limit my-limit limit 1m period 10s
-`, 2},
+`, 3},
 	{`  tcp-request content set-bandwidth-limit my-limit period 10s
-`, 2},
+`, 3},
 	{`  tcp-request content set-bandwidth-limit my-limit limit 1m
-`, 2},
+`, 3},
 	{`  tcp-request content set-log-level silent
-`, 2},
+`, 3},
 	{`  tcp-request content set-log-level silent if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request content set-mark 20
-`, 2},
+`, 3},
 	{`  tcp-request content set-mark 0x1Ab if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request connection set-mark 20
-`, 2},
+`, 3},
 	{`  tcp-request connection set-mark 0x1Ab if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request connection set-src-port hdr(port)
-`, 2},
+`, 3},
 	{`  tcp-request connection set-src-port hdr(port) if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request content set-src-port hdr(port)
-`, 2},
+`, 3},
 	{`  tcp-request content set-src-port hdr(port) if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request content set-tos 0 if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request content set-tos 0
-`, 2},
+`, 3},
 	{`  tcp-request connection set-tos 0 if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request connection set-tos 0
-`, 2},
+`, 3},
 	{`  tcp-request connection set-var-fmt(txn.ip_port) %%[dst]:%%[dst_port]
-`, 2},
+`, 3},
 	{`  tcp-request content set-nice 0 if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request content set-nice 0
-`, 2},
+`, 3},
 	{`  tcp-request content switch-mode http
-`, 2},
+`, 3},
 	{`  tcp-request content switch-mode http if FALSE
-`, 2},
+`, 3},
 	{`  tcp-request content switch-mode http proto my-proto
-`, 2},
+`, 3},
 	{`  tcp-request connection set-fc-mark 1
-`, 2},
+`, 3},
 	{`  tcp-request connection set-fc-tos 1
-`, 2},
+`, 3},
 	{`  tcp-request session set-fc-mark 9999 if some_check
-`, 2},
+`, 3},
 	{`  tcp-request session set-fc-tos 255
-`, 2},
+`, 3},
 	{`  tcp-request content set-bc-mark hdr(port)
-`, 2},
+`, 3},
 	{`  tcp-request content set-bc-tos 0xff if some_check
-`, 2},
+`, 3},
 	{`  tcp-request content set-fc-mark 0xffffffff
-`, 2},
+`, 3},
 	{`  tcp-request content set-fc-tos 100
-`, 2},
+`, 3},
 	{`  tcp-response content lua.foo
 `, 2},
 	{`  tcp-response content lua.foo param if !HTTP

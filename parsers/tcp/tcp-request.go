@@ -25,7 +25,7 @@ import (
 
 type Requests struct {
 	Name        string
-	Mode        string // frontent, backend, listen
+	Mode        string // frontent, backend, listen, defaults
 	data        []types.TCPType
 	preComments []string // comments that appear before the actual line
 }
