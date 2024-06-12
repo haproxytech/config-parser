@@ -47,6 +47,7 @@ global
   tune.h2.fe.glitches-threshold 24
   tune.h2.fe.max-total-streams 1048576
   tune.h2.zero-copy-fwd-send on
+  tune.lua.maxmem 65536
   tune.pt.zero-copy-forwarding on
   tune.ring.queues 8
   tune.ssl.default-dh-param 2048
