@@ -48,6 +48,7 @@ func (p *configParser) createParsers(parser map[string]ParserInterface, sequence
 	addParser(parser, &sequence, &extra.Section{Name: "ring"})
 	addParser(parser, &sequence, &extra.Section{Name: "log-forward"})
 	addParser(parser, &sequence, &extra.Section{Name: "fcgi-app"})
+	addParser(parser, &sequence, &extra.Section{Name: "crt-store"})
 	if !p.Options.DisableUnProcessed {
 		addParser(parser, &sequence, &extra.UnProcessed{})
 	}
@@ -936,5 +937,14 @@ func (p *configParser) getLogForwardParser() *Parsers {
 	addParser(parser, &sequence, &simple.Number{Name: "backlog"})
 	addParser(parser, &sequence, &simple.Number{Name: "maxconn"})
 	addParser(parser, &sequence, &simple.Timeout{Name: "client"})
+	return p.createParsers(parser, sequence)
+}
+
+func (p *configParser) getCrtStoreParser() *Parsers {
+	parser := map[string]ParserInterface{}
+	sequence := []Section{}
+	addParser(parser, &sequence, &simple.Word{Name: "crt-base"})
+	addParser(parser, &sequence, &simple.Word{Name: "key-base"})
+	addParser(parser, &sequence, &parsers.LoadCert{})
 	return p.createParsers(parser, sequence)
 }

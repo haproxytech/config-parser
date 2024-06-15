@@ -166,6 +166,12 @@ cache foobar
   total-max-size 4
   max-age 240
 
+crt-store tpm2
+  crt-base /c
+  key-base /k
+  load crt example.com.pem alias example
+  load crt lol.pem
+
 frontend healthz from A
   mode http
   monitor-uri /healthz

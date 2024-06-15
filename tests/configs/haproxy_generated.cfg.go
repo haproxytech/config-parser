@@ -1062,6 +1062,16 @@ backend test
 cache test
   process-vary on
 
+crt-store test
+  load crt foo.pem
+  load crt foo.pem alias foo.com
+  load crt foo.pem alias foo.com key foo.priv.key
+  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der
+  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem
+  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl
+  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl ocsp-update on
+  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl ocsp-update off
+
 defaults test
   acl url_stats path_beg /stats
   acl url_static path_beg -i /static /images /javascript /stylesheets
@@ -3962,6 +3972,22 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  http-fail-codes 400-499 -450 +500
 `, 1},
 	{`  http-fail-codes 400-408 # comment
+`, 1},
+	{`  load crt foo.pem
+`, 1},
+	{`  load crt foo.pem alias foo.com
+`, 1},
+	{`  load crt foo.pem alias foo.com key foo.priv.key
+`, 1},
+	{`  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der
+`, 1},
+	{`  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem
+`, 1},
+	{`  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl
+`, 1},
+	{`  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl ocsp-update on
+`, 1},
+	{`  load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl ocsp-update off
 `, 1},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 3},

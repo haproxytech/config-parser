@@ -1630,3 +1630,27 @@ type HTTPErrCodes struct {
 type HTTPFailCodes struct {
 	StringC
 }
+
+//sections:crt-store
+//name:load
+//is:multiple
+//test:ok:load crt foo.pem
+//test:ok:load crt foo.pem alias foo.com
+//test:ok:load crt foo.pem alias foo.com key foo.priv.key
+//test:ok:load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der
+//test:ok:load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem
+//test:ok:load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl
+//test:ok:load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl ocsp-update on
+//test:ok:load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem sctl foo.sctl ocsp-update off
+//test:fail:load alias foo.com key foo.priv.key
+//test:fail:load crt foo.pem alias foo.com key foo.priv.key ocsp foo.ocsp.der issuer foo.issuer.pem ocsp-update lol
+type LoadCert struct {
+	Certificate string
+	Alias       string
+	Key         string
+	Ocsp        string
+	Issuer      string
+	Sctl        string
+	Comment     string
+	OcspUpdate  *bool
+}

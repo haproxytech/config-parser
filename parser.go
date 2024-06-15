@@ -46,6 +46,7 @@ const (
 	Ring       Section = "ring"
 	LogForward Section = "log-forward"
 	FCGIApp    Section = "fcgi-app"
+	CrtStore   Section = "crt-store"
 	// spoe sections
 	SPOEAgent   Section = "spoe-agent"
 	SPOEGroup   Section = "spoe-group"

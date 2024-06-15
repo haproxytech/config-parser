@@ -342,6 +342,16 @@ func (p *configParser) ProcessLine(line string, parts []string, comment string, 
 					if p.Options.Log {
 						p.Options.Logger.Tracef("%log-forward section %s active", p.Options.LogPrefix, data.Name)
 					}
+				case "crt-store":
+					parserSectionName := parser.(*extra.Section) //nolint:forcetypeassert
+					rawData, _ := parserSectionName.Get(false)
+					data := rawData.(*types.Section) //nolint:forcetypeassert
+					config.CrtStore = p.getCrtStoreParser()
+					p.Parsers[CrtStore][data.Name] = config.CrtStore
+					config.Active = config.CrtStore
+					if p.Options.Log {
+						p.Options.Logger.Tracef("%scrt-store section %s active", p.Options.LogPrefix, data.Name)
+					}
 				case "snippet_beg":
 					config.Previous = config.Active
 					config.Active = &Parsers{

@@ -44,6 +44,7 @@ type ConfiguredParsers struct {
 	Ring                  *Parsers
 	LogForward            *Parsers
 	FCGIApp               *Parsers
+	CrtStore              *Parsers
 	// spoe parsers
 	SPOEAgent   *Parsers
 	SPOEGroup   *Parsers
@@ -93,4 +94,5 @@ func (p *configParser) initParserMaps() {
 	p.Parsers[Ring] = map[string]*Parsers{}
 	p.Parsers[LogForward] = map[string]*Parsers{}
 	p.Parsers[FCGIApp] = map[string]*Parsers{}
+	p.Parsers[CrtStore] = map[string]*Parsers{}
 }
