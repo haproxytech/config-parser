@@ -173,10 +173,11 @@ func TestServer(t *testing.T) {
 		"server name 127.0.0.1 ws h2":                                         true,
 		"server name 127.0.0.1 ws auto":                                       true,
 		"server name 127.0.0.1 log-bufsize 10":                                true,
-		"server addr":                                                         false,
-		"server":                                                              false,
-		"---":                                                                 false,
-		"--- ---":                                                             false,
+		"server name 127.0.0.1 guid guid-example":                             true,
+		"server addr": false,
+		"server":      false,
+		"---":         false,
+		"--- ---":     false,
 	}
 	parser := &parsers.Server{}
 	for command, shouldPass := range tests {

@@ -149,6 +149,7 @@ func TestBind(t *testing.T) {
 		"bind :443 quic-socket listener":                 true,
 		"bind :443 nbconn 1":                             true,
 		"bind :443 nbconn +2":                            true,
+		"bind :443 guid-prefix guid-example":             true,
 		"bind":                                           false,
 		"bind :443 quic-cc-algo something":               false,
 		"bind :443 quic-socket something":                false,

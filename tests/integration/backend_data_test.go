@@ -1721,6 +1721,10 @@ const backend_servername127001logbufsize10 = `
 backend test
   server name 127.0.0.1 log-bufsize 10
 `
+const backend_servername127001guidguidexample = `
+backend test
+  server name 127.0.0.1 guid guid-example
+`
 const backend_sticktabletypeipsize1mexpire5mst = `
 backend test
   stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)

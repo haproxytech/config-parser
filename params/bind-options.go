@@ -217,6 +217,7 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "quic-cc-algo"},
 		&BindOptionValue{Name: "quic-socket"},
 		&BindOptionValue{Name: "nbconn"},
+		&BindOptionValue{Name: "guid-prefix"},
 	}
 }
 

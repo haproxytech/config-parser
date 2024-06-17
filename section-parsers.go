@@ -532,6 +532,7 @@ func (p *configParser) getFrontendParser() *Parsers {
 	addParser(parser, &sequence, &http.HTTPErrors{})
 	addParser(parser, &sequence, &parsers.DeclareCapture{})
 	addParser(parser, &sequence, &simple.Number{Name: "rate-limit sessions"})
+	addParser(parser, &sequence, &simple.Word{Name: "guid"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -654,6 +655,7 @@ func (p *configParser) getBackendParser() *Parsers {
 	addParser(parser, &sequence, &parsers.Source{})
 	addParser(parser, &sequence, &parsers.Persist{})
 	addParser(parser, &sequence, &simple.Number{Name: "hash-balance-factor"})
+	addParser(parser, &sequence, &simple.Word{Name: "guid"})
 	return p.createParsers(parser, sequence)
 }
 
@@ -811,6 +813,7 @@ func (p *configParser) getListenParser() *Parsers {
 		addParser(parser, &sequence, &parsers.Source{})
 		addParser(parser, &sequence, &parsers.Persist{})
 		addParser(parser, &sequence, &simple.Number{Name: "rate-limit sessions"})
+		addParser(parser, &sequence, &simple.Word{Name: "guid"})
 	}
 	return p.createParsers(parser, sequence)
 }

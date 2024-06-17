@@ -407,6 +407,7 @@ backend test
   server name 127.0.0.1 ws h2
   server name 127.0.0.1 ws auto
   server name 127.0.0.1 log-bufsize 10
+  server name 127.0.0.1 guid guid-example
   stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
   stick on src table pop if !localhost
   stick match src table pop if !localhost
@@ -2014,6 +2015,7 @@ frontend test
   bind :443 quic-socket listener
   bind :443 nbconn 1
   bind :443 nbconn +2
+  bind :443 guid-prefix guid-example
   bind-process all
   email-alert from admin@example.com
   email-alert to a@z,x@y
@@ -3109,6 +3111,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 `, 1},
 	{`  bind :443 nbconn +2
 `, 1},
+	{`  bind :443 guid-prefix guid-example
+`, 1},
 	{`  dgram-bind :80,:443
 `, 1},
 	{`  dgram-bind 10.0.0.1:10080,10.0.0.1:10443
@@ -3810,6 +3814,8 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  server name 127.0.0.1 ws auto
 `, 1},
 	{`  server name 127.0.0.1 log-bufsize 10
+`, 1},
+	{`  server name 127.0.0.1 guid guid-example
 `, 1},
 	{`  stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
 `, 2},
