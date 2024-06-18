@@ -391,6 +391,7 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Enabled{Name: "nogetaddrinfo"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "noreuseport"})
 	addParser(parser, &sequence, &simple.AutoOnOff{Name: "profiling.tasks"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "profiling.memory"})
 	addParser(parser, &sequence, &simple.Number{Name: "spread-checks"})
 	addParser(parser, &sequence, &simple.String{Name: "wurfl-data-file"})
 	addParser(parser, &sequence, &simple.String{Name: "wurfl-information-list"})
@@ -428,6 +429,12 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Enabled{Name: "quiet"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "zero-warning"})
 	addParser(parser, &sequence, &simple.Word{Name: "setcap"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "harden.reject-privileged-ports.tcp"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "harden.reject-privileged-ports.quic"})
+	addParser(parser, &sequence, &simple.Number{Name: "thread-hard-limit"})
+	addParser(parser, &sequence, &simple.Number{Name: "ssl-security-level"})
+	addParser(parser, &sequence, &parsers.HTTPErrCodes{})
+	addParser(parser, &sequence, &parsers.HTTPFailCodes{})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})

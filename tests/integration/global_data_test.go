@@ -193,3 +193,27 @@ const global_httpclientsslverify = `
 global
   httpclient.ssl.verify
 `
+const global_httperrcodes400402444446480490 = `
+global
+  http-err-codes 400,402-444,446-480,490
+`
+const global_httperrcodes400499450500 = `
+global
+  http-err-codes 400-499 -450 +500
+`
+const global_httperrcodes400408comment = `
+global
+  http-err-codes 400-408 # comment
+`
+const global_httpfailcodes400402444446480490 = `
+global
+  http-fail-codes 400,402-444,446-480,490
+`
+const global_httpfailcodes400499450500 = `
+global
+  http-fail-codes 400-499 -450 +500
+`
+const global_httpfailcodes400408comment = `
+global
+  http-fail-codes 400-408 # comment
+`

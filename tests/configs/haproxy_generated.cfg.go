@@ -51,6 +51,12 @@ global test
   tune.quic.socket-owner listener
   httpclient.resolvers.prefer ipv4
   httpclient.ssl.verify none
+  http-err-codes 400,402-444,446-480,490
+  http-err-codes 400-499 -450 +500
+  http-err-codes 400-408 # comment
+  http-fail-codes 400,402-444,446-480,490
+  http-fail-codes 400-499 -450 +500
+  http-fail-codes 400-408 # comment
 
 backend test
   acl url_stats path_beg /stats
@@ -3938,6 +3944,18 @@ var configTests = []configTest{{`  command spoa-mirror --runtime 0 --mirror-url 
 	{`  httpclient.resolvers.prefer ipv4
 `, 1},
 	{`  httpclient.ssl.verify none
+`, 1},
+	{`  http-err-codes 400,402-444,446-480,490
+`, 1},
+	{`  http-err-codes 400-499 -450 +500
+`, 1},
+	{`  http-err-codes 400-408 # comment
+`, 1},
+	{`  http-fail-codes 400,402-444,446-480,490
+`, 1},
+	{`  http-fail-codes 400-499 -450 +500
+`, 1},
+	{`  http-fail-codes 400-408 # comment
 `, 1},
 	{`  http-request set-map(map.lst) %[src] %[req.hdr(X-Value)] if value
 `, 3},

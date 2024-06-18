@@ -1606,3 +1606,25 @@ type HTTPClientResolversPrefer struct {
 type HTTPClientSSLVerify struct {
 	Type string
 }
+
+//sections:global
+//name:http-err-codes
+//is:multiple
+//test:ok:http-err-codes 400,402-444,446-480,490
+//test:ok:http-err-codes 400-499 -450 +500
+//test:ok:http-err-codes 400-408 # comment
+//test:fail:http-err-codes
+type HTTPErrCodes struct {
+	StringC
+}
+
+//sections:global
+//name:http-fail-codes
+//is:multiple
+//test:ok:http-fail-codes 400,402-444,446-480,490
+//test:ok:http-fail-codes 400-499 -450 +500
+//test:ok:http-fail-codes 400-408 # comment
+//test:fail:http-fail-codes
+type HTTPFailCodes struct {
+	StringC
+}
