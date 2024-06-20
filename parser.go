@@ -71,6 +71,7 @@ type Parser interface {
 	GetPreComments(sectionType Section, sectionName string, attribute string) ([]string, error)
 	GetOne(sectionType Section, sectionName string, attribute string, index ...int) (common.ParserData, error)
 	SectionsGet(sectionType Section) ([]string, error)
+	SectionAttributesGet(sectionType Section, sectionName string, existingOnly bool) ([]string, error)
 	SectionsDelete(sectionType Section, sectionName string) error
 	SectionsCreate(sectionType Section, sectionName string) error
 	SectionsDefaultsFromGet(sectionType Section, sectionName string) (string, error)

@@ -118,6 +118,21 @@ func (p *configParser) SectionsGet(sectionType Section) ([]string, error) {
 	return result, nil
 }
 
+// SectionAttributesGet lists all attributes in the section of certain type and name
+func (p *configParser) SectionAttributesGet(sectionType Section, sectionName string, existingOnly bool) ([]string, error) {
+	p.lock()
+	defer p.unLock()
+	st, ok := p.Parsers[sectionType]
+	if !ok {
+		return nil, errors.ErrSectionMissing
+	}
+	section, ok := st[sectionName]
+	if !ok {
+		return nil, errors.ErrSectionMissing
+	}
+	return section.GetAttributes(existingOnly), nil
+}
+
 // SectionsDelete deletes one section of sectionType
 func (p *configParser) SectionsDelete(sectionType Section, sectionName string) error {
 	p.lock()
