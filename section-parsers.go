@@ -436,6 +436,11 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Number{Name: "ssl-security-level"})
 	addParser(parser, &sequence, &parsers.HTTPErrCodes{})
 	addParser(parser, &sequence, &parsers.HTTPFailCodes{})
+	addParser(parser, &sequence, &simple.OnOff{Name: "ocsp-update.disable"})
+	addParser(parser, &sequence, &simple.Word{Name: "ocsp-update.httpproxy"})
+	addParser(parser, &sequence, &simple.Number{Name: "ocsp-update.mindelay"})
+	addParser(parser, &sequence, &simple.Number{Name: "ocsp-update.maxdelay"})
+	addParser(parser, &sequence, &simple.OnOff{Name: "ocsp-update.mode"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})

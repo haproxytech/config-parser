@@ -62,6 +62,11 @@ global
   tune.ssl.default-dh-param 2048
   ssl-default-bind-client-sigalgs RSA+SHA256
   ssl-default-bind-sigalgs ECDSA+SHA256:RSA+SHA256
+  ocsp-update.disable off
+  ocsp-update.httpproxy 127.0.0.1:123
+  ocsp-update.maxdelay 10
+  ocsp-update.mindelay 7
+  ocsp-update.mode on
   ###_config-snippet_### END
   # random comment after snippet
 
