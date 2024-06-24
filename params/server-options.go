@@ -267,6 +267,8 @@ func getServerOptions() []ServerOption {
 		&ServerOptionValue{Name: "log-bufsize"},
 		&ServerOptionValue{Name: "guid"},
 		&ServerOptionIDValue{Name: "set-proxy-v2-tlv-fmt"},
+		&ServerOptionValue{Name: "pool-conn-name"},
+		&ServerOptionValue{Name: "hash-key"},
 	}
 }
 

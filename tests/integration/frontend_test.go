@@ -68,6 +68,7 @@ func TestWholeConfigsSectionsFrontend(t *testing.T) {
 		{"frontend_bind443crtignoreerrall", frontend_bind443crtignoreerrall},
 		{"frontend_bind443crtlistcert1pem", frontend_bind443crtlistcert1pem},
 		{"frontend_bind443curvesECDHECDSAECDHEECDSA", frontend_bind443curvesECDHECDSAECDHEECDSA},
+		{"frontend_bind443defaultcrtfoobarpemrsadef", frontend_bind443defaultcrtfoobarpemrsadef},
 		{"frontend_bind443deferaccept", frontend_bind443deferaccept},
 		{"frontend_bind443ecdheECDHECDSAECDHEECDSAE", frontend_bind443ecdheECDHECDSAECDHEECDSAE},
 		{"frontend_bind443exposefdlisteners", frontend_bind443exposefdlisteners},

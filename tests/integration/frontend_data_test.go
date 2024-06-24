@@ -569,6 +569,10 @@ const frontend_bind443guidprefixguidexample = `
 frontend test
   bind :443 guid-prefix guid-example
 `
+const frontend_bind443defaultcrtfoobarpemrsadef = `
+frontend test
+  bind :443 default-crt foobar.pem.rsa default-crt foobar.pem.ecdsa
+`
 const frontend_bindprocessall = `
 frontend test
   bind-process all

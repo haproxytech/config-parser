@@ -218,6 +218,7 @@ func getBindOptions() []BindOption {
 		&BindOptionValue{Name: "quic-socket"},
 		&BindOptionValue{Name: "nbconn"},
 		&BindOptionValue{Name: "guid-prefix"},
+		&BindOptionValue{Name: "default-crt"},
 	}
 }
 
