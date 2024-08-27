@@ -416,6 +416,8 @@ func (p *configParser) getGlobalParser() *Parsers { //nolint: maintidx
 	addParser(parser, &sequence, &simple.Enabled{Name: "quiet"})
 	addParser(parser, &sequence, &simple.Enabled{Name: "zero-warning"})
 	addParser(parser, &sequence, &simple.Word{Name: "setcap"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "h1-accept-payload-with-any-method"})
+	addParser(parser, &sequence, &simple.Enabled{Name: "h1-do-not-close-on-insecure-transfer-encoding"})
 	// the ConfigSnippet must be at the end to parsers load order to ensure
 	// the overloading of any option has been declared previously
 	addParser(parser, &sequence, &parsers.ConfigSnippet{})
