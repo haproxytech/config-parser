@@ -2357,6 +2357,14 @@ const backend_httprequestsilentdropifFALSE = `
 backend test
   http-request silent-drop if FALSE
 `
+const backend_httprequestsilentdroprstttl1 = `
+backend test
+  http-request silent-drop rst-ttl 1
+`
+const backend_httprequestsilentdroprstttl1ifsr = `
+backend test
+  http-request silent-drop rst-ttl 1 if { src,table_http_req_rate(ratelimits.agg),sub(txn.rate_limit) ge 1000 }
+`
 const backend_httprequeststrictmodeon = `
 backend test
   http-request strict-mode on
@@ -2888,6 +2896,14 @@ backend test
 const backend_httpresponsesilentdropifFALSE = `
 backend test
   http-response silent-drop if FALSE
+`
+const backend_httpresponsesilentdroprstttl1 = `
+backend test
+  http-response silent-drop rst-ttl 1
+`
+const backend_httpresponsesilentdroprstttl1ifs = `
+backend test
+  http-response silent-drop rst-ttl 1 if { src,table_http_req_rate(ratelimits.agg),sub(txn.rate_limit) ge 1000 }
 `
 const backend_httpresponseunsetvarreqmyvar = `
 backend test
@@ -3685,6 +3701,14 @@ const backend_tcprequestcontentsilentdropifHTT = `
 backend test
   tcp-request content silent-drop if !HTTP
 `
+const backend_tcprequestcontentsilentdroprsttt = `
+backend test
+  tcp-request content silent-drop rst-ttl 1
+`
+const backend_tcprequestcontentsilentdroprsttt_ = `
+backend test
+  tcp-request content silent-drop rst-ttl 1 if { src,table_http_req_rate(ratelimits.agg),sub(txn.rate_limit) ge 1000 }
+`
 const backend_tcprequestcontentsendspoegroupen = `
 backend test
   tcp-request content send-spoe-group engine group
@@ -3873,6 +3897,14 @@ const backend_tcprequestconnectionsilentdropif = `
 backend test
   tcp-request connection silent-drop if !HTTP
 `
+const backend_tcprequestconnectionsilentdroprs = `
+backend test
+  tcp-request connection silent-drop rst-ttl 1
+`
+const backend_tcprequestconnectionsilentdroprs_ = `
+backend test
+  tcp-request connection silent-drop rst-ttl 1 if { src,table_http_req_rate(ratelimits.agg),sub(txn.rate_limit) ge 1000 }
+`
 const backend_tcprequestconnectionluafoo = `
 backend test
   tcp-request connection lua.foo
@@ -4040,6 +4072,14 @@ backend test
 const backend_tcprequestsessionsilentdropifHTT = `
 backend test
   tcp-request session silent-drop if !HTTP
+`
+const backend_tcprequestsessionsilentdroprsttt = `
+backend test
+  tcp-request session silent-drop rst-ttl 1
+`
+const backend_tcprequestsessionsilentdroprsttt_ = `
+backend test
+  tcp-request session silent-drop rst-ttl 1 if { src,table_http_req_rate(ratelimits.agg),sub(txn.rate_limit) ge 1000 }
 `
 const backend_tcprequestsessionattachsrvsrv1 = `
 backend test
